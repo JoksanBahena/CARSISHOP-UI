@@ -1,4 +1,4 @@
-import vuetify from "@/plugins/index";
+import vuetify from "@/plugins/vuetify";
 import router from "@/router";
 
 export function registerPlugins(app) {
