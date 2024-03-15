@@ -16,15 +16,15 @@
           <v-card-actions>
             <p class="font-weight-medium text-h5">{{ item.price }}</p>
             <v-spacer></v-spacer>
-            <v-btn :style="{ backgroundColor: colors.primary_dark }">
-              <v-icon :color="colors.white" class="text-h5" icon="mdi-pencil"></v-icon>
+            <v-btn  variant="outlined" :style="{ borderColor: colors.primary_dark }">
+              <v-icon :color="colors.primary_dark" class="text-h5" icon="mdi-cart-outline"></v-icon>
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
   </div>
-</template>
+</template> 
 
 <script setup>
 import Colors from "@/utils/Colors.js";
