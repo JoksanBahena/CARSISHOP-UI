@@ -1,29 +1,14 @@
 <template>
   <v-toolbar :elevation="2" :color="toolbar.bg_color">
-    <v-btn
-      :style="{ color: toolbar.color }"
-      class="text-none"
-      variant="plain"
-      to="/"
-    >
+    <v-btn :color="toolbar.color" class="text-none" variant="plain" to="/">
       Mujeres
     </v-btn>
 
-    <v-btn
-      :style="{ color: toolbar.color }"
-      class="text-none"
-      variant="plain"
-      to="/"
-    >
+    <v-btn :color="toolbar.color" class="text-none" variant="plain" to="/">
       Hombres
     </v-btn>
 
-    <v-btn
-      :style="{ color: toolbar.color }"
-      class="text-none"
-      variant="plain"
-      to="/"
-    >
+    <v-btn :color="toolbar.color" class="text-none" variant="plain" to="/">
       Niños
     </v-btn>
 
