@@ -48,10 +48,7 @@
 
         <v-btn
           class="mb-8 text-none"
-          :style="{
-            background: colors.primary_dark,
-            color: colors.white,
-          }"
+          :color="colors.primary_dark"
           size="large"
           block
         >
@@ -69,9 +66,8 @@
         <v-card-text class="text-center">
           <a
             class="text-blue text-decoration-none"
-            href="#"
             rel="noopener noreferrer"
-            target="_blank"
+            href="/register"
           >
             Registrate aquí<v-icon icon="mdi-chevron-right"></v-icon>
           </a>
