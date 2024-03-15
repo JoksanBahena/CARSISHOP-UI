@@ -1,9 +1,11 @@
 <template>
   <div class="h-screen">
     <navbar-component />
-    <main class="ma-4">
+
+    <main class="ma-4 px-13">
       <slot></slot>
     </main>
+    <footer-component />
   </div>
 </template>
 

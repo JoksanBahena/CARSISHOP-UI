@@ -16,6 +16,16 @@ const routes = [
     name: "Register",
     component: () => import("@/views/auth/RegisterView.vue"),
   },
+  {
+    path: "/forgotPassword",
+    name: "ForgotPassword",
+    component: () => import("@/views/auth/ForgotPasswordView.vue"),
+  },
+  {
+    path: "/forgotPasswordConfirm",
+    name: "ForgotPasswordConfirm",
+    component: () => import("@/views/auth/ForgotPasswordConfirmView.vue")
+  }
 ];
 
 const router = createRouter({
