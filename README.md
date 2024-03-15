@@ -16,10 +16,11 @@ Desarrollo frontend del proyecto CarsiShop
 - El desarrollo está escrito en inglés
 
 - El nombre de los directorios se conforma de minúsculas
-- El nombre de los componentes sigue el estilizado PascalCase
+- El nombre de los componentes siguen el estilizado PascalCase y debe cumplir la nomenclatura:
+  "ComponenteEjemplo[SUFIJO].vue"
 - El nombre de las variables siguen el estilizado snake_case
 
-- La importación de componentes se utilizan rutas dinamicas
+- Importación de módulos con rutas de alias "@/"
 
 ## ❗️ Documentación oficial de vuetify
 
