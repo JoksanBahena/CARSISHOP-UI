@@ -2,10 +2,18 @@
   <div class="h-screen">
     <v-app>
       <navbar-component />
-      <sidebar-component />
-      <!-- 
- <v-row no-gutters>
-  <col cols="2">
+      <v-row no-gutters>
+        <v-col cols="2">
+          <sidebar-component />
+        </v-col>
+        <v-col>
+          <v-main class="ma-2">
+            <slot></slot>
+          </v-main>
+        </v-col>
+      </v-row>
+      <!--
+
 
       <v-list class="container" :style="{ 'background-color': colors.gray }">
         <div class="px-4 ">
