@@ -38,6 +38,12 @@ const routes = [
     name: "ProfileSales",
     component: () => import("@/views/profile/ProfileSalesView.vue")
 
+  },
+  {
+    path: "/profileSalesRequest",
+    name: "ProfileSalesRequest",
+    component: () => import("@/views/profile/ProfileSalesRequest.vue")
+
   }
 ];
 
