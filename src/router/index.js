@@ -25,6 +25,13 @@ const routes = [
     path: "/forgotPasswordConfirm",
     name: "ForgotPasswordConfirm",
     component: () => import("@/views/auth/ForgotPasswordConfirmView.vue")
+
+  },
+  {
+    path: "/profileAccount",
+    name: "ProfileAccount",
+    component: () => import("@/views/profile/ProfileAccountView.vue")
+
   }
 ];
 
