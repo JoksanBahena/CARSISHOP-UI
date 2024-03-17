@@ -1,7 +1,9 @@
 <template>
   <div class="h-screen">
-    <navbar-component />
-
+    <v-app>
+      <navbar-component />
+      <sidebar-component />
+      <!-- 
  <v-row no-gutters>
   <col cols="2">
 
@@ -111,23 +113,24 @@
         </div>
       </v-list>
       </col>
-      <v-col>
+      <v-col> -->
 
-        <main class="ma-2 ">
-          <slot></slot>
+      <v-main class="ma-2">
+        <!-- <slot></slot> -->
+      </v-main>
+      <!-- </v-col>
 
-        </main>
-      </v-col>
 
+    </v-row> -->
 
-    </v-row>
-
-    <footer-component />
+      <footer-component />
+    </v-app>
   </div>
 </template>
 
 <script setup>
 import NavbarComponent from "@/components/common/NavbarComponent.vue";
+import SidebarComponent from "@/components/common/SidebarComponent.vue";
 import FooterComponent from "@/components/common/FooterComponent.vue";
 import Colors from "@/utils/Colors.js";
 
@@ -145,6 +148,3 @@ const colors = {
   height: 100%;
 }
 </style>
-
-
-
