@@ -1,101 +1,44 @@
 <template>
   <profile-layout>
     <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Mi Cuenta']"></v-breadcrumbs>
-    <h1 class='ml-5'>Mi cuenta</h1>
+    <h1 class='ml-5'>Metodos de pago</h1>
 
-    <v-container>
-      <v-row>
-        <v-col cols="12" md="4">
-          <v-img lazy-src="@/assets/imgs/men_card.webp" src="@/assets/imgs/men_card.webp" width="200" height="200"
-            aspect-ratio="1" class="bg-grey-lighten-2 rounded-circle" cover>
-          </v-img>
-        </v-col>
-        <v-col cols="12" md="4" class="mt-auto">
-          <div class="mb-4">
-            <div class="text-subtitle-1 font-weight-medium">
-              Nombre(s)
-            </div>
-            <v-text-field density="compact" placeholder="Nombre(s)" prepend-inner-icon="mdi-account-outline"
-              variant="outlined" />
-          </div>
-        </v-col>
-        <v-col cols="12" md="4" class="mt-auto">
-          <div class="mb-4">
-            <div class="text-subtitle-1 font-weight-medium">
-              Apellidos
-            </div>
-            <v-text-field density="compact" placeholder="Apellidos" prepend-inner-icon="mdi-account-outline"
-              variant="outlined" />
-          </div>
-        </v-col>
+  <v-container>
+      <v-row class="pl-7" rows="12" md="4">
+        <v-card
+        variant="flat"
+        width="100%">
+        <v-card-title>Metodo de pago:</v-card-title>
+        <v-card-item>
 
+        <template v-slot:prepend>
+          <v-img src="@/assets/imgs/mc.webp" width="50" height="50" class="mr-2"></v-img>
+        </template>
+        <v-card-text class="py-0">Nombre</v-card-text>
+        <v-card-text class="py-1">
+       Numero
+        </v-card-text>
+      </v-card-item>
+      <v-card-actions>
+        <v-btn
+        variant="outlined"
+        class="mb-8 text-none"
+        :color="colors.primary_dark"
+        >Editar tarjeta</v-btn>
+
+      </v-card-actions>
+    </v-card>
+    <V-divider></v-divider>
+      <v-btn
+        variant="outlined"
+        class="mb-8 mt-10 text-none"
+        :color="colors.primary_dark"
+        block
+        href="/profileAddPayment"
+        >Agregar nueva tarjeta</v-btn>
       </v-row>
 
-      <v-row>
-        <v-col cols="12" md="4">
-          <div class="mb-4">
-            <div class="text-subtitle-1 font-weight-medium">
-              Fecha de nacimiento
-            </div>
-            <v-text-field density="compact" placeholder="Correo electrónico"
-              prepend-inner-icon="mdi-calendar-month-outline" variant="outlined" />
-          </div>
-        </v-col>
-        <v-col cols="12" md="4">
-          <div class="mb-4">
-            <div class="text-subtitle-1 font-weight-medium">
-              Genero
-            </div>
-            <v-text-field density="compact" placeholder="Genero" prepend-inner-icon="mdi-account-outline"
-              variant="outlined" />
-          </div>
 
-        </v-col>
-        <v-col cols="12" md="4">
-          <div class="mb-4">
-            <div class="text-subtitle-1 font-weight-medium">
-              Telefono
-            </div>
-            <v-text-field density="compact" placeholder="Telefono" prepend-inner-icon="mdi-phone-outline"
-              variant="outlined" />
-          </div>
-        </v-col>
-
-      </v-row>
-      <v-row>
-
-
-        <v-col cols="12" md="4">
-          <div class="mb-4">
-            <div class="text-subtitle-1 font-weight-medium">
-              Dirección
-            </div>
-            <v-text-field density="compact" placeholder="Correo electrónico" prepend-inner-icon="mdi-google-maps"
-              variant="outlined" />
-          </div>
-        </v-col>
-        <v-col cols="12" md="4">
-          <div class="text-subtitle-1 font-weight-medium">
-            Correo
-          </div>
-          <v-text-field density="compact" placeholder="Correo electrónico" prepend-inner-icon="mdi-email-outline"
-            variant="outlined" />
-        </v-col>
-        <v-col cols="12" md="4">
-          <div class="text-subtitle-1 font-weight-medium">
-            Foto de perfil
-          </div>
-          <v-file-input density="compact" type="file" accept="image/png, image/jpeg, image/bmp" variant="outlined"
-            prepend-icon="mdi-camera-outline" chips show-size @change="onFileChange" />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12">
-          <v-btn class="mb-8 text-none" :color="colors.primary_dark" size="large" block>
-            Editar
-          </v-btn>
-        </v-col>
-      </v-row>
     </v-container>
 
   </profile-layout>

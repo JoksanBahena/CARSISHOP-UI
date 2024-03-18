@@ -19,7 +19,7 @@
             <v-list-item prepend-icon="mdi-shopping-outline" title="Pedidos y devoluciones" value="shared" href="/profileReturnsOrders"></v-list-item>
             <v-list-item prepend-icon="mdi-account-outline" title="Mi cuenta" value="starred" href="/profileAccount"></v-list-item>
             <v-list-item prepend-icon="mdi-google-maps" title="Mis direcciones" value="starred" href="/profileAddress"></v-list-item>
-            <v-list-item prepend-icon="mdi-credit-card-outline" title="Mis pagos" value="starred" href="/profilePayment"></v-list-item>
+            <v-list-item prepend-icon="mdi-credit-card-outline" title="Metodos de pago" value="starred" href="/profilePayment"></v-list-item>
             <v-list-item prepend-icon="mdi-currency-usd" title="Ventas" value="starred" href="/profileSales" ></v-list-item>
           </v-list>
            <template v-slot:append>
