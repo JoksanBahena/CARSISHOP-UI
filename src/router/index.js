@@ -25,6 +25,11 @@ const routes = [
     path: "/forgotPasswordConfirm",
     name: "ForgotPasswordConfirm",
     component: () => import("@/views/auth/ForgotPasswordConfirmView.vue")
+  },
+  {
+    path: "/cart",
+    name: "Cart",
+    component: () => import("@/views/cart/CartView.vue"),
   }
 ];
 

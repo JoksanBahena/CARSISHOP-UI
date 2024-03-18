@@ -4,7 +4,7 @@
       <v-layout class="d-flex flex-column fill-height align-center text-black">
         <div class="text-center text-wrap">
           <h1 class="font-weight-bold mb-4 text-h1">
-            TU ESTILO NUESTRA PASIÓN
+            TU ESTILO, NUESTRA PASIÓN
           </h1>
           <h2 class="subheading px-16">
             Moda exclusiva para tu personalidad única

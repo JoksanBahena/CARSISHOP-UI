@@ -24,7 +24,7 @@
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
 
-    <v-btn icon :style="{ color: toolbar.color }">
+    <v-btn icon :style="{ color: toolbar.color }" to="Cart">
       <v-icon>mdi-cart-outline</v-icon>
     </v-btn>
 
