@@ -44,6 +44,26 @@ const routes = [
     name: "ProfileSalesRequest",
     component: () => import("@/views/profile/ProfileSalesRequest.vue")
 
+  },
+  {
+    path: "/profileAddress",
+    name: "ProfileAddress",
+    component: () => import("@/views/profile/PorfileAddressView.vue")
+  },
+  {
+    path: "/profileAddAddress",
+    name: "ProfileAddAddress",
+    component: () => import("@/views/profile/ProfileAddAddressView.vue")
+  },
+  {
+    path: "/profileReturnsOrders",
+    name: "profileReturnsOrders",
+    component: () => import("@/views/profile/ProfileOrdersReturnsView.vue")
+  },
+  {
+    path: "/profilePayment",
+    name: "ProfilePayment",
+    component: () => import("@/views/profile/ProfilePaymentView.vue")
   }
 ];
 
