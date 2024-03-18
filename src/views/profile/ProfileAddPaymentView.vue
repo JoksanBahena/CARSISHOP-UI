@@ -36,7 +36,7 @@
 
       </v-row>
       <v-row class="mt-5">
-        <v-col cols="8"> <!-- Cambiado de cols="8" a cols="12" -->
+        <v-col cols="8">
           <div class="mb-4">
             <div class="text-subtitle-1 font-weight-medium">
               Numero de tarjeta
