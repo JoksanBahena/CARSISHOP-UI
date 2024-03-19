@@ -91,7 +91,7 @@
       </v-row>
       <v-row>
         <v-col cols="12">
-          <v-btn class="mb-8 text-none" :color="colors.primary_dark" size="large" block>
+          <v-btn variant="outlinedd" class="mb-8 text-none" :color="colors.primary_dark" size="large" block>
             Editar
           </v-btn>
         </v-col>
