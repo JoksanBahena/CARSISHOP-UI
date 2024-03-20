@@ -1,6 +1,6 @@
 <template>
   <profile-layout>
-    <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Mi Cuenta']"></v-breadcrumbs>
+    <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Mis direcciones', 'Agregar nueva dirección']"></v-breadcrumbs>
     <h1 class='ml-5'>Mis dirrecciones</h1>
 
     <v-container>

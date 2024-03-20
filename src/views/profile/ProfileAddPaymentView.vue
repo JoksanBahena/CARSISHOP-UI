@@ -1,6 +1,6 @@
 <template>
   <profile-layout>
-    <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Mi Cuenta']"></v-breadcrumbs>
+    <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Metodos de pago', 'Agregar nuevo metodo de pago' ]"></v-breadcrumbs>
     <h1 class='ml-5'>Metodos de pagos</h1>
 
     <v-container>

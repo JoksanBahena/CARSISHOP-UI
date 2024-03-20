@@ -1,6 +1,6 @@
 <template>
   <profile-layout>
-    <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Mi Cuenta']"></v-breadcrumbs>
+    <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Ventas', 'Solicitud de vendedor']"></v-breadcrumbs>
     <h1 class='ml-5'>Ventas</h1>
     <h4 class='ml-5'>Solicitud de vendedor</h4>
 

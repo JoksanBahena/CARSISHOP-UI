@@ -1,6 +1,6 @@
 <template>
   <profile-layout>
-    <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Mis direcciones']"></v-breadcrumbs>
+    <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Resumen']"></v-breadcrumbs>
     <h1 class='ml-5'>Resumen</h1>
 
     <v-container class="ml-0" style="width: 80%;">
