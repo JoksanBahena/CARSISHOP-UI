@@ -25,7 +25,12 @@ const routes = [
     path: "/forgotPasswordConfirm",
     name: "ForgotPasswordConfirm",
     component: () => import("@/views/auth/ForgotPasswordConfirmView.vue")
-  }
+  },
+  {
+    path: "/product/:id",
+    name: "Product",
+    component: () => import("@/views/product/ProductView.vue"),
+  },
 ];
 
 const router = createRouter({
