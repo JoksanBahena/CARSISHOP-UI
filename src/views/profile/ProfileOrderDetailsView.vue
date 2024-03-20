@@ -50,9 +50,9 @@
                 </v-card-title>
 
               </div>
-              <v-row>
-                <v-col>
-                  <v-timeline align="start" side="end"  truncate-line="end">
+              <v-row class="mt-4 mb-16">
+
+                  <v-timeline   align="start" side="end"  truncate-line="both">
                     <v-timeline-item class="mt-10" :dot-color="colors.primary_dark">
 
                       <div>
@@ -94,7 +94,6 @@
 
                   </v-timeline>
 
-                </v-col>
               </v-row>
 
             </v-card-item>
