@@ -1,7 +1,7 @@
 <template>
-  <v-card variant="flat">
-    <v-layout>
-      <v-navigation-drawer :color="colors.gray" theme="dark" permanent>
+  <v-card :color="colors.gray" variant="flat" >
+    <v-layout class="py-0 d-flex justify-center">
+      <v-navigation-drawer class="px-4" style="width: auto;" :color="colors.gray" theme="dark" permanent>
         <v-list color="transparent">
           <v-list-item prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg" subtitle="sandra_a88@gmailcom"
             title="Sandra Adams"></v-list-item>
@@ -10,16 +10,16 @@
         <v-divider></v-divider>
 
         <v-list density="compact" nav>
-          <v-list-item prepend-icon="mdi-history" title="Resumen" value="resumen" href="/profileResume"></v-list-item>
-          <v-list-item prepend-icon="mdi-shopping-outline" title="Pedidos y devoluciones" value="shared"
+          <v-list-item  class="mt-3" prepend-icon="mdi-history" title="Resumen" value="resumen" href="/profileResume"></v-list-item>
+          <v-list-item  class="mt-3" prepend-icon="mdi-shopping-outline" title="Pedidos y devoluciones" value="shared"
             href="/profileReturnsOrders"></v-list-item>
-          <v-list-item prepend-icon="mdi-account-outline" title="Mi cuenta" value="starred"
+          <v-list-item  class="mt-3" prepend-icon="mdi-account-outline" title="Mi cuenta" value="starred"
             href="/profileAccount"></v-list-item>
-          <v-list-item prepend-icon="mdi-google-maps" title="Mis direcciones" value="starred"
+          <v-list-item class="mt-3"  prepend-icon="mdi-google-maps" title="Mis direcciones" value="starred"
             href="/profileAddress"></v-list-item>
-          <v-list-item prepend-icon="mdi-credit-card-outline" title="Metodos de pago" value="starred"
+          <v-list-item  class="mt-3" prepend-icon="mdi-credit-card-outline" title="Metodos de pago" value="starred"
             href="/profilePayment"></v-list-item>
-          <v-list-item prepend-icon="mdi-currency-usd" title="Ventas" value="starred"
+          <v-list-item  class="mt-3" prepend-icon="mdi-currency-usd" title="Ventas" value="starred"
             href="/profileSales"></v-list-item>
         </v-list>
         <template v-slot:append>
@@ -31,9 +31,7 @@
         </template>
       </v-navigation-drawer>
 
-      <v-main :style="{ 'height': '500px' }"></v-main>
-      <!-- <v-main :style="{ 'height': '100%' }"></v-main> -->
-      <!-- <v-main style="height: 90%"></v-main> -->
+      <v-main  :style="{ 'height': '500px', }"></v-main>
 
     </v-layout>
   </v-card>
