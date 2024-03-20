@@ -35,6 +35,7 @@
               placeholder="Buscar"
               prepend-inner-icon="mdi-magnify"
               variant="outlined"
+              autofocus
             />
           </v-card-item>
 
