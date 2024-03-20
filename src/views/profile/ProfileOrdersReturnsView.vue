@@ -14,13 +14,19 @@
       </div>
     </v-row>
 
-    <v-container>
+  <v-container class="ml-0" style="width: 80%;">
       <v-window v-model="step">
         <v-window-item :value="1">
           <v-row class="pl-7 mt-10 " rows="12" md="4">
     <v-card variant="flat" width="100%">
           <v-card-item>
-            <v-card-title class="mb-3">TIENDA / VENDEDOR</v-card-title>
+  <div class="mt-3 d-flex justify-content-end align-items-center">
+              <v-card-title class="mb-3 text-h5 ">
+              Tienda/vendedor
+              </v-card-title>
+              <p  class="text-h6 ml-auto " >
+                DD/MM/AAAA</p>
+            </div>
             <V-divider></v-divider>
             <div class=" mt-3 d-flex justify-content-end align-items-center">
               <v-icon class="mdi mdi-close ml-auto"></v-icon>
@@ -32,16 +38,18 @@
                     <v-img src="@/assets/imgs/item.webp" width="100" height="100" class="mr-2"></v-img>
                   </template>
                   <v-card-title class="mb-3 ml-4">ITEM</v-card-title>
-                  <v-card-text class="py-0 mb-4">Descriccion</v-card-text>
-                  <v-card-text class="py-1">Option</v-card-text>
+                  <v-card-text class="py-0 mb-4">STATUS (ENTREGADO/CANCELADO/DEVUELTO) - DD/MM/AAAA</v-card-text>
+                  <v-card-text class="py-1">Option selected - description</v-card-text>
                 </v-card-item>
               </v-col>
               <v-col>
                 <v-card-actions class="flex-column">
-                  <v-btn variant="outlined" class="mb-8 text-none" :color="colors.primary_dark">
+                  <v-btn variant="flat" append-icon="mdi-chevron-right" class="mb-8 text-none"
+                    :color="colors.primary_dark">
                     Detalles de compra
                   </v-btn>
-                  <v-btn variant="outlined" class="mb-8 text-none" :color="colors.primary_dark">
+                  <v-btn variant="outlined" append-icon="mdi-chevron-right" class="mb-8 text-none"
+                    :color="colors.primary_dark">
                     Solicitar devolución
                   </v-btn>
                 </v-card-actions>

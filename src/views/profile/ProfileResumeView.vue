@@ -8,10 +8,13 @@
         <v-card variant="flat" width="100%">
           <v-card-item>
             <div class="mt-3 d-flex justify-content-end align-items-center">
-              <v-card-title class="mb-3">
-                <v-icon size="24" class="mdi mdi-account-outline mr-3"></v-icon>Mi cuenta
+              <v-card-title class="mb-3 ">
+                <v-icon size="30" class="mdi mdi-account-outline mr-3"></v-icon>Mi cuenta
               </v-card-title>
-              <v-icon class="mdi mdi-close ml-auto"></v-icon>
+
+              <a href="/profileAccount" class="text-subtitle-1 ml-auto cursor-pointer text-decoration-none"
+                style="color: #372A5E;">Editar</a>
+
             </div>
 
             <V-divider></v-divider>
@@ -33,7 +36,7 @@
                 <v-icon size="30" class="mdi mdi-account-outline mr-3"></v-icon>Ultima compra
               </v-card-title>
 
-              <p class="text-subtitle-1 ml-auto cursor-pointer	" style="color: #372A5E;">Ver más</p>
+              <a  href="/profileReturnsOrders" class="text-subtitle-1 ml-auto cursor-pointer	text-decoration-none" style="color: #372A5E;">Ver más</a>
             </div>
 
             <V-divider></v-divider>
@@ -52,10 +55,12 @@
               </v-col>
               <v-col>
                 <v-card-actions class="flex-column">
-                  <v-btn variant="outlined" class="mb-8 text-none" :color="colors.primary_dark">
+                  <v-btn variant="flat" append-icon="mdi-chevron-right" class="mb-8 text-none"
+                    :color="colors.primary_dark">
                     Detalles de compra
                   </v-btn>
-                  <v-btn variant="outlined" class="mb-8 text-none" :color="colors.primary_dark">
+                  <v-btn variant="outlined" append-icon="mdi-chevron-right" class="mb-8 text-none"
+                    :color="colors.primary_dark">
                     Solicitar devolución
                   </v-btn>
                 </v-card-actions>
@@ -72,7 +77,8 @@
                 <v-icon size="30" class="mdi mdi-account-outline mr-3"></v-icon>Mis direcciones
               </v-card-title>
 
-              <p class="text-subtitle-1 ml-auto cursor-pointer	" style="color: #372A5E;">Ver más</p>
+              <a href="/profileAddress" class="text-subtitle-1 ml-auto cursor-pointer text-decoration-none	" style="color: #372A5E;">Ver
+                más</a>
             </div>
 
             <V-divider></v-divider>
@@ -103,28 +109,27 @@
                 <v-icon size="30" class="mdi mdi-account-outline mr-3"></v-icon>Mis Metodos de pago
               </v-card-title>
 
-              <p class="text-subtitle-1 ml-auto cursor-pointer	" style="color: #372A5E;">Ver más</p>
+              <a href="/profilePayment" class="text-subtitle-1 ml-auto cursor-pointer text-decoration-none	" style="color: #372A5E;">Ver
+                más</a>
             </div>
 
             <V-divider></v-divider>
 
             <v-row>
               <v-col>
-                 <v-card
-        variant="flat"
-        width="100%">
-        <v-card-item>
+                <v-card variant="flat" width="100%">
+                  <v-card-item>
 
-        <template v-slot:prepend>
-          <v-img src="@/assets/imgs/mc.webp" width="50" height="50" class="mr-2"></v-img>
-        </template>
-        <v-card-text class="py-0">Cristopher Soto Ventura</v-card-text>
-        <v-card-text class="py-1">
-       ···· ···· ····  1412
-        </v-card-text>
-      </v-card-item>
+                    <template v-slot:prepend>
+                      <v-img src="@/assets/imgs/mc.webp" width="50" height="50" class="mr-2"></v-img>
+                    </template>
+                    <v-card-text class="py-0">Cristopher Soto Ventura</v-card-text>
+                    <v-card-text class="py-1">
+                      ···· ···· ···· 1412
+                    </v-card-text>
+                  </v-card-item>
 
-    </v-card>
+                </v-card>
               </v-col>
 
             </v-row>

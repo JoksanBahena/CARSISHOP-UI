@@ -3,8 +3,11 @@
     <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Mi Cuenta']"></v-breadcrumbs>
     <h1 class='ml-5'>Mi cuenta</h1>
 
-    <v-container>
+  <v-container class="ml-0" style="width: 80%;">
+      <v-form>
       <v-row>
+
+
         <v-col cols="12" md="4">
           <v-img lazy-src="@/assets/imgs/men_card.webp" src="@/assets/imgs/men_card.webp" width="200" height="200"
             aspect-ratio="1" class="bg-grey-lighten-2 rounded-circle" cover>
@@ -90,12 +93,15 @@
         </v-col>
       </v-row>
       <v-row>
+        <v-divider></v-divider>
+
         <v-col cols="12">
-          <v-btn variant="outlinedd" class="mb-8 text-none" :color="colors.primary_dark" size="large" block>
+          <v-btn variant="outlined"  class="text-none" :color="colors.primary_dark" size="large" block>
             Editar
           </v-btn>
         </v-col>
       </v-row>
+    </v-form>
     </v-container>
 
   </profile-layout>

@@ -5,6 +5,7 @@
 
     <v-container>
       <h4>Datos bancarios</h4>
+      <v-form>
 
       <v-row class="mt-5">
         <v-col cols="8" md="4">
@@ -90,6 +91,8 @@
           >Guardar</v-btn>
         </v-col>
       </v-row>
+            </v-form>
+
     </v-container>
 
   </profile-layout>
