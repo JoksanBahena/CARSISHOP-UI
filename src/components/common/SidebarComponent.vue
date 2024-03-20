@@ -24,7 +24,7 @@
         </v-list>
         <template v-slot:append>
           <div class="pa-2">
-            <v-btn class="mb-8 text-none" :color="colors.primary_dark" size="large" block>
+            <v-btn class="mb-8 text-none" :color="colors.primary_dark" size="large" variant="flat" block>
               Cerrar sesión
             </v-btn>
           </div>

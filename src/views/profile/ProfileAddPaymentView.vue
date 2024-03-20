@@ -1,6 +1,6 @@
 <template>
   <profile-layout>
-    <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Metodos de pago', 'Agregar nuevo metodo de pago' ]"></v-breadcrumbs>
+    <v-breadcrumbs :items="items"></v-breadcrumbs>
     <h1 class='ml-5'>Metodos de pagos</h1>
 
     <v-container>
@@ -104,6 +104,30 @@ import Colors from "@/utils/Colors.js";
 import { ref } from "vue";
 import ProfileLayout from "@/layouts/user/ProfileLayout.vue";
 
+ const items = [
+  {
+    title: 'Inicio',
+    disabled: false,
+    href: '/',
+  },
+  {
+    title: 'Perfil',
+    disabled: false,
+    href: '/profileAccount',
+  },
+  {
+    title: 'Metodos de pago',
+    disabled: false,
+    href: '/profilePayment',
+
+  },
+  {
+    title: 'Agregar metodo de pago',
+    disabled: true,
+    href: '/profileAddPayment',
+
+  }
+];
 const colors = {
   primary: Colors.cs_primary,
   primary_dark: Colors.cs_primary_dark,

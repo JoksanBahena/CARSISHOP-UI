@@ -1,6 +1,6 @@
 <template>
   <profile-layout>
-    <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Metodos de pago']"></v-breadcrumbs>
+    <v-breadcrumbs :items="items"></v-breadcrumbs>
     <h1 class='ml-5'>Metodos de pago</h1>
 
   <v-container class="ml-0" style="width: 80%;">
@@ -56,6 +56,27 @@ const colors = {
   primary_dark: Colors.cs_primary_dark,
   white: Colors.cs_white,
 };
+
+
+const items = [
+  {
+    title: 'Inicio',
+    disabled: false,
+    href: '/',
+  },
+  {
+    title: 'Perfil',
+    disabled: false,
+    href: '/profileAccount',
+  },
+  {
+    title: 'Metodos de pago',
+    disabled: true,
+    href: '/profilePayment',
+
+  },
+
+];
 
 const image_url = ref("");
 

@@ -1,6 +1,6 @@
 <template>
   <profile-layout>
-    <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Resumen']"></v-breadcrumbs>
+    <v-breadcrumbs :items="items"></v-breadcrumbs>
     <h1 class='ml-5'>Resumen</h1>
 
     <v-container class="ml-0" style="width: 80%;">
@@ -150,6 +150,24 @@
 import Colors from "@/utils/Colors.js";
 import { ref } from "vue";
 import ProfileLayout from "@/layouts/user/ProfileLayout.vue";
+
+const items = [
+  {
+    title: 'Inicio',
+    disabled: false,
+    href: '/',
+  },
+  {
+    title: 'Perfil',
+    disabled: false,
+    href: '/profileAccount',
+  },
+  {
+    title: 'Resumen',
+    disabled: true,
+    href: '/profileResume',
+  },
+];
 
 const colors = {
   primary: Colors.cs_primary,

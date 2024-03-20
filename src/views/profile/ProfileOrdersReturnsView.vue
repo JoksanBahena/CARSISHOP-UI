@@ -1,6 +1,6 @@
 <template>
   <profile-layout>
-    <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Pedidos y devoluciones']"></v-breadcrumbs>
+    <v-breadcrumbs :items="items"></v-breadcrumbs>
     <h1 class='ml-5'>Pedidos y devoluciones</h1>
 
     <v-row class="ml-1 mt-6 pl-4">
@@ -82,6 +82,24 @@
 import Colors from "@/utils/Colors.js";
 import ProfileLayout from "@/layouts/user/ProfileLayout.vue";
 import { ref } from "vue";
+
+const items = [
+  {
+    title: 'Inicio',
+    disabled: false,
+    href: '/',
+  },
+  {
+    title: 'Perfil',
+    disabled: false,
+    href: '/profileAccount',
+  },
+  {
+    title: 'Pedidos y devoluciones',
+    disabled: true,
+    href: '/profileOrdersReturns',
+  },
+];
 
 const colors = {
   primary: Colors.cs_primary,

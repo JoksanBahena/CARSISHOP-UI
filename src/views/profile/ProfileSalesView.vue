@@ -1,6 +1,6 @@
 <template>
   <profile-layout>
-    <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Ventas']"></v-breadcrumbs>
+    <v-breadcrumbs :items="items"></v-breadcrumbs>
 
     <h1 class='ml-5'>Mis ventas</h1>
     <v-container class="d-flex align-center justify-center flex-column">
@@ -15,6 +15,24 @@
 <script setup>
 import ProfileLayout from "@/layouts/user/ProfileLayout.vue";
 import Colors from '@/utils/Colors.js';
+
+const items = [
+  {
+    title: 'Inicio',
+    disabled: false,
+    href: '/',
+  },
+  {
+    title: 'Perfil',
+    disabled: false,
+    href: '/profileAccount',
+  },
+  {
+    title: 'Mis ventas',
+    disabled: true,
+    href: '/profileSales',
+  },
+];
 
 const colors = {
   primary: Colors.cs_primary,

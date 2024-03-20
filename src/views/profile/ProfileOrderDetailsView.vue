@@ -1,6 +1,6 @@
 <template>
   <profile-layout>
-    <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Pedidos y devoluciones', 'Dalles de compra' ]"></v-breadcrumbs>
+    <v-breadcrumbs :items="items"></v-breadcrumbs>
     <h1 class='ml-5'>ITEM NAME</h1>
 
     <v-container class="ml-0" style="width: 95%;">
@@ -163,5 +163,28 @@ const colors = {
   primary_dark: Colors.cs_primary_dark,
   white: Colors.cs_white,
 };
+
+const items = [
+  {
+    title: 'Inicio',
+    disabled: false,
+    href: '/',
+  },
+  {
+    title: 'Perfil',
+    disabled: false,
+    href: '/profileAccount',
+  },
+  {
+    title: 'Pedidos y devoluciones',
+    disabled: false,
+    href: '/profileReturnsOrders',
+  },
+  {
+    title: 'Detalles del pedido',
+    disabled: true,
+    href: '/profileOrderDetails',
+  },
+];
 
 </script>

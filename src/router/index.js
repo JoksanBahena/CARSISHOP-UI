@@ -53,7 +53,7 @@ const routes = [
   {
     path: "/profileAddAddress",
     name: "ProfileAddAddress",
-    component: () => import("@/views/profile/ProfileAddressView.vue")
+    component: () => import("@/views/profile/ProfileAddAddressView.vue")
   },
   {
     path: "/profileReturnsOrders",

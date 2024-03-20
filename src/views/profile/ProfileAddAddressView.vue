@@ -1,6 +1,6 @@
 <template>
   <profile-layout>
-    <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Mis direcciones', 'Agregar nueva dirección']"></v-breadcrumbs>
+    <v-breadcrumbs :items="items"></v-breadcrumbs>
     <h1 class='ml-5'>Mis dirrecciones</h1>
 
     <v-container>
@@ -122,6 +122,29 @@ const colors = {
   primary_dark: Colors.cs_primary_dark,
   white: Colors.cs_white,
 };
+ const items = [
+  {
+    title: 'Inicio',
+    disabled: false,
+    href: '/',
+  },
+  {
+    title: 'Perfil',
+    disabled: false,
+    href: '/profileAccount',
+  },
+  {
+    title: 'Mis direcciones',
+    disabled: false,
+    href: '/profileAddress',
+
+  },
+  {
+    title: 'Agregar nueva direccion',
+    disabled: true,
+    href: '/profileAddAddress',
+  }
+];
 
 const image_url = ref("");
 
