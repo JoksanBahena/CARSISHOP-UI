@@ -15,7 +15,7 @@
           <v-divider></v-divider>
 
           <v-list density="compact" nav>
-            <v-list-item prepend-icon="mdi-history" title="Resumen" value="resumen" href="/"></v-list-item>
+            <v-list-item prepend-icon="mdi-history" title="Resumen" value="resumen" href="/profileResume"></v-list-item>
             <v-list-item prepend-icon="mdi-shopping-outline" title="Pedidos y devoluciones" value="shared" href="/profileReturnsOrders"></v-list-item>
             <v-list-item prepend-icon="mdi-account-outline" title="Mi cuenta" value="starred" href="/profileAccount"></v-list-item>
             <v-list-item prepend-icon="mdi-google-maps" title="Mis direcciones" value="starred" href="/profileAddress"></v-list-item>

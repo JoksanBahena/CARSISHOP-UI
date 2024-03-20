@@ -69,6 +69,11 @@ const routes = [
     path: "/profileAddPayment",
     name: "ProfileAddPayment",
     component: () => import("@/views/profile/ProfileAddPaymentView.vue")
+  },
+  {
+    path: "/profileResume",
+    name: "ProfileResume",
+    component: () => import("@/views/profile/ProfileResumeView.vue")
   }
 ];
 
