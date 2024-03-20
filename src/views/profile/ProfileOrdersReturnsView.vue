@@ -45,7 +45,8 @@
                   <v-col>
                     <v-card-actions class="flex-column">
                       <v-btn variant="flat" append-icon="mdi-chevron-right" class="mb-8 text-none"
-                        :color="colors.primary_dark">
+                        :color="colors.primary_dark" href="/profileOrderDetail">
+
                         Detalles de compra
                       </v-btn>
                       <v-btn variant="outlined" append-icon="mdi-chevron-right" class="mb-8 text-none"

@@ -48,12 +48,12 @@ const routes = [
   {
     path: "/profileAddress",
     name: "ProfileAddress",
-    component: () => import("@/views/profile/PorfileAddressView.vue")
+    component: () => import("@/views/profile/ProfileAddressView.vue")
   },
   {
     path: "/profileAddAddress",
     name: "ProfileAddAddress",
-    component: () => import("@/views/profile/ProfileAddAddressView.vue")
+    component: () => import("@/views/profile/ProfileAddressView.vue")
   },
   {
     path: "/profileReturnsOrders",
@@ -74,6 +74,11 @@ const routes = [
     path: "/profileResume",
     name: "ProfileResume",
     component: () => import("@/views/profile/ProfileResumeView.vue")
+  },
+  {
+    path: "/profileOrderDetail",
+    name: "ProfileOrderDetail",
+    component: () => import("@/views/profile/ProfileOrderDetailsView.vue")
   }
 ];
 
