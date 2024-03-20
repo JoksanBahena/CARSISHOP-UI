@@ -3,7 +3,7 @@
     <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Mi Cuenta']"></v-breadcrumbs>
     <h1 class='ml-5'>Metodos de pago</h1>
 
-  <v-container>
+  <v-container class="ml-0" style="width: 80%;">
       <v-row class="pl-7" rows="12" md="4">
         <v-card
         variant="flat"
@@ -33,7 +33,7 @@
         variant="outlined"
         class="mb-8 mt-10 text-none"
         :color="colors.primary_dark"
-        block
+        block=""
         href="/profileAddPayment"
         >Agregar nueva tarjeta</v-btn>
       </v-row>

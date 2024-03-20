@@ -3,7 +3,7 @@
     <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Mis direcciones']"></v-breadcrumbs>
     <h1 class='ml-5'>Mis direcciones</h1>
 
-    <v-container>
+  <v-container class="ml-0" style="width: 80%;">
       <v-row class="pl-7" rows="12" md="4">
         <v-card
         variant="flat"
