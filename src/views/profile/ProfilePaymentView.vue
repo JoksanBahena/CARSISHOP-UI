@@ -24,6 +24,7 @@
         variant="outlined"
         class="mb-8 text-none"
         :color="colors.primary_dark"
+        prepend-icon="mdi-pencil"
         >Editar tarjeta</v-btn>
 
       </v-card-actions>
@@ -35,6 +36,7 @@
         :color="colors.primary_dark"
         block=""
         href="/profileAddPayment"
+      prepend-icon="mdi-plus"
         >Agregar nueva tarjeta</v-btn>
       </v-row>
 

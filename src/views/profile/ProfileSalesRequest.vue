@@ -4,7 +4,7 @@
     <h1 class='ml-5'>Ventas</h1>
     <h4 class='ml-5'>Solicitud de vendedor</h4>
 
-    <v-container class='pr-16'>
+    <v-container class="ml-0" style="width: 80%;">
       <v-form>
         <v-row>
 
@@ -58,7 +58,7 @@
           </v-col>
         </v-row>
 
-        <v-btn class="mb-8 text-none" :color="colors.primary_dark" size="large" block>
+        <v-btn class="mb-8 text-none" variant="outlined" :color="colors.primary_dark" prepend-icon="mdi-send" size="large" block>
           Enviar solicitud
         </v-btn>
       </v-form>

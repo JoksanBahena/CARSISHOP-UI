@@ -3,73 +3,74 @@
     <v-breadcrumbs :items="['Inicio', 'Mi perfil', 'Pedidos y devoluciones']"></v-breadcrumbs>
     <h1 class='ml-5'>Pedidos y devoluciones</h1>
 
-   <v-row class="ml-1 mt-6 pl-4">
+    <v-row class="ml-1 mt-6 pl-4">
       <div class="col-auto mr-4 cursor-pointer" @click="step = 1">
         <h3 class="font-weight-black">Pedidos</h3>
-        <div  :class="{ 'line': step === 1 }"/>
+        <div :class="{ 'line': step === 1 }" />
       </div>
       <div class="col-auto cursor-pointer" @click="step = 2">
         <h3 class="font-weight-black">Devoluciones</h3>
-        <div  :class="{ 'line': step === 2 }"/>
+        <div :class="{ 'line': step === 2 }" />
       </div>
     </v-row>
 
-  <v-container class="ml-0" style="width: 80%;">
+    <v-container class="ml-0" style="width: 80%;">
       <v-window v-model="step">
         <v-window-item :value="1">
           <v-row class="pl-7 mt-10 " rows="12" md="4">
-    <v-card variant="flat" width="100%">
-          <v-card-item>
-  <div class="mt-3 d-flex justify-content-end align-items-center">
-              <v-card-title class="mb-3 text-h5 ">
-              Tienda/vendedor
-              </v-card-title>
-              <p  class="text-h6 ml-auto " >
-                DD/MM/AAAA</p>
-            </div>
-            <V-divider></v-divider>
-            <div class=" mt-3 d-flex justify-content-end align-items-center">
-              <v-icon class="mdi mdi-close ml-auto"></v-icon>
-            </div>
-            <v-row>
-              <v-col>
-                <v-card-item>
-                  <template v-slot:prepend>
-                    <v-img src="@/assets/imgs/item.webp" width="100" height="100" class="mr-2"></v-img>
-                  </template>
-                  <v-card-title class="mb-3 ml-4">ITEM</v-card-title>
-                  <v-card-text class="py-0 mb-4">STATUS (ENTREGADO/CANCELADO/DEVUELTO) - DD/MM/AAAA</v-card-text>
-                  <v-card-text class="py-1">Option selected - description</v-card-text>
-                </v-card-item>
-              </v-col>
-              <v-col>
-                <v-card-actions class="flex-column">
-                  <v-btn variant="flat" append-icon="mdi-chevron-right" class="mb-8 text-none"
-                    :color="colors.primary_dark">
-                    Detalles de compra
-                  </v-btn>
-                  <v-btn variant="outlined" append-icon="mdi-chevron-right" class="mb-8 text-none"
-                    :color="colors.primary_dark">
-                    Solicitar devolución
-                  </v-btn>
-                </v-card-actions>
-              </v-col>
+            <v-card variant="flat" width="100%">
+              <v-card-item>
+                <div class="mt-3 d-flex justify-content-end align-items-center">
+                  <v-card-title class="mb-3 text-h5 ">
+                    Tienda/vendedor
+                  </v-card-title>
+                  <p class="text-h6 ml-auto ">
+                    DD/MM/AAAA</p>
+                </div>
+                <V-divider></v-divider>
+                <div class=" mt-3 d-flex justify-content-end align-items-center">
+                  <v-icon class="mdi mdi-close ml-auto"></v-icon>
+                </div>
+                <v-row>
+                  <v-col>
+                    <v-card-item>
+                      <template v-slot:prepend>
+                        <v-img src="@/assets/imgs/item.webp" width="100" height="100" class="mr-2"></v-img>
+                      </template>
+                      <v-card-title class="mb-3 ml-4">ITEM</v-card-title>
+                      <v-card-text class="py-0 mb-4">STATUS (ENTREGADO/CANCELADO/DEVUELTO) - DD/MM/AAAA</v-card-text>
+                      <v-card-text class="py-1">Option selected - description</v-card-text>
+                    </v-card-item>
+                  </v-col>
+                  <v-col>
+                    <v-card-actions class="flex-column">
+                      <v-btn variant="flat" append-icon="mdi-chevron-right" class="mb-8 text-none"
+                        :color="colors.primary_dark">
+                        Detalles de compra
+                      </v-btn>
+                      <v-btn variant="outlined" append-icon="mdi-chevron-right" class="mb-8 text-none"
+                        :color="colors.primary_dark">
+                        Solicitar devolución
+                      </v-btn>
+                    </v-card-actions>
+                  </v-col>
 
-            </v-row>
-
-          </v-card-item>
-        </v-card>
                 </v-row>
+
+              </v-card-item>
+            </v-card>
+          </v-row>
         </v-window-item>
 
         <v-window-item :value="2">
 
-         <v-container class="d-flex align-center justify-center flex-column">
-      <v-icon class='mdi mdi-cart-outline ' size="x-large"></v-icon>
-      <h2 class="text-center mt-4">Actualmente no tienes ninguna devolución</h2>
-      <p class="text-center mt-4">Puedes iniciar una devolución desde el seguimiento de tu pedido</p>
-      <v-btn  :style="{ 'border-color': colors.primary, 'color':colors.primary_dark }" variant='outlined' class="mt-5"   @click="step = 1">Pedidos</v-btn>
-    </v-container>
+          <v-container class="d-flex align-center justify-center flex-column">
+            <v-icon class='mdi mdi-cart-outline ' size="x-large"></v-icon>
+            <h2 class="text-center mt-4">Actualmente no tienes ninguna devolución</h2>
+            <p class="text-center mt-4">Puedes iniciar una devolución desde el seguimiento de tu pedido</p>
+            <v-btn append-icon="mdi-chevron-right" :style="{ 'border-color': colors.primary, 'color':colors.primary_dark }" variant='outlined'
+              class="mt-5" @click="step = 1">Pedidos</v-btn>
+          </v-container>
         </v-window-item>
       </v-window>
     </v-container>

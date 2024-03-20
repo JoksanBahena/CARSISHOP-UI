@@ -102,6 +102,7 @@
       :color="colors.primary_dark"
       block
       href="/profileAddAddress"
+      prepend-icon="mdi-plus"
       >Guardar</v-btn>
     </v-col>
   </v-row>

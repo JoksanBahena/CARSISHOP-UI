@@ -88,6 +88,7 @@
             :color="colors.primary_dark"
             block
             href="/profilePayment"
+            prepend-icon="mdi-plus"
           >Guardar</v-btn>
         </v-col>
       </v-row>

@@ -7,7 +7,7 @@
       <v-icon class='mdi mdi-cart-outline ' size="x-large"></v-icon>
       <h2 class="text-center mt-4">Actualmente no eres un vendedor</h2>
       <p class="text-center mt-4">Puedes solicitar ser un vendedor</p>
-      <v-btn  :style="{ 'border-color': colors.primary, 'color':colors.primary_dark }" variant='outlined' class="mt-5">Solicitar ser vendedor</v-btn>
+      <v-btn append-icon="mdi-chevron-right" :style="{ 'border-color': colors.primary, 'color':colors.primary_dark }" variant='outlined' href="/profileSalesRequest" class="mt-5">Solicitar ser vendedor</v-btn>
     </v-container>
   </profile-layout>
 </template>
