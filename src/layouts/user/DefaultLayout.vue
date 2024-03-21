@@ -2,7 +2,7 @@
   <div class="h-screen">
     <navbar-component />
 
-    <main class="ma-4 px-13">
+    <main>
       <slot></slot>
     </main>
     <footer-component />
