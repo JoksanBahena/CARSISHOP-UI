@@ -81,8 +81,7 @@
         </v-col>
       </v-row>
     </div>
-    <ProducListComponent title="Recomendados para ti"></ProducListComponent>
-    <!-- <product-card-component /> -->
+    <ProducListComponent title="Recomendados para ti" />
   </default-layout>
 </template>
 
@@ -90,7 +89,6 @@
 import { ref } from "vue";
 import DefaultLayout from "@/layouts/user/DefaultLayout.vue";
 import ProducListComponent from "@/components/common/ProductListComponent.vue";
-import ProductCardComponent from "@/components/common/ProductCardComponent.vue";
 import Colors from "@/utils/Colors.js";
 
 const colors = {
