@@ -4,7 +4,7 @@
       :color="toolbar.primary_dark"
       class="text-none"
       variant="plain"
-      to="/"
+      to="/mujeres/all"
     >
       Mujeres
     </v-btn>
@@ -13,7 +13,7 @@
       :color="toolbar.primary_dark"
       class="text-none"
       variant="plain"
-      to="/"
+      to="/hombres/all"
     >
       Hombres
     </v-btn>
@@ -22,7 +22,7 @@
       :color="toolbar.primary_dark"
       class="text-none"
       variant="plain"
-      to="/"
+      to="/kids/all"
     >
       Niños
     </v-btn>
