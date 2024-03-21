@@ -50,7 +50,21 @@
         />
       </div>
 
-      <h4 class="text-h4 font-weight-medium text-red-darken-3">$499MX</h4>
+      <div class="d-flex align-end mb-2">
+        <h4
+          class="text-h4 font-weight-medium mr-2"
+          :style="{ color: colors.red }"
+        >
+          $320MX
+        </h4>
+        <p
+          class="text-subtitle-1 font-weight-medium text-decoration-line-through"
+          :style="{ color: colors.gray }"
+        >
+          $499MX
+        </p>
+      </div>
+
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua.
@@ -100,6 +114,8 @@ const selection = ref(null);
 const colors = {
   bg_color: Colors.cs_primary,
   primary_dark: Colors.cs_primary_dark,
+  red: Colors.cs_red,
+  gray: Colors.cs_opacity_gray,
 };
 
 const sizes = [
