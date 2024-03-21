@@ -42,7 +42,7 @@
           <v-card-item class="mx-16">
             <product-list-component
               v-if="search"
-              title="Resultados de la búsqueda:"
+              title="Resultados de tu búsqueda"
             />
           </v-card-item>
         </v-container>

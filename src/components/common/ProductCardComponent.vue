@@ -1,9 +1,11 @@
 <template>
   <v-card
-    class="mr-2"
+    class="mr-2 mb-2"
     variant="flat"
-    width="300"
-    height="500"
+    min-width="280"
+    max-width="280"
+    min-height="500"
+    max-height="500"
     :color="colors.secondary"
     href="/product/1"
   >
