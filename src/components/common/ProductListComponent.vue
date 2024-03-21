@@ -1,32 +1,26 @@
 <template>
-  <div class="mt-5">
+  <div class="mt-10">
     <h2>{{ title }}</h2>
-    <v-row class="mt-5">
-      <v-col v-for="item in items" :key="item.id" cols="12" sm="6" md="4" lg="3">
-        <v-card class="mx-auto" max-width="326" variant="flat" :color="colors.secondary">
-          <v-img height="200px" :src="item.image"></v-img>
-
-          <v-card-title>
-            {{ item.title }}
-          </v-card-title>
-          <p class="mx-4" :style="{ lineBreak: 'auto' }">
-            {{ item.description }}
-          </p>
-
-          <v-card-actions>
-            <p class="font-weight-medium text-h5">{{ item.price }}</p>
-            <v-spacer></v-spacer>
-            <v-btn  variant="outlined" :style="{ borderColor: colors.primary_dark }">
-              <v-icon :color="colors.primary_dark" class="text-h5" icon="mdi-cart-outline"></v-icon>
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
+    <v-sheet class="mt-5">
+      <v-slide-group
+        v-model="model"
+        class="pa-4"
+        selected-class="bg-success"
+        show-arrows
+      >
+        <v-slide-group-item v-for="n in 15" :key="n">
+          <product-card-component />
+        </v-slide-group-item>
+      </v-slide-group>
+    </v-sheet>
   </div>
 </template> 
 
 <script setup>
+import ProductCardComponent from "@/components/common/ProductCardComponent.vue";
+import { ref } from "vue";
+
+const model = ref(null);
 import Colors from "@/utils/Colors.js";
 
 const colors = {
@@ -37,11 +31,41 @@ const colors = {
 };
 
 const items = [
-  { id: 1, title: "Item 1", description: "Lorem ipsum dolor sit amet consectetur.", price: "$615 MX", image: "@/assets/imgs/item.webp" },
-  { id: 2, title: "Item 2", description: "Lorem ipsum dolor sit amet consectetur.", price: "$615 MX", image: "@/assets/imgs/item.webp" },
-  { id: 3, title: "Item 3", description: "Lorem ipsum dolor sit amet consectetur.", price: "$615 MX", image: "@/assets/imgs/item.webp" },
-  { id: 4, title: "Item 4", description: "Lorem ipsum dolor sit amet consectetur.", price: "$615 MX", image: "@/assets/imgs/item.webp" },
-  { id: 4, title: "Item 4", description: "Lorem ipsum dolor sit amet consectetur.", price: "$615 MX", image: "@/assets/imgs/item.webp" },
+  {
+    id: 1,
+    title: "Item 1",
+    description: "Lorem ipsum dolor sit amet consectetur.",
+    price: "$615 MX",
+    image: "@/assets/imgs/item.webp",
+  },
+  {
+    id: 2,
+    title: "Item 2",
+    description: "Lorem ipsum dolor sit amet consectetur.",
+    price: "$615 MX",
+    image: "@/assets/imgs/item.webp",
+  },
+  {
+    id: 3,
+    title: "Item 3",
+    description: "Lorem ipsum dolor sit amet consectetur.",
+    price: "$615 MX",
+    image: "@/assets/imgs/item.webp",
+  },
+  {
+    id: 4,
+    title: "Item 4",
+    description: "Lorem ipsum dolor sit amet consectetur.",
+    price: "$615 MX",
+    image: "@/assets/imgs/item.webp",
+  },
+  {
+    id: 4,
+    title: "Item 4",
+    description: "Lorem ipsum dolor sit amet consectetur.",
+    price: "$615 MX",
+    image: "@/assets/imgs/item.webp",
+  },
 ];
 
 const props = defineProps({
@@ -49,5 +73,5 @@ const props = defineProps({
     type: String,
     default: "Productos",
   },
-})
+});
 </script>
