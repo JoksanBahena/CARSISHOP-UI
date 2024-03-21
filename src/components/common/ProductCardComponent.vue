@@ -18,8 +18,15 @@
     </p>
 
     <v-card-actions class="align-end">
-      <p class="font-weight-medium text-h5 mr-2">{{ item.price }}</p>
-      <p class="font-weight-medium text-subtitle-2">{{ item.price }}</p>
+      <p class="font-weight-bold text-h5 mr-2" :style="{ color: colors.red }">
+        {{ item.price }}
+      </p>
+      <p
+        class="font-weight-medium text-subtitle-2 text-decoration-line-through"
+        :style="{ color: colors.gray }"
+      >
+        {{ item.price }}
+      </p>
       <v-spacer />
       <v-btn variant="outlined" :style="{ borderColor: colors.primary_dark }">
         <v-icon
@@ -40,6 +47,8 @@ const colors = {
   primary_dark: Colors.cs_primary_dark,
   white: Colors.cs_white,
   secondary: Colors.cs_secondary,
+  red: Colors.cs_red,
+  gray: Colors.cs_opacity_gray,
 };
 
 const item = {
