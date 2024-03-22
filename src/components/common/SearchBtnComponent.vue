@@ -18,7 +18,7 @@
           </v-btn>
         </v-card-actions>
 
-        <v-container class="my-0 mx-16 pa-0">
+        <v-container>
           <v-card-title
             class="text-center text-h4 font-weight-bold mb-2"
             :style="{ color: colors.primary_dark }"
@@ -26,25 +26,23 @@
             CarsiShop
           </v-card-title>
 
-          <v-card-item class="mx-16">
+          <v-card-item class="mx-auto">
             <div class="text-subtitle-1 font-weight-medium">
               Buscar producto
             </div>
             <v-text-field
               v-model="search"
-              placeholder="Buscar"
+              placeholder="Buscar producto"
               prepend-inner-icon="mdi-magnify"
               variant="outlined"
               autofocus
             />
           </v-card-item>
 
-          <v-card-item class="mx-16">
-            <product-list-component
-              v-if="search"
-              title="Resultados de tu búsqueda"
-            />
-          </v-card-item>
+          <product-list-component
+            v-if="search"
+            title="Resultados de tu búsqueda"
+          />
         </v-container>
       </v-card>
     </template>
@@ -52,9 +50,9 @@
 </template>
 
 <script setup>
+import { ref, watch } from "vue";
 import ProductListComponent from "@/components/common/ProductListComponent.vue";
 import Colors from "@/utils/Colors.js";
-import { ref, watch } from "vue";
 
 const colors = {
   bg_color: Colors.cs_primary,
