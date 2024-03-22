@@ -16,12 +16,11 @@
     <categories-component />
 
     <product-list-component title="Recomendados para ti" />
-
   </default-layout>
 </template>
 
 <script setup>
 import DefaultLayout from "@/layouts/user/DefaultLayout.vue";
 import CategoriesComponent from "@/components/product/CategoriesComponent.vue";
-import ProducListComponent from "@/components/common/ProductListComponent.vue";
+import ProductListComponent from "@/components/common/ProductListComponent.vue";
 </script>
