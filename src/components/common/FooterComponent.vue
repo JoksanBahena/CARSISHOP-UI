@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <div
-      class="px-4 py-2 text-center w-100"
-      :style="{ background: colors.primary, color: colors.primary_dark }"
-    >
-      <strong> {{ new Date().getFullYear() }} — CarsiShop </strong>
-    </div>
+  <div
+    class="text-center font-weight-bold w-100 py-2"
+    :style="{ background: colors.primary, color: colors.primary_dark }"
+  >
+    {{ new Date().getFullYear() }} — CarsiShop
   </div>
 </template>
 
