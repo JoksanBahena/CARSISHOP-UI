@@ -1,7 +1,13 @@
 <template>
-  <auth-layout>
+  <auth-layout page-title="REGISTRO">
     <v-container>
-      <p class="mb-2 text-h4 font-weight-medium text-center">REGISTRO</p>
+      <v-layout class="d-flex flex-column fill-height align-center text-black">
+        <h4
+          class="mb-8 text-h4 font-weight-medium text-center d-none d-md-flex"
+        >
+          REGISTRO
+        </h4>
+      </v-layout>
 
       <v-alert
         v-show="!error"
@@ -13,10 +19,10 @@
         closable
       />
 
-      <v-card class="mx-12" variant="flat">
-        <v-card-title class="text-subtitle-1 font-weight-regular pa-0 mb-2">
+      <v-card class="mx-10" variant="flat">
+        <v-card-title class="text-subtitle-1 font-weight-regular pa-0 mb-4">
           <v-avatar :color="colors.primary_dark" size="24" v-text="step" />
-          <span class="mx-2">{{ currentTitle }}</span>
+          <span class="mx-2">{{ current_title }}</span>
         </v-card-title>
 
         <v-window v-model="step">
@@ -263,7 +269,7 @@ const error = ref({ error: "", message: "" });
 
 const step = ref(1);
 
-const currentTitle = computed(() => {
+const current_title = computed(() => {
   switch (step.value) {
     case 1:
       return "Información personal";
