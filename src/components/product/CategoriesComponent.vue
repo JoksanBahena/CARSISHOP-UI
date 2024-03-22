@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mt-12">
+  <v-container class="mt-12" fluid>
     <h2>Explora nuestras categorias</h2>
     <v-row class="mt-2 justify-center justify-space-center">
       <v-col
