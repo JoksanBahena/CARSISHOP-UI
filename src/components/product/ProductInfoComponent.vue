@@ -1,42 +1,49 @@
 <template>
   <v-row class="justify-center mb-16">
     <v-col cols="auto" class="ma-0 pa-0">
-      <v-img
-        v-for="n in 5"
-        :key="n"
-        :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
-        :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
-        aspect-ratio="1"
-        class="bg-grey-lighten-2 my-3"
-        width="80"
-        cover
-        @mouseenter="updateMainImage(n)"
-        @mouseover="hoverImage = n"
-        :style="{
-          border: hoverImage === n ? '3px solid ' + colors.bg_color : 'none',
-        }"
-      >
-        <template v-slot:placeholder>
-          <v-row align="center" class="fill-height ma-0" justify="center">
-            <v-progress-circular :color="colors.bg_color" indeterminate />
-          </v-row>
-        </template>
-      </v-img>
-    </v-col>
-    <v-col cols="auto">
-      <v-img
-        :aspect-ratio="1"
-        class="bg-grey-lighten-2"
-        :src="mainImage"
-        width="450"
-        cover
-      >
-        <template v-slot:placeholder>
-          <v-row align="center" class="fill-height ma-0" justify="center">
-            <v-progress-circular color="grey-lighten-5" indeterminate />
-          </v-row>
-        </template>
-      </v-img>
+      <div class="d-flex flex-column flex-lg-row flex-md-row">
+        <v-slide-group show-arrows>
+          <div class="d-flex flex-row flex-lg-column flex-md-column">
+            <v-img
+              v-for="n in 5"
+              :key="n"
+              :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
+              :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
+              aspect-ratio="1"
+              class="bg-grey-lighten-2 my-2 mx-1"
+              width="80"
+              cover
+              @mouseenter="updateMainImage(n)"
+              @mouseover="hoverImage = n"
+              :style="{
+                border:
+                  hoverImage === n ? '3px solid ' + colors.bg_color : 'none',
+              }"
+            >
+              <template v-slot:placeholder>
+                <v-row align="center" class="fill-height ma-0" justify="center">
+                  <v-progress-circular :color="colors.bg_color" indeterminate />
+                </v-row>
+              </template>
+            </v-img>
+          </div>
+        </v-slide-group>
+        <div class="d-flex ma-2">
+          <v-img
+            :aspect-ratio="1"
+            class="bg-grey-lighten-2"
+            :src="mainImage"
+            width="500"
+            cover
+          >
+            <template v-slot:placeholder>
+              <v-row align="center" class="fill-height ma-0" justify="center">
+                <v-progress-circular color="grey-lighten-5" indeterminate />
+              </v-row>
+            </template>
+          </v-img>
+        </div>
+      </div>
     </v-col>
     <v-col>
       <h4 class="text-h4 font-weight-medium">Chamarra Capitonada Marino</h4>
