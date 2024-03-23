@@ -15,7 +15,7 @@
         Filtros
       </v-btn>
 
-      <div class="d-flex flex-wrap">
+      <div class="d-flex flex-wrap justify-center justify-lg-start mb-16">
         <product-card-component v-for="i in 10" :key="i" />
       </div>
 
