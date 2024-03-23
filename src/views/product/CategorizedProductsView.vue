@@ -3,7 +3,7 @@
     <subcategories-navbar-component />
     <v-breadcrumbs :items="['Inicio', 'Hombres']" />
     <v-container>
-      <p class="text-h4 font-weight-medium my-2">
+      <p class="text-h4 font-weight-medium mb-2">
         {subcategory} para {category}
       </p>
       <v-btn
