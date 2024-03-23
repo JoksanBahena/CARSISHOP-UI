@@ -3,7 +3,9 @@
     <subcategories-navbar-component />
     <v-breadcrumbs :items="['Inicio', 'Hombres']" />
     <v-container>
-      <p class="text-h4 font-weight-medium my-2">{subcategory} para {category}</p>
+      <p class="text-h4 font-weight-medium my-2">
+        {subcategory} para {category}
+      </p>
       <v-btn
         class="text-none flex-grow-1 my-4"
         prepend-icon="mdi-filter-variant"
@@ -14,8 +16,8 @@
         Filtros
       </v-btn>
 
-      <div class="d-flex flex-wrap">
-        <product-card-component v-for="i in 10" :key="i" />
+      <div class="d-flex flex-wrap justify-center justify-lg-start mb-16">
+        <product-card-component v-for="i in 11" :key="i" />
       </div>
 
       <v-layout>
