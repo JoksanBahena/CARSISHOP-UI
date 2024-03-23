@@ -1,30 +1,15 @@
 <template>
-  <div class="h-screen">
-    <v-app>
+  <v-app>
+    <v-app-bar>
       <navbar-component />
-      <v-row no-gutters>
-        <v-col cols="2">
-          <sidebar-component />
-        </v-col>
-        <v-col>
-          <v-main class="ma-2">
-            <slot></slot>
-          </v-main>
-       </v-col>
-      </v-row>
+    </v-app-bar>
+    <sidebar-component />
 
-
-      <v-main class="ma-2">
-        <!-- <slot></slot> -->
-      </v-main>
-      <!-- </v-col>
-
-
-    </v-row> -->
-
-      <footer-component />
-    </v-app>
-  </div>
+    <v-main>
+      <slot></slot>
+    </v-main>
+    <footer-component />
+  </v-app>
 </template>
 
 <script setup>
