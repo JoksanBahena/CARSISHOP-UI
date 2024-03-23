@@ -23,13 +23,15 @@
         <div class="mb-8">
           <div class="text-subtitle-1 font-weight-medium">Nueva contraseña</div>
           <v-text-field
-            :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-            :type="visible ? 'text' : 'password'"
+            :append-inner-icon="
+              pass_visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
+            "
+            :type="pass_visible ? 'text' : 'password'"
             density="compact"
             placeholder="Contraseña"
             prepend-inner-icon="mdi-lock-outline"
             variant="outlined"
-            @click:append-inner="visible = !visible"
+            @click:append-inner="pass_visible = !pass_visible"
           />
           <p
             class=""
@@ -45,13 +47,15 @@
             Confirmar contraseña
           </div>
           <v-text-field
-            :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-            :type="visible ? 'text' : 'password'"
+            :append-inner-icon="
+              confirm_visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
+            "
+            :type="confirm_visible ? 'text' : 'password'"
             density="compact"
-            placeholder="Repetir contraseña"
+            placeholder="Confirmar contraseña"
             prepend-inner-icon="mdi-lock-outline"
             variant="outlined"
-            @click:append-inner="visible = !visible"
+            @click:append-inner="confirm_visible = !confirm_visible"
           />
         </div>
 
@@ -75,7 +79,8 @@ import AuthLayout from "@/layouts/auth/AuthLayout.vue";
 import Colors from "@/utils/Colors.js";
 import { ref } from "vue";
 
-const visible = ref(false);
+const pass_visible = ref(false);
+const confirm_visible = ref(false);
 
 const colors = {
   primary: Colors.cs_primary,

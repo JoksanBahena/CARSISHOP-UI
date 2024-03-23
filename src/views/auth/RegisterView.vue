@@ -134,7 +134,7 @@
               <v-col>
                 <div class="mb-1">
                   <div class="text-subtitle-1 font-weight-medium">
-                    Número interior
+                    Núm. Exterior
                   </div>
                   <v-text-field
                     density="compact"
@@ -147,7 +147,7 @@
               <v-col>
                 <div class="mb-1">
                   <div class="text-subtitle-1 font-weight-medium">
-                    Número exterior
+                    Núm. Interior
                   </div>
                   <v-text-field
                     density="compact"
@@ -176,20 +176,30 @@
             <div class="mb-1">
               <div class="text-subtitle-1 font-weight-medium">Contraseña</div>
               <v-text-field
+                :append-inner-icon="
+                  pass_visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
+                "
+                :type="pass_visible ? 'text' : 'password'"
                 density="compact"
-                placeholder="••••••••"
-                prepend-inner-icon="mdi-email-outline"
+                placeholder="Contraseña"
+                prepend-inner-icon="mdi-lock-outline"
                 variant="outlined"
+                @click:append-inner="pass_visible = !pass_visible"
               />
 
               <div class="text-subtitle-1 font-weight-medium">
                 Confirmar contraseña
               </div>
               <v-text-field
+                :append-inner-icon="
+                  confirm_visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
+                "
+                :type="confirm_visible ? 'text' : 'password'"
                 density="compact"
-                placeholder="••••••••"
-                prepend-inner-icon="mdi-email-outline"
+                placeholder="Confirmar contraseña"
+                prepend-inner-icon="mdi-lock-outline"
                 variant="outlined"
+                @click:append-inner="confirm_visible = !confirm_visible"
               />
             </div>
           </v-window-item>
@@ -258,6 +268,9 @@
 import AuthLayout from "@/layouts/auth/AuthLayout.vue";
 import Colors from "@/utils/Colors.js";
 import { ref, computed } from "vue";
+
+const pass_visible = ref(false);
+const confirm_visible = ref(false);
 
 const colors = {
   primary: Colors.cs_primary,
