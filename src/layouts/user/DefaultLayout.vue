@@ -1,12 +1,9 @@
 <template>
-  <div class="h-screen">
-    <navbar-component />
-
-    <main>
-      <slot></slot>
-    </main>
-    <footer-component />
-  </div>
+  <navbar-component />
+  <v-main>
+    <slot></slot>
+  </v-main>
+  <footer-component />
 </template>
 
 <script setup>

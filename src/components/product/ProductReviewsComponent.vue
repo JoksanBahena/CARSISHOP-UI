@@ -1,7 +1,7 @@
 <template>
   <h4 class="text-h4 font-weight-medium">Reseñas</h4>
   <v-row class="my-6">
-    <v-col cols="4">
+    <v-col cols="12" lg="4" md="4">
       <h5 class="text-h5 font-weight-medium">Calificación</h5>
 
       <div class="my-6 d-flex">
@@ -60,15 +60,18 @@
                   mdi-account-circle
                 </v-icon>
               </v-avatar>
-              <p class="mx-2 font-weight-bold">{{ review.user }}</p>
-              <p
-                class="mx-2 text-caption font-weight-regular"
-                :style="{ color: colors.cs_gray }"
-              >
-                {{ review.date }}
-              </p>
 
-              <v-spacer></v-spacer>
+              <div class="d-flex align-center flex-column flex-lg-row flex-md-row">
+                <p class="mx-2 font-weight-bold">{{ review.user }}</p>
+                <p
+                  class="mx-2 text-caption font-weight-regular"
+                  :style="{ color: colors.cs_gray }"
+                >
+                  {{ review.date }}
+                </p>
+              </div>
+
+              <v-spacer />
 
               <v-rating
                 :model-value="review.rating"
@@ -80,8 +83,6 @@
             </div>
             <p class="mt-4">{{ review.comment }}</p>
           </v-list-item>
-
-            <!-- <v-divider class="my-4"/> -->
         </v-item-group>
       </v-list>
     </v-col>
@@ -104,7 +105,8 @@ const reviews = ref([
     avatar: "https://avatars0.githubusercontent.com/u/9064066?v=4&s=460",
     rating: 4,
     date: "2021-10-10",
-    comment: "Recomendado, me encantó. La calidad es excelente. Me encantó, lo recomiendo mucho para todos. La calidad es excelente.",
+    comment:
+      "Recomendado, me encantó. La calidad es excelente. Me encantó, lo recomiendo mucho para todos. La calidad es excelente.",
   },
   {
     id: 2,
@@ -119,7 +121,8 @@ const reviews = ref([
     user: "Maria Lopez",
     rating: 5,
     date: "2021-10-10",
-    comment: "La mejor compra que he hecho. Me encantó, lo recomiendo mucho para todos. La calidad es excelente.",
+    comment:
+      "La mejor compra que he hecho. Me encantó, lo recomiendo mucho para todos. La calidad es excelente.",
   },
 ]);
 </script>

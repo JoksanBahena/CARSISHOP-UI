@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="mr-2 mb-2"
+    class="ma-1"
     variant="flat"
     min-width="280"
     max-width="280"

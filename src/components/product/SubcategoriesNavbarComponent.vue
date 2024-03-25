@@ -1,15 +1,19 @@
 <template>
-  <v-toolbar :color="toolbar.white" border>
-    <v-btn
-      v-for="subcagory in subcagories"
-      :key="subcagory.name"
-      class="text-none"
-      variant="plain"
-      :to="subcagory.route"
-    >
-      {{ subcagory.name }}
-    </v-btn>
+  <v-app-bar elevation="0" border>
+    <v-toolbar :color="toolbar.white">
+    <v-slide-group show-arrows>
+      <v-btn
+        v-for="subcagory in subcagories"
+        :key="subcagory.name"
+        class="text-none"
+        variant="plain"
+        :to="subcagory.route"
+      >
+        {{ subcagory.name }}
+      </v-btn>
+    </v-slide-group>
   </v-toolbar>
+  </v-app-bar>
 </template>
 
 <script setup>

@@ -1,7 +1,13 @@
 <template>
-  <auth-layout>
+  <auth-layout page-title="REGISTRO">
     <v-container>
-      <p class="mb-2 text-h4 font-weight-medium text-center">REGISTRO</p>
+      <v-layout class="d-flex flex-column fill-height align-center text-black">
+        <h4
+          class="mb-8 text-h4 font-weight-medium text-center d-none d-md-flex"
+        >
+          REGISTRO
+        </h4>
+      </v-layout>
 
       <v-alert
         v-show="!error"
@@ -13,10 +19,10 @@
         closable
       />
 
-      <v-card class="mx-12" variant="flat">
-        <v-card-title class="text-subtitle-1 font-weight-regular pa-0 mb-2">
+      <v-card class="mx-10" variant="flat">
+        <v-card-title class="text-subtitle-1 font-weight-regular pa-0 mb-4">
           <v-avatar :color="colors.primary_dark" size="24" v-text="step" />
-          <span class="mx-2">{{ currentTitle }}</span>
+          <span class="mx-2">{{ current_title }}</span>
         </v-card-title>
 
         <v-window v-model="step">
@@ -128,7 +134,7 @@
               <v-col>
                 <div class="mb-1">
                   <div class="text-subtitle-1 font-weight-medium">
-                    Número interior
+                    Núm. Exterior
                   </div>
                   <v-text-field
                     density="compact"
@@ -141,7 +147,7 @@
               <v-col>
                 <div class="mb-1">
                   <div class="text-subtitle-1 font-weight-medium">
-                    Número exterior
+                    Núm. Interior
                   </div>
                   <v-text-field
                     density="compact"
@@ -170,20 +176,30 @@
             <div class="mb-1">
               <div class="text-subtitle-1 font-weight-medium">Contraseña</div>
               <v-text-field
+                :append-inner-icon="
+                  pass_visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
+                "
+                :type="pass_visible ? 'text' : 'password'"
                 density="compact"
-                placeholder="••••••••"
-                prepend-inner-icon="mdi-email-outline"
+                placeholder="Contraseña"
+                prepend-inner-icon="mdi-lock-outline"
                 variant="outlined"
+                @click:append-inner="pass_visible = !pass_visible"
               />
 
               <div class="text-subtitle-1 font-weight-medium">
                 Confirmar contraseña
               </div>
               <v-text-field
+                :append-inner-icon="
+                  confirm_visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
+                "
+                :type="confirm_visible ? 'text' : 'password'"
                 density="compact"
-                placeholder="••••••••"
-                prepend-inner-icon="mdi-email-outline"
+                placeholder="Confirmar contraseña"
+                prepend-inner-icon="mdi-lock-outline"
                 variant="outlined"
+                @click:append-inner="confirm_visible = !confirm_visible"
               />
             </div>
           </v-window-item>
@@ -253,6 +269,9 @@ import AuthLayout from "@/layouts/auth/AuthLayout.vue";
 import Colors from "@/utils/Colors.js";
 import { ref, computed } from "vue";
 
+const pass_visible = ref(false);
+const confirm_visible = ref(false);
+
 const colors = {
   primary: Colors.cs_primary,
   primary_dark: Colors.cs_primary_dark,
@@ -263,7 +282,7 @@ const error = ref({ error: "", message: "" });
 
 const step = ref(1);
 
-const currentTitle = computed(() => {
+const current_title = computed(() => {
   switch (step.value) {
     case 1:
       return "Información personal";
