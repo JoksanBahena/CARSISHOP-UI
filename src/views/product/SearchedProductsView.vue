@@ -17,13 +17,4 @@
 <script setup>
 import DefaultLayout from "@/layouts/user/DefaultLayout.vue";
 import ProductCardComponent from "@/components/common/ProductCardComponent.vue";
-import Colors from "@/utils/Colors";
-import { ref } from "vue";
-
-const colors = {
-  primary_dark: Colors.cs_primary_dark,
-};
-
-const drawer = ref(false);
-const selected = ref([]);
 </script>
