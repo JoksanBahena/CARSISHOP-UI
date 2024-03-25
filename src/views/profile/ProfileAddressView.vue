@@ -1,53 +1,55 @@
 <template>
   <profile-layout>
     <v-breadcrumbs :items="items"></v-breadcrumbs>
-    <h1 class='ml-5'>Mis direcciones</h1>
 
-    <v-container class="ml-0" style="width: 80%;">
-      <v-row class="pl-7" rows="12" md="4">
-        <v-card variant="flat" width="100%">
-          <v-card-item>
-            <v-card-title>Dirección de envio:</v-card-title>
-            <v-card-subtitle class="mt-1">Nombre</v-card-subtitle>
-          </v-card-item>
-          <v-card-text>
-            Direccion
-          </v-card-text>
-          <v-card-actions>
-            <v-btn variant="outlined" class="mb-8 text-none" :color="colors.primary_dark"
-              prepend-icon="mdi-pencil">Editar direccion</v-btn>
+    <v-container>
+      <p class="text-h4 font-weight-medium mb-2">Mis direcciones</p>
 
-          </v-card-actions>
-        </v-card>
-        <V-divider></v-divider>
-        <v-btn variant="outlined" class="mb-8 mt-10 text-none" :color="colors.primary_dark" block
-          href="/profileAddAddress" prepend-icon="mdi-plus">Agregar nueva direccion</v-btn>
-      </v-row>
+      <address-component
+        user="Cristopher Soto Ventura"
+        state="Morelos"
+        town="Emiliano Zapata"
+        suburb="Tetacalita"
+        street="Calle del Déposito"
+        extrnumber="S/N"
+        intnumber="132"
+        cp="62768"
+      />
+      <address-component />
+
+      <v-btn
+        variant="flat"
+        class="my-10 text-none"
+        :color="colors.primary_dark"
+        block
+        href="/profileAddAddress"
+        prepend-icon="mdi-plus"
+      >
+        Agregar nueva dirección
+      </v-btn>
     </v-container>
   </profile-layout>
 </template>
 
 <script setup>
 import Colors from "@/utils/Colors.js";
-import { ref } from "vue";
 import ProfileLayout from "@/layouts/user/ProfileLayout.vue";
 
-
- const items = [
+const items = [
   {
-    title: 'Inicio',
+    title: "Inicio",
     disabled: false,
-    href: '/',
+    href: "/",
   },
   {
-    title: 'Perfil',
+    title: "Perfil",
     disabled: false,
-    href: '/profileAccount',
+    href: "/profileAccount",
   },
   {
-    title: 'Mis direcciones',
+    title: "Mis direcciones",
     disabled: true,
-    href: '/profileAddress',
+    href: "/profileAddress",
   },
 ];
 const colors = {
@@ -55,5 +57,4 @@ const colors = {
   primary_dark: Colors.cs_primary_dark,
   white: Colors.cs_white,
 };
-
 </script>
