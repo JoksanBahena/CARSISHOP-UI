@@ -1,6 +1,6 @@
 <template>
   <navbar-component />
-  <main>
+  <v-main>
     <v-row class="align-center justify-center ma-0 pa-0">
       <v-col cols="12" lg="7" :style="{ background: colors.secondary }">
         <v-parallax src="@/assets/imgs/background_auth.png">
@@ -19,7 +19,7 @@
         <slot></slot>
       </v-col>
     </v-row>
-  </main>
+  </v-main>
   <footer-component />
 </template>
 
