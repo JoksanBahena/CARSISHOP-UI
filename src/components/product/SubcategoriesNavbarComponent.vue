@@ -1,5 +1,6 @@
 <template>
-  <v-toolbar :color="toolbar.white" border>
+  <v-app-bar elevation="0" border>
+    <v-toolbar :color="toolbar.white">
     <v-slide-group show-arrows>
       <v-btn
         v-for="subcagory in subcagories"
@@ -12,6 +13,7 @@
       </v-btn>
     </v-slide-group>
   </v-toolbar>
+  </v-app-bar>
 </template>
 
 <script setup>
