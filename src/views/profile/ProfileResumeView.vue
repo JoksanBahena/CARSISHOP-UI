@@ -51,7 +51,7 @@
         title="Métodos de pago"
         link="/profileReturnsOrders"
       >
-        <payment-method-component />
+        <payment-method-component resume/>
       </resumen-card-component>
     </v-container>
   </profile-layout>

@@ -92,7 +92,7 @@
         <v-col cols="12" lg="4">
           <order-summary-component />
 
-          <payment-method-component />
+          <payment-method-component resume />
         </v-col>
       </v-row>
     </v-container>
