@@ -1,4 +1,5 @@
 <template>
+  <v-app-bar>
   <v-toolbar :elevation="2" :color="toolbar.bg_color">
     <v-menu class="d-flex d-sm-none">
       <template v-slot:activator="{ props }">
@@ -33,7 +34,7 @@
         :color="toolbar.primary_dark"
         class="text-none"
         variant="plain"
-        :to="category.to"
+        :href="category.to"
       >
         {{ category.name }}
       </v-btn>
@@ -61,9 +62,10 @@
       :key="action.index"
       :style="{ color: toolbar.primary_dark }"
       :icon="action.icon"
-      :to="action.to"
+      :href="action.to"
     />
   </v-toolbar>
+  </v-app-bar>
 </template>
 
 <script setup>
