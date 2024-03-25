@@ -1,10 +1,9 @@
 <template>
-  <div
-    class="text-center font-weight-bold w-100 py-2"
-    :style="{ background: colors.primary, color: colors.primary_dark }"
-  >
-    {{ new Date().getFullYear() }} — CarsiShop
-  </div>
+  <v-footer :style="{ background: colors.primary, color: colors.primary_dark }">
+    <div class="text-center font-weight-bold w-100 py-2">
+      {{ new Date().getFullYear() }} — CarsiShop
+    </div>
+  </v-footer>
 </template>
 
 <script setup>
