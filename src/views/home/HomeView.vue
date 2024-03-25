@@ -21,6 +21,5 @@
 
 <script setup>
 import DefaultLayout from "@/layouts/user/DefaultLayout.vue";
-import CategoriesComponent from "@/components/product/CategoriesComponent.vue";
 import ProductListComponent from "@/components/common/ProductListComponent.vue";
 </script>
