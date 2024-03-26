@@ -232,9 +232,9 @@ const rules = {
   cvv: {
     required: withMessage("El CCV obligatorio", required),
     integer: withMessage("El CCV debe ser un número", integer),
-    regex: withMessage("El CCV debe contener solo números", regex(/^\d+$/)),
     minLength: withMessage("El CCV debe tener 3 dígitos", minLength(3)),
     maxLength: withMessage("El CCV debe tener 3 dígitos", maxLength(3)),
+    regex: withMessage("El CCV debe contener solo números", regex(/^\d+$/)),
   },
 };
 
@@ -247,5 +247,18 @@ const submitForm = () => {
   state.expiration_date = `${state.expiration_month}/${state.expiration_year}`;
 
   alert(JSON.stringify(state));
+};
+
+const image_url = ref("");
+
+const onFileChange = (e) => {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+
+  reader.onload = (e) => {
+    image_url.value = e.target.result;
+  };
+
+  reader.readAsDataURL(file);
 };
 </script>

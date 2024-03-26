@@ -15,20 +15,16 @@
                 placeholder="Nombre(s)"
                 prepend-inner-icon="mdi-account-outline"
                 variant="outlined"
+                :counter="18"
+                @keyup="uppercase"
+                v-model="state.curp"
+                @blur="v$.curp.$touch"
+                @input="v$.curp.$touch"
+                :error-messages="v$.curp.$errors.map((e) => e.$message)"
               />
             </div>
           </v-col>
-          <v-col cols="4">
-            <div class="mb-4">
-              <div class="text-subtitle-1 font-weight-medium">Correo</div>
-              <v-text-field
-                density="compact"
-                placeholder="Apellidos"
-                prepend-inner-icon="mdi-account-outline"
-                variant="outlined"
-              />
-            </div>
-          </v-col>
+
           <v-col cols="4">
             <div class="mb-4">
               <div class="text-subtitle-1 font-weight-medium">RFC</div>
@@ -37,23 +33,17 @@
                 placeholder="Correo electrónico"
                 prepend-inner-icon="mdi-calendar-month-outline"
                 variant="outlined"
+                @keyup="uppercase"
+                :counter="13"
+                v-model="state.rfc"
+                @blur="v$.rfc.$touch"
+                @input="v$.rfc.$touch"
+                :error-messages="v$.rfc.$errors.map((e) => e.$message)"
               />
             </div>
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="4">
-            <div class="mb-4">
-              <div class="text-subtitle-1 font-weight-medium">Direccion</div>
-              <v-text-field
-                density="compact"
-                placeholder="Genero"
-                prepend-inner-icon="mdi-account-outline"
-                variant="outlined"
-              />
-            </div>
-          </v-col>
-
           <v-col cols="4">
             <div class="text-subtitle-1 font-weight-medium">Identificacion</div>
             <v-file-input
@@ -64,7 +54,9 @@
               prepend-icon="mdi-camera-outline"
               chips
               show-size
+              v-model="state.img"
               @change="onFileChange"
+              :error-messages="v$.img.$errors.map((e) => e.$message)"
             />
           </v-col>
         </v-row>
@@ -76,6 +68,7 @@
           prepend-icon="mdi-send"
           size="large"
           block
+          @click="submitForm"
         >
           Enviar solicitud
         </v-btn>
@@ -87,6 +80,9 @@
 <script setup>
 import ProfileLayout from "@/layouts/user/ProfileLayout.vue";
 import Colors from "@/utils/Colors.js";
+import { reactive } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { required, minLength, maxLength, helpers } from "@vuelidate/validators";
 
 const items = [
   {
@@ -115,5 +111,64 @@ const colors = {
   primary: Colors.cs_primary,
   primary_dark: Colors.cs_primary_dark,
   white: Colors.cs_white,
+};
+
+const { withMessage, regex } = helpers;
+
+const seller = {
+  curp: "",
+  rfc: "",
+  img: "",
+};
+
+const state = reactive({ ...seller });
+const validateFileSize = withMessage(
+  "La imagen no debe exceder los 2 MB",
+  (value) => {
+    if (!value || !value.size) return true;
+    return value.size <= 2000000;
+  }
+);
+const rules = {
+  curp: {
+    required: withMessage("El CURP es requerido", required),
+    minLength: withMessage("El CURP debe tener 18 caracteres", minLength(18)),
+    maxLength: withMessage("El CURP debe tener 18 caracteres", maxLength(18)),
+    regex: withMessage(
+      "El CURP no es válido",
+      regex(
+        /^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/
+      )
+    ),
+  },
+  rfc: {
+    required: withMessage("El RFC es requerido", required),
+    minLength: withMessage("El RFC debe tener 13 caracteres", minLength(13)),
+    maxLength: withMessage("El RFC debe tener 13 caracteres", maxLength(13)),
+    regex: withMessage(
+      "El RFC no es válido",
+      regex(
+        /^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$/
+      )
+    ),
+  },
+  img: {
+    required: withMessage("La identificación es requerida", required),
+    validateFileSize,
+  },
+};
+
+const v$ = useVuelidate(rules, state);
+
+const submitForm = () => {
+  v$.value.$touch();
+  if (v$.value.$error) return;
+
+  alert(JSON.stringify(state));
+};
+
+const uppercase = () => {
+  state.rfc = state.rfc.toUpperCase();
+  state.curp = state.curp.toUpperCase();
 };
 </script>
