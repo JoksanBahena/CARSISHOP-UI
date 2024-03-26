@@ -31,6 +31,7 @@
               <div class="mb-1">
                 <div class="text-subtitle-1 font-weight-medium">Nombres(s)</div>
                 <v-text-field
+                  v-model="form.name"
                   density="compact"
                   placeholder="Nombres(s)"
                   prepend-inner-icon="mdi-account-outline"
@@ -41,6 +42,7 @@
               <div class="mb-1">
                 <div class="text-subtitle-1 font-weight-medium">Apellidos</div>
                 <v-text-field
+                  v-model="form.surname"
                   density="compact"
                   placeholder="Apellidos"
                   prepend-inner-icon="mdi-account-outline"
@@ -53,6 +55,7 @@
                   Número de telefono
                 </div>
                 <v-text-field
+                  v-model="form.phone"
                   density="compact"
                   placeholder="Número de telefono"
                   prepend-inner-icon="mdi-phone-outline"
@@ -64,6 +67,7 @@
               <div class="mb-1">
                 <div class="text-subtitle-1 font-weight-medium">Genero</div>
                 <v-select
+                  v-model="form.gender"
                   density="compact"
                   placeholder="Selecciona una opción"
                   :items="['Masculino', 'Femenino', 'Otro']"
@@ -79,6 +83,7 @@
                 Código postal
               </div>
               <v-text-field
+                v-model="form.cp"
                 density="compact"
                 placeholder="CP"
                 prepend-inner-icon="mdi-map-marker-outline"
@@ -92,6 +97,7 @@
                 <div class="mb-1">
                   <div class="text-subtitle-1 font-weight-medium">Estado</div>
                   <v-text-field
+                    v-model="form.estate"
                     density="compact"
                     placeholder="Estado"
                     variant="outlined"
@@ -104,6 +110,7 @@
                     Municipio
                   </div>
                   <v-text-field
+                    v-model="form.town"
                     density="compact"
                     placeholder="Municipio"
                     variant="outlined"
@@ -115,6 +122,7 @@
             <div class="mb-1">
               <div class="text-subtitle-1 font-weight-medium">Colonia</div>
               <v-text-field
+                v-model="form.suburb"
                 density="compact"
                 placeholder="Colonia"
                 variant="outlined"
@@ -124,6 +132,7 @@
             <div class="mb-1">
               <div class="text-subtitle-1 font-weight-medium">Calle</div>
               <v-text-field
+                v-model="form.street"
                 density="compact"
                 placeholder="Calle"
                 variant="outlined"
@@ -137,6 +146,7 @@
                     Núm. Exterior
                   </div>
                   <v-text-field
+                    v-model="form.num_ext"
                     density="compact"
                     placeholder="#"
                     variant="outlined"
@@ -150,6 +160,7 @@
                     Núm. Interior
                   </div>
                   <v-text-field
+                    v-model="form.num_int"
                     density="compact"
                     placeholder="#"
                     variant="outlined"
@@ -166,6 +177,7 @@
                 Correo electrónico
               </div>
               <v-text-field
+                v-model="form.email"
                 density="compact"
                 placeholder="Correo electrónico"
                 prepend-inner-icon="mdi-email-outline"
@@ -176,6 +188,7 @@
             <div class="mb-1">
               <div class="text-subtitle-1 font-weight-medium">Contraseña</div>
               <v-text-field
+                v-model="form.password"
                 :append-inner-icon="
                   pass_visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
                 "
@@ -191,6 +204,7 @@
                 Confirmar contraseña
               </div>
               <v-text-field
+                v-model="form.confirm_password"
                 :append-inner-icon="
                   confirm_visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
                 "
@@ -250,13 +264,22 @@
             Regresar
           </v-btn>
           <v-btn
-            v-if="step < 5"
+            v-if="step < 4"
             @click="step++"
             class="text-none flex-grow-1"
             :color="colors.primary_dark"
             variant="flat"
           >
             Continuar
+          </v-btn>
+          <v-btn
+            v-if="step === 4"
+            @click="register"
+            class="text-none flex-grow-1"
+            :color="colors.primary_dark"
+            variant="flat"
+          >
+            Enviar
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -267,7 +290,8 @@
 <script setup>
 import AuthLayout from "@/layouts/auth/AuthLayout.vue";
 import Colors from "@/utils/Colors.js";
-import { ref, computed } from "vue";
+import {ref, computed} from "vue";
+import {userRegister} from "@/services/AuthService";
 
 const pass_visible = ref(false);
 const confirm_visible = ref(false);
@@ -281,6 +305,8 @@ const colors = {
 const error = ref({ error: "", message: "" });
 
 const step = ref(1);
+
+const image_url = ref('');
 
 const current_title = computed(() => {
   switch (step.value) {
@@ -297,8 +323,6 @@ const current_title = computed(() => {
   }
 });
 
-const image_url = ref("");
-
 const onFileChange = (e) => {
   const file = e.target.files[0];
   const reader = new FileReader();
@@ -309,4 +333,23 @@ const onFileChange = (e) => {
 
   reader.readAsDataURL(file);
 };
+
+const form = ref({
+  name: "",
+  surname: "",
+  phone: "",
+  gender:"",
+  cp: "",
+  estate:"",
+  town:"",
+  suburb:"",
+  street:"",
+  num_ext:"",
+  num_int:"",
+  email: "",
+  password: "",
+  confirm_password: "",
+})
+
+
 </script>
