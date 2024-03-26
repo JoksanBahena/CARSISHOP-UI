@@ -39,6 +39,8 @@
                     prepend-inner-icon="mdi-account-outline"
                     variant="outlined"
                     :counter="16"
+                    type="number"
+                    hide-spin-buttons
                     @blur="v$.number.$touch"
                     @input="v$.number.$touch"
                     :error-messages="v$.number.$errors.map((e) => e.$message)"
@@ -96,6 +98,8 @@
                     placeholder="CCV"
                     variant="outlined"
                     :counter="3"
+                    type="number"
+                    hide-spin-buttons
                     :append-inner-icon="
                       visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
                     "
@@ -136,7 +140,13 @@ import ProfileLayout from "@/layouts/user/ProfileLayout.vue";
 import { ref } from "vue";
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { required, minLength, maxLength, helpers } from "@vuelidate/validators";
+import {
+  required,
+  integer,
+  minLength,
+  maxLength,
+  helpers,
+} from "@vuelidate/validators";
 
 const { withMessage, regex } = helpers;
 
@@ -199,10 +209,8 @@ const rules = {
   },
   number: {
     required: withMessage("El número de tarjeta es obligatorio", required),
-    regex: withMessage(
-      "El número de tarjeta debe ser un número",
-      regex(/^[0-9]*$/)
-    ),
+    integer: withMessage("El número de tarjeta debe ser un número", integer),
+    regex: withMessage("El número de tarjeta debe ser un número", regex(/^\d+$/)),
     minLength: withMessage(
       "Numero de tarjeta debe tener 16 digitos",
       minLength(16)
@@ -220,7 +228,8 @@ const rules = {
   },
   cvv: {
     required: withMessage("CCV obligatorio", required),
-    regex: withMessage("CCV debe ser un número", regex(/^\d+$/)),
+    integer: withMessage("El CCV debe ser un número", integer),
+    regex: withMessage("El CCV debe ser un número", regex(/^\d+$/)),
     minLength: withMessage("CCV debe tener 3 digitos", minLength(3)),
     maxLength: withMessage("CCV debe tener 3 digitos", maxLength(3)),
   },
@@ -232,10 +241,10 @@ const submitForm = () => {
   v$.value.$touch();
   if (v$.value.$error) return;
 
-  card.expiration_date = `${state.expiration_month}/${state.expiration_year}`;
+  state.expiration_date = `${state.expiration_month}/${state.expiration_year}`;
   // delete card.expiration_month;
   // delete card.expiration_year;
 
-  alert(JSON.stringify(card));
+  alert(JSON.stringify(state));
 };
 </script>
