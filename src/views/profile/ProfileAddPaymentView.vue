@@ -36,7 +36,7 @@
                     v-model="state.number"
                     density="compact"
                     placeholder="Numero de tarjeta"
-                    prepend-inner-icon="mdi-account-outline"
+                    prepend-inner-icon="mdi-credit-card-outline"
                     variant="outlined"
                     :counter="16"
                     type="number"
@@ -58,7 +58,7 @@
                     v-model="state.expiration_month"
                     density="compact"
                     placeholder="Mes de vencimiento"
-                    prepend-inner-icon="mdi-account-outline"
+                    prepend-inner-icon="mdi-calendar-month-outline"
                     variant="outlined"
                     :items="months"
                     @blur="v$.expiration_month.$touch"
@@ -78,7 +78,7 @@
                     v-model="state.expiration_year"
                     density="compact"
                     placeholder="Año de vencimiento"
-                    prepend-inner-icon="mdi-account-outline"
+                    prepend-inner-icon="mdi-calendar-range-outline"
                     variant="outlined"
                     :items="years"
                     @blur="v$.expiration_year.$touch"
@@ -96,14 +96,14 @@
                     v-model="state.cvv"
                     density="compact"
                     placeholder="CCV"
+                    prepend-inner-icon="mdi-lock-outline"
                     variant="outlined"
                     :counter="3"
-                    type="number"
+                    :type="visible ? 'text' : 'password'"
                     hide-spin-buttons
                     :append-inner-icon="
                       visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
                     "
-                    :type="visible ? 'text' : 'password'"
                     @click:append-inner="visible = !visible"
                     @blur="v$.cvv.$touch"
                     @input="v$.cvv.$touch"
@@ -201,7 +201,7 @@ const rules = {
   owner: {
     required: withMessage("El nombre en la tarjeta es obligatorio", required),
     regex: withMessage(
-      "El nombre en la tarjeta no puede contener caracteres especiales",
+      "El nombre en la tarjeta no puede contener carácteres especiales",
       regex(
         /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]*$/
       )
@@ -210,7 +210,10 @@ const rules = {
   number: {
     required: withMessage("El número de tarjeta es obligatorio", required),
     integer: withMessage("El número de tarjeta debe ser un número", integer),
-    regex: withMessage("El número de tarjeta debe ser un número", regex(/^\d+$/)),
+    regex: withMessage(
+      "El número de tarjetadebe contener  solo números",
+      regex(/^\d+$/)
+    ),
     minLength: withMessage(
       "Numero de tarjeta debe tener 16 digitos",
       minLength(16)
@@ -227,11 +230,11 @@ const rules = {
     required: withMessage("Año de vencimiento obligatorio", required),
   },
   cvv: {
-    required: withMessage("CCV obligatorio", required),
+    required: withMessage("El CCV obligatorio", required),
     integer: withMessage("El CCV debe ser un número", integer),
-    regex: withMessage("El CCV debe ser un número", regex(/^\d+$/)),
-    minLength: withMessage("CCV debe tener 3 digitos", minLength(3)),
-    maxLength: withMessage("CCV debe tener 3 digitos", maxLength(3)),
+    regex: withMessage("El CCV debe contener solo números", regex(/^\d+$/)),
+    minLength: withMessage("El CCV debe tener 3 dígitos", minLength(3)),
+    maxLength: withMessage("El CCV debe tener 3 dígitos", maxLength(3)),
   },
 };
 
@@ -242,8 +245,6 @@ const submitForm = () => {
   if (v$.value.$error) return;
 
   state.expiration_date = `${state.expiration_month}/${state.expiration_year}`;
-  // delete card.expiration_month;
-  // delete card.expiration_year;
 
   alert(JSON.stringify(state));
 };
