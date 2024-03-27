@@ -57,13 +57,6 @@
 
       <search-btn-component />
 
-      <v-btn icon :style="{ color: toolbar.color }" to="Cart">
-        <v-icon>mdi-cart-outline</v-icon>
-      </v-btn>
-
-      <v-btn icon :style="{ color: toolbar.color }" to="login">
-        <v-icon>mdi-login-variant</v-icon>
-      </v-btn>
       <v-btn
         v-for="action in actions"
         :key="action.index"
@@ -103,7 +96,7 @@ const categories = ref([
 const actions = ref([
   {
     icon: "mdi-cart-outline",
-    to: "/",
+    to: "/cart",
   },
   {
     icon: "mdi-login-variant",

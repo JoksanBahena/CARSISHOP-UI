@@ -5,7 +5,7 @@
       <v-row>
         <v-col cols="9">
           <h2>Carrito</h2>
-          <ItemProduct v-bind:data="items" v-bind:typemodule="typemodule"/>
+          <ItemProduct v-bind:data="items" typemodule="cart"/>
         </v-col>
         <v-col class="text-center mt-2" cols="3">
           <h2>Resumen de compras</h2>
@@ -16,12 +16,14 @@
           </v-btn>
         </v-col>
       </v-row>
+      <FeaturedProductsComponent v-bind:data="itemsFeatured" title="También te puede interesar" />
     </v-container>
   </default-layout>
 </template>
 <script setup>
 import DefaultLayout from "@/layouts/user/DefaultLayout.vue";
 import ItemProduct from "@/components/common/ItemProduct.vue";
+import FeaturedProductsComponent from "@/components/common/FeaturedProductsComponent.vue";
 import Colors from "@/utils/Colors.js";
 
 const items = [
@@ -90,7 +92,32 @@ const items = [
   },
 ];
 
-const typemodule = "cart"
+const itemsFeatured = [
+  {
+    id: 1,
+    name: "Item 1",
+    description: "Lorem ipsum dolor sit amet consectetur.",
+    price: "615",
+  },
+  {
+    id: 2,
+    name: "Item 2",
+    description: "Lorem ipsum dolor sit amet consectetur.",
+    price: "115",
+  },
+  {
+    id: 3,
+    name: "Item 3",
+    description: "Lorem ipsum dolor sit amet consectetur.",
+    price: "215",
+  },
+  {
+    id: 4,
+    name: "Item 4",
+    description: "Lorem ipsum dolor sit amet consectetur.",
+    price: "415",
+  },
+]
 
 const totalItems = items.reduce((total, item) => {
   return total + item.products.reduce((subtotal, product) => subtotal + product.cantidad, 0);
