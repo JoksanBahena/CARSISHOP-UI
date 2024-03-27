@@ -1,84 +1,92 @@
 <template>
   <v-container>
-    <p class="text-h4 font-weight-medium mb-2">Mis ventas</p>
-    <v-form>
-      <p class="text-h6 font-weight-medium mb-2">Solicitud de vendedor</p>
-      <v-row>
-        <v-col cols="4">
-          <div class="mb-4">
-            <div class="text-subtitle-1 font-weight-medium">CURP</div>
-            <v-text-field
-              density="compact"
-              placeholder="CURP"
-              prepend-inner-icon="mdi-account-outline"
-              variant="outlined"
-              :counter="18"
-              @keyup="uppercase"
-              v-model="state.curp"
-              @blur="v$.curp.$touch"
-              @input="v$.curp.$touch"
-              :error-messages="v$.curp.$errors.map((e) => e.$message)"
-            />
+    <p class="text-h4 font-weight-medium mb-2">Métodos de pago</p>
+
+    <v-card variant="flat" class="mt-4">
+      <v-card-title>Solicitud de vendedor</v-card-title>
+      <v-card-item>
+        <v-form>
+          <v-row>
+            <v-col cols="12" lg="4">
+              <div class="mb-4">
+                <div class="text-subtitle-1 font-weight-medium">CURP</div>
+                <v-text-field
+                  density="compact"
+                  placeholder="CURP"
+                  prepend-inner-icon="mdi-account-outline"
+                  variant="outlined"
+                  :counter="18"
+                  @keyup="uppercase"
+                  v-model="state.curp"
+                  @blur="v$.curp.$touch"
+                  @input="v$.curp.$touch"
+                  :error-messages="v$.curp.$errors.map((e) => e.$message)"
+                />
+              </div>
+            </v-col>
+
+            <v-col cols="12" lg="4">
+              <div class="mb-4">
+                <div class="text-subtitle-1 font-weight-medium">RFC</div>
+                <v-text-field
+                  density="compact"
+                  placeholder="RFC"
+                  prepend-inner-icon="mdi-calendar-month-outline"
+                  variant="outlined"
+                  @keyup="uppercase"
+                  :counter="13"
+                  v-model="state.rfc"
+                  @blur="v$.rfc.$touch"
+                  @input="v$.rfc.$touch"
+                  :error-messages="v$.rfc.$errors.map((e) => e.$message)"
+                />
+              </div>
+            </v-col>
+            <v-col cols="12" lg="4">
+              <div class="text-subtitle-1 font-weight-medium">
+                Identificacion
+              </div>
+
+              <v-file-input
+                density="compact"
+                type="file"
+                accept="image/png, image/jpeg, image/bmp"
+                variant="outlined"
+                prepend-icon="mdi-camera-outline"
+                chips
+                show-size
+                @change="onFileChange"
+                v-model="state.img"
+                :error-messages="v$.img.$errors.map((e) => e.$message)"
+              />
+            </v-col>
+          </v-row>
+          <div
+            v-if="image_url"
+            class="d-flex flex-column justify-center align-center mb-6"
+            :style="{ border: '2px dashed' + colors.gray }"
+          >
+            <div class="text-subtitle-1 font-weight-medium ma-3 mr-auto">
+              Imagen cargada:
+            </div>
+            <v-avatar size="160" rounded="0">
+              <v-img :src="image_url" alt="profile picture" class="mb-4" />
+            </v-avatar>
           </div>
-        </v-col>
-
-        <v-col cols="4">
-          <div class="mb-4">
-            <div class="text-subtitle-1 font-weight-medium">RFC</div>
-            <v-text-field
-              density="compact"
-              placeholder="RFC"
-              prepend-inner-icon="mdi-calendar-month-outline"
-              variant="outlined"
-              @keyup="uppercase"
-              :counter="13"
-              v-model="state.rfc"
-              @blur="v$.rfc.$touch"
-              @input="v$.rfc.$touch"
-              :error-messages="v$.rfc.$errors.map((e) => e.$message)"
-            />
-          </div>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <div class="text-subtitle-1 font-weight-medium">Identificacion</div>
-
-          <v-file-input
-            density="compact"
-            type="file"
-            accept="image/png, image/jpeg, image/bmp"
-            variant="outlined"
-            prepend-icon="mdi-camera-outline"
-            chips
-            show-size
-            @change="onFileChange"
-            v-model="state.img"
-            :error-messages="v$.img.$errors.map((e) => e.$message)"
-          />
-        </v-col>
-      </v-row>
-      <!-- <v-alert
-          v-if="img_error"
-          color="error"
-          variant="tonal"
-          class="mb-8"
-          text="La imagen no debe pesar más de 2MB"
-          closable
-        ></v-alert> -->
-
-      <v-btn
-        class="mb-8 text-none"
-        variant="flat"
-        :color="colors.primary_dark"
-        prepend-icon="mdi-send"
-        size="large"
-        block
-        @click="submitForm"
-      >
-        Enviar solicitud
-      </v-btn>
-    </v-form>
+          <v-btn
+            class="mb-8 text-none"
+            variant="flat"
+            :color="colors.primary_dark"
+            prepend-icon="mdi-send"
+            size="large"
+            block
+            @click="submitForm"
+          >
+            Enviar solicitud
+          </v-btn>
+        </v-form>
+      </v-card-item>
+    </v-card>
   </v-container>
 </template>
 
@@ -93,6 +101,7 @@ const colors = {
   primary: Colors.cs_primary,
   primary_dark: Colors.cs_primary_dark,
   white: Colors.cs_white,
+  gray: Colors.cs_opacity_gray,
 };
 
 const { withMessage, regex } = helpers;
@@ -149,20 +158,13 @@ const uppercase = () => {
 };
 
 const image_url = ref("");
-// const img_error = ref(false);
 
 const onFileChange = (e) => {
   const file = e.target.files[0];
   const reader = new FileReader();
 
   reader.onload = (e) => {
-    image_url.value = e.target.result;
-    console.log(file.size);
-    console.log(file);
-
     if (file.size > 2_000_000) {
-      // img_error.value = true;
-
       state.img = null;
       Swal.fire({
         title: "Error!",
@@ -173,8 +175,8 @@ const onFileChange = (e) => {
       return;
     }
     state.imageName = file.name;
+    image_url.value = e.target.result;
   };
-  img_error.value = false;
   reader.readAsDataURL(file);
 };
 </script>
