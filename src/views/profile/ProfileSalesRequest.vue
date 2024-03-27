@@ -61,14 +61,14 @@
             />
           </v-col>
         </v-row>
-        <v-alert
+        <!-- <v-alert
           v-if="img_error"
           color="error"
           variant="tonal"
           class="mb-8"
           text="La imagen no debe pesar más de 2MB"
           closable
-        ></v-alert>
+        ></v-alert> -->
 
         <v-btn
           class="mb-8 text-none"
@@ -92,6 +92,7 @@ import Colors from "@/utils/Colors.js";
 import { reactive, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, minLength, maxLength, helpers } from "@vuelidate/validators";
+import Swal from "sweetalert2";
 
 const items = [
   {
@@ -189,11 +190,14 @@ const onFileChange = (e) => {
 
     if (file.size > 2_000_000) {
       img_error.value = true;
-      setTimeout(() => {
-        img_error.value = false;
-      }, 3000);
-      state.img = null;
 
+      state.img = null;
+      Swal.fire({
+        title: "Error!",
+        text: "La imagen no debe pesar más de 2MB",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
       return;
     }
     state.imageName = file.name;
