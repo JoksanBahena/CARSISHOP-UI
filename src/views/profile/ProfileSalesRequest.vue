@@ -177,7 +177,7 @@ const uppercase = () => {
 };
 
 const image_url = ref("");
-const img_error = ref(false);
+// const img_error = ref(false);
 
 const onFileChange = (e) => {
   const file = e.target.files[0];
@@ -189,7 +189,7 @@ const onFileChange = (e) => {
     console.log(file);
 
     if (file.size > 2_000_000) {
-      img_error.value = true;
+      // img_error.value = true;
 
       state.img = null;
       Swal.fire({

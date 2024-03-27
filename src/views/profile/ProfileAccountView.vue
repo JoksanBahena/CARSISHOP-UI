@@ -135,6 +135,8 @@
               show-size
               @change="onFileChange"
               :disabled="is_disabled"
+              v-model="state.img"
+              :error-messages="v$.img.$errors.map((e) => e.$message)"
             />
           </v-col>
         </v-row>
@@ -185,7 +187,7 @@ import {
   maxLength,
   helpers,
 } from "@vuelidate/validators";
-
+import Swal from "sweetalert2";
 const { withMessage, regex } = helpers;
 
 const items = [
@@ -212,19 +214,6 @@ const colors = {
   white: Colors.cs_white,
 };
 
-const image_url = ref("");
-
-const onFileChange = (e) => {
-  const file = e.target.files[0];
-  const reader = new FileReader();
-
-  reader.onload = (e) => {
-    image_url.value = e.target.result;
-  };
-
-  reader.readAsDataURL(file);
-};
-
 const generes = ["Masculino", "Femenino", "Otro"];
 
 const user = {
@@ -234,7 +223,7 @@ const user = {
   genere: null,
   phone: "",
   email: "",
-  photo: "",
+  img: null,
 };
 const state = reactive({ ...user });
 
@@ -291,6 +280,9 @@ const rules = {
     required: withMessage("El correo es requerido", required),
     email: withMessage("El correo no es válido", regex(/^.+@.+\..+$/)),
   },
+  img: {
+    required: withMessage("La imagen es requerida", required),
+  },
 };
 
 const v$ = useVuelidate(rules, state);
@@ -319,5 +311,31 @@ const clear = () => {
   for (const [key, value] of Object.entries(user)) {
     state[key] = value;
   }
+};
+
+const image_url = ref("");
+
+const onFileChange = (e) => {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+
+  reader.onload = (e) => {
+    image_url.value = e.target.result;
+    console.log(file.size);
+    console.log(file);
+
+    if (file.size > 2_000_000) {
+      state.img = null;
+      Swal.fire({
+        title: "Error!",
+        text: "La imagen no debe pesar más de 2MB",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      return;
+    }
+  };
+
+  reader.readAsDataURL(file);
 };
 </script>
