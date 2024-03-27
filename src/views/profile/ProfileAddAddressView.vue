@@ -277,6 +277,11 @@ const submitForm = () => {
 };
 
 const clear = () => {
+  v$.value.$reset();
+
+  for (const [key, value] of Object.entries(address)) {
+    state[key] = value;
+  }
   state.street = "";
   state.suburb = "";
   state.extnumber = "";
