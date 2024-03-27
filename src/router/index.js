@@ -93,6 +93,11 @@ const routes = [
     path: "/profileOrderDetail",
     name: "ProfileOrderDetail",
     component: () => import("@/views/profile/ProfileOrderDetailsView.vue")
+  },
+  {
+    path: "/adminUsers",
+    name: "AdminUsers",
+    component: () => import("@/views/admin/AdminUsersView.vue")
   }
 ];
 
