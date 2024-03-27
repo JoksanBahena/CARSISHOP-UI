@@ -63,7 +63,7 @@
 
         <v-btn
           class="mb-8 text-none"
-          variant="outlined"
+          variant="flat"
           :color="colors.primary_dark"
           prepend-icon="mdi-send"
           size="large"
@@ -80,7 +80,7 @@
 <script setup>
 import ProfileLayout from "@/layouts/user/ProfileLayout.vue";
 import Colors from "@/utils/Colors.js";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, minLength, maxLength, helpers } from "@vuelidate/validators";
 
@@ -170,5 +170,18 @@ const submitForm = () => {
 const uppercase = () => {
   state.rfc = state.rfc.toUpperCase();
   state.curp = state.curp.toUpperCase();
+};
+
+const image_url = ref("");
+
+const onFileChange = (e) => {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+
+  reader.onload = (e) => {
+    image_url.value = e.target.result;
+  };
+
+  reader.readAsDataURL(file);
 };
 </script>

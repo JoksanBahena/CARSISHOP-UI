@@ -143,21 +143,21 @@
 
           <v-col v-if="!is_disabled" cols="6">
             <v-btn
-              variant="outlined"
-              prepend-icon="mdi-pencil"
+              variant="flat"
+              prepend-icon="mdi-close-circle-outline"
               class="text-none"
-              :color="colors.primary_dark"
+              :color="colors.primary"
               size="large"
               block
-              @click="onCancel()"
+              @click="clear()"
             >
               Cancelar
             </v-btn>
           </v-col>
           <v-col :cols="is_disabled ? '12' : '6'">
             <v-btn
-              variant="outlined"
-              prepend-icon="mdi-pencil"
+              variant="flat"
+              append-icon="mdi-check-circle-outline"
               class="text-none"
               :color="colors.primary_dark"
               size="large"
@@ -312,7 +312,7 @@ const submitForm = () => {
   }
 };
 
-const onCancel = () => {
+const clear = () => {
   is_disabled.value = true;
   v$.value.$reset();
 

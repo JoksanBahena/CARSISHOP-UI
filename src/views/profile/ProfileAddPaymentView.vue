@@ -113,7 +113,19 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="12" lg="9">
+              <v-col cols="6" lg="9">
+                <v-btn
+                  variant="flat"
+                  class="text-none"
+                  :color="colors.primary"
+                  block
+                  append-icon="mdi-close-circle-outline"
+                  @click="clear()"
+                >
+                  Cancelar
+                </v-btn>
+              </v-col>
+              <v-col cols="6" lg="9">
                 <v-btn
                   variant="flat"
                   class="text-none"
@@ -260,5 +272,19 @@ const onFileChange = (e) => {
   };
 
   reader.readAsDataURL(file);
+};
+
+const clear = () => {
+  state.owner = "";
+  state.number = "";
+  state.expiration_month = months[0];
+  state.expiration_year = years[0];
+  state.expiration_date = "";
+  state.cvv = "";
+  v$.value.$reset();
+
+  for (const [key, value] of Object.entries(card)) {
+    state[key] = value;
+  }
 };
 </script>

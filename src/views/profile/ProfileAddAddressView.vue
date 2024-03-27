@@ -132,22 +132,22 @@
         <v-row>
           <v-col cols="6">
             <v-btn
-              variant="outlined"
+              variant="flat"
               class="text-none"
-              :color="colors.primary_dark"
+              :color="colors.primary"
               block
-              prepend-icon="mdi-plus"
+              prepend-icon="mdi-close-circle-outline"
               @click="clear()"
               >Cancelar</v-btn
             >
           </v-col>
           <v-col cols="6">
             <v-btn
-              variant="outlined"
+              variant="flat"
               class="mb-8 text-none"
               :color="colors.primary_dark"
               block
-              prepend-icon="mdi-plus"
+              append-icon="mdi-check-circle-outline"
               @click="submitForm()"
               >Guardar</v-btn
             >
