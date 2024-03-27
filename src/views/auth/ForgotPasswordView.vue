@@ -1,9 +1,15 @@
 <template>
-  <auth-layout>
+  <auth-layout page-title="RESTABLECER CONTRASEÑA">
     <v-container>
-      <p class="mb-8 text-h4 font-weight-medium text-center">RESTABLECER CONTRASEÑA</p>
-      <p class=' mb-8  font-weight-medium text-center'>Se te enviará un correo electrónico a la dirección que  proporciones para restablecer tu contraseña.</p>
-      <form action="" class="mx-16">
+      <v-layout class="d-flex flex-column fill-height align-center text-black">
+        <h4
+          class="mb-8 text-h4 font-weight-medium text-center d-none d-md-flex"
+        >
+          RESTABLECER CONTRASEÑA
+        </h4>
+      </v-layout>
+
+      <form action="" class="mx-10">
         <v-alert
           v-show="!error"
           class="mb-8"
@@ -13,6 +19,10 @@
           :text="error.message"
           closable
         />
+
+        <p class="mb-8 font-weight-medium text-center">
+          Se enviará un correo a la dirección para restablecer tu contraseña
+        </p>
 
         <div class="mb-4">
           <div class="text-subtitle-1 font-weight-medium">
@@ -26,23 +36,16 @@
           />
         </div>
 
-
-
         <v-btn
           class="mb-8 text-none"
-          :style="{
-            background: colors.primary_dark,
-            color: colors.white,
-          }"
+          href="/forgotPasswordConfirm"
+          :color="colors.primary_dark"
+          variant="flat"
           size="large"
           block
-          href="/forgotPasswordConfirm"
-
         >
           Continuar
         </v-btn>
-
-
       </form>
     </v-container>
   </auth-layout>
@@ -62,6 +65,4 @@ const colors = {
 };
 
 const error = ref({ error: "", message: "" });
-
-
 </script>

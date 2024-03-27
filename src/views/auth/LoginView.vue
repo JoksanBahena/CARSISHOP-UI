@@ -1,8 +1,15 @@
 <template>
-  <auth-layout>
+  <auth-layout page-title="INICIAR SESIÓN">
     <v-container>
-      <p class="mb-8 text-h4 font-weight-medium text-center">INICIAR SESIÓN</p>
-      <form action="" class="mx-16">
+      <v-layout class="d-flex flex-column fill-height align-center text-black">
+        <h4
+          class="mb-8 text-h4 font-weight-medium text-center d-none d-md-flex"
+        >
+          INICIAR SESIÓN
+        </h4>
+      </v-layout>
+
+      <form action="" class="mx-10">
         <v-alert
           v-show="!error"
           class="mb-8"
@@ -28,19 +35,21 @@
         <div class="mb-8">
           <div class="text-subtitle-1 font-weight-medium">Contraseña</div>
           <v-text-field
-            :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+            :append-inner-icon="
+              visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
+            "
             :type="visible ? 'text' : 'password'"
             density="compact"
-            placeholder="Ingresa tu contraseña"
+            placeholder="Contraseña"
             prepend-inner-icon="mdi-lock-outline"
             variant="outlined"
             @click:append-inner="visible = !visible"
           />
           <a
-            class="text-caption text-right text-decoration-none text-blue"
-            href="/forgotPassword"
+            class="text-subtitle-2 text-decoration-none"
+            :style="{ color: colors.primary_dark }"
             rel="noopener noreferrer"
-            target="_blank"
+            href="/forgotPassword"
           >
             ¿Olvidaste tu contraseña?</a
           >
@@ -48,24 +57,25 @@
 
         <v-btn
           class="mb-8 text-none"
+          href="/register"
           :color="colors.primary_dark"
           size="large"
+          variant="flat"
           block
         >
           Iniciar sesión
         </v-btn>
 
-        <v-row>
-          <v-col><v-divider /></v-col>
-          <p class="text-subtitle-1 text-medium-emphasis" color="grey-darken-3">
-            o
-          </p>
-          <v-col><v-divider /></v-col>
-        </v-row>
+        <div class="d-flex align-center">
+          <v-divider />
+          <p class="text-subtitle-1 mx-4" :style="{ color: colors.gray }">o</p>
+          <v-divider />
+        </div>
 
         <v-card-text class="text-center">
           <a
-            class="text-blue text-decoration-none"
+            class="text-subtitle-2 text-decoration-none"
+            :style="{ color: colors.primary_dark }"
             rel="noopener noreferrer"
             href="/register"
           >
@@ -87,10 +97,9 @@ const visible = ref(false);
 const colors = {
   primary: Colors.cs_primary,
   primary_dark: Colors.cs_primary_dark,
+  gray: Colors.cs_opacity_gray,
   white: Colors.cs_white,
 };
 
 const error = ref({ error: "", message: "" });
-
-
 </script>
