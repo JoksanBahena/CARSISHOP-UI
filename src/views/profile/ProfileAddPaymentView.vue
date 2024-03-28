@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <profile-layout>
     <v-breadcrumbs :items="items"></v-breadcrumbs>
     <h1 class='ml-5'>Metodos de pagos</h1>
@@ -127,6 +128,29 @@ import ProfileLayout from "@/layouts/user/ProfileLayout.vue";
     href: '/profileAddPayment',
 
   }
+=======
+  <breadcrumbs-component :items="items" />
+  <payment-form-component />
+</template>
+
+<script setup>
+const items = [
+  {
+    title: "Inicio",
+    to: { name: "Home" },
+  },
+  {
+    title: "Perfil",
+    to: { name: "ProfileSummary" },
+  },
+  {
+    title: "Metodos de pago",
+    to: { name: "ProfilePayments" },
+  },
+  {
+    title: "Agregar metodo de pago",
+  },
+>>>>>>> 08c929c ([MODIFY] eliminación de default-layout, implentación de breadcrumbs-component y redireccionamiento de rutas con :to + nombre de la ruta)
 ];
 const colors = {
   primary: Colors.cs_primary,

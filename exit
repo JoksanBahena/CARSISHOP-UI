@@ -1,0 +1,238 @@
+[33mcommit 61b4d2e92015e94a3d899dcd65c52a0d8272f96a[m[33m ([m[1;36mHEAD -> [m[1;32mprofile-validations[m[33m, [m[1;31morigin/profile-validations[m[33m)[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Thu Mar 28 14:23:41 2024 -0600
+
+    [MODIFY] reestructuración de diseño, implentación de breadcrumbs-component y redireccionamiento de rutas con :to + nombre de la ruta
+
+[33mcommit 779b8baa023f392e995987e2a78a99eee49d0000[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Thu Mar 28 14:23:02 2024 -0600
+
+    [MODIFY] reestructuración del diseño y redireccionamiento de rutas con :to + nombre de la ruta
+
+[33mcommit 08c929cc965cbb114eb83305c6189b9828d1e39d[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Thu Mar 28 14:17:25 2024 -0600
+
+    [MODIFY] eliminación de default-layout, implentación de breadcrumbs-component y redireccionamiento de rutas con :to + nombre de la ruta
+
+[33mcommit 09d57b20fb81e0f72f52d88e11fcd8ae75e79316[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Thu Mar 28 14:14:54 2024 -0600
+
+    [ADD] vista padre de profile-module
+
+[33mcommit 71ae33a1c97947e16f0037e172536e9da03e0550[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Thu Mar 28 14:14:13 2024 -0600
+
+    [ADD] rutas children en profile
+
+[33mcommit dc1905118d8a197592df8ad740d0771386210e2d[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Thu Mar 28 14:13:17 2024 -0600
+
+    [ADD] componente personalizado de breadcrumbs
+
+[33mcommit 781a50fd6846396512542373307358ba8bae3856[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Wed Mar 27 12:53:44 2024 -0600
+
+    [MODIFY] preview de la fotografia corregido
+
+[33mcommit d012a55077423a9d8fba02b38eef2760b691daf0[m
+Author: BetjaderOD <20213tn032@utez.edu.mx>
+Date:   Tue Mar 26 23:32:04 2024 -0600
+
+    [ADD] Componentes de los formularios
+
+[33mcommit 56db668b8e3b43086c08234d78d6aa16ea6ea328[m
+Author: BetjaderOD <20213tn032@utez.edu.mx>
+Date:   Tue Mar 26 23:20:45 2024 -0600
+
+    [MODIFY] Validacion en la imagen de Perfil
+
+[33mcommit e6b3ab35fe115be58407fba1aa0d53abd8ad8274[m
+Author: BetjaderOD <20213tn032@utez.edu.mx>
+Date:   Tue Mar 26 23:13:28 2024 -0600
+
+    [ADD] Sweet alert
+
+[33mcommit 4d22a04414c7c76c6cd2daf804b6959eaad86da3[m
+Author: BetjaderOD <20213tn032@utez.edu.mx>
+Date:   Tue Mar 26 23:06:51 2024 -0600
+
+    [MODIFY] Validacion de imagenes
+
+[33mcommit 6e40339c7428f2d111e9e8d041db071b68448caa[m
+Author: BetjaderOD <20213tn032@utez.edu.mx>
+Date:   Tue Mar 26 20:14:13 2024 -0600
+
+    [MODIFY] Botones de cancelar
+
+[33mcommit 54d818f8c277e8be4b99eb62c4545f0b0a3258c3[m
+Author: BetjaderOD <20213tn032@utez.edu.mx>
+Date:   Tue Mar 26 19:24:56 2024 -0600
+
+    [MODIFY] Modificacion de limpiar errores en add addreess
+
+[33mcommit 8723630f75a423c23bae9eb81290d128e823174d[m
+Author: BetjaderOD <20213tn032@utez.edu.mx>
+Date:   Tue Mar 26 19:14:42 2024 -0600
+
+    [MODIFY] VALIDACIONES DE USUARIO
+
+[33mcommit 26b68507f3bafa9a1b346341a86bde63f1e9b32c[m
+Author: BetjaderOD <20213tn032@utez.edu.mx>
+Date:   Tue Mar 26 12:47:23 2024 -0600
+
+    [MODIFY] Funcion de cambiar el estado de edicion
+
+[33mcommit a31ebb051280a4ef18e3e3281ca22cbe3d4f5468[m
+Author: BetjaderOD <20213tn032@utez.edu.mx>
+Date:   Tue Mar 26 12:41:26 2024 -0600
+
+    [MODIFY] Validaciones en Address y Sales request
+
+[33mcommit 992b38464b36050eba89083a43f16ae3b3547b8e[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Tue Mar 26 09:44:41 2024 -0600
+
+    [MODIFY] cambio de validaciones y type del ccv input corregido
+
+[33mcommit 74c8ab321507852e51bba11d8c1757e1e4e571a7[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Tue Mar 26 09:43:20 2024 -0600
+
+    [MODIFY] definición del prop details en PaymentMethodComponent
+
+[33mcommit 68d5e5ff73a0556611c179fa12f1ac9430175437[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Tue Mar 26 03:12:12 2024 -0600
+
+    [MODIFY] uso de la validación integer + regex en agregar tarjeta
+
+[33mcommit a9f36c3b81deebd95a7e78343e9f8cc7dd8950e2[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Tue Mar 26 02:47:35 2024 -0600
+
+    [ADD] validaciones para agregar una tarjeta
+
+[33mcommit 5de8a98bfd1af61eb15ebd9b87dee0d77f09ccb3[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Tue Mar 26 02:46:00 2024 -0600
+
+    [MODIFY] gitignore de scannerwork
+
+[33mcommit bacb9d958d048c9c621103819d8b1b8508044192[m
+Author: BetjaderOD <20213tn032@utez.edu.mx>
+Date:   Mon Mar 25 20:34:35 2024 -0600
+
+    [ADD]Primer avance de las validaciones
+
+[33mcommit 39056cc0a8ed6686a6d59f30ea978ed9032e29bc[m[33m ([m[1;32mmaster[m[33m)[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Mon Mar 25 12:46:19 2024 -0600
+
+    [DELETE] eliminación de importaciones en HomeView
+
+[33mcommit 99d16400f34c93bc00f3efc9f5ab6bb30b83c81e[m
+Merge: 27fb953 8d7b82a
+Author: CrisSoven <105477023+CrisSoven@users.noreply.github.com>
+Date:   Mon Mar 25 12:32:55 2024 -0600
+
+    Merge pull request #4 from JoksanBahena/designFixes-module
+    
+    Design fixes module
+
+[33mcommit 8d7b82a8493fceceb4e0838ca6c0e185b9e70820[m[33m ([m[1;31morigin/designFixes-module[m[33m)[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Mon Mar 25 01:00:32 2024 -0600
+
+    [MODIFY] implementación dinámica de PaymentMethodComponent
+
+[33mcommit 9e58cb09299f9272dcb23cca0d73132c2c565b42[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Mon Mar 25 00:59:10 2024 -0600
+
+    [DELETE] eliminación de líneas innecesarias en SearchedProductsView
+
+[33mcommit c1b94a8b6a3be0f218fa8222f82b0fdf876ffce4[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Mon Mar 25 00:48:03 2024 -0600
+
+    [MODIFY] etiqueta v-app-bar agregada en SubcategoriesNavbarComponent para la semántica del layout
+
+[33mcommit bf5c7569cbedee330b567f2329f242c8c64b7617[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Mon Mar 25 00:46:20 2024 -0600
+
+    [ADD] creación de FilterProductsComponent para CategorizedProductsView y SearchedProductsView
+
+[33mcommit 44681add8668637b3f5b41db2fa4d7da0fa279d8[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Mon Mar 25 00:43:21 2024 -0600
+
+    [MODIFY] reorganización del CategoriesComponent de product -> common
+
+[33mcommit ac8b572837d4f885ed922cc2c6adbc14c68f1a29[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Mon Mar 25 00:40:47 2024 -0600
+
+    [DELETE] reubicación del sidebar common -> profile
+
+[33mcommit 9b82ded4520e1e6073e7d4da1860a4bae715411b[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Mon Mar 25 00:38:54 2024 -0600
+
+    [MODIFY] etiqueta v-app-bar agregada para la semántica del layout
+
+[33mcommit ea83f7f1c2395a43e09a9043e63a10b749a30cb6[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Mon Mar 25 00:36:52 2024 -0600
+
+    [ADD] fragmentación de componentes de cart-module
+
+[33mcommit 2481a8ec9211ce4f017a2c63ca10f18560b9b8d8[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Mon Mar 25 00:35:55 2024 -0600
+
+    [MODIFY] diseño responsivo de profile-module
+
+[33mcommit b667a118969a746ce9aaedd5f4830ffa2af96479[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Mon Mar 25 00:35:07 2024 -0600
+
+    [ADD] fragmentación de componentes del módulo profile
+
+[33mcommit f696fd10698216c6373d962a710a8f66d5e52a00[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Mon Mar 25 00:31:09 2024 -0600
+
+    [MODIFY] cambio de directorio common -> profile, auto etiquetas de cierre y cambio de map marker icon
+
+[33mcommit 27805aa6c744348ab0ba241b6952ca9ca0b95ab9[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Mon Mar 25 00:24:12 2024 -0600
+
+    [MODIFY] Rediseño temporal del footer
+
+[33mcommit 341c7cbf2ee181e42ef7bff3f7921c2e30e4af9e[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Mon Mar 25 00:21:08 2024 -0600
+
+    [MODIFY] configuración de application layout
+
+[33mcommit 6593e56b9cfa06319304c03608e84d6d39ed8a6f[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Sat Mar 23 15:26:51 2024 -0600
+
+    [MODIFY] sidebar rail añadido y correción del botón de cerrar sesión
+
+[33mcommit cabea4e09b59570a13fe9098141190b3b96309aa[m
+Author: CrisSoven <20213tn044@utez.edu.mx>
+Date:   Sat Mar 23 15:25:24 2024 -0600
+
+    [MODIFY] mejora semántica en el layout
+
+[33mcommit 40c7cb1b69d17689

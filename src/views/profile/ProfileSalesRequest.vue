@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <profile-layout>
     <v-breadcrumbs :items="items"></v-breadcrumbs>
 
@@ -87,27 +88,30 @@
 <script setup>
 import ProfileLayout from "@/layouts/user/ProfileLayout.vue";
 import Colors from "@/utils/Colors.js";
+=======
+  <breadcrumbs-component :items="items" />
+  <sales-form-component />
+</template>
+
+<script setup>
+import SalesFormComponent from "@/components/profile/Form/SalesFormComponent.vue";
+>>>>>>> 08c929c ([MODIFY] eliminación de default-layout, implentación de breadcrumbs-component y redireccionamiento de rutas con :to + nombre de la ruta)
 
 const items = [
   {
     title: "Inicio",
-    disabled: false,
-    href: "/",
+    to: { name: "Home" },
   },
   {
     title: "Perfil",
-    disabled: false,
-    href: "/profileAccount",
+    to: { name: "ProfileSummary" },
   },
   {
     title: "Ventas",
-    disabled: false,
-    href: "/profileSales",
+    to: { name: "ProfileSales" },
   },
   {
     title: "Solicitud de vendedor",
-    disabled: true,
-    href: "/profileSalesRequest",
   },
 ];
 
