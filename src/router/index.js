@@ -41,11 +41,12 @@ const routes = [
     name: "Product",
     component: () => import("@/views/product/ProductDetailsView.vue"),
   },
+
   {
     path: "/profileAccount",
     name: "ProfileAccount",
-    component: () => import("@/views/profile/ProfileAccountView.vue")
-
+    component: () => import("@/views/profile/ProfileAccountView.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/profileSales",
@@ -94,11 +95,29 @@ const routes = [
     name: "ProfileOrderDetail",
     component: () => import("@/views/profile/ProfileOrderDetailsView.vue")
   }
+
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+
+
+router.beforeEach((to, from, next) => {
+
+  if(to.matched.some (route => route.meta.requiresAuth)){
+    if (localStorage.getItem('token')) {
+      //logica para verificar si el token es valido
+      next();
+    }else{
+      next({name: 'Login'})
+    }
+  }else{
+    next();
+  }
+});
+
 
 export default router;
