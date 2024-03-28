@@ -27,6 +27,16 @@ const routes = [
     component: () => import("@/views/auth/ForgotPasswordConfirmView.vue")
   },
   {
+    path: "/cart",
+    name: "Cart",
+    component: () => import("@/views/cart/CartView.vue"),
+  },
+  {
+    path: "/cart/payment",
+    name: "Payment",
+    component: () => import("@/views/cart/PaymentView.vue"),
+  },
+  {
     path: "/:category/:subCategory",
     name: "CategorizedProducts",
     component: () => import("@/views/product/CategorizedProductsView.vue"),
