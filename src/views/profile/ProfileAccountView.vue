@@ -2,174 +2,161 @@
   <breadcrumbs-component :items="items" />
   <v-container>
     <p class="text-h4 font-weight-medium mb-2">Mi cuenta</p>
-    <v-form>
-      <v-row>
-        <v-col cols="12" md="4">
-          <v-img
-            lazy-src="@/assets/imgs/men_card.webp"
-            src="@/assets/imgs/men_card.webp"
-            width="200"
-            height="200"
-            aspect-ratio="1"
-            class="-lighten-2 rounded-circle"
-            cover
-          >
-          </v-img>
-        </v-col>
-        <v-col cols="12" md="4" class="mt-auto">
-          <div class="mb-4">
-            <div class="text-subtitle-1 font-weight-medium">Nombre(s)</div>
-            <v-text-field
-              density="compact"
-              placeholder="Nombre(s)"
-              prepend-inner-icon="mdi-account-outline"
-              variant="outlined"
-              :disabled="is_disabled"
-              v-model="state.name"
-              @input="v$.name.$touch"
-              @blur="v$.name.$touch"
-              :error-messages="v$.name.$errors.map((e) => e.$message)"
-            />
-          </div>
-        </v-col>
-        <v-col cols="12" md="4" class="mt-auto">
-          <div class="mb-4">
-            <div class="text-subtitle-1 font-weight-medium">Apellidos</div>
-            <v-text-field
-              density="compact"
-              placeholder="Apellidos"
-              prepend-inner-icon="mdi-account-outline"
-              variant="outlined"
-              :disabled="is_disabled"
-              v-model="state.surname"
-              @input="v$.surname.$touch"
-              @blur="v$.surname.$touch"
-              :error-messages="v$.surname.$errors.map((e) => e.$message)"
-            />
-          </div>
-        </v-col>
-      </v-row>
-
-      <v-row>
-        <!-- <v-col cols="12" md="4">
-            <div class="mb-4">
-              <div class="text-subtitle-1 font-weight-medium">
-                Fecha de nacimiento
-              </div>
+    <v-card variant="flat">
+      <v-card-item>
+        <v-form>
+          <v-row>
+            <v-col cols="12" lg="4" md="4" class="text-center">
+              <v-avatar size="200" :color="colors.primary_dark">
+                <v-img
+                  v-if="image_url"
+                  :src="image_url"
+                  alt="profile picture"
+                />
+                <v-icon v-else size="80"> mdi-account </v-icon>
+              </v-avatar>
+            </v-col>
+            <v-col cols="12" lg="8" md="8">
+              <v-row>
+                <v-col cols="12">
+                  <div class="text-subtitle-1 font-weight-medium">
+                    Foto de perfil
+                  </div>
+                  <v-file-input
+                    density="compact"
+                    type="file"
+                    accept="image/png, image/jpeg, image/bmp"
+                    variant="outlined"
+                    prepend-icon="mdi-camera-outline"
+                    chips
+                    show-size
+                    @change="onFileChange"
+                    :disabled="is_disabled"
+                    v-model="state.img"
+                    :error-messages="v$.img.$errors.map((e) => e.$message)"
+                  />
+                </v-col>
+                <v-col cols="12" lg="6">
+                  <div>
+                    <div class="text-subtitle-1 font-weight-medium">
+                      Nombre(s)
+                    </div>
+                    <v-text-field
+                      density="compact"
+                      placeholder="Nombre(s)"
+                      prepend-inner-icon="mdi-account-outline"
+                      variant="outlined"
+                      :disabled="is_disabled"
+                      v-model="state.name"
+                      @input="v$.name.$touch"
+                      @blur="v$.name.$touch"
+                      :error-messages="v$.name.$errors.map((e) => e.$message)"
+                    />
+                  </div>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <div class="text-subtitle-1 font-weight-medium">
+                    Apellidos
+                  </div>
+                  <v-text-field
+                    density="compact"
+                    placeholder="Apellidos"
+                    prepend-inner-icon="mdi-account-outline"
+                    variant="outlined"
+                    :disabled="is_disabled"
+                    v-model="state.surname"
+                    @input="v$.surname.$touch"
+                    @blur="v$.surname.$touch"
+                    :error-messages="v$.surname.$errors.map((e) => e.$message)"
+                  />
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" md="4">
+              <div class="text-subtitle-1 font-weight-medium">Correo</div>
               <v-text-field
                 density="compact"
                 placeholder="Correo electrónico"
-                prepend-inner-icon="mdi-calendar-month-outline"
+                prepend-inner-icon="mdi-email-outline"
                 variant="outlined"
                 :disabled="is_disabled"
-                v-model="state.birthdate"
-                @input="v$.birthdate.$touch"
-                @blur="v$.birthdate.$touch"
-                :error-messages="v$.birthdate.$errors.map((e) => e.$message)"
+                v-model="state.email"
+                @input="v$.email.$touch"
+                @blur="v$.email.$touch"
+                :error-messages="v$.email.$errors.map((e) => e.$message)"
               />
-            </div>
-          </v-col> -->
-        <v-col cols="12" md="4">
-          <div class="mb-4">
-            <div class="text-subtitle-1 font-weight-medium">Genero</div>
-            <v-select
-              density="compact"
-              placeholder="Genero"
-              prepend-inner-icon="mdi-account-outline"
-              variant="outlined"
-              clearable
-              chips
-              :items="generes"
-              :disabled="is_disabled"
-              v-model="state.genere"
-              @input="v$.genere.$touch"
-              @blur="v$.genere.$touch"
-              :error-messages="v$.genere.$errors.map((e) => e.$message)"
-            />
-          </div>
-        </v-col>
-        <v-col cols="12" md="4">
-          <div class="mb-4">
-            <div class="text-subtitle-1 font-weight-medium">Telefono</div>
-            <v-text-field
-              density="compact"
-              placeholder="Telefono"
-              prepend-inner-icon="mdi-phone-outline"
-              variant="outlined"
-              type="number"
-              :disabled="is_disabled"
-              v-model="state.phone"
-              @input="v$.phone.$touch"
-              @blur="v$.phone.$touch"
-              :error-messages="v$.phone.$errors.map((e) => e.$message)"
-              :counter="10"
-            />
-          </div>
-        </v-col>
-        <v-col cols="12" md="4">
-          <div class="text-subtitle-1 font-weight-medium">Correo</div>
-          <v-text-field
-            density="compact"
-            placeholder="Correo electrónico"
-            prepend-inner-icon="mdi-email-outline"
-            variant="outlined"
-            :disabled="is_disabled"
-            v-model="state.email"
-            @input="v$.email.$touch"
-            @blur="v$.email.$touch"
-            :error-messages="v$.email.$errors.map((e) => e.$message)"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="4">
-          <div class="text-subtitle-1 font-weight-medium">Foto de perfil</div>
-          <v-file-input
-            density="compact"
-            type="file"
-            accept="image/png, image/jpeg, image/bmp"
-            variant="outlined"
-            prepend-icon="mdi-camera-outline"
-            chips
-            show-size
-            @change="onFileChange"
-            :disabled="is_disabled"
-            v-model="state.img"
-            :error-messages="v$.img.$errors.map((e) => e.$message)"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-divider></v-divider>
+            </v-col>
 
-        <v-col v-if="!is_disabled" cols="6">
-          <v-btn
-            variant="flat"
-            prepend-icon="mdi-close-circle-outline"
-            class="text-none"
-            :color="colors.primary"
-            size="large"
-            block
-            @click="clear()"
-          >
-            Cancelar
-          </v-btn>
-        </v-col>
-        <v-col :cols="is_disabled ? '12' : '6'">
-          <v-btn
-            variant="flat"
-            append-icon="mdi-check-circle-outline"
-            class="text-none"
-            :color="colors.primary_dark"
-            size="large"
-            block
-            @click="is_disabled ? onEdit() : submitForm()"
-          >
-            {{ is_disabled ? "Editar" : "Guardar" }}
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-form>
+            <v-col cols="12" md="4">
+              <div class="text-subtitle-1 font-weight-medium">Teléfono</div>
+              <v-text-field
+                density="compact"
+                placeholder="Teléfono"
+                prepend-inner-icon="mdi-phone-outline"
+                variant="outlined"
+                type="number"
+                hide-spin-buttons
+                :disabled="is_disabled"
+                v-model="state.phone"
+                @input="v$.phone.$touch"
+                @blur="v$.phone.$touch"
+                :error-messages="v$.phone.$errors.map((e) => e.$message)"
+                :counter="10"
+              />
+            </v-col>
+
+            <v-col cols="12" md="4">
+              <div class="text-subtitle-1 font-weight-medium">Género</div>
+              <v-select
+                density="compact"
+                placeholder="Género"
+                prepend-inner-icon="mdi-account-outline"
+                variant="outlined"
+                clearable
+                chips
+                :items="generes"
+                :disabled="is_disabled"
+                v-model="state.genere"
+                @input="v$.genere.$touch"
+                @blur="v$.genere.$touch"
+                :error-messages="v$.genere.$errors.map((e) => e.$message)"
+              />
+            </v-col>
+
+            <v-divider />
+
+            <v-col v-if="!is_disabled" cols="6">
+              <v-btn
+                variant="flat"
+                prepend-icon="mdi-close-circle-outline"
+                class="text-none"
+                :color="colors.primary"
+                size="large"
+                block
+                @click="clear()"
+              >
+                Cancelar
+              </v-btn>
+            </v-col>
+            <v-col :cols="is_disabled ? '12' : '6'">
+              <v-btn
+                variant="flat"
+                append-icon="mdi-check-circle-outline"
+                class="text-none"
+                :color="colors.primary_dark"
+                size="large"
+                block
+                @click="is_disabled ? onEdit() : submitForm()"
+              >
+                {{ is_disabled ? "Editar" : "Guardar" }}
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-card-item>
+    </v-card>
   </v-container>
 </template>
 
@@ -211,8 +198,7 @@ const generes = ["Masculino", "Femenino", "Otro"];
 
 const user = {
   name: "",
-  suranme: "",
-  birthdate: "",
+  surname: "",
   genere: null,
   phone: "",
   email: "",
@@ -251,21 +237,22 @@ const rules = {
       regex(/^[a-zA-ZÀ-ÿ\s]+$/)
     ),
   },
-  // birthdate: {
-  //   required: withMessage("La fecha de nacimiento es requerida", required),
-  // },
   genere: {
     required: withMessage("El genero es requerido", required),
   },
   phone: {
-    required: withMessage("El telefono es requerido", required),
-    integer: withMessage("El telefono debe ser un número", integer),
+    required: withMessage("El teléfono es requerido", required),
+    integer: withMessage("El teléfono debe ser un número", integer),
+    regex: withMessage(
+      "El teléfono solo debe contener números",
+      regex(/^\d+$/)
+    ),
     minLength: withMessage(
-      "El telefono debe tener al menos 10 caracteres",
+      "El teléfono debe tener al menos 10 caracteres",
       minLength(10)
     ),
     maxLength: withMessage(
-      "El telefono debe tener menos de 10 caracteres",
+      "El teléfono debe tener menos de 10 caracteres",
       maxLength(10)
     ),
   },
@@ -291,7 +278,6 @@ const submitForm = () => {
   if (v$.value.$error) {
     return;
   } else {
-    console.log(v$.value.$error);
     alert(JSON.stringify(state));
     is_disabled.value = true;
   }
@@ -313,10 +299,6 @@ const onFileChange = (e) => {
   const reader = new FileReader();
 
   reader.onload = (e) => {
-    image_url.value = e.target.result;
-    console.log(file.size);
-    console.log(file);
-
     if (file.size > 2_000_000) {
       state.img = null;
       Swal.fire({
@@ -327,8 +309,8 @@ const onFileChange = (e) => {
       });
       return;
     }
+    image_url.value = e.target.result;
   };
-
   reader.readAsDataURL(file);
 };
 </script>
