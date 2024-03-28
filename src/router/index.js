@@ -98,7 +98,12 @@ const routes = [
     path: "/adminUsers",
     name: "AdminUsers",
     component: () => import("@/views/admin/AdminUsersView.vue")
-  }
+  },
+  {
+    path: "/adminProducts",
+    name: "AdminProducts",
+    component: () => import("@/views/admin/AdminProductView.vue")
+  },
 ];
 
 const router = createRouter({

@@ -5,7 +5,6 @@
       <template v-slot:item.user="{ item }">
         <v-list color="transparent">
           <v-list-item
-            :color="colors.white"
             prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
             subtitle="sandra_a88@gmailcom"
             title="Sandra Adams"
