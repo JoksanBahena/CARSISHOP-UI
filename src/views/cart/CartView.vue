@@ -117,6 +117,18 @@ const itemsFeatured = [
     description: "Lorem ipsum dolor sit amet consectetur.",
     price: "415",
   },
+  {
+    id: 5,
+    name: "Item 4",
+    description: "Lorem ipsum dolor sit amet consectetur.",
+    price: "415",
+  },
+  {
+    id: 6,
+    name: "Item 4",
+    description: "Lorem ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur.",
+    price: "415",
+  },
 ]
 
 const totalItems = items.reduce((total, item) => {
