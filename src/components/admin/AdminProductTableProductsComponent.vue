@@ -2,7 +2,7 @@
   <v-card outlined>
     <v-divider></v-divider>
     <v-data-table :headers="headers" :items="items" :items-per-page="5">
-      <template v-slot:item.product="{ item }">
+      <template v-slot:item.product>
         <v-card flat>
           <div class="d-flex flex-no-wrap justify-space-between">
             <v-avatar class="ma-3" rounded="0" size="125">
@@ -34,7 +34,7 @@
         </div>
       </template>
 
-      <template v-slot:item.actions="{ item }">
+      <template v-slot:item.actions>
         <v-row>
           <v-col>
             <v-spacer />
@@ -46,17 +46,6 @@
               />
             </v-btn>
           </v-col>
-          <!-- <v-col>
-            <v-btn variant="outlined" :style="{ borderColor: colors.primary }">
-              <v-icon
-                :icon="
-                  item.status ? 'mdi-delete-outline' : 'mdi-delete-restore'
-                "
-                :color="colors.primary_dark"
-                class="text-h4"
-              />
-            </v-btn>
-          </v-col> -->
         </v-row>
       </template>
     </v-data-table>

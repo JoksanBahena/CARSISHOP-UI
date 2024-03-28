@@ -82,7 +82,7 @@ const categories = ref([
   },
   {
     name: "Productos",
-    to: "/",
+    to: "/adminProducts",
   },
   {
     name: "Ventas",

@@ -23,8 +23,8 @@
         </v-card>
       </template>
 
-      <template v-slot:item.actions="{ item }">
-        <v-row cols="12" md="6" justify="center">
+      <template v-slot:item.actions>
+        <v-row cols="12" md="6" justify="center" class="align-center">
           <v-col>
             <v-btn variant="outlined" :style="{ borderColor: colors.primary }">
               <v-icon
@@ -34,7 +34,7 @@
               />
             </v-btn>
             <v-btn
-              class="mr-2 ml-2"
+              class="mr-2 ml-2 mt-2 mb-2"
               variant="outlined"
               :style="{ borderColor: colors.primary }"
             >

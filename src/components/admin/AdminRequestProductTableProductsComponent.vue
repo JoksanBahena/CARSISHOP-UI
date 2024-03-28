@@ -32,8 +32,8 @@
         </div>
       </template>
 
-      <template v-slot:item.actions="{ item }">
-        <v-row cols="12" md="6" justify="center">
+      <template v-slot:item.actions>
+        <v-row cols="12" md="6" justify="center" class="align-center">
           <v-col>
             <v-btn variant="outlined" :style="{ borderColor: colors.primary }">
               <v-icon

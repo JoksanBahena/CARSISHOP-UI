@@ -12,7 +12,9 @@ import Colors from '@/utils/Colors.js';
         </v-container>
       </v-window-item>
       <v-window-item value="2">
-        <admin-request-product-table-products-component />
+        <v-container fluid>
+          <admin-request-product-table-products-component />
+        </v-container>
       </v-window-item>
     </v-window>
   </v-container>
