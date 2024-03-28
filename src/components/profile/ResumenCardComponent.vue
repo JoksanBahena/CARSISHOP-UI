@@ -9,13 +9,13 @@
 
         <v-spacer />
 
-        <a
+        <router-link
           class="text-subtitle-1 text-decoration-none"
           :style="{ color: colors.primary_dark }"
-          :href="link"
+          :to="to"
         >
-          {{ to }}
-        </a>
+          {{ action }}
+        </router-link>
       </div>
       <v-divider class="mb-1" />
       <slot></slot>
@@ -40,13 +40,15 @@ const props = defineProps({
     type: String,
     default: "Resumen",
   },
-  link: {
-    type: String,
-    default: "/",
-  },
-  to: {
+  action: {
     type: String,
     default: "Ver más",
+  },
+  to: {
+    type: Object,
+    default: {
+      name: "ProfileSummary",
+    },
   },
 });
 </script>

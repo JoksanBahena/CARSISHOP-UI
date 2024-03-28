@@ -1,18 +1,18 @@
 <template>
   <v-app-bar elevation="0" border>
     <v-toolbar :color="toolbar.white">
-    <v-slide-group show-arrows>
-      <v-btn
-        v-for="subcagory in subcagories"
-        :key="subcagory.name"
-        class="text-none"
-        variant="plain"
-        :to="subcagory.route"
-      >
-        {{ subcagory.name }}
-      </v-btn>
-    </v-slide-group>
-  </v-toolbar>
+      <v-slide-group show-arrows>
+        <v-btn
+          v-for="subcategory in subcategories"
+          :key="subcategory.name"
+          class="text-none"
+          variant="plain"
+          :to="subcategory.to"
+        >
+          {{ subcategory.name }}
+        </v-btn>
+      </v-slide-group>
+    </v-toolbar>
   </v-app-bar>
 </template>
 
@@ -27,38 +27,69 @@ const toolbar = {
   white: Colors.cs_white,
 };
 
-const subcagories = ref([
+const subcategories = ref([
   {
     name: "Todo",
-    route: "/hombre/all",
+    to: {
+      name: "CategorizedProducts",
+      params: { subcategory: "todo" },
+    },
   },
   {
     name: "Partes Superiores",
-    route: "/hombre/partes-superiores",
+    to: {
+      name: "CategorizedProducts",
+      params: { subcategory: "parte-superior" },
+    },
   },
   {
     name: "Partes Inferiores",
-    route: "/hombre/partes-inferiores",
+    to: {
+      name: "CategorizedProducts",
+      params: { subcategory: "parte-inferior" },
+    },
   },
   {
-    name: "Ropa de Punto",
-    route: "/hombre/ropa-de-punto",
+    name: "Calzado",
+    to: {
+      name: "CategorizedProducts",
+      params: { subcategory: "calzado" },
+    },
+  },
+  {
+    name: "Accesorios",
+    to: {
+      name: "CategorizedProducts",
+      params: { subcategory: "accesorio" },
+    },
   },
   {
     name: "Ropa Interior",
-    route: "/hombre/ropa-interior",
+    to: {
+      name: "CategorizedProducts",
+      params: { subcategory: "ropa-interior" },
+    },
   },
   {
     name: "Ropa de Dormir",
-    route: "/hombre/ropa-de-dormir",
+    to: {
+      name: "CategorizedProducts",
+      params: { subcategory: "ropa-de-dormir" },
+    },
   },
   {
     name: "Ropa Deportiva",
-    route: "/hombre/ropa-deportiva",
+    to: {
+      name: "CategorizedProducts",
+      params: { subcategory: "ropa-deportiva" },
+    },
   },
   {
     name: "Ropa Formal",
-    route: "/hombre/ropa-formal",
+    to: {
+      name: "CategorizedProducts",
+      params: { subcategory: "ropa-formal" },
+    },
   },
 ]);
 </script>

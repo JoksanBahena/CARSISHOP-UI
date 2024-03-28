@@ -17,7 +17,7 @@
             <v-btn
               variant="outlined"
               :style="{ borderColor: colors.primary }"
-              :href="category.to"
+              :to="category.to"
             >
               <v-icon icon="mdi-chevron-right" class="text-h4" />
             </v-btn>
@@ -42,17 +42,26 @@ const categories = ref([
   {
     title: "Mujeres",
     img: "/src/assets/imgs/girl_card.webp",
-    to: "/mujeres/all"
+    to: {
+      name: "CategorizedProducts",
+      params: { category: "mujeres", subcategory: "todo" },
+    },
   },
   {
     title: "Hombres",
     img: "/src/assets/imgs/men_card.webp",
-    to: "/hombres/all"
+    to: {
+      name: "CategorizedProducts",
+      params: { category: "hombres", subcategory: "todo" },
+    },
   },
   {
     title: "Niños",
     img: "/src/assets/imgs/kids_card.webp",
-    to: "/kids/all"
+    to: {
+      name: "CategorizedProducts",
+      params: { category: "kids", subcategory: "todo" },
+    },
   },
 ]);
 </script>
