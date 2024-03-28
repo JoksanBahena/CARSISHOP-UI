@@ -1,34 +1,26 @@
 <template>
-  <profile-layout>
-    <v-breadcrumbs :items="items"></v-breadcrumbs>
-    <sales-form-component></sales-form-component>
-  </profile-layout>
+  <breadcrumbs-component :items="items" />
+  <sales-form-component />
 </template>
 
 <script setup>
-import ProfileLayout from "@/layouts/user/ProfileLayout.vue";
 import SalesFormComponent from "@/components/profile/Form/SalesFormComponent.vue";
 
 const items = [
   {
     title: "Inicio",
-    disabled: false,
-    href: "/",
+    to: { name: "Home" },
   },
   {
     title: "Perfil",
-    disabled: false,
-    href: "/profileAccount",
+    to: { name: "ProfileSummary" },
   },
   {
     title: "Ventas",
-    disabled: false,
-    href: "/profileSales",
+    to: { name: "ProfileSales" },
   },
   {
     title: "Solicitud de vendedor",
-    disabled: true,
-    href: "/profileSalesRequest",
   },
 ];
 </script>

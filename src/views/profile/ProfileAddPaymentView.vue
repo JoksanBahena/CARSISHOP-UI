@@ -1,34 +1,24 @@
 <template>
-  <profile-layout>
-    <v-breadcrumbs :items="items"></v-breadcrumbs>
-    <payment-form-component></payment-form-component>
-  </profile-layout>
+  <breadcrumbs-component :items="items" />
+  <payment-form-component />
 </template>
 
 <script setup>
-import ProfileLayout from "@/layouts/user/ProfileLayout.vue";
-import AddressFormComponent from "@/components/profile/Form/AddressFormComponent.vue";
-
 const items = [
   {
     title: "Inicio",
-    disabled: false,
-    href: "/",
+    to: { name: "Home" },
   },
   {
     title: "Perfil",
-    disabled: false,
-    href: "/profileAccount",
+    to: { name: "ProfileSummary" },
   },
   {
     title: "Metodos de pago",
-    disabled: false,
-    href: "/profilePayment",
+    to: { name: "ProfilePayments" },
   },
   {
     title: "Agregar metodo de pago",
-    disabled: true,
-    href: "/profileAddPayment",
   },
 ];
 </script>
