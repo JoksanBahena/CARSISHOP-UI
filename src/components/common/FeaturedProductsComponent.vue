@@ -4,7 +4,7 @@
     <v-sheet class="mx-auto">
       <v-slide-group show-arrows>
         <v-slide-group-item v-for="item in props.data" :key="item.id">
-          <v-card class="mx-auto me-5" max-width="300">
+          <v-card variant="flat" class="mx-auto me-5" max-width="300">
             <v-img height="200px" src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" cover/>
 
             <v-card-title> {{ item.name }} </v-card-title>
