@@ -2,6 +2,10 @@ import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
   {
+    path: "/:catchAll(.*)",
+    component: () => import("@/views/error/NotFoundView.vue"),
+  },
+  {
     path: "/",
     name: "Home",
     component: () => import("@/views/home/HomeView.vue"),
@@ -41,64 +45,6 @@ const routes = [
     name: "Product",
     component: () => import("@/views/product/ProductDetailsView.vue"),
   },
-
-  {
-    path: "/profileAccount",
-    name: "ProfileAccount",
-    component: () => import("@/views/profile/ProfileAccountView.vue"),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/profileSales",
-    name: "ProfileSales",
-    component: () => import("@/views/profile/ProfileSalesView.vue")
-
-  },
-  {
-    path: "/profileSalesRequest",
-    name: "ProfileSalesRequest",
-    component: () => import("@/views/profile/ProfileSalesRequest.vue")
-
-  },
-  {
-    path: "/profileAddress",
-    name: "ProfileAddress",
-    component: () => import("@/views/profile/ProfileAddressView.vue")
-  },
-  {
-    path: "/profileAddAddress",
-    name: "ProfileAddAddress",
-    component: () => import("@/views/profile/ProfileAddAddressView.vue")
-  },
-  {
-    path: "/profileReturnsOrders",
-    name: "profileReturnsOrders",
-    component: () => import("@/views/profile/ProfileOrdersReturnsView.vue")
-  },
-  {
-    path: "/profilePayment",
-    name: "ProfilePayment",
-    component: () => import("@/views/profile/ProfilePaymentView.vue")
-  },
-  {
-    path: "/profileAddPayment",
-    name: "ProfileAddPayment",
-    component: () => import("@/views/profile/ProfileAddPaymentView.vue")
-  },
-  {
-    path: "/profileResume",
-    name: "ProfileResume",
-    component: () => import("@/views/profile/ProfileResumeView.vue")
-  },
-  {
-    path: "/profileOrderDetail",
-    name: "ProfileOrderDetail",
-    component: () => import("@/views/profile/ProfileOrderDetailsView.vue")
-  },
-  {
-    path: "/:catchAll(.*)",
-    component: () => import("@/views/error/NotFoundView.vue"),
-  }
 
 ];
 
