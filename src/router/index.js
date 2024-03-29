@@ -93,6 +93,10 @@ const routes = [
     path: "/profileOrderDetail",
     name: "ProfileOrderDetail",
     component: () => import("@/views/profile/ProfileOrderDetailsView.vue")
+  },
+  {
+    path: "/:catchAll(.*)",
+    component: () => import("@/views/error/NotFoundView.vue"),
   }
 ];
 
