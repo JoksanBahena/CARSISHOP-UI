@@ -3,14 +3,13 @@
     <div class="d-flex align-center">
       <h2>{{ title }}</h2>
       <v-spacer />
-      <a
+      <router-link
         class="text-subtitle-2 text-right text-decoration-none"
         :style="{ color: colors.primary_dark }"
-        href="/search/query"
-        rel="noopener noreferrer"
+        to="/search/searched-products"
       >
         Ver más <v-icon>mdi-chevron-right</v-icon>
-      </a>
+      </router-link>
     </div>
     <v-slide-group v-model="model" class="my-4" show-arrows>
       <v-slide-group-item v-for="n in 15" :key="n">

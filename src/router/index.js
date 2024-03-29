@@ -2,6 +2,10 @@ import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
   {
+    path: "/:catchAll(.*)",
+    component: () => import("@/views/error/NotFoundView.vue"),
+  },
+  {
     path: "/",
     name: "Home",
     component: () => import("@/views/home/HomeView.vue"),
@@ -22,9 +26,9 @@ const routes = [
     component: () => import("@/views/auth/ForgotPasswordView.vue"),
   },
   {
-    path: "/forgotPasswordConfirm",
+    path: "/forgotPasswordConfirm/:token",
     name: "ForgotPasswordConfirm",
-    component: () => import("@/views/auth/ForgotPasswordConfirmView.vue")
+    component: () => import("@/views/auth/ForgotPasswordConfirmView.vue"),
   },
   {
     path: "/cart",
@@ -38,6 +42,7 @@ const routes = [
   },
   {
     path: "/:category/:subCategory",
+    path: "/category/:category/:subcategory",
     name: "CategorizedProducts",
     component: () => import("@/views/product/CategorizedProductsView.vue"),
   },
@@ -52,63 +57,143 @@ const routes = [
     component: () => import("@/views/product/ProductDetailsView.vue"),
   },
   {
-    path: "/profileAccount",
-    name: "ProfileAccount",
-    component: () => import("@/views/profile/ProfileAccountView.vue")
+    path: "/admin",
+    name: "Admin",
+    redirect: { name: "AdminUsers" },
+    component: () => import("@/views/admin/AdminView.vue"),
+    children: [
+      {
+        path: "users",
+        name: "AdminUsers",
+        component: () => import("@/views/admin/AdminUsersView.vue"),
+      },
+      {
+        path: "products",
+        name: "AdminProducts",
+        component: () => import("@/views/admin/AdminProductView.vue"),
+      },
 
+    ],
   },
   {
-    path: "/profileSales",
-    name: "ProfileSales",
-    component: () => import("@/views/profile/ProfileSalesView.vue")
+    path: "/profile",
+    name: "Profile",
+    redirect: { name: "ProfileSummary" },
+    component: () => import("@/views/profile/ProfileView.vue"),
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: "",
+        name: "ProfileSummary",
+        component: () => import("@/views/profile/ProfileResumeView.vue"),
+      },
+      {
+        path: "orders",
+        name: "ProfileOrders",
+        component: () => import("@/views/profile/ProfileOrdersReturnsView.vue"),
+      },
+      {
+        path: "details/:id",
+        name: "ProfileOrderDetails",
+        component: () => import("@/views/profile/ProfileOrderDetailsView.vue"),
+      },
+      {
+        path: "account",
+        name: "ProfileAccount",
+        component: () => import("@/views/profile/ProfileAccountView.vue"),
+      },
+      {
+        path: "addresses",
+        name: "ProfileAddresses",
+        component: () => import("@/views/profile/ProfileAddressView.vue"),
+      },
+      {
+        path: "addresses/add",
+        name: "ProfileAddAddress",
+        component: () => import("@/views/profile/ProfileAddAddressView.vue"),
+      },
+      {
+        path: "payments",
+        name: "ProfilePayments",
+        component: () => import("@/views/profile/ProfilePaymentView.vue"),
+      },
+      {
+        path: "payments/add",
+        name: "ProfileAddPayment",
+        component: () => import("@/views/profile/ProfileAddPaymentView.vue"),
+      },
+      {
+        path: "sales",
+        name: "ProfileSales",
+        component: () => import("@/views/profile/ProfileSalesView.vue"),
+      },
+      {
+        path: "sales/request",
+        name: "ProfileSalesRequest",
+        component: () => import("@/views/profile/ProfileSalesRequest.vue"),
+      },
+    ],
+  },
 
-  },
-  {
-    path: "/profileSalesRequest",
-    name: "ProfileSalesRequest",
-    component: () => import("@/views/profile/ProfileSalesRequest.vue")
+  // {
+  //   path: "/adminUsers",
+  //   name: "AdminUsers",
+  //   component: () => import("@/views/admin/AdminUsersView.vue")
+  // },
+  // {
+  //   path: "/adminProducts",
+  //   name: "AdminProducts",
+  //   component: () => import("@/views/admin/AdminProductView.vue")
+  // },
+  // {
+  //   path: "/admin",
+  //   name: "Admin",
+  //   redirect: { name: "AdminUsers" },
+  //   component: () => import("@/views/admin/AdminView.vue"),
+  //   children: [
+  //     {
+  //       path: "users",
+  //       name: "AdminUsers",
+  //       component: () => import("@/views/admin/AdminUsersView.vue"),
+  //     },
+  //     {
+  //       path: "products",
+  //       name: "AdminProducts",
+  //       component: () => import("@/views/admin/AdminProductView.vue"),
+  //     },
 
-  },
-  {
-    path: "/profileAddress",
-    name: "ProfileAddress",
-    component: () => import("@/views/profile/ProfileAddressView.vue")
-  },
-  {
-    path: "/profileAddAddress",
-    name: "ProfileAddAddress",
-    component: () => import("@/views/profile/ProfileAddAddressView.vue")
-  },
-  {
-    path: "/profileReturnsOrders",
-    name: "profileReturnsOrders",
-    component: () => import("@/views/profile/ProfileOrdersReturnsView.vue")
-  },
-  {
-    path: "/profilePayment",
-    name: "ProfilePayment",
-    component: () => import("@/views/profile/ProfilePaymentView.vue")
-  },
-  {
-    path: "/profileAddPayment",
-    name: "ProfileAddPayment",
-    component: () => import("@/views/profile/ProfileAddPaymentView.vue")
-  },
-  {
-    path: "/profileResume",
-    name: "ProfileResume",
-    component: () => import("@/views/profile/ProfileResumeView.vue")
-  },
-  {
-    path: "/profileOrderDetail",
-    name: "ProfileOrderDetail",
-    component: () => import("@/views/profile/ProfileOrderDetailsView.vue")
-  }
+  //   ];
+  // },
+
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return { el: to.hash };
+    } else {
+      return { top: 0 };
+    }
+  },
 });
+
+
+
+router.beforeEach((to, from, next) => {
+
+  if(to.matched.some (route => route.meta.requiresAuth)){
+    if (localStorage.getItem('token')) {
+      //logica para verificar si el token es valido
+      next();
+    }else{
+      next({name: 'Login'})
+    }
+  }else{
+    next();
+  }
+});
+
 
 export default router;

@@ -12,6 +12,8 @@
     "@vuelidate/validators": "^2.0.4",
     "roboto-fontface": "*",
     "vee-validate": "^4.12.6",
+    "axios": "^1.6.8",
+    "sweetalert2": "^11.10.7",
     "vue": "^3.3.0",
     "vue-router": "^4.3.0",
     "vuetify": "^3.0.0"

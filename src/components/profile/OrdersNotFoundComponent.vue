@@ -1,17 +1,19 @@
 <template>
   <v-container class="d-flex align-center justify-start flex-column h-screen">
     <v-icon class="mdi mdi-cart-outline" size="64" />
-    <h2 class="text-center mt-4">{{ props.advise }}</h2>
-    <p class="text-center mt-4">{{ props.recomendation }}</p>
-    <v-btn
-      append-icon="mdi-chevron-right"
-      :style="{ 'border-color': colors.primary, color: colors.primary_dark }"
-      variant="outlined"
-      class="text-none mt-5"
-      :href="props.to"
-    >
-      {{ action }}
-    </v-btn>
+    <h2 class="text-center mt-4">{{ advise }}</h2>
+    <p class="text-center mt-4">{{ recomendation }}</p>
+
+    <router-link :to="to" class="mt-5">
+      <v-btn
+        append-icon="mdi-chevron-right"
+        :style="{ 'border-color': colors.primary, color: colors.primary_dark }"
+        variant="outlined"
+        class="text-none"
+      >
+        {{ action }}
+      </v-btn>
+    </router-link>
   </v-container>
 </template>
 
@@ -37,8 +39,8 @@ const props = defineProps({
     default: "Volver a la tienda",
   },
   to: {
-    type: String,
-    default: "/",
+    type: Object,
+    default: { name: "Home" },
   },
 });
 </script>

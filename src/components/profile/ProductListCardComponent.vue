@@ -13,7 +13,7 @@
               {{ status }}
             </v-chip>
             - {{ date }}
-          </p>  
+          </p>
           <p class="text-subtitle-1">{{ description }}</p>
         </v-col>
       </v-row>
@@ -25,7 +25,11 @@
         class="mb-2 text-none"
         :color="colors.primary_dark"
         block
-        :href="details ? '/product/1' : '/profileOrderDetail'"
+        :to="
+          details
+            ? { name: 'Product', params: { id: 1 } }
+            : { name: 'ProfileOrderDetails', params: { id: 1 } }
+        "
       >
         Detalles de compra
       </v-btn>

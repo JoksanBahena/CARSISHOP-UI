@@ -55,8 +55,6 @@
 
       <v-spacer class="d-none d-sm-flex" />
 
-      <search-btn-component />
-
       <v-btn
         v-for="action in actions"
         :key="action.index"
@@ -70,7 +68,6 @@
 
 <script setup>
 import { ref } from "vue";
-import SearchBtnComponent from "@/components/common/SearchBtnComponent.vue";
 import Colors from "@/utils/Colors.js";
 
 const toolbar = {
@@ -80,36 +77,27 @@ const toolbar = {
 
 const categories = ref([
   {
-    name: "Mujeres",
-    to: {
-      name: "CategorizedProducts",
-      params: { category: "mujeres", subcategory: "todo" },
-    },
+    name: "Usuarios",
+    to: "/admin/users",
   },
   {
-    name: "Hombres",
-    to: {
-      name: "CategorizedProducts",
-      params: { category: "hombres", subcategory: "todo" },
-    },
+    name: "Productos",
+    to: "/admin/products",
   },
   {
-    name: "Niños",
-    to: {
-      name: "CategorizedProducts",
-      params: { category: "kids", subcategory: "todo" },
-    },
+    name: "Ventas",
+    to: "/admin/products",
+  },
+  {
+    name: "Compras",
+    to: "/",
   },
 ]);
 
 const actions = ref([
   {
-    icon: "mdi-cart-outline",
-    to: { name: "Cart" },
-  },
-  {
     icon: "mdi-login-variant",
-    to: { name: "Login" },
+    to: "/login",
   },
 ]);
 </script>
