@@ -14,14 +14,13 @@
         <v-list>
           <v-list-item v-for="category in categories" :key="category.index">
             <v-list-item-title>
-              <a
+              <router-link
                 class="text-decoration-none"
                 :style="{ color: toolbar.primary_dark }"
-                rel="noopener noreferrer"
-                :href="category.to"
+                :to="category.to"
               >
                 {{ category.name }}
-              </a>
+              </router-link>
             </v-list-item-title>
           </v-list-item>
         </v-list>
@@ -34,7 +33,7 @@
           :color="toolbar.primary_dark"
           class="text-none"
           variant="plain"
-          :href="category.to"
+          :to="category.to"
         >
           {{ category.name }}
         </v-btn>
@@ -43,14 +42,13 @@
       <v-spacer class="d-none d-sm-flex" />
 
       <v-toolbar-title>
-        <a
+        <router-link
+          :to="{ name: 'Home' }"
           class="text-h6 font-weight-bold text-right text-decoration-none"
           :style="{ color: toolbar.primary_dark }"
-          rel="noopener noreferrer"
-          href="/"
         >
           CarsiShop
-        </a>
+        </router-link>
       </v-toolbar-title>
 
       <v-spacer class="d-none d-sm-flex" />
@@ -62,7 +60,7 @@
         :key="action.index"
         :style="{ color: toolbar.primary_dark }"
         :icon="action.icon"
-        :href="action.to"
+        :to="action.to"
       />
     </v-toolbar>
   </v-app-bar>
