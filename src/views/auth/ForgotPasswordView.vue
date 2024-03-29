@@ -33,16 +33,21 @@
             placeholder="Correo electrónico"
             prepend-inner-icon="mdi-email-outline"
             variant="outlined"
+            v-model="state.email"
+            @blur="v$.email.$touch"
+            @input="v$.email.$touch"
+            :error-messages="v$.email.$errors.map((e) => e.$message)"
           />
         </div>
 
         <v-btn
           class="mb-8 text-none"
-          href="/forgotPasswordConfirm"
           :color="colors.primary_dark"
           variant="flat"
           size="large"
           block
+          @click="submitForm"
+          :disabled="v$.$errors.length > 0"
         >
           Continuar
         </v-btn>
@@ -54,7 +59,10 @@
 <script setup>
 import AuthLayout from "@/layouts/auth/AuthLayout.vue";
 import Colors from "@/utils/Colors.js";
-import { ref } from "vue";
+import {reactive, ref} from "vue";
+import {useVuelidate} from "@vuelidate/core";
+import {helpers, required} from "@vuelidate/validators";
+const { withMessage, regex } = helpers;
 
 const visible = ref(false);
 
@@ -65,4 +73,28 @@ const colors = {
 };
 
 const error = ref({ error: "", message: "" });
+
+const form = {
+  email:""
+}
+
+const rules= {
+  email: {
+    required: withMessage("El correo electrónico es requerido", required),
+    email: withMessage("El correo electrónico no es válido", regex(/^.+@.+\..+$/)),
+  }
+}
+
+const state = reactive({...form})
+
+const v$ = useVuelidate(rules, state)
+
+const submitForm = () => {
+  v$.value.$touch();
+  if (v$.value.$error) {
+    return;
+  }
+  alert(JSON.stringify(state))
+}
+
 </script>
