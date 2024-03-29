@@ -1,14 +1,12 @@
 <template>
-  <admin-layout>
-    <v-breadcrumbs :items="items"></v-breadcrumbs>
-    <header-admin-component
-      :is-visible="false"
-      :href="'/profileAddPayment'"
-      :title="'Productos'"
-    />
+  <breadcrumbs-component :items="items" />
+  <header-admin-component
+    :is-visible="false"
+    :href="'/profileAddPayment'"
+    :title="'Productos'"
+  />
 
-    <admin-table-products-component />
-  </admin-layout>
+  <admin-table-products-component />
 </template>
 
 <script setup>

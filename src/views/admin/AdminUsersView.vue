@@ -1,15 +1,14 @@
 <template>
-  <admin-layout>
-    <v-breadcrumbs :items="items"></v-breadcrumbs>
-    <header-admin-component
-      :is-visible="true"
-      :href="'/profileAddPayment'"
-      :button-text="'Agregar nuevo administrador'"
-      :title="'Usuarios'"
-    />
+  <breadcrumbs-component :items="items" />
 
-    <admin-table-component />
-  </admin-layout>
+  <header-admin-component
+    :is-visible="true"
+    :href="'/profileAddPayment'"
+    :button-text="'Agregar nuevo administrador'"
+    :title="'Usuarios'"
+  />
+
+  <admin-table-component />
 </template>
 
 <script setup>
