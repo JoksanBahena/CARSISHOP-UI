@@ -69,6 +69,7 @@ const routes = [
     name: "Profile",
     redirect: { name: "ProfileSummary" },
     component: () => import("@/views/profile/ProfileView.vue"),
+    meta: { requiresAuth: true },
     children: [
       {
         path: "",
