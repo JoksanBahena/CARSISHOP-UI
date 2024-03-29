@@ -3,7 +3,7 @@
 
   <header-admin-component
     :is-visible="true"
-    :href="'/profileAddPayment'"
+    :href="'/'"
     :button-text="'Agregar nuevo administrador'"
     :title="'Usuarios'"
   />
@@ -12,8 +12,6 @@
 </template>
 
 <script setup>
-import AdminLayout from "../../layouts/admin/AdminLayout.vue";
-
 const items = [
   {
     title: "Inicio",
@@ -23,7 +21,7 @@ const items = [
   {
     title: "Usuarios",
     disabled: true,
-    href: "/adminUsers",
+    href: "/admin/users",
   },
 ];
 </script>

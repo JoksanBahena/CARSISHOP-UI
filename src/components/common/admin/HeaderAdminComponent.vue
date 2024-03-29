@@ -41,7 +41,6 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import Colors from "@/utils/Colors.js";
 
 const props = defineProps({
