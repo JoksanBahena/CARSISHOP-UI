@@ -8,9 +8,21 @@
             prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
             subtitle="sandra_a88@gmailcom"
             title="Sandra Adams"
+            :class="item.status ? '' : 'text-disabled'"
           >
           </v-list-item>
         </v-list>
+      </template>
+      <template v-slot:item.role="{ item }">
+        <div :class="item.status ? '' : 'text-disabled'">{{ item.role }}</div>
+      </template>
+      <template v-slot:item.email="{ item }">
+        <div :class="item.status ? '' : 'text-disabled'">{{ item.email }}</div>
+      </template>
+      <template v-slot:item.phoneNumber="{ item }">
+        <div :class="item.status ? '' : 'text-disabled'">
+          {{ item.phoneNumber }}
+        </div>
       </template>
       <template v-slot:item.status="{ item }">
         <div class="text-end">
@@ -71,7 +83,7 @@ const items = [
   {
     id: 1,
     user: "",
-    role: "Adinistrador",
+    role: "Administrador",
     email: "admin@admin.com",
     phoneNumber: "1234567890",
     status: true,
@@ -80,7 +92,7 @@ const items = [
   {
     id: 2,
     user: "",
-    role: "Adinistrador",
+    role: "Administrador",
     email: "admin@admin.com",
     phoneNumber: "1234567890",
     status: false,
