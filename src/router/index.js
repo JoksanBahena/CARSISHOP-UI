@@ -22,9 +22,9 @@ const routes = [
     component: () => import("@/views/auth/ForgotPasswordView.vue"),
   },
   {
-    path: "/forgotPasswordConfirm",
+    path: "/forgotPasswordConfirm/:token",
     name: "ForgotPasswordConfirm",
-    component: () => import("@/views/auth/ForgotPasswordConfirmView.vue")
+    component: () => import("@/views/auth/ForgotPasswordConfirmView.vue"),
   },
   {
     path: "/:category/:subCategory",
