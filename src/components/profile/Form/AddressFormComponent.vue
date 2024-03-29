@@ -188,9 +188,17 @@ const state = reactive({ ...address });
 const rules = {
   street: {
     required: withMessage("La calle es requerida", required),
+    maxLength: withMessage(
+      "La calle debe tener menos de 50 carácteres",
+      maxLength(50)
+    ),
   },
   suburb: {
     required: withMessage("La colonia es requerida", required),
+    maxLength: withMessage(
+      "La colonia debe tener menos de 50 carácteres",
+      maxLength(50)
+    ),
   },
   cp: {
     required: withMessage("El codigo postal es requerido", required),

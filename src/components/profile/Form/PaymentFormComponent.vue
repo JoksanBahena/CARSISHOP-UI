@@ -190,6 +190,10 @@ const rules = {
         /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]*$/
       )
     ),
+    maxLength: withMessage(
+      "El nombre en la tarjeta no puede tener más de 50 carácteres",
+      maxLength(50)
+    ),
   },
   number: {
     required: withMessage("El número de tarjeta es obligatorio", required),
