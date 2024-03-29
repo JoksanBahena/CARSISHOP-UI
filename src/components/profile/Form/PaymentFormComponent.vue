@@ -195,7 +195,7 @@ const rules = {
     required: withMessage("El número de tarjeta es obligatorio", required),
     integer: withMessage("El número de tarjeta debe ser un número", integer),
     regex: withMessage(
-      "El número de tarjetadebe contener  solo números",
+      "El número de tarjeta solo debe contener números",
       regex(/^\d+$/)
     ),
     minLength: withMessage(
@@ -218,7 +218,7 @@ const rules = {
     integer: withMessage("El CCV debe ser un número", integer),
     minLength: withMessage("El CCV debe tener 3 dígitos", minLength(3)),
     maxLength: withMessage("El CCV debe tener 3 dígitos", maxLength(3)),
-    regex: withMessage("El CCV debe contener solo números", regex(/^\d+$/)),
+    regex: withMessage("El CCV solo debe contener números", regex(/^\d+$/)),
   },
 };
 
