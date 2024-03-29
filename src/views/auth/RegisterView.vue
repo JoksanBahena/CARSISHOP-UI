@@ -338,6 +338,7 @@
             class="text-none flex-grow-1"
             :color="colors.primary_dark"
             variant="flat"
+            :disabled="v$.$errors.length > 0"
           >
             Continuar
           </v-btn>
@@ -347,6 +348,7 @@
             class="text-none flex-grow-1"
             :color="colors.primary_dark"
             variant="flat"
+            :disabled="v$.$errors.length > 0"
           >
             Enviar
           </v-btn>
@@ -608,6 +610,11 @@ const hasErrorsInFields = (fields) => {
 };
 
 const submit = () => {
+  v$.value.$touch();
+  if(v$.value.$error){
+    console.log('error')
+    return;
+  }
   alert(JSON.stringify(state));
 };
 
