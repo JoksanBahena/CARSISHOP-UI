@@ -4,6 +4,7 @@
 </template>
 
 <script setup>
+import PaymentFormComponent from '@/components/profile/Form/PaymentFormComponent.vue';
 const items = [
   {
     title: "Inicio",
