@@ -42,6 +42,25 @@ const routes = [
     component: () => import("@/views/product/ProductDetailsView.vue"),
   },
   {
+    path: "/admin",
+    name: "Admin",
+    redirect: { name: "AdminUsers" },
+    component: () => import("@/views/admin/AdminView.vue"),
+    children: [
+      {
+        path: "users",
+        name: "AdminUsers",
+        component: () => import("@/views/admin/AdminUsersView.vue"),
+      },
+      {
+        path: "products",
+        name: "AdminProducts",
+        component: () => import("@/views/admin/AdminProductView.vue"),
+      },
+
+    ],
+  },
+  {
     path: "/profile",
     name: "Profile",
     redirect: { name: "ProfileSummary" },
@@ -98,20 +117,37 @@ const routes = [
         component: () => import("@/views/profile/ProfileSalesRequest.vue"),
       },
     ],
-
-
   },
 
-  {
-    path: "/adminUsers",
-    name: "AdminUsers",
-    component: () => import("@/views/admin/AdminUsersView.vue")
-  },
-  {
-    path: "/adminProducts",
-    name: "AdminProducts",
-    component: () => import("@/views/admin/AdminProductView.vue")
-  },
+  // {
+  //   path: "/adminUsers",
+  //   name: "AdminUsers",
+  //   component: () => import("@/views/admin/AdminUsersView.vue")
+  // },
+  // {
+  //   path: "/adminProducts",
+  //   name: "AdminProducts",
+  //   component: () => import("@/views/admin/AdminProductView.vue")
+  // },
+  // {
+  //   path: "/admin",
+  //   name: "Admin",
+  //   redirect: { name: "AdminUsers" },
+  //   component: () => import("@/views/admin/AdminView.vue"),
+  //   children: [
+  //     {
+  //       path: "users",
+  //       name: "AdminUsers",
+  //       component: () => import("@/views/admin/AdminUsersView.vue"),
+  //     },
+  //     {
+  //       path: "products",
+  //       name: "AdminProducts",
+  //       component: () => import("@/views/admin/AdminProductView.vue"),
+  //     },
+
+  //   ];
+  // },
 ];
 
 const router = createRouter({

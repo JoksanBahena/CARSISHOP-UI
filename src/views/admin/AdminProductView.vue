@@ -1,19 +1,15 @@
 <template>
-  <admin-layout>
-    <v-breadcrumbs :items="items"></v-breadcrumbs>
-    <header-admin-component
-      :is-visible="false"
-      :href="'/profileAddPayment'"
-      :title="'Productos'"
-    />
+  <breadcrumbs-component :items="items" />
+  <header-admin-component
+    :is-visible="false"
+    :href="'/'"
+    :title="'Productos'"
+  />
 
-    <admin-table-products-component />
-  </admin-layout>
+  <admin-table-products-component />
 </template>
 
 <script setup>
-import AdminLayout from "../../layouts/admin/AdminLayout.vue";
-
 const items = [
   {
     title: "Inicio",
@@ -23,7 +19,7 @@ const items = [
   {
     title: "productos",
     disabled: true,
-    href: "/adminProducts",
+    href: "/admin/products",
   },
 ];
 </script>

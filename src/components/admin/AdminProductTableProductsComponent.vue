@@ -2,13 +2,11 @@
   <v-card outlined>
     <v-divider></v-divider>
     <v-data-table :headers="headers" :items="items" :items-per-page="5">
-      <template v-slot:item.product>
+      <template v-slot:item.product="{ item }">
         <v-card flat>
           <div class="d-flex flex-no-wrap justify-space-between">
             <v-avatar class="ma-3" rounded="0" size="125">
-              <v-img
-                src="https://cdn.vuetifyjs.com/images/cards/foster.jpg"
-              ></v-img>
+              <v-img :src="`/src/assets/imgs/${item.product}`"></v-img>
             </v-avatar>
             <div>
               <v-card-title> ITEM </v-card-title>
@@ -30,7 +28,7 @@
       </template>
       <template v-slot:item.price="{ item }">
         <div class="text-end">
-          <v-chip :text="item.price"></v-chip>
+          <v-chip color="green" :text="item.price"></v-chip>
         </div>
       </template>
 
@@ -68,12 +66,12 @@ const headers = ref([
   { title: "Categoria", key: "category", align: "start" },
   { title: "Subcategoria", key: "subcategory", align: "star" },
   { title: "Stock", key: "stock", align: "star" },
-  { title: "Acciones", key: "actions", align: "center" },
+  { title: "Ver en tienda", key: "actions", align: "center" },
 ]);
 const items = [
   {
     id: 1,
-    product: "",
+    product: "item.webp",
     saller: "",
     price: "200$mx",
     category: "Hombre",

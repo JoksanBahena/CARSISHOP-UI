@@ -24,8 +24,15 @@
       </template>
 
       <template v-slot:item.actions>
-        <v-row cols="12" md="6" justify="center" class="align-center">
-          <v-col>
+        <v-row
+          cols="12"
+          xl="12"
+          lg="8"
+          md="6"
+          justify="center"
+          class="align-center my-1"
+        >
+          <v-col cols="12" xl="12" lg="8" md="6">
             <v-btn variant="outlined" :style="{ borderColor: colors.primary }">
               <v-icon
                 icon="mdi-eye"
@@ -34,7 +41,7 @@
               />
             </v-btn>
             <v-btn
-              class="mr-2 ml-2 mt-2 mb-2"
+              class="my-1 mx-1"
               variant="outlined"
               :style="{ borderColor: colors.primary }"
             >
