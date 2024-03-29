@@ -2,6 +2,10 @@ import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
   {
+    path: "/:catchAll(.*)",
+    component: () => import("@/views/error/NotFoundView.vue"),
+  },
+  {
     path: "/",
     name: "Home",
     component: () => import("@/views/home/HomeView.vue"),
@@ -22,7 +26,7 @@ const routes = [
     component: () => import("@/views/auth/ForgotPasswordView.vue"),
   },
   {
-    path: "/forgotPasswordConfirm",
+    path: "/forgotPasswordConfirm/:token",
     name: "ForgotPasswordConfirm",
     component: () => import("@/views/auth/ForgotPasswordConfirmView.vue"),
   },
@@ -148,6 +152,7 @@ const routes = [
 
   //   ];
   // },
+
 ];
 
 const router = createRouter({
@@ -161,5 +166,22 @@ const router = createRouter({
     }
   },
 });
+
+
+
+router.beforeEach((to, from, next) => {
+
+  if(to.matched.some (route => route.meta.requiresAuth)){
+    if (localStorage.getItem('token')) {
+      //logica para verificar si el token es valido
+      next();
+    }else{
+      next({name: 'Login'})
+    }
+  }else{
+    next();
+  }
+});
+
 
 export default router;

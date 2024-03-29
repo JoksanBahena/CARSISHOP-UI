@@ -29,6 +29,10 @@
             placeholder="Correo electrónico"
             prepend-inner-icon="mdi-email-outline"
             variant="outlined"
+            v-model="state.email"
+            @blur="v$.email.$touch"
+            @input="v$.email.$touch"
+            :error-messages="v$.email.$errors.map((e) => e.$message)"
           />
         </div>
 
@@ -44,6 +48,10 @@
             prepend-inner-icon="mdi-lock-outline"
             variant="outlined"
             @click:append-inner="visible = !visible"
+            v-model="state.password"
+            @blur="v$.password.$touch"
+            @input="v$.password.$touch"
+            :error-messages="v$.password.$errors.map((e) => e.$message)"
           />
           <a
             class="text-subtitle-2 text-decoration-none"
@@ -57,11 +65,12 @@
 
         <v-btn
           class="mb-8 text-none"
-          href="/register"
           :color="colors.primary_dark"
           size="large"
           variant="flat"
           block
+          @click="login"
+          :disabled="v$.$errors.length > 0"
         >
           Iniciar sesión
         </v-btn>
@@ -90,7 +99,10 @@
 <script setup>
 import AuthLayout from "@/layouts/auth/AuthLayout.vue";
 import Colors from "@/utils/Colors.js";
-import { ref } from "vue";
+import {reactive, ref} from "vue";
+import {useVuelidate} from "@vuelidate/core";
+import {helpers, required} from "@vuelidate/validators";
+const { withMessage, regex} = helpers;
 
 const visible = ref(false);
 
@@ -102,4 +114,30 @@ const colors = {
 };
 
 const error = ref({ error: "", message: "" });
+
+const form = {
+  email: "",
+  password: "",
+};
+
+const state = reactive({
+  ...form
+});
+
+const rules = {
+  email: {
+    required: withMessage("El correo electrónico es requerido", required),
+    email: withMessage("El correo electrónico no es válido", regex(/^.+@.+\..+$/)),
+  },
+  password: {
+    required: withMessage("La contraseña es requerida", required)
+  }
+}
+
+const v$ = useVuelidate(rules, state);
+
+const login = () => {
+  alert(JSON.stringify(state));
+};
+
 </script>
