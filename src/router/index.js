@@ -41,7 +41,6 @@ const routes = [
     component: () => import("@/views/cart/PaymentView.vue"),
   },
   {
-    path: "/:category/:subCategory",
     path: "/category/:category/:subcategory",
     name: "CategorizedProducts",
     component: () => import("@/views/product/CategorizedProductsView.vue"),
