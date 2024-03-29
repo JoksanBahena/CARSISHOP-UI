@@ -1,50 +1,4 @@
 <template>
-<<<<<<< HEAD
-  <profile-layout>
-    <v-breadcrumbs :items="items"></v-breadcrumbs>
-    <v-container>
-      <p class="text-h4 font-weight-medium mb-2">Mi cuenta</p>
-      <v-form>
-        <v-row>
-          <v-col cols="12" md="4">
-            <v-img
-              lazy-src="@/assets/imgs/men_card.webp"
-              src="@/assets/imgs/men_card.webp"
-              width="200"
-              height="200"
-              aspect-ratio="1"
-              class="-lighten-2 rounded-circle"
-              cover
-            >
-            </v-img>
-          </v-col>
-          <v-col cols="12" md="4" class="mt-auto">
-            <div class="mb-4">
-              <div class="text-subtitle-1 font-weight-medium">Nombre(s)</div>
-              <v-text-field
-                density="compact"
-                placeholder="Nombre(s)"
-                prepend-inner-icon="mdi-account-outline"
-                variant="outlined"
-              />
-            </div>
-          </v-col>
-          <v-col cols="12" md="4" class="mt-auto">
-            <div class="mb-4">
-              <div class="text-subtitle-1 font-weight-medium">Apellidos</div>
-              <v-text-field
-                density="compact"
-                placeholder="Apellidos"
-                prepend-inner-icon="mdi-account-outline"
-                variant="outlined"
-              />
-            </div>
-          </v-col>
-        </v-row>
-
-        <v-row>
-          <v-col cols="12" md="4">
-=======
   <breadcrumbs-component :items="items" />
   <v-container>
     <p class="text-h4 font-weight-medium mb-2">Mi cuenta</p>
@@ -98,7 +52,6 @@
 
       <v-row>
         <!-- <v-col cols="12" md="4">
->>>>>>> 08c929c ([MODIFY] eliminación de default-layout, implentación de breadcrumbs-component y redireccionamiento de rutas con :to + nombre de la ruta)
             <div class="mb-4">
               <div class="text-subtitle-1 font-weight-medium">
                 Fecha de nacimiento
@@ -108,48 +61,13 @@
                 placeholder="Correo electrónico"
                 prepend-inner-icon="mdi-calendar-month-outline"
                 variant="outlined"
+                :disabled="is_disabled"
+                v-model="state.birthdate"
+                @input="v$.birthdate.$touch"
+                @blur="v$.birthdate.$touch"
+                :error-messages="v$.birthdate.$errors.map((e) => e.$message)"
               />
             </div>
-<<<<<<< HEAD
-          </v-col>
-          <v-col cols="12" md="4">
-            <div class="mb-4">
-              <div class="text-subtitle-1 font-weight-medium">Genero</div>
-              <v-text-field
-                density="compact"
-                placeholder="Genero"
-                prepend-inner-icon="mdi-account-outline"
-                variant="outlined"
-              />
-            </div>
-          </v-col>
-          <v-col cols="12" md="4">
-            <div class="mb-4">
-              <div class="text-subtitle-1 font-weight-medium">Telefono</div>
-              <v-text-field
-                density="compact"
-                placeholder="Telefono"
-                prepend-inner-icon="mdi-phone-outline"
-                variant="outlined"
-              />
-            </div>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12" md="4">
-            <div class="mb-4">
-              <div class="text-subtitle-1 font-weight-medium">Dirección</div>
-              <v-text-field
-                density="compact"
-                placeholder="Correo electrónico"
-                prepend-inner-icon="mdi-google-maps"
-                variant="outlined"
-              />
-            </div>
-          </v-col>
-          <v-col cols="12" md="4">
-            <div class="text-subtitle-1 font-weight-medium">Correo</div>
-=======
           </v-col> -->
         <v-col cols="12" md="4">
           <div class="mb-4">
@@ -173,49 +91,11 @@
         <v-col cols="12" md="4">
           <div class="mb-4">
             <div class="text-subtitle-1 font-weight-medium">Telefono</div>
->>>>>>> 08c929c ([MODIFY] eliminación de default-layout, implentación de breadcrumbs-component y redireccionamiento de rutas con :to + nombre de la ruta)
             <v-text-field
               density="compact"
               placeholder="Telefono"
               prepend-inner-icon="mdi-phone-outline"
               variant="outlined"
-<<<<<<< HEAD
-            />
-          </v-col>
-          <v-col cols="12" md="4">
-            <div class="text-subtitle-1 font-weight-medium">Foto de perfil</div>
-            <v-file-input
-              density="compact"
-              type="file"
-              accept="image/png, image/jpeg, image/bmp"
-              variant="outlined"
-              prepend-icon="mdi-camera-outline"
-              chips
-              show-size
-              @change="onFileChange"
-            />
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-divider></v-divider>
-
-          <v-col cols="12">
-            <v-btn
-              variant="outlined"
-              prepend-icon="mdi-pencil"
-              class="text-none"
-              :color="colors.primary_dark"
-              size="large"
-              block
-            >
-              Editar
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-form>
-    </v-container>
-  </profile-layout>
-=======
               type="number"
               :disabled="is_disabled"
               v-model="state.phone"
@@ -291,15 +171,10 @@
       </v-row>
     </v-form>
   </v-container>
->>>>>>> 08c929c ([MODIFY] eliminación de default-layout, implentación de breadcrumbs-component y redireccionamiento de rutas con :to + nombre de la ruta)
 </template>
 
 <script setup>
 import Colors from "@/utils/Colors.js";
-<<<<<<< HEAD
-import { ref } from "vue";
-import ProfileLayout from "@/layouts/user/ProfileLayout.vue";
-=======
 import { ref, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import {
@@ -311,7 +186,6 @@ import {
 } from "@vuelidate/validators";
 import Swal from "sweetalert2";
 const { withMessage, regex } = helpers;
->>>>>>> 08c929c ([MODIFY] eliminación de default-layout, implentación de breadcrumbs-component y redireccionamiento de rutas con :to + nombre de la ruta)
 
 const colors = {
   primary: Colors.cs_primary,
@@ -319,8 +193,6 @@ const colors = {
   white: Colors.cs_white,
 };
 
-<<<<<<< HEAD
-=======
 const items = [
   {
     title: "Inicio",
@@ -434,7 +306,6 @@ const clear = () => {
   }
 };
 
->>>>>>> 08c929c ([MODIFY] eliminación de default-layout, implentación de breadcrumbs-component y redireccionamiento de rutas con :to + nombre de la ruta)
 const image_url = ref("");
 
 const onFileChange = (e) => {
@@ -443,6 +314,19 @@ const onFileChange = (e) => {
 
   reader.onload = (e) => {
     image_url.value = e.target.result;
+    console.log(file.size);
+    console.log(file);
+
+    if (file.size > 2_000_000) {
+      state.img = null;
+      Swal.fire({
+        title: "Error!",
+        text: "La imagen no debe pesar más de 2MB",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      return;
+    }
   };
 
   reader.readAsDataURL(file);
