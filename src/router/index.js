@@ -81,6 +81,10 @@ const routes = [
         path: "categories",
         name: "AdminCategories",
         component: () => import("@/views/admin/AdminCategoriesView.vue"),
+      }, {
+        path: "subcategories",
+        name: "AdminSubCategories",
+        component: () => import("@/views/admin/AdminSubCategoriesView.vue"),
       }
 
     ],

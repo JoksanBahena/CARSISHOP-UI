@@ -96,6 +96,10 @@ const categories = ref([
     name: "Cateogrias ",
     to: "/admin/categories",
   },
+  {
+    name: "Subcategorias",
+    to: "/admin/subcategories",
+  },
 ]);
 
 const actions = ref([

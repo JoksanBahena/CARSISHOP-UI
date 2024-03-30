@@ -16,9 +16,9 @@
         </div>
       </template>
 
-      <template v-slot:item.category="{ item }">
+      <template v-slot:item.subcategory="{ item }">
         <div :class="item.status ? '' : 'text-disabled'">
-          {{ item.category }}
+          {{ item.subcategory }}
         </div>
       </template>
       <template v-slot:item.actions="{ item }">
@@ -59,20 +59,20 @@ const colors = {
 };
 const headers = ref([
   { title: "#", key: "id", align: "start" },
-  { title: "Categoria", key: "category", align: "start" },
+  { title: "Subcategoria", key: "subcategory", align: "start" },
   { title: "Estado", key: "status", align: "start" },
   { title: "Acciones", key: "actions", align: "center" },
 ]);
 const items = [
   {
     id: 1,
-    category: "Hombre",
+    subcategory: "Tenis para correr",
     status: true,
     actions: true,
   },
   {
     id: 2,
-    category: "Mujer",
+    subcategory: "Zapatos de vestir",
     status: false,
     actions: true,
   },
