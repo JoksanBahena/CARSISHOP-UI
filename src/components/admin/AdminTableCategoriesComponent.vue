@@ -37,11 +37,36 @@
         </v-card>
       </template>
       <template v-slot:item.status="{ item }">
-        <div class="text-end">
-          <v-chip :color="getStatusColor(item.status)">
-            {{ getStatusText(item.status) }}
-          </v-chip>
+        <div class="text-start">
+          <v-chip
+            :color="item.status ? 'green' : 'red'"
+            :text="item.status ? 'Activo' : 'Inactivo'"
+          ></v-chip>
         </div>
+      </template>
+      <template v-slot:item.actions="{ item }">
+        <v-row>
+          <v-col>
+            <v-btn variant="outlined" :style="{ borderColor: colors.primary }">
+              <v-icon
+                icon="mdi-pencil"
+                :color="colors.primary_dark"
+                class="text-h4"
+              />
+            </v-btn>
+          </v-col>
+          <v-col>
+            <v-btn variant="outlined" :style="{ borderColor: colors.primary }">
+              <v-icon
+                :icon="
+                  item.status ? 'mdi-delete-outline' : 'mdi-delete-restore'
+                "
+                :color="colors.primary_dark"
+                class="text-h4"
+              />
+            </v-btn>
+          </v-col>
+        </v-row>
       </template>
     </v-data-table>
   </v-card>
@@ -57,77 +82,22 @@ const colors = {
 };
 const headers = ref([
   { title: "#", key: "id", align: "start" },
-  { title: "Vendedor", key: "seller", align: "start" },
-  { title: "Comprador", key: "buyer", align: "start" },
-  { title: "Producto", key: "product", align: "start" },
   { title: "Categoria", key: "category", align: "start" },
-  { title: "Subcategoria", key: "subcategory", align: "center" },
-  { title: "Precio", key: "price", align: "start" },
-  { title: "Fecha", key: "date", align: "start" },
-  { title: "Estado", key: "status", align: "center" },
+  { title: "Estado", key: "status", align: "start" },
+  { title: "Acciones", key: "actions", align: "center" },
 ]);
 const items = [
   {
     id: 1,
     category: "Hombre",
-    status: 1,
+    status: true,
+    actions: true,
   },
   {
     id: 2,
-    seller: "",
-    buyer: "",
-    product: "item.webp",
-    category: "Hombre",
-    subcategory: "Chaquetones",
-    price: "$499",
-    date: "01-01-2001",
-    status: 3,
-  },
-  {
-    id: 3,
-    seller: "",
-    buyer: "",
-    product: "item.webp",
-    category: "Hombre",
-    subcategory: "Chaquetones",
-    price: "$499",
-    date: "01-01-2001",
-    status: 4,
-  },
-  {
-    id: 4,
-    seller: "",
-    buyer: "",
-    product: "item.webp",
-    category: "Hombre",
-    subcategory: "Chaquetones",
-    price: "$499",
-    date: "01-01-2001",
-    status: 2,
+    category: "Mujer",
+    status: false,
+    actions: true,
   },
 ];
-
-const getStatusColor = (status) => {
-  return status === 1
-    ? "green"
-    : status === 2
-    ? "blue"
-    : status === 3
-    ? "purple"
-    : status === 4
-    ? "red"
-    : "grey";
-};
-
-const getStatusText = (status) => {
-  return status === 1
-    ? "Pagado"
-    : status === 2
-    ? "Enviado"
-    : status === 3
-    ? "En tránsito"
-    : status === 4
-    ? "Devuelto"
-    : "";
-};
 </script>

@@ -92,6 +92,10 @@ const categories = ref([
     name: "Compras",
     to: "/",
   },
+  {
+    name: "Cateogrias ",
+    to: "/admin/categories",
+  },
 ]);
 
 const actions = ref([
