@@ -7,7 +7,7 @@
     :title="'Categorias'"
   />
   <v-container>
-    <admin-table-categories-component />
+    <admin-categories-table-component />
   </v-container>
 </template>
 

@@ -8,7 +8,7 @@
     :title="'Usuarios'"
   />
 
-  <admin-table-component />
+  <admin-user-tab-component />
 </template>
 
 <script setup>

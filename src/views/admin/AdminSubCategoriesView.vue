@@ -7,7 +7,7 @@
     :title="'Subcategorías'"
   />
   <v-container>
-    <admin-table-subcategories-component />
+    <admin-subcategories-table-component />
   </v-container>
 </template>
 

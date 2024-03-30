@@ -6,7 +6,7 @@
     :title="'Productos'"
   />
 
-  <admin-table-products-component />
+  <admin-products-tab-component />
 </template>
 
 <script setup>

@@ -64,7 +64,7 @@ const routes = [
       {
         path: "users",
         name: "AdminUsers",
-        component: () => import("@/views/admin/AdminUsersView.vue"),
+        component: () => import("@/views/admin/AdminUsersView"),
       },
       {
         path: "products",
@@ -81,7 +81,8 @@ const routes = [
         path: "categories",
         name: "AdminCategories",
         component: () => import("@/views/admin/AdminCategoriesView.vue"),
-      }, {
+      },
+      {
         path: "subcategories",
         name: "AdminSubCategories",
         component: () => import("@/views/admin/AdminSubCategoriesView.vue"),
