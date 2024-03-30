@@ -71,6 +71,11 @@ const routes = [
         name: "AdminProducts",
         component: () => import("@/views/admin/AdminProductView.vue"),
       },
+      {
+        path: "salles",
+        name: "AdminSalles",
+        component: () => import("@/views/admin/AdminSallesView.vue"),
+      }
 
     ],
   },
@@ -182,14 +187,14 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
 
-  if(to.matched.some (route => route.meta.requiresAuth)){
+  if (to.matched.some(route => route.meta.requiresAuth)) {
     if (localStorage.getItem('token')) {
       //logica para verificar si el token es valido
       next();
-    }else{
-      next({name: 'Login'})
+    } else {
+      next({ name: 'Login' })
     }
-  }else{
+  } else {
     next();
   }
 });
