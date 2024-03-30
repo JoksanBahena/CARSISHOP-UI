@@ -80,12 +80,12 @@ const routes = [
       {
         path: "categories",
         name: "AdminCategories",
-        component: () => import("@/views/admin/AdminCategoriesView.vue"),
+        component: () => import("@/views/admin/AdminCategoryView.vue"),
       },
       {
         path: "subcategories",
         name: "AdminSubCategories",
-        component: () => import("@/views/admin/AdminSubCategoriesView.vue"),
+        component: () => import("@/views/admin/AdminSubCategoryView.vue"),
       }
 
     ],
