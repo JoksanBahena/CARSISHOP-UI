@@ -3,7 +3,7 @@
 
   <header-admin-component
     :is-visible="true"
-    :href="'/'"
+    :href="'users/add'"
     :button-text="'Agregar nuevo administrador'"
     :title="'Usuarios'"
   />

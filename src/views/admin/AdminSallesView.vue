@@ -2,7 +2,9 @@
   <breadcrumbs-component :items="items" />
 
   <header-admin-component :is-visible="false" :href="'/'" :title="'Ventas'" />
-  <admin-salles-table-component />
+  <v-container>
+    <admin-salles-table-component />
+  </v-container>
 </template>
 
 <script setup>

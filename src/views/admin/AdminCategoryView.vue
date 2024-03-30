@@ -2,7 +2,7 @@
   <breadcrumbs-component :items="items" />
   <header-admin-component
     :is-visible="true"
-    :href="'/'"
+    :href="'categories/add'"
     :button-text="'Agregar nueva categoría'"
     :title="'Categorias'"
   />

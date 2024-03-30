@@ -68,8 +68,14 @@ const headers = ref([
 ]);
 const items = [
   {
-    id: 1,
+    id: 2,
+    seller: "",
+    buyer: "",
+    product: "item.webp",
     category: "Hombre",
+    subcategory: "Chaquetones",
+    price: "$499",
+    date: "01-01-2001",
     status: 1,
   },
   {

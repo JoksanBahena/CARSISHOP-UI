@@ -67,10 +67,11 @@ const routes = [
         component: () => import("@/views/admin/AdminUsersView"),
       },
       {
-        path: "products",
-        name: "AdminProducts",
-        component: () => import("@/views/admin/AdminProductView.vue"),
+        path: "users/add",
+        name: "AdminAddUser",
+        component: () => import("@/views/admin/AdminAddUserView.vue"),
       },
+
       {
         path: "salles",
         name: "AdminSalles",
@@ -83,13 +84,24 @@ const routes = [
         component: () => import("@/views/admin/AdminCategoryView.vue"),
       },
       {
+        path: "categories/add",
+        name: "AdminAddCategory",
+        component: () => import("@/views/admin/AdminAddCategoryView.vue"),
+      },
+      {
         path: "subcategories",
         name: "AdminSubCategories",
         component: () => import("@/views/admin/AdminSubCategoryView.vue"),
+      },
+      {
+        path: "subcategories/add",
+        name: "AdminAddSubCategory",
+        component: () => import("@/views/admin/AdminAddSubcategoryView.vue"),
       }
 
     ],
   },
+
   {
     path: "/profile",
     name: "Profile",
@@ -150,35 +162,7 @@ const routes = [
     ],
   },
 
-  // {
-  //   path: "/adminUsers",
-  //   name: "AdminUsers",
-  //   component: () => import("@/views/admin/AdminUsersView.vue")
-  // },
-  // {
-  //   path: "/adminProducts",
-  //   name: "AdminProducts",
-  //   component: () => import("@/views/admin/AdminProductView.vue")
-  // },
-  // {
-  //   path: "/admin",
-  //   name: "Admin",
-  //   redirect: { name: "AdminUsers" },
-  //   component: () => import("@/views/admin/AdminView.vue"),
-  //   children: [
-  //     {
-  //       path: "users",
-  //       name: "AdminUsers",
-  //       component: () => import("@/views/admin/AdminUsersView.vue"),
-  //     },
-  //     {
-  //       path: "products",
-  //       name: "AdminProducts",
-  //       component: () => import("@/views/admin/AdminProductView.vue"),
-  //     },
 
-  //   ];
-  // },
 
 ];
 
