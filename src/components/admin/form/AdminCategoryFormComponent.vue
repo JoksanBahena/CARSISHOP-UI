@@ -97,10 +97,6 @@ const rules = {
       "El campo debe tener menos de 50 caracteres",
       maxLength(50)
     ),
-    regex: withMessage(
-      "El campo solo puede contener letras, acentos y espacios",
-      regex("^[a-zA-ZÀ-ÿ\u00f1\u00d1\\s]*$")
-    ),
   },
 };
 

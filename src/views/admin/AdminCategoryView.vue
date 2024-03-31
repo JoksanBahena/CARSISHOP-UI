@@ -19,7 +19,7 @@ const items = [
     href: "/",
   },
   {
-    title: "Usuarios",
+    title: "Categorias",
     disabled: true,
     href: "/admin/categories",
   },
