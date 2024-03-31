@@ -75,9 +75,12 @@
             <v-text-field
               density="compact"
               placeholder="Contraseña"
-              prepend-inner-icon="mdi-lock-outline"
               variant="outlined"
-              type="password"
+              :append-inner-icon="
+                pass_visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
+              "
+              :type="pass_visible ? 'text' : 'password'"
+              @click:append-inner="pass_visible = !pass_visible"
               v-model="state.password"
               @input="v$.password.$touch"
               @blur="v$.password.$touch"
@@ -91,9 +94,12 @@
             <v-text-field
               density="compact"
               placeholder="Confirmar contraseña"
-              prepend-inner-icon="mdi-lock-outline"
               variant="outlined"
-              type="password"
+              :append-inner-icon="
+                confirm_visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
+              "
+              :type="confirm_visible ? 'text' : 'password'"
+              @click:append-inner="confirm_visible = !confirm_visible"
               v-model="state.confirm_password"
               @input="v$.confirm_password.$touch"
               @blur="v$.confirm_password.$touch"
@@ -155,6 +161,8 @@ const colors = {
   primary_dark: Colors.cs_primary_dark,
   white: Colors.cs_white,
 };
+const pass_visible = ref(false);
+const confirm_visible = ref(false);
 
 const items = [
   {
