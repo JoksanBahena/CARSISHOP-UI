@@ -81,7 +81,6 @@ const routes = [
         path: "salles",
         name: "AdminSalles",
         component: () => import("@/views/admin/AdminSallesView.vue"),
-
       },
       {
         path: "categories",
@@ -102,8 +101,7 @@ const routes = [
         path: "subcategories/add",
         name: "AdminAddSubCategory",
         component: () => import("@/views/admin/AdminAddSubcategoryView.vue"),
-      }
-
+      },
     ],
   },
 
@@ -112,10 +110,10 @@ const routes = [
     name: "Profile",
     redirect: { name: "ProfileSummary" },
     component: () => import("@/views/profile/ProfileView.vue"),
-    meta: { requiresAuth: true },
+    // meta: { requiresAuth: true },
     children: [
       {
-        path: "",
+        path: "summary",
         name: "ProfileSummary",
         component: () => import("@/views/profile/ProfileResumeView.vue"),
       },
@@ -156,19 +154,28 @@ const routes = [
       },
       {
         path: "sales",
-        name: "ProfileSales",
-        component: () => import("@/views/profile/ProfileSalesView.vue"),
-      },
-      {
-        path: "sales/request",
-        name: "ProfileSalesRequest",
-        component: () => import("@/views/profile/ProfileSalesRequest.vue"),
+        name: "Sales",
+        component: () => import("@/views/seller/SellerView.vue"),
+        children: [
+          {
+            path: "",
+            name: "SellerSales",
+            component: () => import("@/views/seller/SellerSalesView.vue"),
+          },
+          {
+            path: "request",
+            name: "SellerRequest",
+            component: () => import("@/views/seller/SellerRequestView.vue"),
+          },
+          {
+            path: "summary",
+            name: "SellerResumen",
+            component: () => import("@/views/seller/SellerSummaryView.vue"),
+          },
+        ],
       },
     ],
   },
-
-
-
 ];
 
 const router = createRouter({
@@ -183,21 +190,17 @@ const router = createRouter({
   },
 });
 
-
-
 router.beforeEach((to, from, next) => {
-
-  if (to.matched.some(route => route.meta.requiresAuth)) {
-    if (localStorage.getItem('token')) {
+  if (to.matched.some((route) => route.meta.requiresAuth)) {
+    if (localStorage.getItem("token")) {
       //logica para verificar si el token es valido
       next();
     } else {
-      next({ name: 'Login' })
+      next({ name: "Login" });
     }
   } else {
     next();
   }
 });
-
 
 export default router;
