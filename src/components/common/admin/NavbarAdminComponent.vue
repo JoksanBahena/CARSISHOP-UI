@@ -86,11 +86,19 @@ const categories = ref([
   },
   {
     name: "Ventas",
-    to: "/admin/products",
+    to: "/admin/salles",
   },
   {
     name: "Compras",
     to: "/",
+  },
+  {
+    name: "Cateogrias ",
+    to: "/admin/categories",
+  },
+  {
+    name: "Subcategorias",
+    to: "/admin/subcategories",
   },
 ]);
 

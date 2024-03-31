@@ -32,7 +32,7 @@
             ></v-text-field>
           </v-col>
           <v-col cols="4" md="6" class="mb-auto mt-auto pl-2">
-            <p class="text-md-right">Resultados obtenidos</p>
+            <p class="text-md-right">{{ result }} Resultados obtenidos</p>
           </v-col>
         </v-row>
       </v-col>
@@ -59,6 +59,10 @@ const props = defineProps({
   title: {
     type: String,
     default: "Usuarios",
+  },
+  result: {
+    type: Number,
+    default: 0,
   },
 });
 

@@ -1,14 +1,14 @@
 <template>
   <breadcrumbs-component :items="items" />
-
   <header-admin-component
     :is-visible="true"
-    :href="'users/add'"
-    :button-text="'Agregar nuevo administrador'"
-    :title="'Usuarios'"
+    :href="'categories/add'"
+    :button-text="'Agregar nueva categoría'"
+    :title="'Categorias'"
   />
-
-  <admin-user-tab-component />
+  <v-container>
+    <admin-category-table-component />
+  </v-container>
 </template>
 
 <script setup>
@@ -19,9 +19,9 @@ const items = [
     href: "/",
   },
   {
-    title: "Usuarios",
+    title: "Categorias",
     disabled: true,
-    href: "/admin/users",
+    href: "/admin/categories",
   },
 ];
 </script>

@@ -1,12 +1,10 @@
 <template>
   <breadcrumbs-component :items="items" />
-  <header-admin-component
-    :is-visible="false"
-    :href="'/'"
-    :title="'Productos'"
-  />
 
-  <admin-products-tab-component />
+  <header-admin-component :is-visible="false" :href="'/'" :title="'Ventas'" />
+  <v-container>
+    <admin-salles-table-component />
+  </v-container>
 </template>
 
 <script setup>
@@ -17,9 +15,9 @@ const items = [
     href: "/",
   },
   {
-    title: "productos",
+    title: "Ventas",
     disabled: true,
-    href: "/admin/products",
+    href: "/admin/salles",
   },
 ];
 </script>

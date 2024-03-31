@@ -1,5 +1,5 @@
-import {createRouter, createWebHistory} from "vue-router";
-import {useAuthStore} from "@/store/AuthStore";
+import { createRouter, createWebHistory } from "vue-router";
+import { useAuthStore } from "@/store/AuthStore";
 
 const routes = [
   {
@@ -59,14 +59,19 @@ const routes = [
   {
     path: "/admin",
     name: "Admin",
-    redirect: {name: "AdminUsers"},
+    redirect: { name: "AdminUsers" },
     component: () => import("@/views/admin/AdminView.vue"),
-    meta: {requiresAuth: true, roles: ["admin"]},
+    meta: { requiresAuth: true, roles: ["admin"] },
     children: [
       {
         path: "users",
         name: "AdminUsers",
-        component: () => import("@/views/admin/AdminUsersView.vue"),
+        component: () => import("@/views/admin/AdminUsersView"),
+      },
+      {
+        path: "users/add",
+        name: "AdminAddUser",
+        component: () => import("@/views/admin/AdminAddUserView.vue"),
       },
       {
         path: "products",
@@ -74,14 +79,42 @@ const routes = [
         component: () => import("@/views/admin/AdminProductView.vue"),
       },
 
+      {
+        path: "salles",
+        name: "AdminSalles",
+        component: () => import("@/views/admin/AdminSallesView.vue"),
+
+      },
+      {
+        path: "categories",
+        name: "AdminCategories",
+        component: () => import("@/views/admin/AdminCategoryView.vue"),
+      },
+      {
+        path: "categories/add",
+        name: "AdminAddCategory",
+        component: () => import("@/views/admin/AdminAddCategoryView.vue"),
+      },
+      {
+        path: "subcategories",
+        name: "AdminSubCategories",
+        component: () => import("@/views/admin/AdminSubCategoryView.vue"),
+      },
+      {
+        path: "subcategories/add",
+        name: "AdminAddSubCategory",
+        component: () => import("@/views/admin/AdminAddSubcategoryView.vue"),
+      }
+
     ],
   },
+
   {
     path: "/profile",
     name: "Profile",
-    redirect: {name: "ProfileSummary"},
+    redirect: { name: "ProfileSummary" },
     component: () => import("@/views/profile/ProfileView.vue"),
-    meta: {requiresAuth: true},
+    meta: { requiresAuth: true },
     children: [
       {
         path: "",
@@ -136,35 +169,7 @@ const routes = [
     ],
   },
 
-  // {
-  //   path: "/adminUsers",
-  //   name: "AdminUsers",
-  //   component: () => import("@/views/admin/AdminUsersView.vue")
-  // },
-  // {
-  //   path: "/adminProducts",
-  //   name: "AdminProducts",
-  //   component: () => import("@/views/admin/AdminProductView.vue")
-  // },
-  // {
-  //   path: "/admin",
-  //   name: "Admin",
-  //   redirect: { name: "AdminUsers" },
-  //   component: () => import("@/views/admin/AdminView.vue"),
-  //   children: [
-  //     {
-  //       path: "users",
-  //       name: "AdminUsers",
-  //       component: () => import("@/views/admin/AdminUsersView.vue"),
-  //     },
-  //     {
-  //       path: "products",
-  //       name: "AdminProducts",
-  //       component: () => import("@/views/admin/AdminProductView.vue"),
-  //     },
 
-  //   ];
-  // },
 
 ];
 
@@ -173,9 +178,9 @@ const router = createRouter({
   routes,
   scrollBehavior(to, from, savedPosition) {
     if (to.hash) {
-      return {el: to.hash};
+      return { el: to.hash };
     } else {
-      return {top: 0};
+      return { top: 0 };
     }
   },
 });
@@ -187,17 +192,17 @@ router.beforeEach((to, from, next) => {
         if (to.meta.roles.includes(useAuthStore().user)) {
           next();
         } else {
-          next({name: 'Home'});
+          next({ name: 'Home' });
         }
       }
       next();
     } else {
-      next({name: 'Login'});
+      next({ name: 'Login' });
     }
   } else if (useAuthStore().isAuthenticated && to.name === 'Login' || to.name === 'Register' || to.name === 'ForgotPassword' || to.name === 'ForgotPasswordConfirm') {
-    next({name: 'Home'});
+    next({ name: 'Home' });
 
-  }else {
+  } else {
     next();
   }
 });

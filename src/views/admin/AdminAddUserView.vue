@@ -1,16 +1,10 @@
 <template>
   <breadcrumbs-component :items="items" />
 
-  <header-admin-component
-    :is-visible="true"
-    :href="'users/add'"
-    :button-text="'Agregar nuevo administrador'"
-    :title="'Usuarios'"
-  />
-
-  <admin-user-tab-component />
+  <v-container>
+    <admin-user-form-component />
+  </v-container>
 </template>
-
 <script setup>
 const items = [
   {
@@ -20,8 +14,13 @@ const items = [
   },
   {
     title: "Usuarios",
-    disabled: true,
+    disabled: false,
     href: "/admin/users",
+  },
+  {
+    title: "Agregar nuevo usuario",
+    disabled: true,
+    href: "/admin/users/add",
   },
 ];
 </script>

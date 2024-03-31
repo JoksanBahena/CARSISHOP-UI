@@ -4,7 +4,7 @@
     <v-data-table :headers="headers" :items="items" :items-per-page="5">
       <template v-slot:item.product="{ item }">
         <v-card flat>
-          <div class="d-flex flex-no-wrap justify-space-between">
+          <div class="d-flex flex-no-wrap ">
             <v-avatar class="ma-3" rounded="0" size="125">
               <v-img :src="`/src/assets/imgs/${item.product}`"></v-img>
             </v-avatar>
@@ -16,7 +16,7 @@
           </div>
         </v-card>
       </template>
-      <template v-slot:item.saller>
+      <template v-slot:item.seller>
         <v-list color="transparent">
           <v-list-item
             prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
@@ -61,7 +61,7 @@ const colors = {
 const headers = ref([
   { title: "#", key: "id", align: "start" },
   { title: "Producto", key: "product", align: "start" },
-  { title: "Vendedor", key: "saller", align: "start" },
+  { title: "Vendedor", key: "seller", align: "start" },
   { title: "Precio ", key: "price", align: "start" },
   { title: "Categoria", key: "category", align: "start" },
   { title: "Subcategoria", key: "subcategory", align: "star" },
@@ -72,7 +72,7 @@ const items = [
   {
     id: 1,
     product: "item.webp",
-    saller: "",
+    seller: "",
     price: "200$mx",
     category: "Hombre",
     subcategory: "Chaquetones",
