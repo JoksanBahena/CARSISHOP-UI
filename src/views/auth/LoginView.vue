@@ -11,7 +11,7 @@
 
       <form action="" class="mx-10">
         <v-alert
-          v-show="!error"
+          v-show="error.message"
           class="mb-8"
           variant="tonal"
           icon="mdi-alert-circle-outline"
@@ -69,16 +69,20 @@
           size="large"
           variant="flat"
           block
-          @click="login"
+          @click="submit"
           :disabled="v$.$errors.length > 0"
+          :loading="loading"
         >
           Iniciar sesión
+          <template v-slot:loader>
+            <v-progress-linear indeterminate></v-progress-linear>
+          </template>
         </v-btn>
 
         <div class="d-flex align-center">
-          <v-divider />
+          <v-divider/>
           <p class="text-subtitle-1 mx-4" :style="{ color: colors.gray }">o</p>
-          <v-divider />
+          <v-divider/>
         </div>
 
         <v-card-text class="text-center">
@@ -88,7 +92,8 @@
             rel="noopener noreferrer"
             href="/register"
           >
-            Registrate aquí<v-icon icon="mdi-chevron-right"></v-icon>
+            Registrate aquí
+            <v-icon icon="mdi-chevron-right"></v-icon>
           </a>
         </v-card-text>
       </form>
@@ -102,7 +107,10 @@ import Colors from "@/utils/Colors.js";
 import {reactive, ref} from "vue";
 import {useVuelidate} from "@vuelidate/core";
 import {helpers, required} from "@vuelidate/validators";
-const { withMessage, regex} = helpers;
+import {login} from "@/services/authServices.js";
+import {getErrorMessage} from "@/utils/Errors";
+
+const {withMessage, regex} = helpers;
 
 const visible = ref(false);
 
@@ -113,7 +121,8 @@ const colors = {
   white: Colors.cs_white,
 };
 
-const error = ref({ error: "", message: "" });
+const error = ref({error: "", message: ""});
+const loading = ref(false);
 
 const form = {
   email: "",
@@ -136,8 +145,20 @@ const rules = {
 
 const v$ = useVuelidate(rules, state);
 
-const login = () => {
-  alert(JSON.stringify(state));
+const submit = async () => {
+  v$.value.$touch();
+  if (v$.value.$error) return;
+  error.value = {error: "", message: ""};
+  loading.value = true;
+  try {
+    const response = await login(state.email, state.password);
+    localStorage.setItem("token", response.data.token);
+  } catch (e) {
+    error.value = getErrorMessage(e);
+  } finally {
+    loading.value = false;
+  }
 };
+
 
 </script>
