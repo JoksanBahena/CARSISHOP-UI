@@ -1,6 +1,12 @@
 <template>
   <v-container>
-    <p class="text-h4 font-weight-medium mb-2">Añadir categoria</p>
+    <a
+      href="javascript:history.go(-1)"
+      class="text-h4 font-weight-medium mb-2 text-decoration-none"
+      style="color: black"
+    >
+      <v-icon>mdi-chevron-left</v-icon> Añadir Categoria
+    </a>
 
     <v-card variant="flat" class="mt-4">
       <v-card-item>
@@ -60,6 +66,8 @@ import Colors from "@/utils/Colors.js";
 import { ref } from "vue";
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
+import { createCategory } from "@/services/CategoryService.js";
+import Swal from "sweetalert2";
 import {
   required,
   integer,
@@ -93,16 +101,39 @@ const rules = {
       "El campo debe tener menos de 50 caracteres",
       maxLength(50)
     ),
+    regex: withMessage(
+      "El campo solo puede contener letras, acentos y espacios",
+      regex("^[a-zA-ZÀ-ÿ\u00f1\u00d1\\s]*$")
+    ),
   },
 };
 
 const v$ = useVuelidate(rules, state);
 
-const submitForm = () => {
+const submitForm = async () => {
   v$.value.$touch();
   if (v$.value.$error) return;
-
-  alert(JSON.stringify(state));
+  try {
+    const response = await createCategory(state.category);
+    Swal.fire({
+      icon: "success",
+      title: "Categoria creada",
+      showConfirmButton: false,
+      timer: 1500,
+    }).then(() => {
+      window.history.back();
+    });
+  } catch (error) {
+    console.error("Error al crear la categoría", error);
+    Swal.fire({
+      icon: "error",
+      title: "Error al crear la categoría",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  } finally {
+    clear();
+  }
 };
 
 const clear = () => {
@@ -110,7 +141,7 @@ const clear = () => {
 
   v$.value.$reset();
 
-  for (const [key, value] of Object.entries(card)) {
+  for (const [key, value] of Object.entries(category)) {
     state[key] = value;
   }
 };

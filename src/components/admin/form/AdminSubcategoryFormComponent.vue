@@ -1,6 +1,12 @@
 <template>
   <v-container>
-    <p class="text-h4 font-weight-medium mb-2">Añadir subcategoria</p>
+    <a
+      href="javascript:history.go(-1)"
+      class="text-h4 font-weight-medium mb-2 text-decoration-none"
+      style="color: black"
+    >
+      <v-icon>mdi-chevron-left</v-icon> Añadir subcategoria
+    </a>
 
     <v-card variant="flat" class="mt-4">
       <v-card-item>
@@ -64,6 +70,7 @@ import Colors from "@/utils/Colors.js";
 import { ref } from "vue";
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
+import { createCategory } from "@/services/categoryService";
 import {
   required,
   integer,
@@ -96,6 +103,10 @@ const rules = {
     maxLength: withMessage(
       "El campo debe tener menos de 50 caracteres",
       maxLength(50)
+    ),
+    regex: withMessage(
+      "El campo solo puede contener letras, acentos y espacios",
+      regex("^[a-zA-ZÀ-ÿ\u00f1\u00d1\\s]*$")
     ),
   },
 };
