@@ -107,10 +107,13 @@ import Colors from "@/utils/Colors.js";
 import {reactive, ref} from "vue";
 import {useVuelidate} from "@vuelidate/core";
 import {helpers, required} from "@vuelidate/validators";
-import {login} from "@/services/authServices.js";
 import {getErrorMessage} from "@/utils/Errors";
 
 const {withMessage, regex} = helpers;
+
+// import {login} from "@/services/authServices.js";
+import { useAuthStore } from "@/stores/authStore.js";
+const { login } = useAuthStore();
 
 const visible = ref(false);
 
@@ -152,7 +155,7 @@ const submit = async () => {
   loading.value = true;
   try {
     const response = await login(state.email, state.password);
-    localStorage.setItem("token", response.data.token);
+    // localStorage.setItem("token", response.data.token);
   } catch (e) {
     error.value = getErrorMessage(e);
   } finally {
