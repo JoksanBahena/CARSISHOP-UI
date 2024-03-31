@@ -1,7 +1,11 @@
 <template>
   <v-card outlined>
     <v-divider></v-divider>
-    <v-data-table :headers="headers" :items="categoryData" :items-per-page="10">
+    <v-data-table
+      :headers="headers"
+      :items="categoryData"
+      :items-per-page="itemsPerPage"
+    >
       <template v-slot:item.id="{ item, index }">
         <div :class="item.status ? '' : 'text-disabled'">
           {{ index + 1 }}
@@ -46,11 +50,6 @@
         </v-row>
       </template>
     </v-data-table>
-    <v-pagination
-      v-model="currentPage"
-      :length="totalPages"
-      @update:page="loadCategoryData"
-    ></v-pagination>
   </v-card>
 </template>
 
@@ -74,19 +73,21 @@ const headers = ref([
 ]);
 
 const categoryData = ref([]);
-const currentPage = ref(1);
+const currentPage = ref(0);
 const totalPages = ref(0);
-
+const itemsPerPage = ref(10);
 onMounted(async () => {
   loadCategoryData();
 });
 
 const loadCategoryData = async () => {
   try {
-    const response = await findAllCategories(currentPage.value - 1);
-
+    const response = await findAllCategories(
+      currentPage.value,
+      itemsPerPage.value
+    );
+    console.log(currentPage.value);
     categoryData.value = response.data;
-    totalPages.value = response.meta.totalPages;
   } catch (error) {
     console.error("Error al obtener las categorías:", error);
   }

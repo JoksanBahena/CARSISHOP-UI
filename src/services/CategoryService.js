@@ -26,7 +26,7 @@ export const createCategory = async (name) => {
 
 
 
-export const findAllCategories = async (page) => {
+export const findAllCategories = async (page, limit) => {
   const url = `${API_URL}/find-all`
   const token = "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQ1VTVE9NRVIiLCJzdWIiOiJtYW55QGdtYWlsLmNvbSIsImlhdCI6MTcxMTg1MzAwOCwiZXhwIjoxNzExOTM5NDA4fQ.-axacIVOoxN2OH8Dwos-gDv-SyvmawqPnS907pKWa3U"
   const data = {
@@ -36,7 +36,7 @@ export const findAllCategories = async (page) => {
       sortBy: "name",
       order: "asc",
       page: page.toString(),
-      limit: 10
+      limit: limit ? limit.toString() : "10"
 
 
     }
