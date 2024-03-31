@@ -184,7 +184,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(route => route.meta.requiresAuth)) {
     if (useAuthStore().isAuthenticated) {
       if (to.meta.roles) {
-        if (to.meta.roles.includes(useAuthStore().user.role)) {
+        if (to.meta.roles.includes(useAuthStore().user)) {
           next();
         } else {
           next({name: 'Home'});
@@ -194,7 +194,10 @@ router.beforeEach((to, from, next) => {
     } else {
       next({name: 'Login'});
     }
-  } else {
+  } else if (useAuthStore().isAuthenticated && to.name === 'Login' || to.name === 'Register' || to.name === 'ForgotPassword' || to.name === 'ForgotPasswordConfirm') {
+    next({name: 'Home'});
+
+  }else {
     next();
   }
 });

@@ -1,12 +1,14 @@
 import {defineStore} from "pinia";
 import axios from "axios";
 import router from "@/router";
+import {jwtDecode} from "jwt-decode";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     token: localStorage.getItem("token") || "",
-    user: {role: "admin"},
+    tokenExpiration: localStorage.getItem("token") ? jwtDecode(localStorage.getItem("token")).exp : "",
+    user: localStorage.getItem("token") ? jwtDecode(localStorage.getItem("token")).role : "",
   }),
   getters: {
     isAuthenticated: (state) => !!state.token,
@@ -30,7 +32,9 @@ export const useAuthStore = defineStore("auth", {
     },
     logout() {
       this.token = "";
+      localStorage.removeItem("token");
       this.user = null;
+      this.tokenExpiration = null;
     },
   },
 });
