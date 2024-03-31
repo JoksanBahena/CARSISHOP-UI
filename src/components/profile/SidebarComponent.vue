@@ -102,7 +102,7 @@ const nav_items = [
   {
     icon: "mdi-currency-usd",
     title: "Ventas",
-    to: { name: "ProfileSales" },
+    to: { name: "SellerSales" },
   },
 ];
 </script>
