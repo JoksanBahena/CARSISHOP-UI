@@ -8,7 +8,7 @@
       <v-card-item>
         <v-form>
           <v-row>
-            <v-col cols="12" lg="9">
+            <v-col cols="12" lg="8">
               <div>
                 <div class="text-subtitle-1 font-weight-medium">
                   Subcategoria
@@ -29,7 +29,7 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="6" lg="9">
+            <v-col cols="9" lg="4">
               <v-btn
                 variant="flat"
                 class="text-none"
@@ -41,7 +41,7 @@
                 Cancelar
               </v-btn>
             </v-col>
-            <v-col cols="6" lg="9">
+            <v-col cols="9" lg="4">
               <v-btn
                 variant="flat"
                 class="text-none"
