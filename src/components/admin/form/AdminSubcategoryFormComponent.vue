@@ -1,12 +1,8 @@
 <template>
   <v-container>
-    <a
-      href="javascript:history.go(-1)"
-      class="text-h4 font-weight-medium mb-2 text-decoration-none"
-      style="color: black"
-    >
-      <v-icon>mdi-chevron-left</v-icon> Añadir subcategoria
-    </a>
+    <p class="text-h4 font-weight-medium mb-2 text-decoration-none">
+      Añadir subcategoria
+    </p>
 
     <v-card variant="flat" class="mt-4">
       <v-card-item>
