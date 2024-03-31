@@ -112,7 +112,7 @@ import {getErrorMessage} from "@/utils/Errors";
 const {withMessage, regex} = helpers;
 
 // import {login} from "@/services/authServices.js";
-import { useAuthStore } from "@/stores/authStore.js";
+import { useAuthStore } from "@/store/AuthStore.js";
 const { login } = useAuthStore();
 
 const visible = ref(false);
