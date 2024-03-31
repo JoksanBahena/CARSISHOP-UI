@@ -9,13 +9,7 @@
       action="Editar"
       :to="{ name: 'ProfileAccount' }"
     >
-      <v-list>
-        <v-list-item
-          prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-          subtitle="sandra_a88@gmailcom"
-          title="Sandra Adams"
-        />
-      </v-list>
+      <user-profile-card-component />
     </resumen-card-component>
 
     <resumen-card-component
