@@ -1,9 +1,9 @@
 <script setup>
-
 import AuthLayout from "@/layouts/auth/AuthLayout.vue";
 </script>
 
 <template>
+  <!-- Prueba -->
   <auth-layout page-title="404 NOT FOUND">
     <v-container>
       <v-layout class="d-flex flex-column fill-height align-center text-black">
@@ -17,6 +17,4 @@ import AuthLayout from "@/layouts/auth/AuthLayout.vue";
   </auth-layout>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
