@@ -2,7 +2,7 @@
   <breadcrumbs-component :items="items" />
 
   <v-container>
-    <p class="text-h4 font-weight-medium mb-2">Resumen</p>
+    <p class="text-h4 font-weight-medium mb-2">Resumen de cuenta</p>
 
     <resumen-card-component
       title="Mi cuenta"
