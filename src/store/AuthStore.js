@@ -1,9 +1,12 @@
-import { defineStore } from "pinia";
+import {defineStore} from "pinia";
+import axios from "axios";
+import router from "@/router";
 
+const baseURL = import.meta.env.VITE_BASE_URL;
 export const useAuthStore = defineStore("auth", {
   state: () => ({
-    token: "",
-    user: null,
+    token: localStorage.getItem("token") || "",
+    user: {role: "admin"},
   }),
   getters: {
     isAuthenticated: (state) => !!state.token,
@@ -12,14 +15,15 @@ export const useAuthStore = defineStore("auth", {
     async login(email, password) {
       try {
         const response = await axios.post(
-          "http://localhost:8080/api/auth/login",
+          baseURL + "auth/login",
           {
             email,
             password,
           }
         );
-        this.token = response.data.token;
-        localStorage.setItem("token", this.token);
+        this.token = response.data.data.token;
+        localStorage.setItem("token", this.token)
+        router.push("/");
       } catch (error) {
         throw error;
       }

@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {createRouter, createWebHistory} from "vue-router";
+import {useAuthStore} from "@/store/AuthStore";
 
 const routes = [
   {
@@ -58,8 +59,9 @@ const routes = [
   {
     path: "/admin",
     name: "Admin",
-    redirect: { name: "AdminUsers" },
+    redirect: {name: "AdminUsers"},
     component: () => import("@/views/admin/AdminView.vue"),
+    meta: {requiresAuth: true, roles: ["admin"]},
     children: [
       {
         path: "users",
@@ -77,9 +79,9 @@ const routes = [
   {
     path: "/profile",
     name: "Profile",
-    redirect: { name: "ProfileSummary" },
+    redirect: {name: "ProfileSummary"},
     component: () => import("@/views/profile/ProfileView.vue"),
-    meta: { requiresAuth: true },
+    meta: {requiresAuth: true},
     children: [
       {
         path: "",
@@ -171,25 +173,28 @@ const router = createRouter({
   routes,
   scrollBehavior(to, from, savedPosition) {
     if (to.hash) {
-      return { el: to.hash };
+      return {el: to.hash};
     } else {
-      return { top: 0 };
+      return {top: 0};
     }
   },
 });
 
-
-
 router.beforeEach((to, from, next) => {
-
-  if(to.matched.some (route => route.meta.requiresAuth)){
-    if (localStorage.getItem('token')) {
-      //logica para verificar si el token es valido
+  if (to.matched.some(route => route.meta.requiresAuth)) {
+    if (useAuthStore().isAuthenticated) {
+      if (to.meta.roles) {
+        if (to.meta.roles.includes(useAuthStore().user.role)) {
+          next();
+        } else {
+          next({name: 'Home'});
+        }
+      }
       next();
-    }else{
-      next({name: 'Login'})
+    } else {
+      next({name: 'Login'});
     }
-  }else{
+  } else {
     next();
   }
 });
