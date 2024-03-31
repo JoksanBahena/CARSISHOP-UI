@@ -36,7 +36,7 @@
     <resumen-card-component
       icon="mdi-shopping-outline"
       title="Última venta"
-      :to="{ name: 'ProfileOrders' }"
+      :to="{ name: 'SellerMySales' }"
     >
       <v-list>
         <v-list-item title="Pedido #123456" subtitle="Hace 2 días" />

@@ -172,6 +172,11 @@ const routes = [
             name: "SellerResumen",
             component: () => import("@/views/seller/SellerSummaryView.vue"),
           },
+          {
+            path: "my-sales",
+            name: "SellerMySales",
+            component: () => import("@/views/seller/SellerSalesTableView.vue"),
+          },
         ],
       },
     ],
