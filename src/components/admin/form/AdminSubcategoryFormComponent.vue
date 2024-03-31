@@ -70,7 +70,6 @@ import Colors from "@/utils/Colors.js";
 import { ref } from "vue";
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { createCategory } from "@/services/categoryService";
 import {
   required,
   integer,
