@@ -43,6 +43,7 @@
                 "
                 :color="colors.primary_dark"
                 class="text-h4"
+                @click="onDisableOrEnableCategory(item.id, item.status)"
               />
             </v-btn>
           </v-col>
@@ -56,8 +57,9 @@
 import { ref } from "vue";
 import Colors from "@/utils/Colors.js";
 import { useCategoryStore } from "@/store/CategoryStore.js";
+import Swal from "sweetalert2";
 
-const { categories } = useCategoryStore();
+const { categories, disableCategory, enableCategory } = useCategoryStore();
 
 const colors = {
   primary: Colors.cs_primary,
@@ -72,5 +74,41 @@ const headers = ref([
   { title: "Acciones", key: "actions", align: "center" },
 ]);
 
+const onDisableOrEnableCategory = (id, status) => {
+  try {
+    let successMessage;
+    let confirmButtonText;
+
+    console.log(status);
+    if (status) {
+      successMessage = "La categoría ha sido desactivada.";
+      confirmButtonText = "Sí, desactivar!";
+    } else {
+      successMessage = "La categoría ha sido activada.";
+      confirmButtonText = "Sí, activar!";
+    }
+
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: `Vas a ${
+        status ? "desactivar" : "activar"
+      } la categoría seleccionada!`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: confirmButtonText,
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        disableCategory(id);
+        Swal.fire("¡Hecho!", successMessage, "success");
+        location.reload();
+      }
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 const itemsPerPage = ref(10);
 </script>

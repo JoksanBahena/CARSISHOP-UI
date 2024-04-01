@@ -59,10 +59,47 @@ export const useCategoryStore = defineStore("category", {
         );
         console.log("response", response)
       } catch (error) {
+
         throw error;
       }
 
-    }
-  }
+    },
+    async updateCategory(id, name) {
+      const params = {
+        id: id,
+        name: name
+      }
+      try {
+        const response = await axios.put(baseURL + "categories/", params, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          }
+
+        })
+        console.log("response", response)
+      } catch (error) {
+        throw error;
+      }
+    },
+    async disableCategory(id) {
+      const params = {
+        id: id,
+      }
+      try {
+        const response = await axios.put(baseURL + "categories/change-status", params, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          }
+
+        })
+        console.log("response", response)
+      } catch (error) {
+        throw error;
+      }
+    },
+  },
+
 
 });
