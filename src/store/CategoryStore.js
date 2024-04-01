@@ -2,9 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
-console.log("baseURL", baseURL)
 const token = localStorage.getItem("token") || "";
-console.log("token", token)
 
 export const useCategoryStore = defineStore("category", {
   state: () => ({
@@ -27,7 +25,6 @@ export const useCategoryStore = defineStore("category", {
           limit: limit ? limit.toString() : "10"
         }
       }
-      console.log(params)
 
       try {
         const response = await axios.post(

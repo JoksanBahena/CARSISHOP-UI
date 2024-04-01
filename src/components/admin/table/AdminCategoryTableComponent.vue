@@ -58,7 +58,6 @@ import Colors from "@/utils/Colors.js";
 import { useCategoryStore } from "@/store/CategoryStore.js";
 
 const { categories } = useCategoryStore();
-console.log("Categorias en AdminCategoryTableComponent", categories);
 
 const colors = {
   primary: Colors.cs_primary,
