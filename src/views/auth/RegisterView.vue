@@ -86,152 +86,24 @@
                   :error-messages="v$.gender.$errors.map((e) => e.$message)"
                 />
               </div>
+              <div class="mb-1">
+                //fecha de nacimiento
+                <div class="text-subtitle-1 font-weight-medium">Fecha de nacimiento</div>
+                <v-date-picker
+                  v-model="state.date"
+                  density="compact"
+                  placeholder="Fecha de nacimiento"
+                  prepend-inner-icon="mdi-calendar"
+                  variant="outlined"
+                  @blur="v$.date.$touch"
+                  @input="v$.date.$touch"
+                  :error-messages="v$.date.$errors.map((e) => e.$message)"
+                  />
+
+              </div>
             </form>
           </v-window-item>
-
           <v-window-item :value="2">
-            <div class="mb-1">
-              <div class="text-subtitle-1 font-weight-medium">
-                Código postal
-              </div>
-              <v-text-field
-                v-model="state.cp"
-                density="compact"
-                placeholder="CP"
-                prepend-inner-icon="mdi-map-marker-outline"
-                variant="outlined"
-                type="number"
-                @blur="v$.cp.$touch"
-                @input="v$.cp.$touch"
-                :error-messages="v$.cp.$errors.map((e) => e.$message)"
-              />
-            </div>
-
-            <v-row>
-              <v-col>
-                <div class="mb-1">
-                  <div class="text-subtitle-1 font-weight-medium">Estado</div>
-                  <v-select
-                    v-model="state.estate"
-                    clearable
-                    placeholder="Estado"
-                    :items="states"
-                    density="compact"
-                    variant="outlined"
-                    prepend-inner-icon="mdi-map-marker-outline"
-                    @blur="v$.estate.$touch"
-                    @input="v$.estate.$touch"
-                    :error-messages="v$.estate.$errors.map((e) => e.$message)"
-                  />
-
-<!--                  <v-text-field-->
-<!--                    v-model="state.estate"-->
-<!--                    density="compact"-->
-<!--                    placeholder="Estado"-->
-<!--                    variant="outlined"-->
-<!--                    @blur="v$.estate.$touch"-->
-<!--                    @input="v$.estate.$touch"-->
-<!--                    :error-messages="v$.estate.$errors.map((e) => e.$message)"-->
-<!--                  />-->
-                </div>
-              </v-col>
-              <v-col>
-                <div class="mb-1">
-                  <div class="text-subtitle-1 font-weight-medium">
-                    Municipio
-                  </div>
-                  <v-select
-                    v-model="state.town"
-                    clearable
-                    placeholder="Municipio"
-                    :items="towns"
-                    density="compact"
-                    variant="outlined"
-                    prepend-inner-icon="mdi-map-marker-outline"
-                    @blur="v$.town.$touch"
-                    @input="v$.town.$touch"
-                    :error-messages="v$.town.$errors.map((e) => e.$message)"
-                  >
-
-                  </v-select>
-<!--                  <v-text-field-->
-<!--                    v-model="state.town"-->
-<!--                    density="compact"-->
-<!--                    placeholder="Municipio"-->
-<!--                    variant="outlined"-->
-<!--                    @blur="v$.town.$touch"-->
-<!--                    @input="v$.town.$touch"-->
-<!--                    :error-messages="v$.town.$errors.map((e) => e.$message)"-->
-<!--                  />-->
-                </div>
-              </v-col>
-            </v-row>
-
-            <div class="mb-1">
-              <div class="text-subtitle-1 font-weight-medium">Colonia</div>
-              <v-text-field
-                v-model="state.suburb"
-                density="compact"
-                placeholder="Colonia"
-                variant="outlined"
-                @blur="v$.suburb.$touch"
-                @input="v$.suburb.$touch"
-                :error-messages="v$.suburb.$errors.map((e) => e.$message)"
-              />
-            </div>
-
-            <div class="mb-1">
-              <div class="text-subtitle-1 font-weight-medium">Calle</div>
-              <v-text-field
-                v-model="state.street"
-                density="compact"
-                placeholder="Calle"
-                variant="outlined"
-                @blur="v$.street.$touch"
-                @input="v$.street.$touch"
-                :error-messages="v$.street.$errors.map((e) => e.$message)"
-              />
-            </div>
-
-            <v-row>
-              <v-col>
-                <div class="mb-1">
-                  <div class="text-subtitle-1 font-weight-medium">
-                    Núm. Exterior
-                  </div>
-                  <v-text-field
-                    v-model="state.num_ext"
-                    density="compact"
-                    placeholder="#"
-                    variant="outlined"
-                    type="number"
-                    @blur="v$.num_ext.$touch"
-                    @input="v$.num_ext.$touch"
-                    :error-messages="v$.num_ext.$errors.map((e) => e.$message)"
-                  />
-                </div>
-              </v-col>
-              <v-col>
-                <div class="mb-1">
-                  <div class="text-subtitle-1 font-weight-medium">
-                    Núm. Interior
-                  </div>
-                  <v-text-field
-                    v-model="state.num_int"
-                    density="compact"
-                    placeholder="#"
-                    variant="outlined"
-                    type="number"
-                    @blur="v$.num_int.$touch"
-                    @input="v$.num_int.$touch"
-                    :error-messages="v$.num_int.$errors.map((e) => e.$message)"
-                  />
-                </div>
-              </v-col>
-            </v-row>
-          </v-window-item>
-
-          <v-window-item :value="3">
             <div class="mb-1">
               <div class="text-subtitle-1 font-weight-medium">
                 Correo electrónico
@@ -287,7 +159,7 @@
             </div>
           </v-window-item>
 
-          <v-window-item :value="4">
+          <v-window-item :value="3">
             <div
               class="d-flex flex-column justify-center align-center mb-4 text-center"
             >
@@ -333,7 +205,7 @@
             Regresar
           </v-btn>
           <v-btn
-            v-if="step < 4"
+            v-if="step < 3"
             @click="checkStep"
             class="text-none flex-grow-1"
             :color="colors.primary_dark"
@@ -343,7 +215,7 @@
             Continuar
           </v-btn>
           <v-btn
-            v-if="step === 4"
+            v-if="step === 3"
             @click="submit"
             class="text-none flex-grow-1"
             :color="colors.primary_dark"
@@ -394,10 +266,8 @@ const current_title = computed(() => {
     case 1:
       return "Información personal";
     case 2:
-      return "Tu dirección";
-    case 3:
       return "Registra tu cuenta";
-    case 4:
+    case 3:
       return "¡Listo!";
     default:
       return "Algo salió mal";
@@ -415,22 +285,13 @@ const onFileChange = (e) => {
   reader.readAsDataURL(file);
 };
 
-const states = ["Morelos"];
-
-const towns = ["Cuernavaca"];
 
 const form = {
   name: "",
   surname: "",
   phone: "",
   gender:"",
-  cp: "",
-  estate:null,
-  town:null,
-  suburb:"",
-  street:"",
-  num_ext:"",
-  num_int:"",
+  date: "",
   email: "",
   password: "",
   confirm_password: "",
@@ -482,64 +343,10 @@ const rules = {
   gender: {
     required: withMessage("El genero es requerido", required),
   },
-  cp: {
-    required: withMessage("El codigo postal es requerido", required),
-    integer: withMessage("El codigo postal debe ser un número", integer),
-    regex: withMessage(
-      "El codigo postal solo debe contener números",
-      regex(/^\d+$/)
-    ),
-    minLength: withMessage(
-      "El codigo postal debe tener 5 digitos",
-      minLength(5)
-    ),
-    maxLength: withMessage(
-      "El codigo postal debe tener 5 digitos",
-      maxLength(5)
-    ),
-  },
-  estate: {
-    required: withMessage("El estado es requerido", required),
-  },
-  town: {
-    required: withMessage("La ciudad es requerida", required),
-  },
-  suburb: {
-    required: withMessage("La colonia es requerida", required),
-  },
-  street: {
-    required: withMessage("La calle es requerida", required),
-  },
-  num_ext: {
-    required: withMessage("El número exterior es requerido", required),
-    integer: withMessage("El número exterior debe ser un número", integer),
-    regex: withMessage(
-      "El número exterior solo debe contener números",
-      regex(/^\d+$/)
-    ),
-    minLength: withMessage(
-      "El numero exterior debe tener al menos 1 caracter",
-      minLength(1)
-    ),
-    maxLength: withMessage(
-      "El numero exterior debe tener menos de 10 caracteres",
-      maxLength(10)
-    ),
-  },
-  num_int: {
-    integer: withMessage("El número interior debe ser un número", integer),
-    regex: withMessage(
-      "El número interior solo debe contener números",
-      regex(/^\d+$/)
-    ),
-    minLength: withMessage(
-      "El numero interior debe tener al menos 1 caracter",
-      minLength(1)
-    ),
-    maxLength: withMessage(
-      "El numero interior debe tener menos de 10 caracteres",
-      maxLength(10)
-    ),
+  date: {
+    required: withMessage("La fecha de nacimiento es requerida", required),
+    maxDate: withMessage("La fecha de nacimiento no puede ser mayor a la fecha actual", (value) => value < new Date()),
+    minDate: withMessage("Debes ser mayor de 18 años", (value) => value > new Date().setFullYear(new Date().getFullYear() - 18)),
   },
   email: {
     required: withMessage("El correo electrónico es requerido", required),
@@ -574,18 +381,12 @@ const v$ = useVuelidate(rules, state);
 const checkStep = () => {
   switch (step.value) {
     case 1:
-      if (hasErrorsInFields(["name", "surname", "phone", "gender"])) {
+      if (hasErrorsInFields(["name", "surname", "phone", "gender", "date"])) {
       }else{
         step.value++;
       }
       break;
     case 2:
-      if (hasErrorsInFields(["cp","estate", "town", "suburb", "street", "num_ext", "num_int"])) {
-      }else{
-        step.value++;
-      }
-      break;
-    case 3:
       if (hasErrorsInFields(["email", "password", "confirm_password"])) {
       }else{
         step.value++;
