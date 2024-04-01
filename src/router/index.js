@@ -61,7 +61,8 @@ const routes = [
     name: "Admin",
     redirect: { name: "AdminUsers" },
     component: () => import("@/views/admin/AdminView.vue"),
-    meta: { requiresAuth: true, roles: ["admin"] },
+    // meta: { requiresAuth: true, roles: ["admin"] },
+    //se comenta para que pueda trabajar con las vistas de admin sin necesidad de estar logueado
     children: [
       {
         path: "users",

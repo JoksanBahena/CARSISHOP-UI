@@ -7,11 +7,14 @@
     :title="'Categorias'"
   />
   <v-container>
-    <admin-category-table-component />
+    <admin-category-table-component :categories="categories" />
   </v-container>
 </template>
 
 <script setup>
+import { ref, onMounted } from "vue";
+import { useCategoryStore } from "@/store/CategoryStore.js";
+
 const items = [
   {
     title: "Inicio",
@@ -24,4 +27,9 @@ const items = [
     href: "/admin/categories",
   },
 ];
+onMounted(async () => {
+  await findAllCategories(0, 10);
+});
+const { categories, findAllCategories } = useCategoryStore();
+console.log("Categorias en AdminCategoryView", categories);
 </script>

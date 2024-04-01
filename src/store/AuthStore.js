@@ -1,9 +1,10 @@
-import {defineStore} from "pinia";
+import { defineStore } from "pinia";
 import axios from "axios";
 import router from "@/router";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
+// console.log("baseURL", baseURL)
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     token: localStorage.getItem("token") || "",

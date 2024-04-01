@@ -3,7 +3,7 @@
     <v-divider></v-divider>
     <v-data-table
       :headers="headers"
-      :items="categoryData"
+      :items="categories"
       :items-per-page="itemsPerPage"
     >
       <template v-slot:item.id="{ item, index }">
@@ -19,7 +19,6 @@
           ></v-chip>
         </div>
       </template>
-
       <template v-slot:item.name="{ item }">
         <div :class="item.status ? '' : 'text-disabled'">
           {{ item.name }}
@@ -54,10 +53,12 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, defineProps } from "vue";
 import Colors from "@/utils/Colors.js";
-import { findAllCategories } from "@/services/CategoryService.js";
-import { onMounted } from "vue";
+import { useCategoryStore } from "@/store/CategoryStore.js";
+
+const { categories } = useCategoryStore();
+console.log("Categorias en AdminCategoryTableComponent", categories);
 
 const colors = {
   primary: Colors.cs_primary,
@@ -72,24 +73,5 @@ const headers = ref([
   { title: "Acciones", key: "actions", align: "center" },
 ]);
 
-const categoryData = ref([]);
-const currentPage = ref(0);
-const totalPages = ref(0);
 const itemsPerPage = ref(10);
-onMounted(async () => {
-  loadCategoryData();
-});
-
-const loadCategoryData = async () => {
-  try {
-    const response = await findAllCategories(
-      currentPage.value,
-      itemsPerPage.value
-    );
-    console.log(currentPage.value);
-    categoryData.value = response.data;
-  } catch (error) {
-    console.error("Error al obtener las categorías:", error);
-  }
-};
 </script>
