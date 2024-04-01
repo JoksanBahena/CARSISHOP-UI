@@ -59,7 +59,7 @@ import Colors from "@/utils/Colors.js";
 import { useCategoryStore } from "@/store/CategoryStore.js";
 import Swal from "sweetalert2";
 
-const { categories, disableCategory, enableCategory } = useCategoryStore();
+const { categories, disableCategory } = useCategoryStore();
 
 const colors = {
   primary: Colors.cs_primary,

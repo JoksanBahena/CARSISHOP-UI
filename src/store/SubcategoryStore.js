@@ -62,7 +62,29 @@ export const useSubcategoryStore = defineStore("subcategory", {
         throw error;
       }
 
-    }
+    },
+
+    async disableSubcategory(id) {
+      const params = {
+        id: id
+      }
+      console.log(params)
+      try {
+        const response = await axios.put(
+          baseURL + "subcategories/change-status", params,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+        console.log("response", response)
+      } catch (error) {
+        throw error;
+      }
+    },
+
   }
 
 });
