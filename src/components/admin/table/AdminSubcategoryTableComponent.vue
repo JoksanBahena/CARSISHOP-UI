@@ -1,10 +1,14 @@
 <template>
   <v-card outlined>
     <v-divider></v-divider>
-    <v-data-table :headers="headers" :items="items" :items-per-page="5">
-      <template v-slot:item.id="{ item }">
+    <v-data-table
+      :headers="headers"
+      :items="subcategories"
+      :items-per-page="itemsPerPage"
+    >
+      <template v-slot:item.id="{ item, index }">
         <div :class="item.status ? '' : 'text-disabled'">
-          {{ item.id }}
+          {{ index + 1 }}
         </div>
       </template>
       <template v-slot:item.status="{ item }">
@@ -16,9 +20,9 @@
         </div>
       </template>
 
-      <template v-slot:item.subcategory="{ item }">
+      <template v-slot:item.name="{ item }">
         <div :class="item.status ? '' : 'text-disabled'">
-          {{ item.subcategory }}
+          {{ item.name }}
         </div>
       </template>
       <template v-slot:item.actions="{ item }">
@@ -51,7 +55,9 @@
 <script setup>
 import { ref } from "vue";
 import Colors from "@/utils/Colors.js";
+import { useSubcategoryStore } from "@/store/SubcategoryStore";
 
+const { subcategories } = useSubcategoryStore();
 const colors = {
   primary: Colors.cs_primary,
   primary_dark: Colors.cs_primary_dark,
@@ -59,22 +65,9 @@ const colors = {
 };
 const headers = ref([
   { title: "#", key: "id", align: "start" },
-  { title: "Subcategoria", key: "subcategory", align: "start" },
+  { title: "Subcategoria", key: "name", align: "start" },
   { title: "Estado", key: "status", align: "start" },
   { title: "Acciones", key: "actions", align: "center" },
 ]);
-const items = [
-  {
-    id: 1,
-    subcategory: "Tenis para correr",
-    status: true,
-    actions: true,
-  },
-  {
-    id: 2,
-    subcategory: "Zapatos de vestir",
-    status: false,
-    actions: true,
-  },
-];
+const itemsPerPage = ref(10);
 </script>

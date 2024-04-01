@@ -29,7 +29,7 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="9" lg="4">
+            <v-col cols="12" lg="8">
               <v-btn
                 variant="flat"
                 class="text-none"
@@ -41,7 +41,7 @@
                 Cancelar
               </v-btn>
             </v-col>
-            <v-col cols="9" lg="4">
+            <v-col cols="12" lg="8">
               <v-btn
                 variant="flat"
                 class="text-none"
@@ -73,7 +73,9 @@ import {
   maxLength,
   helpers,
 } from "@vuelidate/validators";
-
+import Swal from "sweetalert2";
+import { useSubcategoryStore } from "@/store/SubcategoryStore";
+const { createSubcategory } = useSubcategoryStore();
 const { withMessage, regex } = helpers;
 
 const colors = {
@@ -99,20 +101,35 @@ const rules = {
       "El campo debe tener menos de 50 caracteres",
       maxLength(50)
     ),
-    regex: withMessage(
-      "El campo solo puede contener letras, acentos y espacios",
-      regex("^[a-zA-ZÀ-ÿ\u00f1\u00d1\\s]*$")
-    ),
   },
 };
 
 const v$ = useVuelidate(rules, state);
 
-const submitForm = () => {
+const submitForm = async () => {
   v$.value.$touch();
   if (v$.value.$error) return;
-
-  alert(JSON.stringify(state));
+  try {
+    const response = await createSubcategory(state.subcategory);
+    Swal.fire({
+      icon: "success",
+      title: "Subcategoria creada",
+      showConfirmButton: false,
+      timer: 1500,
+    }).then(() => {
+      window.history.back();
+    });
+  } catch (error) {
+    console.error("Error al crear la subcategoria", error);
+    Swal.fire({
+      icon: "error",
+      title: "Error al crear la subcategoria",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  } finally {
+    clear();
+  }
 };
 
 const clear = () => {
@@ -120,7 +137,7 @@ const clear = () => {
 
   v$.value.$reset();
 
-  for (const [key, value] of Object.entries(card)) {
+  for (const [key, value] of Object.entries(subcategory)) {
     state[key] = value;
   }
 };

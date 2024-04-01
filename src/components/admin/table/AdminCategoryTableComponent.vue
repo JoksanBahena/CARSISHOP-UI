@@ -53,7 +53,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from "vue";
+import { ref } from "vue";
 import Colors from "@/utils/Colors.js";
 import { useCategoryStore } from "@/store/CategoryStore.js";
 
