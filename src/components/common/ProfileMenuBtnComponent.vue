@@ -6,17 +6,31 @@
         :style="{ color: colors.primary_dark }"
         icon="mdi-account-outline"
       />
-      <!-- :to="{ name: 'Login' }" -->
     </template>
     <v-list>
-      <user-profile-card-component />
+      <v-list-item>
+        <user-profile-card-component />
+      </v-list-item>
+
+      <v-divider />
+
       <v-list-item
         class="mt-3"
-        v-for="item in items"
-        :key="item.index"
-        :title="item.title"
-        :to="item.to"
+        title="Mi perfil"
+        :to="{ name: 'Profile' }"
+        prepend-icon="mdi-account-outline"
       />
+      <v-list-item>
+        <v-btn
+          variant="outlined"
+          class="text-none"
+          :color="colors.primary_dark"
+          append-icon="mdi-logout-variant"
+          block
+        >
+          Cerrar sesión
+        </v-btn>
+      </v-list-item>
     </v-list>
   </v-menu>
 </template>
@@ -27,11 +41,4 @@ import Colors from "@/utils/Colors.js";
 const colors = {
   primary_dark: Colors.cs_primary_dark,
 };
-
-const items = [
-  {
-    title: "Mi perfil",
-    to: { name: "Profile" },
-  },
-];
 </script>
