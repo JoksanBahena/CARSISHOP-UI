@@ -46,7 +46,7 @@
     <resumen-card-component
       icon="mdi-tshirt-crew-outline"
       title="Productos publicados"
-      :to="{ name: 'SellerSales' }"
+      :to="{ name: 'SellerProducts' }"
     >
       <product-list-component details />
     </resumen-card-component>

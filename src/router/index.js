@@ -177,6 +177,11 @@ const routes = [
             name: "SellerMySales",
             component: () => import("@/views/seller/SellerSalesTableView.vue"),
           },
+          {
+            path: "my-products",
+            name: "SellerProducts",
+            component: () => import("@/views/seller/SellerProductsTableView.vue"),
+          }
         ],
       },
     ],
