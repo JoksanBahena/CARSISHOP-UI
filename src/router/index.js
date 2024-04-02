@@ -200,10 +200,11 @@ router.beforeEach((to, from, next) => {
     } else {
       next({ name: 'Login' });
     }
-  } else if (useAuthStore().isAuthenticated && to.name === 'Login' || to.name === 'Register' || to.name === 'ForgotPassword' || to.name === 'ForgotPasswordConfirm') {
+  } else if (useAuthStore().isAuthenticated && (to.name === 'Login' || to.name === 'Register' || to.name === 'ForgotPassword' || to.name === 'ForgotPasswordConfirm')) {
     next({ name: 'Home' });
 
   } else {
+    console.log("enrtra aqui");
     next();
   }
 });
