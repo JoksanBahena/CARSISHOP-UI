@@ -14,70 +14,65 @@ export const useCategoryStore = defineStore("category", {
   },
 
   actions: {
-    async findAllCategories(page, limit) {
+    async findAllCategories(page, itemsPerPage, sortBy) {
+      console.log(itemsPerPage);
       const params = {
         value: "",
         paginationType: {
-          filter: "name",
-          sortBy: "name",
-          order: "asc",
-          page: page.toString(),
-          limit: limit ? limit.toString() : "10"
-        }
-      }
+          filter: sortBy?.key ? sortBy.key : "name",
+          sortBy: sortBy?.key ? sortBy.key : "name",
+          order: sortBy?.order ? sortBy.order : "asc",
+          page: page,
+          limit: itemsPerPage,
+        },
+      };
 
       try {
         const response = await axios.post(
-          baseURL + "categories/find-all", params,
+          baseURL + "categories/find-all",
+          params,
           {
             headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`
-            }
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
         this.categories = response.data.data;
-        console.log("this.categories", this.categories)
       } catch (error) {
         throw error;
       }
     },
     async createCategory(name) {
       const params = {
-        name: name
-      }
-      console.log(params)
+        name: name,
+      };
+      console.log(params);
       try {
-        const response = await axios.post(
-          baseURL + "categories/", params,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`
-            }
-          }
-        );
-        console.log("response", response)
+        const response = await axios.post(baseURL + "categories/", params, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("response", response);
       } catch (error) {
-
         throw error;
       }
-
     },
     async updateCategory(id, name) {
       const params = {
         id: id,
-        name: name
-      }
+        name: name,
+      };
       try {
         const response = await axios.put(baseURL + "categories/", params, {
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          }
-
-        })
-        console.log("response", response)
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("response", response);
       } catch (error) {
         throw error;
       }
@@ -85,21 +80,22 @@ export const useCategoryStore = defineStore("category", {
     async disableCategory(id) {
       const params = {
         id: id,
-      }
+      };
       try {
-        const response = await axios.put(baseURL + "categories/change-status", params, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+        const response = await axios.put(
+          baseURL + "categories/change-status",
+          params,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           }
-
-        })
-        console.log("response", response)
+        );
+        console.log("response", response);
       } catch (error) {
         throw error;
       }
     },
   },
-
-
 });

@@ -204,7 +204,7 @@ router.beforeEach((to, from, next) => {
     next({ name: 'Home' });
 
   } else {
-    console.log("enrtra aqui");
+    // console.log("enrtra aqui");
     next();
   }
 });

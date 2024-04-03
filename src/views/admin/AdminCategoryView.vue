@@ -1,22 +1,10 @@
 <template>
+  <breadcrumbs-component :items="items" />
+
   <v-container>
-    <v-progress-linear
-      v-if="loading"
-      indeterminate
-      color="primary"
-    ></v-progress-linear>
-    <v-card outlined v-if="!loading">
-      <breadcrumbs-component :items="items" />
-      <header-admin-component
-        :is-visible="true"
-        :href="'categories/add'"
-        :button-text="'Agregar nueva categoría'"
-        :title="'Categorias'"
-      />
-      <v-container>
-        <admin-category-table-component />
-      </v-container>
-    </v-card>
+    <p class="text-h4 font-weight-medium mb-2">Categorías</p>
+
+    <admin-category-table-component  />
   </v-container>
 </template>
 
@@ -40,8 +28,14 @@ const items = [
     href: "/admin/categories",
   },
 ];
-onMounted(async () => {
-  await findAllCategories(0, 10);
-  loading.value = false;
-});
+
+// onMounted(async () => {
+//   try {
+//     await findAllCategories(0, 100, { sortBy: "name", order: "asc" });
+//   } catch (error) {
+//     console.log("error al cargar las categorias");
+//   } finally {
+//     loading.value = false;
+//   }
+// });
 </script>
