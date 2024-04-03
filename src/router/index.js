@@ -181,6 +181,11 @@ const routes = [
             path: "my-products",
             name: "SellerProducts",
             component: () => import("@/views/seller/SellerProductsTableView.vue"),
+          },
+          {
+            path: "add",
+            name: "SellerAddProduct",
+            component: () => import("@/views/seller/SellerAddProductView.vue"),
           }
         ],
       },
