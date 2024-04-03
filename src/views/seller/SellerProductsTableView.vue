@@ -11,6 +11,7 @@
             class="text-none mx-1 my-auto"
             :color="colors.primary_dark"
             variant="flat"
+            :to="{ name: 'SellerAddProduct' }"
           >
             Registrar producto
           </v-btn>
