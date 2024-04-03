@@ -51,6 +51,38 @@
             {{ item.status.toUpperCase() }}
           </v-chip>
         </template>
+
+        <template v-slot:item.actions="{ item }">
+          <v-row class="my-4" justify="center">
+            <v-btn class="ma-1 text-none" color="green" variant="outlined">
+              <v-tooltip activator="parent" location="top">
+                Ver en tienda
+              </v-tooltip>
+              <v-icon>mdi-eye-outline</v-icon>
+            </v-btn>
+            <v-btn
+              class="ma-1 text-none"
+              :color="colors.primary_dark"
+              variant="outlined"
+            >
+              <v-tooltip activator="parent" location="top"> Editar </v-tooltip>
+              <v-icon>mdi-pencil-outline</v-icon>
+            </v-btn>
+            <v-btn
+              class="ma-1 text-none"
+              :color="colors.red"
+              variant="outlined"
+            >
+              <v-tooltip activator="parent" location="top">
+                Eliminar
+              </v-tooltip>
+              <v-icon>mdi-delete-outline</v-icon>
+            </v-btn>
+          </v-row>
+          <!-- @click="viewProduct(item)"
+            @click="editProduct(item)"
+            @click="deleteProduct(item)" -->
+        </template>
       </v-data-table>
     </v-card>
   </v-container>
@@ -62,6 +94,8 @@ import Colors from "@/utils/Colors.js";
 
 const colors = {
   primary_dark: Colors.cs_primary_dark,
+  gray: Colors.cs_opacity_gray,
+  red: Colors.cs_red,
 };
 
 const result = ref(0);
@@ -112,7 +146,12 @@ const headers = [
   { key: "subcategory", title: "Subcategoría" },
   { key: "stock", title: "Stock total" },
   { key: "status", title: "Estado", align: "center" },
-  { key: "actions", title: "Acciones" },
+  {
+    key: "actions",
+    title: "Acciones",
+    align: "center",
+    sortable: false,
+  },
 ];
 
 const sales = [
