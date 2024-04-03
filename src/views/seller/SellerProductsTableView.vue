@@ -55,7 +55,15 @@
 
         <template v-slot:item.actions="{ item }">
           <v-row class="my-4" justify="center">
-            <v-btn class="ma-1 text-none" color="green" variant="outlined">
+            <v-btn
+              class="ma-1 text-none"
+              color="green"
+              variant="outlined"
+              :to="{
+                name: 'Product',
+                params: { id: '1' },
+              }"
+            >
               <v-tooltip activator="parent" location="top">
                 Ver en tienda
               </v-tooltip>
