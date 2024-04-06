@@ -2,20 +2,14 @@
   <breadcrumbs-component :items="items" />
 
   <v-container>
-    <p class="text-h4 font-weight-medium mb-2">Resumen</p>
+    <p class="text-h4 font-weight-medium mb-2">Resumen de cuenta</p>
 
     <resumen-card-component
       title="Mi cuenta"
       action="Editar"
       :to="{ name: 'ProfileAccount' }"
     >
-      <v-list>
-        <v-list-item
-          prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-          subtitle="sandra_a88@gmailcom"
-          title="Sandra Adams"
-        />
-      </v-list>
+      <user-profile-card-component />
     </resumen-card-component>
 
     <resumen-card-component

@@ -1,6 +1,6 @@
 <template>
   <navbar-admin-component />
-  <v-main>
+  <v-main class="h-100">
     <slot></slot>
   </v-main>
   <footer-component />

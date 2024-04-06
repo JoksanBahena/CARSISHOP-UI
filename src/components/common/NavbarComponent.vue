@@ -56,12 +56,13 @@
       <search-btn-component />
 
       <v-btn
-        v-for="action in actions"
-        :key="action.index"
         :style="{ color: toolbar.primary_dark }"
-        :icon="action.icon"
-        :to="action.to"
+        icon="mdi-cart-outline"
+        :to="{ name: 'Cart' }"
       />
+
+      <profile-menu-btn-component />
+
     </v-toolbar>
   </v-app-bar>
 </template>
@@ -69,6 +70,7 @@
 <script setup>
 import { ref } from "vue";
 import SearchBtnComponent from "@/components/common/SearchBtnComponent.vue";
+import ProfileMenuBtnComponent from "@/components/common/ProfileMenuBtnComponent.vue"
 import Colors from "@/utils/Colors.js";
 
 const toolbar = {
@@ -100,14 +102,4 @@ const categories = ref([
   },
 ]);
 
-const actions = ref([
-  {
-    icon: "mdi-cart-outline",
-    to: { name: "Cart" },
-  },
-  {
-    icon: "mdi-login-variant",
-    to: { name: "Login" },
-  },
-]);
 </script>

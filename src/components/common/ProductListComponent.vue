@@ -1,6 +1,6 @@
 <template>
-  <v-container class="mt-12" fluid>
-    <div class="d-flex align-center">
+  <v-container :class="details ? '' : 'mt-12'" fluid>
+    <div class="d-flex align-center" v-if="!details">
       <h2>{{ title }}</h2>
       <v-spacer />
       <router-link
@@ -36,6 +36,10 @@ const props = defineProps({
   title: {
     type: String,
     default: "Productos",
+  },
+  details: {
+    type: Boolean,
+    default: false,
   },
 });
 </script>

@@ -64,7 +64,12 @@ const routes = [
       {
         path: "users",
         name: "AdminUsers",
-        component: () => import("@/views/admin/AdminUsersView.vue"),
+        component: () => import("@/views/admin/AdminUsersView"),
+      },
+      {
+        path: "users/add",
+        name: "AdminAddUser",
+        component: () => import("@/views/admin/AdminAddUserView.vue"),
       },
       {
         path: "products",
@@ -72,17 +77,43 @@ const routes = [
         component: () => import("@/views/admin/AdminProductView.vue"),
       },
 
+      {
+        path: "salles",
+        name: "AdminSalles",
+        component: () => import("@/views/admin/AdminSallesView.vue"),
+      },
+      {
+        path: "categories",
+        name: "AdminCategories",
+        component: () => import("@/views/admin/AdminCategoryView.vue"),
+      },
+      {
+        path: "categories/add",
+        name: "AdminAddCategory",
+        component: () => import("@/views/admin/AdminAddCategoryView.vue"),
+      },
+      {
+        path: "subcategories",
+        name: "AdminSubCategories",
+        component: () => import("@/views/admin/AdminSubCategoryView.vue"),
+      },
+      {
+        path: "subcategories/add",
+        name: "AdminAddSubCategory",
+        component: () => import("@/views/admin/AdminAddSubcategoryView.vue"),
+      },
     ],
   },
+
   {
     path: "/profile",
     name: "Profile",
     redirect: { name: "ProfileSummary" },
     component: () => import("@/views/profile/ProfileView.vue"),
-    meta: { requiresAuth: true },
+    // meta: { requiresAuth: true },
     children: [
       {
-        path: "",
+        path: "summary",
         name: "ProfileSummary",
         component: () => import("@/views/profile/ProfileResumeView.vue"),
       },
@@ -123,47 +154,43 @@ const routes = [
       },
       {
         path: "sales",
-        name: "ProfileSales",
-        component: () => import("@/views/profile/ProfileSalesView.vue"),
-      },
-      {
-        path: "sales/request",
-        name: "ProfileSalesRequest",
-        component: () => import("@/views/profile/ProfileSalesRequest.vue"),
+        name: "Sales",
+        component: () => import("@/views/seller/SellerView.vue"),
+        children: [
+          {
+            path: "",
+            name: "SellerSales",
+            component: () => import("@/views/seller/SellerSalesView.vue"),
+          },
+          {
+            path: "request",
+            name: "SellerRequest",
+            component: () => import("@/views/seller/SellerRequestView.vue"),
+          },
+          {
+            path: "summary",
+            name: "SellerResumen",
+            component: () => import("@/views/seller/SellerSummaryView.vue"),
+          },
+          {
+            path: "my-sales",
+            name: "SellerMySales",
+            component: () => import("@/views/seller/SellerSalesTableView.vue"),
+          },
+          {
+            path: "my-products",
+            name: "SellerProducts",
+            component: () => import("@/views/seller/SellerProductsTableView.vue"),
+          },
+          {
+            path: "my-products/add",
+            name: "SellerAddProduct",
+            component: () => import("@/views/seller/SellerAddProductView.vue"),
+          }
+        ],
       },
     ],
   },
-
-  // {
-  //   path: "/adminUsers",
-  //   name: "AdminUsers",
-  //   component: () => import("@/views/admin/AdminUsersView.vue")
-  // },
-  // {
-  //   path: "/adminProducts",
-  //   name: "AdminProducts",
-  //   component: () => import("@/views/admin/AdminProductView.vue")
-  // },
-  // {
-  //   path: "/admin",
-  //   name: "Admin",
-  //   redirect: { name: "AdminUsers" },
-  //   component: () => import("@/views/admin/AdminView.vue"),
-  //   children: [
-  //     {
-  //       path: "users",
-  //       name: "AdminUsers",
-  //       component: () => import("@/views/admin/AdminUsersView.vue"),
-  //     },
-  //     {
-  //       path: "products",
-  //       name: "AdminProducts",
-  //       component: () => import("@/views/admin/AdminProductView.vue"),
-  //     },
-
-  //   ];
-  // },
-
 ];
 
 const router = createRouter({
@@ -178,21 +205,17 @@ const router = createRouter({
   },
 });
 
-
-
 router.beforeEach((to, from, next) => {
-
-  if(to.matched.some (route => route.meta.requiresAuth)){
-    if (localStorage.getItem('token')) {
+  if (to.matched.some((route) => route.meta.requiresAuth)) {
+    if (localStorage.getItem("token")) {
       //logica para verificar si el token es valido
       next();
-    }else{
-      next({name: 'Login'})
+    } else {
+      next({ name: "Login" });
     }
-  }else{
+  } else {
     next();
   }
 });
-
 
 export default router;
