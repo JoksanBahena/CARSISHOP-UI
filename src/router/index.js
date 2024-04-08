@@ -22,12 +22,12 @@ const routes = [
     component: () => import("@/views/auth/RegisterView.vue"),
   },
   {
-    path: "/forgotPassword",
+    path: "/forgot-password",
     name: "ForgotPassword",
     component: () => import("@/views/auth/ForgotPasswordView.vue"),
   },
   {
-    path: "/forgotPasswordConfirm/:token",
+    path: "/reset-password/:token",
     name: "ForgotPasswordConfirm",
     component: () => import("@/views/auth/ForgotPasswordConfirmView.vue"),
   },
@@ -35,11 +35,13 @@ const routes = [
     path: "/cart",
     name: "Cart",
     component: () => import("@/views/cart/CartView.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/cart/payment",
     name: "Payment",
     component: () => import("@/views/cart/PaymentView.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/category/:category/:subcategory",
@@ -61,7 +63,7 @@ const routes = [
     name: "Admin",
     redirect: { name: "AdminUsers" },
     component: () => import("@/views/admin/AdminView.vue"),
-    meta: { requiresAuth: true, roles: ["admin"] },
+    meta: { requiresAuth: true, roles: ["ADMIN"] },
     children: [
       {
         path: "users",
@@ -83,7 +85,6 @@ const routes = [
         path: "salles",
         name: "AdminSalles",
         component: () => import("@/views/admin/AdminSallesView.vue"),
-
       },
       {
         path: "categories",
@@ -104,8 +105,7 @@ const routes = [
         path: "subcategories/add",
         name: "AdminAddSubCategory",
         component: () => import("@/views/admin/AdminAddSubcategoryView.vue"),
-      }
-
+      },
     ],
   },
 
@@ -168,9 +168,6 @@ const routes = [
       },
     ],
   },
-
-
-
 ];
 
 const router = createRouter({
@@ -186,26 +183,30 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(route => route.meta.requiresAuth)) {
+  if (to.matched.some((route) => route.meta.requiresAuth)) {
     if (useAuthStore().isAuthenticated) {
       if (to.meta.roles) {
         if (to.meta.roles.includes(useAuthStore().user)) {
           next();
         } else {
-          next({ name: 'Home' });
+          next({ name: "Home" });
         }
       }
       next();
     } else {
-      next({ name: 'Login' });
+      next({ name: "Login" });
     }
-  } else if (useAuthStore().isAuthenticated && to.name === 'Login' || to.name === 'Register' || to.name === 'ForgotPassword' || to.name === 'ForgotPasswordConfirm') {
-    next({ name: 'Home' });
-
+  } else if (
+    useAuthStore().isAuthenticated &&
+    (to.name === "Login" ||
+      to.name === "Register" ||
+      to.name === "ForgotPassword" ||
+      to.name === "ForgotPasswordConfirm")
+  ) {
+    next({ name: "Home" });
   } else {
     next();
   }
 });
-
 
 export default router;
