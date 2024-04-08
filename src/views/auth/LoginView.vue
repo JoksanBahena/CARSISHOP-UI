@@ -1,5 +1,5 @@
 <template>
-  <auth-layout page-title="INICIAR SESIÓN">
+  <auth-layout page_title="INICIAR SESIÓN">
     <v-container>
       <v-layout class="d-flex flex-column fill-height align-center text-black">
         <h4
@@ -9,16 +9,18 @@
         </h4>
       </v-layout>
 
-      <form action="" class="mx-10">
-        <v-alert
-          v-show="error.message"
-          class="mb-8"
-          variant="tonal"
-          icon="mdi-alert-circle-outline"
-          type="error"
-          :text="error.message"
-          closable
-        />
+      <v-form @keyup.enter="submit" class="mx-10">
+        <v-slide-y-transition tag="v-alert">
+          <v-alert
+            v-if="error.message"
+            class="mb-8"
+            variant="tonal"
+            icon="mdi-alert-circle-outline"
+            type="error"
+            :text="error.message"
+            closable
+          />
+        </v-slide-y-transition>
 
         <div class="mb-4">
           <div class="text-subtitle-1 font-weight-medium">
@@ -29,6 +31,7 @@
             placeholder="Correo electrónico"
             prepend-inner-icon="mdi-email-outline"
             variant="outlined"
+            hide-details="auto"
             v-model="state.email"
             @blur="v$.email.$touch"
             @input="v$.email.$touch"
@@ -44,23 +47,26 @@
             "
             :type="visible ? 'text' : 'password'"
             density="compact"
+            class="mb-4"
             placeholder="Contraseña"
             prepend-inner-icon="mdi-lock-outline"
             variant="outlined"
+            hide-details="auto"
             @click:append-inner="visible = !visible"
             v-model="state.password"
             @blur="v$.password.$touch"
             @input="v$.password.$touch"
             :error-messages="v$.password.$errors.map((e) => e.$message)"
           />
-          <a
+
+          <router-link
             class="text-subtitle-2 text-decoration-none"
             :style="{ color: colors.primary_dark }"
             rel="noopener noreferrer"
-            href="/forgotPassword"
+            :to="{ name: 'ForgotPassword' }"
           >
-            ¿Olvidaste tu contraseña?</a
-          >
+            ¿Olvidaste tu contraseña?
+          </router-link>
         </div>
 
         <v-btn
@@ -69,34 +75,31 @@
           size="large"
           variant="flat"
           block
-          @click="submit"
+          @click="submit()"
           :disabled="v$.$errors.length > 0"
           :loading="loading"
         >
           Iniciar sesión
-          <template v-slot:loader>
-            <v-progress-linear indeterminate></v-progress-linear>
-          </template>
         </v-btn>
 
         <div class="d-flex align-center">
-          <v-divider/>
+          <v-divider />
           <p class="text-subtitle-1 mx-4" :style="{ color: colors.gray }">o</p>
-          <v-divider/>
+          <v-divider />
         </div>
 
-        <v-card-text class="text-center">
-          <a
+        <div class="text-center">
+          <router-link
             class="text-subtitle-2 text-decoration-none"
             :style="{ color: colors.primary_dark }"
             rel="noopener noreferrer"
-            href="/register"
+            :to="{ name: 'Register' }"
           >
             Registrate aquí
-            <v-icon icon="mdi-chevron-right"></v-icon>
-          </a>
-        </v-card-text>
-      </form>
+            <v-icon icon="mdi-chevron-right" />
+          </router-link>
+        </div>
+      </v-form>
     </v-container>
   </auth-layout>
 </template>
@@ -104,15 +107,15 @@
 <script setup>
 import AuthLayout from "@/layouts/auth/AuthLayout.vue";
 import Colors from "@/utils/Colors.js";
-import {reactive, ref} from "vue";
-import {useVuelidate} from "@vuelidate/core";
-import {helpers, required} from "@vuelidate/validators";
-import {getErrorMessage} from "@/utils/Errors";
-
-const {withMessage, regex} = helpers;
-
-// import {login} from "@/services/authServices.js";
+import { reactive, ref } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { helpers, required } from "@vuelidate/validators";
+import { getErrorMessage } from "@/utils/Errors";
 import { useAuthStore } from "@/store/AuthStore.js";
+import router from "@/router";
+import { encryptSHA256 } from "@/utils/Crypto.js";
+
+const { withMessage, regex } = helpers;
 const { login } = useAuthStore();
 
 const visible = ref(false);
@@ -124,7 +127,7 @@ const colors = {
   white: Colors.cs_white,
 };
 
-const error = ref({error: "", message: ""});
+const error = ref({ error: "", message: "" });
 const loading = ref(false);
 
 const form = {
@@ -133,35 +136,45 @@ const form = {
 };
 
 const state = reactive({
-  ...form
+  ...form,
 });
 
 const rules = {
   email: {
     required: withMessage("El correo electrónico es requerido", required),
-    email: withMessage("El correo electrónico no es válido", regex(/^.+@.+\..+$/)),
+    email: withMessage(
+      "El correo electrónico no es válido",
+      regex(/^.+@.+\..+$/)
+    ),
   },
   password: {
-    required: withMessage("La contraseña es requerida", required)
-  }
-}
+    required: withMessage("La contraseña es requerida", required),
+  },
+};
 
 const v$ = useVuelidate(rules, state);
 
 const submit = async () => {
+  // const password = encryptSHA256(state.password);
+
   v$.value.$touch();
   if (v$.value.$error) return;
-  error.value = {error: "", message: ""};
+
+  error.value = { error: "", message: "" };
   loading.value = true;
+
   try {
     const response = await login(state.email, state.password);
-    // localStorage.setItem("token", response.data.token);
-  } catch (e) {
-    error.value = getErrorMessage(e);
+    // console.log("pass: ", password);
+    if (response.status === 200) {
+      router.push({ name: "Home" });
+    } else {
+      error.value = { error: "error", message: "Credenciales incorrectas" };
+    }
+  } catch (err) {
+    error.value = getErrorMessage(err);
   } finally {
     loading.value = false;
   }
 };
-
-
 </script>
