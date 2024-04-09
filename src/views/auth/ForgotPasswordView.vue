@@ -39,7 +39,6 @@
             placeholder="Correo electrónico"
             prepend-inner-icon="mdi-email-outline"
             variant="outlined"
-            hide-details="auto"
             autofocus
             @blur="v$.email.$touch"
             @input="v$.email.$touch"

@@ -41,7 +41,7 @@ div
         <v-window v-model="step">
           <v-form @keyup.enter="checkStep">
             <v-window-item :value="1">
-              <div class="mb-6">
+              <div class="mb-2">
                 <div class="text-subtitle-1 font-weight-medium">Nombres(s)</div>
                 <v-text-field
                   density="compact"
@@ -49,14 +49,13 @@ div
                   prepend-inner-icon="mdi-account-outline"
                   variant="outlined"
                   v-model="state.name"
-                  hide-details="auto"
                   @blur="v$.name.$touch"
                   @input="v$.name.$touch"
                   :error-messages="v$.name.$errors.map((e) => e.$message)"
                 />
               </div>
 
-              <div class="mb-6">
+              <div class="mb-2">
                 <div class="text-subtitle-1 font-weight-medium">Apellidos</div>
                 <v-text-field
                   density="compact"
@@ -64,14 +63,13 @@ div
                   prepend-inner-icon="mdi-account-outline"
                   variant="outlined"
                   v-model="state.surname"
-                  hide-details="auto"
                   @blur="v$.surname.$touch"
                   @input="v$.surname.$touch"
                   :error-messages="v$.surname.$errors.map((e) => e.$message)"
                 />
               </div>
 
-              <div>
+              <div class="mb-2">
                 <div class="text-subtitle-1 font-weight-medium">
                   Número de telefono
                 </div>
@@ -84,14 +82,13 @@ div
                   type="number"
                   hide-spin-buttons
                   counter="10"
-                  hide-details="auto"
                   @blur="v$.phone.$touch"
                   @input="v$.phone.$touch"
                   :error-messages="v$.phone.$errors.map((e) => e.$message)"
                 />
               </div>
 
-              <div class="mb-6">
+              <div class="mb-2">
                 <div class="text-subtitle-1 font-weight-medium">Género</div>
                 <v-select
                   v-model="state.gender"
@@ -101,13 +98,12 @@ div
                   item-title="gender"
                   item-value="id_gender"
                   variant="outlined"
-                  hide-details="auto"
                   @blur="v$.gender.$touch"
                   @input="v$.gender.$touch"
                   :error-messages="v$.gender.$errors.map((e) => e.$message)"
                 />
               </div>
-              <div class="mb-6">
+              <div class="mb-2">
                 <div class="text-subtitle-1 font-weight-medium">
                   Fecha de nacimiento
                 </div>
@@ -121,7 +117,7 @@ div
                       prepend-inner-icon="mdi-calendar-range-outline"
                       variant="outlined"
                       readonly
-                      hide-details="auto"
+                      
                       @blur="v$.birthdate.$touch"
                       @input="v$.birthdate.$touch"
                       :error-messages="
@@ -137,7 +133,6 @@ div
                   placeholder="2001-01-01"
                   variant="outlined"
                   type="date"
-                  hide-details="auto"
                   @blur="v$.birthdate.$touch"
                   @input="v$.birthdate.$touch"
                   :error-messages="v$.birthdate.$errors.map((e) => e.$message)"
@@ -145,7 +140,7 @@ div
               </div>
             </v-window-item>
             <v-window-item :value="2">
-              <div class="mb-6">
+              <div class="mb-2">
                 <div class="text-subtitle-1 font-weight-medium">
                   Correo electrónico
                 </div>
@@ -156,14 +151,13 @@ div
                   prepend-inner-icon="mdi-email-outline"
                   variant="outlined"
                   type="email"
-                  hide-details="auto"
                   @blur="v$.username.$touch"
                   @input="v$.username.$touch"
                   :error-messages="v$.username.$errors.map((e) => e.$message)"
                 />
               </div>
 
-              <div class="mb-6">
+              <div class="mb-2">
                 <div class="text-subtitle-1 font-weight-medium">Contraseña</div>
                 <v-text-field
                   v-model="state.password"
@@ -175,8 +169,8 @@ div
                   placeholder="Contraseña"
                   prepend-inner-icon="mdi-lock-outline"
                   variant="outlined"
+                  hide-details
                   @click:append-inner="pass_visible = !pass_visible"
-                  hide-details="auto"
                   @blur="v$.password.$touch"
                   @input="v$.password.$touch"
                 />
@@ -189,7 +183,7 @@ div
                     mdi-check
                   </v-icon>
                 </div>
-                <div class="d-flex align-center">
+                <div class="d-flex align-center mb-6">
                   <v-list-item-title class="text-subtitle-2 mr-auto">
                     • Ingrese al menos 8 caracteres
                   </v-list-item-title>
@@ -202,7 +196,7 @@ div
                 </div>
               </div>
 
-              <div class="mb-6">
+              <div class="mb-2">
                 <div class="text-subtitle-1 font-weight-medium">
                   Confirmar contraseña
                 </div>
@@ -217,7 +211,6 @@ div
                   prepend-inner-icon="mdi-lock-outline"
                   variant="outlined"
                   @click:append-inner="confirm_visible = !confirm_visible"
-                  hide-details="auto"
                   @blur="v$.confirm_password.$touch"
                   @input="v$.confirm_password.$touch"
                   :error-messages="
@@ -282,28 +275,28 @@ div
                 </v-file-input>
               </div>
 
-              <div class="mb-6">
+              <div class="mb-2">
                 <div class="text-subtitle-1 font-weight-medium">
                   No soy un robot
                 </div>
                 <div class="d-flex flex-row">
                   <v-text-field
-                  density="compact"
-                  variant="outlined"
-                  readonly
-                  @blur="v$.captcha_token.$touch"
-                  @input="v$.captcha_token.$touch"
-                  :error-messages="
-                    v$.captcha_token.$errors.map((e) => e.$message)
-                  "
-                >
-                  <div
-                    ref="captchaContainer"
-                    class="frc-captcha"
-                    data-sitekey="FCMII3HVVFND9QOH"
-                    data-lang="es"
-                  />
-                </v-text-field>
+                    density="compact"
+                    variant="outlined"
+                    readonly
+                    @blur="v$.captcha_token.$touch"
+                    @input="v$.captcha_token.$touch"
+                    :error-messages="
+                      v$.captcha_token.$errors.map((e) => e.$message)
+                    "
+                  >
+                    <div
+                      ref="captchaContainer"
+                      class="frc-captcha"
+                      data-sitekey="FCMII3HVVFND9QOH"
+                      data-lang="es"
+                    />
+                  </v-text-field>
                 </div>
               </div>
             </v-window-item>

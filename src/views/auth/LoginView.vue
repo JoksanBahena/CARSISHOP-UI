@@ -31,7 +31,6 @@
             placeholder="Correo electrónico"
             prepend-inner-icon="mdi-email-outline"
             variant="outlined"
-            hide-details="auto"
             v-model="state.email"
             @blur="v$.email.$touch"
             @input="v$.email.$touch"
@@ -47,11 +46,10 @@
             "
             :type="visible ? 'text' : 'password'"
             density="compact"
-            class="mb-4"
+            class="mb-2"
             placeholder="Contraseña"
             prepend-inner-icon="mdi-lock-outline"
             variant="outlined"
-            hide-details="auto"
             @click:append-inner="visible = !visible"
             v-model="state.password"
             @blur="v$.password.$touch"
@@ -70,7 +68,7 @@
         </div>
 
         <v-btn
-          class="mb-8 text-none"
+          class="mb-4 text-none"
           :color="colors.primary_dark"
           size="large"
           variant="flat"

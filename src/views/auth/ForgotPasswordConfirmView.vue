@@ -38,7 +38,7 @@
             variant="outlined"
             @click:append-inner="pass_visible = !pass_visible"
             v-model="state.password"
-            hide-details="auto"
+            hide-details
             @blur="v$.password.$touch"
             @input="v$.password.$touch"
           />
@@ -77,7 +77,6 @@
             variant="outlined"
             @click:append-inner="confirm_visible = !confirm_visible"
             v-model="state.confirm_password"
-            hide-details="auto"
             @blur="v$.confirm_password.$touch"
             @input="v$.confirm_password.$touch"
             :error-messages="v$.confirm_password.$errors.map((e) => e.$message)"
