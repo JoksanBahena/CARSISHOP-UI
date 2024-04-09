@@ -244,7 +244,7 @@
                 </p>
               </div>
 
-              <div class="mb-6">
+              <div class="mb-4">
                 <div class="text-subtitle-1 font-weight-medium">
                   Subir foto de perfil
                 </div>
@@ -279,6 +279,20 @@
                     </template>
                   </template>
                 </v-file-input>
+              </div>
+
+              <div class="mb-6">
+                <div class="text-subtitle-1 font-weight-medium">
+                  No soy un robot
+                </div>
+                <div class="d-flex justify-center">
+                  <div
+                  ref="captchaContainer"
+                  class="frc-captcha"
+                  data-sitekey="FCMII3HVVFND9QOH"
+                  data-lang="es"
+                />
+                </div>
               </div>
             </v-window-item>
           </v-form>
@@ -324,7 +338,8 @@
 <script setup>
 import AuthLayout from "@/layouts/auth/AuthLayout.vue";
 import Colors from "@/utils/Colors.js";
-import { ref, computed, reactive, watch } from "vue";
+import { ref, computed, reactive, watch, onMounted, onUnmounted } from "vue";
+import { WidgetInstance } from "friendly-challenge";
 import { useVuelidate } from "@vuelidate/core";
 import {
   required,
@@ -537,13 +552,54 @@ const hasErrorsInFields = (fields) => {
   }
   return false;
 };
-
 const submit = () => {
   v$.value.$touch();
   if (v$.value.$error) return;
 
-  console.log(state);
-
+  state.captchaToken = widget.value.getToken();
   alert(JSON.stringify(state));
 };
+
+const captchaContainer = ref();
+const widget = ref();
+
+async function getCaptchaToken(solution) {
+  let response = await CaptchaSolution.verificarCaptcha(solution);
+  console.log(response);
+}
+
+const doneCallback = (solution) => {
+  console.log("Captcha completado");
+};
+
+const errorCallback = (error) => {
+  console.log("Error en el captcha");
+};
+
+const renderCaptcha = () => {
+  if (captchaContainer.value) {
+    widget.value = new WidgetInstance(captchaContainer.value, {
+      startMode: "none",
+      doneCallback,
+      errorCallback,
+    });
+  }
+};
+
+onMounted(() => {
+  renderCaptcha();
+});
+
+watch(captchaContainer, () => {
+  if (captchaContainer.value) {
+    renderCaptcha();
+  }
+});
+
+onUnmounted(() => {
+  console.log("Captcha destruido");
+  if (widget.value) {
+    widget.value.destroy();
+  }
+});
 </script>
