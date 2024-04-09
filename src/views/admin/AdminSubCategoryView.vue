@@ -3,12 +3,6 @@
     <v-card outlined v-if="!loading">
       <breadcrumbs-component :items="items" />
 
-      <header-admin-component
-        :is-visible="true"
-        :href="'subcategories/add'"
-        :button-text="'Agregar nueva subcategoría'"
-        :title="'Subcategorías'"
-      />
       <v-container>
         <admin-subcategory-table-component />
       </v-container>

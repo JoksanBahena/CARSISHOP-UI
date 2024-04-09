@@ -10,6 +10,11 @@
             <admin-category-form-component />
           </modal-component>
 
+          <admin-update-category-form-component
+            v-model="isEditModalOpen"
+            :selectedCategory="selectedCategory"
+          />
+
           <v-text-field
             v-model="search"
             label="Buscar venta"
@@ -57,6 +62,7 @@
               class="ma-1 text-none"
               :color="colors.primary_dark"
               variant="outlined"
+              @click="onEdit(item)"
             >
               <v-tooltip activator="parent" location="top"> Editar </v-tooltip>
               <v-icon>mdi-pencil-outline</v-icon>
@@ -135,10 +141,16 @@ const loadItems = async ({ page, itemsPerPage, sortBy }) => {
 
   serverItems.value = paginated;
   totalItems.value = items.length;
-
-  console.log("serverItems", serverItems.value);
-
   loading.value = false;
+};
+const isEditModalOpen = ref(false);
+const selectedCategory = ref({});
+
+const onEdit = (item) => {
+  selectedCategory.value = item;
+  console.log("selectedCategory", selectedCategory.value);
+
+  isEditModalOpen.value = true;
 };
 
 const onDisableOrEnableCategory = (id, status) => {

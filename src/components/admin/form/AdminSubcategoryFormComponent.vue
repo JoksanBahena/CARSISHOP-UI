@@ -1,62 +1,32 @@
 <template>
   <v-container>
-    <p class="text-h4 font-weight-medium mb-2 text-decoration-none">
-      Añadir subcategoria
-    </p>
-
-    <v-card variant="flat" class="mt-4">
-      <v-card-item>
-        <v-form>
-          <v-row>
-            <v-col cols="12" lg="8">
-              <div>
-                <div class="text-subtitle-1 font-weight-medium">
-                  Subcategoria
-                </div>
-                <v-text-field
-                  v-model="state.subcategory"
-                  density="compact"
-                  placeholder="Ingresa el nombre de la subcategiria"
-                  prepend-inner-icon="mdi-account-outline"
-                  variant="outlined"
-                  @blur="v$.subcategory.$touch"
-                  @input="v$.subcategory.$touch"
-                  :error-messages="
-                    v$.subcategory.$errors.map((e) => e.$message)
-                  "
-                />
-              </div>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" lg="8">
-              <v-btn
-                variant="flat"
-                class="text-none"
-                :color="colors.primary"
-                block
-                append-icon="mdi-close-circle-outline"
-                @click="clear()"
-              >
-                Cancelar
-              </v-btn>
-            </v-col>
-            <v-col cols="12" lg="8">
-              <v-btn
-                variant="flat"
-                class="text-none"
-                :color="colors.primary_dark"
-                block
-                append-icon="mdi-check-circle-outline"
-                @click="submitForm()"
-              >
-                Guardar
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-form>
-      </v-card-item>
-    </v-card>
+    <v-form class="ma-2">
+      <div class="mb-4">
+        <div class="text-subtitle-1 font-weight-medium">
+          Nombre de la subcategoría
+        </div>
+        <v-text-field
+          v-model="state.subcategory"
+          density="compact"
+          placeholder="Nombre"
+          prepend-inner-icon="mdi-tag-outline"
+          variant="outlined"
+          @blur="v$.subcategory.$touch"
+          @input="v$.subcategory.$touch"
+          :error-messages="v$.subcategory.$errors.map((e) => e.$message)"
+        />
+      </div>
+      <v-btn
+        variant="flat"
+        class="text-none"
+        :color="colors.primary_dark"
+        append-icon="mdi-check-circle-outline"
+        @click="submitForm()"
+        block
+      >
+        Guardar
+      </v-btn>
+    </v-form>
   </v-container>
 </template>
 
@@ -66,6 +36,8 @@ import Colors from "@/utils/Colors.js";
 import { ref } from "vue";
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
+import Swal from "sweetalert2";
+import { useSubcategoryStore } from "@/store/SubcategoryStore";
 import {
   required,
   integer,
@@ -73,8 +45,6 @@ import {
   maxLength,
   helpers,
 } from "@vuelidate/validators";
-import Swal from "sweetalert2";
-import { useSubcategoryStore } from "@/store/SubcategoryStore";
 const { createSubcategory } = useSubcategoryStore();
 const { withMessage, regex } = helpers;
 
@@ -92,14 +62,17 @@ const state = reactive({ ...subcategory });
 
 const rules = {
   subcategory: {
-    required: withMessage("El campo es requerido", required),
+    required: withMessage(
+      "El nombre de la subcategoría es obligatorio",
+      required
+    ),
     minLength: withMessage(
-      "El campo debe tener al menos 3 caracteres",
+      "El nombre de la subcategoría debe tener al menos 3 carácteres",
       minLength(3)
     ),
     maxLength: withMessage(
-      "El campo debe tener menos de 50 caracteres",
-      maxLength(50)
+      "El nombre de la subcategoría no debe tener más de 20 carácteres",
+      maxLength(20)
     ),
   },
 };
@@ -113,17 +86,17 @@ const submitForm = async () => {
     const response = await createSubcategory(state.subcategory);
     Swal.fire({
       icon: "success",
-      title: "Subcategoria creada",
+      title: "subcategoría creada",
       showConfirmButton: false,
       timer: 1500,
     }).then(() => {
-      window.history.back();
+      window.location.reload();
     });
   } catch (error) {
-    console.error("Error al crear la subcategoria", error);
+    console.error("Error al crear la subcategoría", error);
     Swal.fire({
       icon: "error",
-      title: "Error al crear la subcategoria",
+      title: "Error al crear la subcategoría",
       showConfirmButton: false,
       timer: 1500,
     });
@@ -140,5 +113,16 @@ const clear = () => {
   for (const [key, value] of Object.entries(subcategory)) {
     state[key] = value;
   }
+};
+
+const props = defineProps({
+  dialog: {
+    type: Object,
+    default: null,
+  },
+});
+
+const closeDialogInAnotherComponent = () => {
+  props.dialog.isActive = false;
 };
 </script>
