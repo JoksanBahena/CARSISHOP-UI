@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useAuthStore } from "@/store/AuthStore";
 
 const routes = [
   {
@@ -21,12 +22,12 @@ const routes = [
     component: () => import("@/views/auth/RegisterView.vue"),
   },
   {
-    path: "/forgotPassword",
+    path: "/forgot-password",
     name: "ForgotPassword",
     component: () => import("@/views/auth/ForgotPasswordView.vue"),
   },
   {
-    path: "/forgotPasswordConfirm/:token",
+    path: "/reset-password/:token",
     name: "ForgotPasswordConfirm",
     component: () => import("@/views/auth/ForgotPasswordConfirmView.vue"),
   },
@@ -34,11 +35,13 @@ const routes = [
     path: "/cart",
     name: "Cart",
     component: () => import("@/views/cart/CartView.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/cart/payment",
     name: "Payment",
     component: () => import("@/views/cart/PaymentView.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/category/:category/:subcategory",
@@ -60,6 +63,7 @@ const routes = [
     name: "Admin",
     redirect: { name: "AdminUsers" },
     component: () => import("@/views/admin/AdminView.vue"),
+    meta: { requiresAuth: true, roles: ["ADMIN"] },
     children: [
       {
         path: "users",
@@ -207,12 +211,26 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((route) => route.meta.requiresAuth)) {
-    if (localStorage.getItem("token")) {
-      //logica para verificar si el token es valido
+    if (useAuthStore().isAuthenticated) {
+      if (to.meta.roles) {
+        if (to.meta.roles.includes(useAuthStore().user)) {
+          next();
+        } else {
+          next({ name: "Home" });
+        }
+      }
       next();
     } else {
       next({ name: "Login" });
     }
+  } else if (
+    useAuthStore().isAuthenticated &&
+    (to.name === "Login" ||
+      to.name === "Register" ||
+      to.name === "ForgotPassword" ||
+      to.name === "ForgotPasswordConfirm")
+  ) {
+    next({ name: "Home" });
   } else {
     next();
   }

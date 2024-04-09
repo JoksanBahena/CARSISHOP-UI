@@ -1,18 +1,14 @@
 <template>
   <v-container>
-    <a
-      href="javascript:history.go(-1)"
-      class="text-h4 font-weight-medium mb-2 text-decoration-none"
-      style="color: black"
-    >
-      <v-icon>mdi-chevron-left</v-icon> Añadir subcategoria
-    </a>
+    <p class="text-h4 font-weight-medium mb-2 text-decoration-none">
+      Añadir subcategoria
+    </p>
 
     <v-card variant="flat" class="mt-4">
       <v-card-item>
         <v-form>
           <v-row>
-            <v-col cols="12" lg="9">
+            <v-col cols="12" lg="8">
               <div>
                 <div class="text-subtitle-1 font-weight-medium">
                   Subcategoria
@@ -33,7 +29,7 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="6" lg="9">
+            <v-col cols="9" lg="4">
               <v-btn
                 variant="flat"
                 class="text-none"
@@ -45,7 +41,7 @@
                 Cancelar
               </v-btn>
             </v-col>
-            <v-col cols="6" lg="9">
+            <v-col cols="9" lg="4">
               <v-btn
                 variant="flat"
                 class="text-none"
@@ -70,7 +66,6 @@ import Colors from "@/utils/Colors.js";
 import { ref } from "vue";
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { createCategory } from "@/services/categoryService";
 import {
   required,
   integer,

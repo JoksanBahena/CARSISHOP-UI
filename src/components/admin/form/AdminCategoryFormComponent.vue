@@ -1,18 +1,14 @@
 <template>
   <v-container>
-    <a
-      href="javascript:history.go(-1)"
-      class="text-h4 font-weight-medium mb-2 text-decoration-none"
-      style="color: black"
-    >
-      <v-icon>mdi-chevron-left</v-icon> Añadir Categoria
-    </a>
+    <p class="text-h4 font-weight-medium mb-2 text-decoration-none">
+      Añadir Categoria
+    </p>
 
     <v-card variant="flat" class="mt-4">
       <v-card-item>
         <v-form>
           <v-row>
-            <v-col cols="12" lg="9">
+            <v-col cols="12" lg="8">
               <div>
                 <div class="text-subtitle-1 font-weight-medium">Categoria</div>
                 <v-text-field
@@ -29,7 +25,7 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="6" lg="9">
+            <v-col cols="9" lg="4">
               <v-btn
                 variant="flat"
                 class="text-none"
@@ -41,7 +37,7 @@
                 Cancelar
               </v-btn>
             </v-col>
-            <v-col cols="6" lg="9">
+            <v-col cols="9" lg="4">
               <v-btn
                 variant="flat"
                 class="text-none"
@@ -100,10 +96,6 @@ const rules = {
     maxLength: withMessage(
       "El campo debe tener menos de 50 caracteres",
       maxLength(50)
-    ),
-    regex: withMessage(
-      "El campo solo puede contener letras, acentos y espacios",
-      regex("^[a-zA-ZÀ-ÿ\u00f1\u00d1\\s]*$")
     ),
   },
 };

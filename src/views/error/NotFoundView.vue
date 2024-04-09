@@ -1,22 +1,29 @@
-<script setup>
-
-import AuthLayout from "@/layouts/auth/AuthLayout.vue";
-</script>
-
 <template>
-  <auth-layout page-title="404 NOT FOUND">
-    <v-container>
-      <v-layout class="d-flex flex-column fill-height align-center text-black">
-        <h4
-          class="mb-8 text-h4 font-weight-medium text-center d-none d-md-flex"
+  <default-layout page-title="404 NOT FOUND">
+    <v-parallax src="@/assets/imgs/background.png">
+      <v-layout class="d-flex flex-column align-center text-black h-screen">
+        <h2 class="font-weight-medium mt-12 text-h2">ERROR 404</h2>
+        <p class="font-weight-medium text-h6 my-4">
+          ¡Esta página se ha ido de compras!
+        </p>
+        <v-btn
+          class="mb-8 text-none"
+          :color="colors.primary_dark"
+          variant="flat"
+          :to="{ name: 'Home' }"
         >
-          404 NOT FOUND
-        </h4>
+          Sigue explorando mientras regresa
+        </v-btn>
       </v-layout>
-    </v-container>
-  </auth-layout>
+    </v-parallax>
+  </default-layout>
 </template>
 
-<style scoped>
+<script setup>
+import DefaultLayout from "@/layouts/user/DefaultLayout.vue";
+import Colors from "@/utils/Colors.js";
 
-</style>
+const colors = {
+  primary_dark: Colors.cs_primary_dark,
+};
+</script>

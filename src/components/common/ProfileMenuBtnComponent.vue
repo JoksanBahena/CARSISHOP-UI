@@ -27,6 +27,8 @@
           :color="colors.primary_dark"
           append-icon="mdi-logout-variant"
           block
+          @click="logoutSession"
+          href="/"
         >
           Cerrar sesión
         </v-btn>
@@ -36,9 +38,16 @@
 </template>
 
 <script setup>
+import { useAuthStore } from "@/store/AuthStore.js";
 import Colors from "@/utils/Colors.js";
 
 const colors = {
   primary_dark: Colors.cs_primary_dark,
+};
+
+const { logout } = useAuthStore();
+
+const logoutSession = () => {
+  logout();
 };
 </script>
