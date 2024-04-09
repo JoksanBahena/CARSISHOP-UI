@@ -10,16 +10,6 @@ div
         </h4>
       </v-layout>
 
-      <v-alert
-        v-show="!error"
-        class="mb-2"
-        variant="tonal"
-        icon="mdi-alert-circle-outline"
-        type="error"
-        :text="error.message"
-        closable
-      />
-
       <v-card class="mx-10" variant="flat">
         <v-card-title class="text-subtitle-1 font-weight-regular pa-0 mb-2">
           <!-- <v-progress-circular :color="colors.primary_dark" :model-value="progress">
@@ -40,6 +30,17 @@ div
 
         <v-window v-model="step">
           <v-form @keyup.enter="checkStep">
+            <v-slide-y-transition tag="v-alert">
+              <v-alert
+                v-if="error.message"
+                variant="tonal"
+                class="mb-8"
+                icon="mdi-alert-circle-outline"
+                type="error"
+                :text="error.message"
+              />
+            </v-slide-y-transition>
+
             <v-window-item :value="1">
               <div class="mb-2">
                 <div class="text-subtitle-1 font-weight-medium">Nombres(s)</div>
@@ -234,7 +235,7 @@ div
                 </v-avatar>
                 <p class="text-h6 mt-4">Bienvenido {{ state.name }}</p>
                 <p class="text-subtitle-1">
-                  ¡Ahora puedes disfrutar de tu cuenta!
+                  ¡Estás a un paso de disfrutar tu cuenta!
                 </p>
               </div>
 
@@ -347,6 +348,7 @@ import { ref, computed, reactive, watch, onMounted, onUnmounted } from "vue";
 import { WidgetInstance } from "friendly-challenge";
 import { useAuthStore } from "@/store/AuthStore.js";
 import { useVuelidate } from "@vuelidate/core";
+import { getErrorMessage } from "@/utils/Errors";
 import {
   required,
   integer,
@@ -355,7 +357,7 @@ import {
   helpers,
 } from "@vuelidate/validators";
 
-const { captcha } = useAuthStore;
+const { captcha, register } = useAuthStore();
 const { withMessage, regex } = helpers;
 
 const colors = {
@@ -368,9 +370,9 @@ const error = ref({ error: "", message: "" });
 const pass_visible = ref(false);
 const confirm_visible = ref(false);
 const genders = [
-  { gender: "Masculino", id_value: "1" },
-  { gender: "Femenino", id_value: "2" },
-  { gender: "Otro", id_value: "3" },
+  { gender: "Masculino", id_gender: "1" },
+  { gender: "Femenino", id_gender: "2" },
+  { gender: "Otro", id_gender: "3" },
 ];
 const today = new Date().toISOString().split("T")[0];
 const max_size = 2;
@@ -565,13 +567,29 @@ const hasErrorsInFields = (fields) => {
   }
   return false;
 };
-const submit = () => {
-  console.log(state.captcha_token);
-
+const submit = async () => {
   v$.value.$touch();
   if (v$.value.$error) return;
 
-  alert(JSON.stringify(state));
+  error.value = { error: "", message: "" };
+  loading.value = true;
+
+  try {
+    const response = await register(state);
+    if (response.status === 200) {
+      router.push({ name: "Login" });
+    } else {
+      error.value = response;
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  } catch (err) {
+    error.value = getErrorMessage(err);
+  } finally {
+    loading.value = false;
+  }
 };
 
 const captchaContainer = ref();
@@ -580,7 +598,6 @@ const widget = ref();
 const doneCallback = async (solution) => {
   state.captcha_token = solution;
   // let response = await captcha(solution);
-  // console.log(response);
 };
 
 const errorCallback = (error) => {
@@ -608,7 +625,6 @@ watch(captchaContainer, () => {
 });
 
 onUnmounted(() => {
-  console.log("Captcha destruido");
   if (widget.value) {
     widget.value.destroy();
   }
