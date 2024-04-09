@@ -385,7 +385,7 @@ const img_view = ref(null);
 const loading = ref(false);
 
 let progress = ref(3);
-let step = ref(3);
+let step = ref(1);
 
 const current_title = computed(() => {
   switch (step.value) {
