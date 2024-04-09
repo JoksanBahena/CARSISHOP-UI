@@ -8,11 +8,7 @@
           <v-row>
             <v-col cols="12" lg="4" md="4" class="text-center">
               <v-avatar size="200" :color="colors.primary_dark">
-                <v-img
-                  v-if="image_url"
-                  :src="image_url"
-                  alt="profile picture"
-                />
+                <v-img v-if="image_url" :src="image_url" alt="profile picture" />
                 <v-icon v-else size="80"> mdi-account </v-icon>
               </v-avatar>
             </v-col>
@@ -22,53 +18,28 @@
                   <div class="text-subtitle-1 font-weight-medium">
                     Foto de perfil
                   </div>
-                  <v-file-input
-                    density="compact"
-                    type="file"
-                    accept="image/png, image/jpeg, image/bmp"
-                    variant="outlined"
-                    prepend-icon="mdi-camera-outline"
-                    chips
-                    show-size
-                    @change="onFileChange"
-                    :disabled="is_disabled"
-                    v-model="state.img"
-                    :error-messages="v$.img.$errors.map((e) => e.$message)"
-                  />
+                  <v-file-input density="compact" type="file" accept="image/png, image/jpeg, image/bmp"
+                    variant="outlined" prepend-icon="mdi-camera-outline" chips show-size @change="onFileChange"
+                    :disabled="is_disabled" v-model="state.img"
+                    :error-messages="v$.img.$errors.map((e) => e.$message)" />
                 </v-col>
                 <v-col cols="12" lg="6">
                   <div>
                     <div class="text-subtitle-1 font-weight-medium">
                       Nombre(s)
                     </div>
-                    <v-text-field
-                      density="compact"
-                      placeholder="Nombre(s)"
-                      prepend-inner-icon="mdi-account-outline"
-                      variant="outlined"
-                      :disabled="is_disabled"
-                      v-model="state.name"
-                      @input="v$.name.$touch"
-                      @blur="v$.name.$touch"
-                      :error-messages="v$.name.$errors.map((e) => e.$message)"
-                    />
+                    <v-text-field density="compact" placeholder="Nombre(s)" prepend-inner-icon="mdi-account-outline"
+                      variant="outlined" :disabled="is_disabled" v-model="state.name" @input="v$.name.$touch"
+                      @blur="v$.name.$touch" :error-messages="v$.name.$errors.map((e) => e.$message)" />
                   </div>
                 </v-col>
                 <v-col cols="12" md="6">
                   <div class="text-subtitle-1 font-weight-medium">
                     Apellidos
                   </div>
-                  <v-text-field
-                    density="compact"
-                    placeholder="Apellidos"
-                    prepend-inner-icon="mdi-account-outline"
-                    variant="outlined"
-                    :disabled="is_disabled"
-                    v-model="state.surname"
-                    @input="v$.surname.$touch"
-                    @blur="v$.surname.$touch"
-                    :error-messages="v$.surname.$errors.map((e) => e.$message)"
-                  />
+                  <v-text-field density="compact" placeholder="Apellidos" prepend-inner-icon="mdi-account-outline"
+                    variant="outlined" :disabled="is_disabled" v-model="state.surname" @input="v$.surname.$touch"
+                    @blur="v$.surname.$touch" :error-messages="v$.surname.$errors.map((e) => e.$message)" />
                 </v-col>
               </v-row>
             </v-col>
@@ -76,80 +47,38 @@
           <v-row>
             <v-col cols="12" md="4">
               <div class="text-subtitle-1 font-weight-medium">Correo</div>
-              <v-text-field
-                density="compact"
-                placeholder="Correo electrónico"
-                prepend-inner-icon="mdi-email-outline"
-                variant="outlined"
-                :disabled="is_disabled"
-                v-model="state.email"
-                @input="v$.email.$touch"
-                @blur="v$.email.$touch"
-                :error-messages="v$.email.$errors.map((e) => e.$message)"
-              />
+              <v-text-field density="compact" placeholder="Correo electrónico" prepend-inner-icon="mdi-email-outline"
+                variant="outlined" :disabled="is_disabled" v-model="state.email" @input="v$.email.$touch"
+                @blur="v$.email.$touch" :error-messages="v$.email.$errors.map((e) => e.$message)" />
             </v-col>
 
             <v-col cols="12" md="4">
               <div class="text-subtitle-1 font-weight-medium">Teléfono</div>
-              <v-text-field
-                density="compact"
-                placeholder="Teléfono"
-                prepend-inner-icon="mdi-phone-outline"
-                variant="outlined"
-                type="number"
-                hide-spin-buttons
-                :disabled="is_disabled"
-                v-model="state.phone"
-                @input="v$.phone.$touch"
-                @blur="v$.phone.$touch"
-                :error-messages="v$.phone.$errors.map((e) => e.$message)"
-                :counter="10"
-              />
+              <v-text-field density="compact" placeholder="Teléfono" prepend-inner-icon="mdi-phone-outline"
+                variant="outlined" type="number" hide-spin-buttons :disabled="is_disabled" v-model="state.phone"
+                @input="v$.phone.$touch" @blur="v$.phone.$touch"
+                :error-messages="v$.phone.$errors.map((e) => e.$message)" :counter="10" />
             </v-col>
 
             <v-col cols="12" md="4">
               <div class="text-subtitle-1 font-weight-medium">Género</div>
-              <v-select
-                density="compact"
-                placeholder="Género"
-                prepend-inner-icon="mdi-account-outline"
-                variant="outlined"
-                clearable
-                chips
-                :items="generes"
-                :disabled="is_disabled"
-                v-model="state.genere"
-                @input="v$.genere.$touch"
-                @blur="v$.genere.$touch"
-                :error-messages="v$.genere.$errors.map((e) => e.$message)"
-              />
+              <v-select density="compact" placeholder="Género" prepend-inner-icon="mdi-account-outline"
+                variant="outlined" clearable chips :items="generes" :disabled="is_disabled" v-model="state.genere"
+                @input="v$.genere.$touch" @blur="v$.genere.$touch"
+                :error-messages="v$.genere.$errors.map((e) => e.$message)" />
             </v-col>
 
             <v-divider />
 
             <v-col v-if="!is_disabled" cols="6">
-              <v-btn
-                variant="flat"
-                prepend-icon="mdi-close-circle-outline"
-                class="text-none"
-                :color="colors.primary"
-                size="large"
-                block
-                @click="clear()"
-              >
+              <v-btn variant="flat" prepend-icon="mdi-close-circle-outline" class="text-none" :color="colors.primary"
+                size="large" block @click="clear()">
                 Cancelar
               </v-btn>
             </v-col>
             <v-col :cols="is_disabled ? '12' : '6'">
-              <v-btn
-                variant="flat"
-                append-icon="mdi-check-circle-outline"
-                class="text-none"
-                :color="colors.primary_dark"
-                size="large"
-                block
-                @click="is_disabled ? onEdit() : submitForm()"
-              >
+              <v-btn variant="flat" append-icon="mdi-check-circle-outline" class="text-none"
+                :color="colors.primary_dark" size="large" block @click="is_disabled ? onEdit() : submitForm()">
                 {{ is_disabled ? "Editar" : "Guardar" }}
               </v-btn>
             </v-col>
@@ -162,7 +91,7 @@
 
 <script setup>
 import Colors from "@/utils/Colors.js";
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import {
   required,
@@ -172,7 +101,10 @@ import {
   helpers,
 } from "@vuelidate/validators";
 import Swal from "sweetalert2";
+import { useProfileStore } from "@/store/ProfileStore";
+
 const { withMessage, regex } = helpers;
+const { fetchProfile } = useProfileStore();
 
 const colors = {
   primary: Colors.cs_primary,
@@ -205,6 +137,24 @@ const user = {
   img: null,
 };
 const state = reactive({ ...user });
+
+const getUserInfo = async () => {
+  try {
+    const response = await fetchProfile();
+    state.name = response.name
+    state.surname = response.surname
+    state.email = response.username
+    state.phone = response.phone
+    state.genere = response.gender ? response.gender : "ADMIN"
+    state.img = response.profilepic
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+onMounted(async () => {
+  getUserInfo();
+});
 
 const rules = {
   name: {
@@ -290,6 +240,8 @@ const clear = () => {
   for (const [key, value] of Object.entries(user)) {
     state[key] = value;
   }
+
+  getUserInfo();
 };
 
 const image_url = ref("");
