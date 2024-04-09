@@ -1,3 +1,4 @@
+div
 <template>
   <auth-layout page_title="REGISTRO">
     <v-container>
@@ -285,13 +286,24 @@
                 <div class="text-subtitle-1 font-weight-medium">
                   No soy un robot
                 </div>
-                <div class="d-flex justify-center">
+                <div class="d-flex flex-row">
+                  <v-text-field
+                  density="compact"
+                  variant="outlined"
+                  readonly
+                  @blur="v$.captcha_token.$touch"
+                  @input="v$.captcha_token.$touch"
+                  :error-messages="
+                    v$.captcha_token.$errors.map((e) => e.$message)
+                  "
+                >
                   <div
-                  ref="captchaContainer"
-                  class="frc-captcha"
-                  data-sitekey="FCMII3HVVFND9QOH"
-                  data-lang="es"
-                />
+                    ref="captchaContainer"
+                    class="frc-captcha"
+                    data-sitekey="FCMII3HVVFND9QOH"
+                    data-lang="es"
+                  />
+                </v-text-field>
                 </div>
               </div>
             </v-window-item>
@@ -340,6 +352,7 @@ import AuthLayout from "@/layouts/auth/AuthLayout.vue";
 import Colors from "@/utils/Colors.js";
 import { ref, computed, reactive, watch, onMounted, onUnmounted } from "vue";
 import { WidgetInstance } from "friendly-challenge";
+import { useAuthStore } from "@/store/AuthStore.js";
 import { useVuelidate } from "@vuelidate/core";
 import {
   required,
@@ -349,6 +362,7 @@ import {
   helpers,
 } from "@vuelidate/validators";
 
+const { captcha } = useAuthStore;
 const { withMessage, regex } = helpers;
 
 const colors = {
@@ -371,7 +385,7 @@ const img_view = ref(null);
 const loading = ref(false);
 
 let progress = ref(3);
-let step = ref(1);
+let step = ref(3);
 
 const current_title = computed(() => {
   switch (step.value) {
@@ -402,6 +416,7 @@ const user = {
   password: "",
   confirm_password: "",
   profilepic: [],
+  captcha_token: "",
 };
 
 const state = reactive({ ...user });
@@ -494,6 +509,9 @@ const rules = {
       imgSizeValidate()
     ),
   },
+  captcha_token: {
+    required: withMessage("El captcha es requerido", required),
+  },
 };
 
 const v$ = useVuelidate(rules, state);
@@ -506,7 +524,9 @@ const backStep = () => {
 const checkStep = () => {
   switch (step.value) {
     case 1:
-      if (hasErrorsInFields(["name", "surname", "phone", "gender", "birthdate"])) {
+      if (
+        hasErrorsInFields(["name", "surname", "phone", "gender", "birthdate"])
+      ) {
       } else {
         step.value++;
         progress.value += 47;
@@ -553,23 +573,21 @@ const hasErrorsInFields = (fields) => {
   return false;
 };
 const submit = () => {
+  console.log(state.captcha_token);
+
   v$.value.$touch();
   if (v$.value.$error) return;
 
-  state.captchaToken = widget.value.getToken();
   alert(JSON.stringify(state));
 };
 
 const captchaContainer = ref();
 const widget = ref();
 
-async function getCaptchaToken(solution) {
-  let response = await CaptchaSolution.verificarCaptcha(solution);
-  console.log(response);
-}
-
-const doneCallback = (solution) => {
-  console.log("Captcha completado");
+const doneCallback = async (solution) => {
+  state.captcha_token = solution;
+  // let response = await captcha(solution);
+  // console.log(response);
 };
 
 const errorCallback = (error) => {

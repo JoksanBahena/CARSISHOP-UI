@@ -32,6 +32,17 @@ export const useAuthStore = defineStore("auth", {
       }
     },
     ////
+    async captcha(solution) {
+      try {
+        const response = await axios.post(
+          baseURL + "auth/captcha/?solution=" + solution
+        );
+        return response.data;
+      } catch (error) {
+        throw new Error("error captcha");
+      }
+    },
+    // async register(email, password, confirmPassword, role) {
     async forgotPassword(email) {
       try {
         const response = await axios.post(baseURL + "auth/forgotPassword", {
