@@ -1,213 +1,332 @@
 <template>
-  <auth-layout page-title="REGISTRO">
+  <auth-layout page_title="REGISTRO">
     <v-container>
       <v-layout class="d-flex flex-column fill-height align-center text-black">
-        <h4 class="mb-8 text-h4 font-weight-medium text-center d-none d-md-flex">
+        <h4
+          class="mb-8 text-h4 font-weight-medium text-center d-none d-md-flex"
+        >
           REGISTRO
         </h4>
       </v-layout>
 
-      <v-alert v-show="!error" class="mb-2" variant="tonal" icon="mdi-alert-circle-outline" type="error"
-        :text="error.message" closable />
+      <v-alert
+        v-show="!error"
+        class="mb-2"
+        variant="tonal"
+        icon="mdi-alert-circle-outline"
+        type="error"
+        :text="error.message"
+        closable
+      />
 
       <v-card class="mx-10" variant="flat">
-        <v-card-title class="text-subtitle-1 font-weight-regular pa-0 mb-4">
+        <v-card-title class="text-subtitle-1 font-weight-regular pa-0 mb-2">
+          <!-- <v-progress-circular :color="colors.primary_dark" :model-value="progress">
+            <v-avatar size="24" v-text="step" />
+          </v-progress-circular> -->
+
           <v-avatar :color="colors.primary_dark" size="24" v-text="step" />
           <span class="mx-2">{{ current_title }}</span>
         </v-card-title>
 
+        <v-progress-linear
+          :model-value="progress"
+          :color="colors.primary_dark"
+          class="mb-6"
+          height="6"
+          rounded
+        />
+
         <v-window v-model="step">
-          <v-window-item :value="1">
-            <form>
-              <div class="mb-1">
+          <v-form @keyup.enter="checkStep">
+            <v-window-item :value="1">
+              <div class="mb-6">
                 <div class="text-subtitle-1 font-weight-medium">Nombres(s)</div>
-                <v-text-field density="compact" placeholder="Nombres(s)" prepend-inner-icon="mdi-account-outline"
-                  variant="outlined" v-model="state.name" @blur="v$.name.$touch" @input="v$.name.$touch"
-                  :error-messages="v$.name.$errors.map((e) => e.$message)" />
+                <v-text-field
+                  density="compact"
+                  placeholder="Nombres(s)"
+                  prepend-inner-icon="mdi-account-outline"
+                  variant="outlined"
+                  v-model="state.name"
+                  hide-details="auto"
+                  @blur="v$.name.$touch"
+                  @input="v$.name.$touch"
+                  :error-messages="v$.name.$errors.map((e) => e.$message)"
+                />
               </div>
 
-              <div class="mb-1">
+              <div class="mb-6">
                 <div class="text-subtitle-1 font-weight-medium">Apellidos</div>
-                <v-text-field density="compact" placeholder="Apellidos" prepend-inner-icon="mdi-account-outline"
-                  variant="outlined" v-model="state.surname" @blur="v$.surname.$touch" @input="v$.surname.$touch"
-                  :error-messages="v$.surname.$errors.map((e) => e.$message)" />
+                <v-text-field
+                  density="compact"
+                  placeholder="Apellidos"
+                  prepend-inner-icon="mdi-account-outline"
+                  variant="outlined"
+                  v-model="state.surname"
+                  hide-details="auto"
+                  @blur="v$.surname.$touch"
+                  @input="v$.surname.$touch"
+                  :error-messages="v$.surname.$errors.map((e) => e.$message)"
+                />
               </div>
 
-              <div class="mb-1">
+              <div>
                 <div class="text-subtitle-1 font-weight-medium">
                   Número de telefono
                 </div>
-                <v-text-field v-model="state.phone" density="compact" placeholder="Número de telefono"
-                  prepend-inner-icon="mdi-phone-outline" variant="outlined" type="number" @blur="v$.phone.$touch"
-                  @input="v$.phone.$touch" :error-messages="v$.phone.$errors.map((e) => e.$message)" />
+                <v-text-field
+                  v-model="state.phone"
+                  density="compact"
+                  placeholder="Número de telefono"
+                  prepend-inner-icon="mdi-phone-outline"
+                  variant="outlined"
+                  type="number"
+                  hide-spin-buttons
+                  counter="10"
+                  hide-details="auto"
+                  @blur="v$.phone.$touch"
+                  @input="v$.phone.$touch"
+                  :error-messages="v$.phone.$errors.map((e) => e.$message)"
+                />
               </div>
 
-              <div class="mb-1">
-                <div class="text-subtitle-1 font-weight-medium">Genero</div>
-                <v-select v-model="state.gender" density="compact" placeholder="Selecciona una opción"
-                  :items="['Masculino', 'Femenino', 'Otro']" variant="outlined" @blur="v$.gender.$touch"
-                  @input="v$.gender.$touch" :error-messages="v$.gender.$errors.map((e) => e.$message)" />
+              <div class="mb-6">
+                <div class="text-subtitle-1 font-weight-medium">Género</div>
+                <v-select
+                  v-model="state.gender"
+                  density="compact"
+                  placeholder="Género"
+                  :items="genders"
+                  item-title="gender"
+                  item-value="id_gender"
+                  variant="outlined"
+                  hide-details="auto"
+                  @blur="v$.gender.$touch"
+                  @input="v$.gender.$touch"
+                  :error-messages="v$.gender.$errors.map((e) => e.$message)"
+                />
               </div>
-            </form>
-          </v-window-item>
-
-          <v-window-item :value="2">
-            <div class="mb-1">
-              <div class="text-subtitle-1 font-weight-medium">
-                Código postal
-              </div>
-              <v-text-field v-model="state.cp" density="compact" placeholder="CP"
-                prepend-inner-icon="mdi-map-marker-outline" variant="outlined" type="number" @blur="v$.cp.$touch"
-                @input="v$.cp.$touch" :error-messages="v$.cp.$errors.map((e) => e.$message)" />
-            </div>
-
-            <v-row>
-              <v-col>
-                <div class="mb-1">
-                  <div class="text-subtitle-1 font-weight-medium">Estado</div>
-                  <v-select v-model="state.estate" clearable placeholder="Estado" :items="states" density="compact"
-                    variant="outlined" prepend-inner-icon="mdi-map-marker-outline" @blur="v$.estate.$touch"
-                    @input="v$.estate.$touch" :error-messages="v$.estate.$errors.map((e) => e.$message)" />
-
-                  <!--                  <v-text-field-->
-                  <!--                    v-model="state.estate"-->
-                  <!--                    density="compact"-->
-                  <!--                    placeholder="Estado"-->
-                  <!--                    variant="outlined"-->
-                  <!--                    @blur="v$.estate.$touch"-->
-                  <!--                    @input="v$.estate.$touch"-->
-                  <!--                    :error-messages="v$.estate.$errors.map((e) => e.$message)"-->
-                  <!--                  />-->
+              <div class="mb-6">
+                <div class="text-subtitle-1 font-weight-medium">
+                  Fecha de nacimiento
                 </div>
-              </v-col>
-              <v-col>
-                <div class="mb-1">
-                  <div class="text-subtitle-1 font-weight-medium">
-                    Municipio
-                  </div>
-                  <v-select v-model="state.town" clearable placeholder="Municipio" :items="towns" density="compact"
-                    variant="outlined" prepend-inner-icon="mdi-map-marker-outline" @blur="v$.town.$touch"
-                    @input="v$.town.$touch" :error-messages="v$.town.$errors.map((e) => e.$message)">
-
-                  </v-select>
-                  <!--                  <v-text-field-->
-                  <!--                    v-model="state.town"-->
-                  <!--                    density="compact"-->
-                  <!--                    placeholder="Municipio"-->
-                  <!--                    variant="outlined"-->
-                  <!--                    @blur="v$.town.$touch"-->
-                  <!--                    @input="v$.town.$touch"-->
-                  <!--                    :error-messages="v$.town.$errors.map((e) => e.$message)"-->
-                  <!--                  />-->
-                </div>
-              </v-col>
-            </v-row>
-
-            <div class="mb-1">
-              <div class="text-subtitle-1 font-weight-medium">Colonia</div>
-              <v-text-field v-model="state.suburb" density="compact" placeholder="Colonia" variant="outlined"
-                @blur="v$.suburb.$touch" @input="v$.suburb.$touch"
-                :error-messages="v$.suburb.$errors.map((e) => e.$message)" />
-            </div>
-
-            <div class="mb-1">
-              <div class="text-subtitle-1 font-weight-medium">Calle</div>
-              <v-text-field v-model="state.street" density="compact" placeholder="Calle" variant="outlined"
-                @blur="v$.street.$touch" @input="v$.street.$touch"
-                :error-messages="v$.street.$errors.map((e) => e.$message)" />
-            </div>
-
-            <v-row>
-              <v-col>
-                <div class="mb-1">
-                  <div class="text-subtitle-1 font-weight-medium">
-                    Núm. Exterior
-                  </div>
-                  <v-text-field v-model="state.num_ext" density="compact" placeholder="#" variant="outlined"
-                    type="number" @blur="v$.num_ext.$touch" @input="v$.num_ext.$touch"
-                    :error-messages="v$.num_ext.$errors.map((e) => e.$message)" />
-                </div>
-              </v-col>
-              <v-col>
-                <div class="mb-1">
-                  <div class="text-subtitle-1 font-weight-medium">
-                    Núm. Interior
-                  </div>
-                  <v-text-field v-model="state.num_int" density="compact" placeholder="#" variant="outlined"
-                    type="number" @blur="v$.num_int.$touch" @input="v$.num_int.$touch"
-                    :error-messages="v$.num_int.$errors.map((e) => e.$message)" />
-                </div>
-              </v-col>
-            </v-row>
-          </v-window-item>
-
-          <v-window-item :value="3">
-            <div class="mb-1">
-              <div class="text-subtitle-1 font-weight-medium">
-                Correo electrónico
+                <!-- <v-menu :close-on-content-click="false">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-bind="props"
+                      v-model="state.birthdate"
+                      density="compact"
+                      placeholder="2001-01-01"
+                      prepend-inner-icon="mdi-calendar-range-outline"
+                      variant="outlined"
+                      readonly
+                      hide-details="auto"
+                      @blur="v$.birthdate.$touch"
+                      @input="v$.birthdate.$touch"
+                      :error-messages="
+                        v$.birthdate.$errors.map((e) => e.$message)
+                      "
+                    />
+                  </template>
+                  <v-date-picker :color="colors.primary_dark" hide-header hide-weekdays />
+                </v-menu> -->
+                <v-text-field
+                  v-model="state.birthdate"
+                  density="compact"
+                  placeholder="2001-01-01"
+                  variant="outlined"
+                  type="date"
+                  hide-details="auto"
+                  @blur="v$.birthdate.$touch"
+                  @input="v$.birthdate.$touch"
+                  :error-messages="v$.birthdate.$errors.map((e) => e.$message)"
+                />
               </div>
-              <v-text-field v-model="state.email" density="compact" placeholder="Correo electrónico"
-                prepend-inner-icon="mdi-email-outline" variant="outlined" @blur="v$.email.$touch"
-                @input="v$.email.$touch" :error-messages="v$.email.$errors.map((e) => e.$message)" />
-            </div>
-
-            <div class="mb-1">
-              <div class="text-subtitle-1 font-weight-medium">Contraseña</div>
-              <v-text-field v-model="state.password" :append-inner-icon="pass_visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
-          " :type="pass_visible ? 'text' : 'password'" density="compact" placeholder="Contraseña"
-                prepend-inner-icon="mdi-lock-outline" variant="outlined"
-                @click:append-inner="pass_visible = !pass_visible" @blur="v$.password.$touch"
-                @input="v$.password.$touch" :error-messages="v$.password.$errors.map((e) => e.$message)" />
-
-              <div class="text-subtitle-1 font-weight-medium">
-                Confirmar contraseña
+            </v-window-item>
+            <v-window-item :value="2">
+              <div class="mb-6">
+                <div class="text-subtitle-1 font-weight-medium">
+                  Correo electrónico
+                </div>
+                <v-text-field
+                  v-model="state.username"
+                  density="compact"
+                  placeholder="Correo electrónico"
+                  prepend-inner-icon="mdi-email-outline"
+                  variant="outlined"
+                  type="email"
+                  hide-details="auto"
+                  @blur="v$.username.$touch"
+                  @input="v$.username.$touch"
+                  :error-messages="v$.username.$errors.map((e) => e.$message)"
+                />
               </div>
-              <v-text-field v-model="state.confirm_password" :append-inner-icon="confirm_visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
-          " :type="confirm_visible ? 'text' : 'password'" density="compact" placeholder="Confirmar contraseña"
-                prepend-inner-icon="mdi-lock-outline" variant="outlined"
-                @click:append-inner="confirm_visible = !confirm_visible" @blur="v$.confirm_password.$touch"
-                @input="v$.confirm_password.$touch"
-                :error-messages="v$.confirm_password.$errors.map((e) => e.$message)" />
-            </div>
-          </v-window-item>
 
-          <v-window-item :value="4">
-            <div class="d-flex flex-column justify-center align-center mb-4 text-center">
-              <v-avatar size="160" :color="colors.primary_dark">
-                <v-img v-if="image_url" :src="image_url" alt="profile picture" />
-                <v-icon v-else size="80"> mdi-account </v-icon>
-              </v-avatar>
-              <p class="text-h6">Bienvenido { name }</p>
-              <p class="text-subtitle-1">
-                Ahora puedes disfrutar de tu cuenta y todos los beneficios de
-                ella
-              </p>
-            </div>
-            <div class="mb-1">
-              <div class="text-subtitle-1 font-weight-medium">
-                Subir foto de perfil
-              </div>
-              <v-file-input density="compact" type="file" accept="image/png, image/jpeg, image/bmp" variant="outlined"
-                prepend-icon="mdi-camera-outline" chips show-size @change="onFileChange" />
-              <div class="mb-1">
-                <div class="text-subtitle-1 font-weight-medium">Captcha</div>
-                <div :ref="captchaContainer" class="frc-captcha mt-2" data-sitekey="FCMII3HVVFND9QOH">
+              <div class="mb-6">
+                <div class="text-subtitle-1 font-weight-medium">Contraseña</div>
+                <v-text-field
+                  v-model="state.password"
+                  :append-inner-icon="
+                    pass_visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
+                  "
+                  :type="pass_visible ? 'text' : 'password'"
+                  density="compact"
+                  placeholder="Contraseña"
+                  prepend-inner-icon="mdi-lock-outline"
+                  variant="outlined"
+                  @click:append-inner="pass_visible = !pass_visible"
+                  hide-details="auto"
+                  @blur="v$.password.$touch"
+                  @input="v$.password.$touch"
+                />
+
+                <div class="d-flex align-center mt-2">
+                  <v-list-item-title class="text-subtitle-2 mr-auto">
+                    • La contraseña es obligatoria
+                  </v-list-item-title>
+                  <v-icon v-if="state.password" size="xsmall">
+                    mdi-check
+                  </v-icon>
+                </div>
+                <div class="d-flex align-center">
+                  <v-list-item-title class="text-subtitle-2 mr-auto">
+                    • Ingrese al menos 8 caracteres
+                  </v-list-item-title>
+                  <v-icon
+                    v-if="state.password && !v$.password.$errors.length"
+                    size="xsmall"
+                  >
+                    mdi-check
+                  </v-icon>
                 </div>
               </div>
-            </div>
-          </v-window-item>
+
+              <div class="mb-6">
+                <div class="text-subtitle-1 font-weight-medium">
+                  Confirmar contraseña
+                </div>
+                <v-text-field
+                  v-model="state.confirm_password"
+                  :append-inner-icon="
+                    confirm_visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
+                  "
+                  :type="confirm_visible ? 'text' : 'password'"
+                  density="compact"
+                  placeholder="Confirmar contraseña"
+                  prepend-inner-icon="mdi-lock-outline"
+                  variant="outlined"
+                  @click:append-inner="confirm_visible = !confirm_visible"
+                  hide-details="auto"
+                  @blur="v$.confirm_password.$touch"
+                  @input="v$.confirm_password.$touch"
+                  :error-messages="
+                    v$.confirm_password.$errors.map((e) => e.$message)
+                  "
+                />
+              </div>
+            </v-window-item>
+
+            <v-window-item :value="3">
+              <div
+                class="d-flex flex-column justify-center align-center mb-4 text-center"
+              >
+                <v-avatar size="160" :color="colors.primary_dark">
+                  <v-img
+                    v-if="img_view"
+                    :src="img_view"
+                    alt="profile picture"
+                  />
+                  <v-icon v-else size="80"> mdi-account </v-icon>
+                </v-avatar>
+                <p class="text-h6 mt-4">Bienvenido {{ state.name }}</p>
+                <p class="text-subtitle-1">
+                  ¡Ahora puedes disfrutar de tu cuenta!
+                </p>
+              </div>
+
+              <div class="mb-4">
+                <div class="text-subtitle-1 font-weight-medium">
+                  Subir foto de perfil
+                </div>
+                <v-file-input
+                  v-model="state.profilepic"
+                  density="compact"
+                  type="file"
+                  accept="image/png, image/jpeg, image/bmp"
+                  variant="outlined"
+                  prepend-icon="mdi-camera-outline"
+                  clear-icon="mdi-close"
+                  show-size
+                  chips
+                  @change="onFileChange"
+                  @blur="v$.profilepic.$touch"
+                  @input="v$.profilepic.$touch"
+                  :error-messages="v$.profilepic.$errors.map((e) => e.$message)"
+                >
+                  <template v-slot:selection="{ fileNames }">
+                    <template
+                      v-for="(fileName, index) in fileNames"
+                      :key="fileName"
+                    >
+                      <v-chip
+                        class="me-2"
+                        :color="colors.primary_dark"
+                        size="small"
+                        label
+                      >
+                        {{ fileName }}
+                      </v-chip>
+                    </template>
+                  </template>
+                </v-file-input>
+              </div>
+
+              <div class="mb-6">
+                <div class="text-subtitle-1 font-weight-medium">
+                  No soy un robot
+                </div>
+                <div class="d-flex justify-center">
+                  <div
+                  ref="captchaContainer"
+                  class="frc-captcha"
+                  data-sitekey="FCMII3HVVFND9QOH"
+                  data-lang="es"
+                />
+                </div>
+              </div>
+            </v-window-item>
+          </v-form>
         </v-window>
 
-        <v-card-actions>
-          <v-btn v-if="step > 1" variant="tonal" class="text-none" @click="step--">
+        <v-card-actions class="my-4 mx-0 pa-0">
+          <v-btn
+            v-if="step > 1"
+            variant="outlined"
+            class="text-none"
+            @click="backStep"
+            :disabled="v$.$errors.length > 0"
+          >
             Regresar
           </v-btn>
-          <v-btn v-if="step < 4" @click="checkStep" class="text-none flex-grow-1" :color="colors.primary_dark"
-            variant="flat" :disabled="v$.$errors.length > 0">
+          <v-btn
+            v-if="step < 3"
+            @click="checkStep"
+            class="text-none flex-grow-1"
+            :color="colors.primary_dark"
+            variant="flat"
+            :disabled="v$.$errors.length > 0"
+          >
             Continuar
           </v-btn>
-          <v-btn v-if="step === 4" @click="submit" class="text-none flex-grow-1" :color="colors.primary_dark"
-            variant="flat" :disabled="v$.$errors.length > 0">
+          <v-btn
+            v-if="step === 3"
+            @click="submit"
+            :loading="loading"
+            class="text-none flex-grow-1"
+            :color="colors.primary_dark"
+            variant="flat"
+            :disabled="v$.$errors.length > 0"
+          >
             Enviar
           </v-btn>
         </v-card-actions>
@@ -216,11 +335,11 @@
   </auth-layout>
 </template>
 
-
 <script setup>
 import AuthLayout from "@/layouts/auth/AuthLayout.vue";
 import Colors from "@/utils/Colors.js";
-import { ref, computed, reactive, onMounted, onUnmounted } from "vue";
+import { ref, computed, reactive, watch, onMounted, onUnmounted } from "vue";
+import { WidgetInstance } from "friendly-challenge";
 import { useVuelidate } from "@vuelidate/core";
 import {
   required,
@@ -229,15 +348,8 @@ import {
   maxLength,
   helpers,
 } from "@vuelidate/validators";
-import CaptchaSolution from "@/services/captchaService";
-import { WidgetInstance } from "friendly-challenge";
 
 const { withMessage, regex } = helpers;
-
-const captchaContainer = ref();
-const widget = ref()
-const pass_visible = ref(false);
-const confirm_visible = ref(false);
 
 const colors = {
   primary: Colors.cs_primary,
@@ -246,197 +358,113 @@ const colors = {
 };
 
 const error = ref({ error: "", message: "" });
+const pass_visible = ref(false);
+const confirm_visible = ref(false);
+const genders = [
+  { gender: "Masculino", id_value: "1" },
+  { gender: "Femenino", id_value: "2" },
+  { gender: "Otro", id_value: "3" },
+];
+const today = new Date().toISOString().split("T")[0];
+const max_size = 2;
+const img_view = ref(null);
+const loading = ref(false);
 
+let progress = ref(3);
 let step = ref(1);
-
-const image_url = ref('');
 
 const current_title = computed(() => {
   switch (step.value) {
     case 1:
-      return "Información personal";
+      return "Tu información personal";
     case 2:
-      return "Tu dirección";
-    case 3:
       return "Registra tu cuenta";
-    case 4:
-      return "¡Listo!";
+    case 3:
+      return "¡Ya casi listo!";
     default:
       return "Algo salió mal";
   }
 });
 
-const onFileChange = (e) => {
-  const file = e.target.files[0];
-  const reader = new FileReader();
-
-  reader.onload = (e) => {
-    image_url.value = e.target.result;
+const imgSizeValidate = () => {
+  return (value) => {
+    return value.every((image) => image.size / 1024 / 1024 <= max_size);
   };
-
-  reader.readAsDataURL(file);
 };
 
-const states = ["Morelos"];
-
-const towns = ["Cuernavaca"];
-
-const form = {
+const user = {
   name: "",
   surname: "",
   phone: "",
-  gender: "",
-  cp: "",
-  estate: null,
-  town: null,
-  suburb: "",
-  street: "",
-  num_ext: "",
-  num_int: "",
-  email: "",
+  gender: null,
+  birthdate: new Date().toISOString().substr(0, 10),
+  username: "",
   password: "",
   confirm_password: "",
-  captchaToken: null,
+  profilepic: [],
 };
 
-async function getCaptchaToken(solution) {
-  let response = await CaptchaSolution.verificarCaptcha(solution);
-  console.log(response);
-};
-
-const doneCallback = (solution) => {
-  console.log("Captcha completado");
-};
-
-const errorCallback = (error) => {
-  console.log("Error en el captcha");
-};
-
-onMounted(() => {
-  if (captchaContainer.value) {
-    console.log(captchaContainer.value);
-    widget.value = new WidgetInstance(captchaContainer.value, {
-      startMode: "",
-      doneCallback,
-      errorCallback,
-    })
-  }
-});
-
-onUnmounted(() => {
-  if (widget.value) {
-    widget.value.destroy();
-  }
-});
-
-const state = reactive({ ...form });
+const state = reactive({ ...user });
 
 const rules = {
   name: {
     required: withMessage("El nombre es requerido", required),
-    regex: withMessage("El nombre solo debe contener letras", regex(/^[a-zA-Z\s]*$/)),
-    minLength: withMessage(
-      "El nombre debe tener al menos 3 caracteres",
-      minLength(3)
+    regex: withMessage(
+      "El nombre no puede tener caracteres especiales",
+      regex(
+        /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]*$/
+      )
     ),
-    maxLength: withMessage(
-      "El nombre debe tener menos de 50 caracteres",
-      maxLength(50)
-    ),
+    minLength: withMessage("El nombre mínimo de 3 caracteres", minLength(3)),
+    maxLength: withMessage("El nombre máximo de 50 caracteres", maxLength(50)),
   },
   surname: {
     required: withMessage("El apellido es requerido", required),
-    regex: withMessage("El apellido solo debe contener letras", regex(/^[a-zA-Z\s]*$/)),
-    minLength: withMessage(
-      "El apellido debe tener al menos 3 caracteres",
-      minLength(3)
+    regex: withMessage(
+      "El apellido no puede tener carácteres especiales",
+      regex(
+        /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]*$/
+      )
     ),
+    minLength: withMessage("El apellido mínimo de 3 caracteres", minLength(3)),
     maxLength: withMessage(
-      "El apellido debe tener menos de 50 caracteres",
+      "El apellido máximo de 50 caracteres",
       maxLength(50)
     ),
   },
   phone: {
     required: withMessage("El teléfono es requerido", required),
     integer: withMessage("El teléfono debe ser un número", integer),
-    regex: withMessage(
-      "El teléfono solo debe contener números",
-      regex(/^\d+$/)
-    ),
-    minLength: withMessage(
-      "El teléfono debe tener al menos 10 digitos",
-      minLength(10)
-    ),
-    maxLength: withMessage(
-      "El teléfono debe tener menos de 10 digitos",
-      maxLength(10)
-    ),
+    regex: withMessage("El teléfono debe ser un número", regex(/^\d+$/)),
+    minLength: withMessage("El teléfono debe tener 10 digitos", minLength(10)),
+    maxLength: withMessage("El teléfono debe tener 10 digitos", maxLength(10)),
   },
   gender: {
     required: withMessage("El genero es requerido", required),
   },
-  cp: {
-    required: withMessage("El codigo postal es requerido", required),
-    integer: withMessage("El codigo postal debe ser un número", integer),
-    regex: withMessage(
-      "El codigo postal solo debe contener números",
-      regex(/^\d+$/)
+  birthdate: {
+    required: withMessage("La fecha es requerida", required),
+    maxDate: withMessage(
+      "La fecha no debe ser mayor a la actual",
+      (value) => value < today
     ),
-    minLength: withMessage(
-      "El codigo postal debe tener 5 digitos",
-      minLength(5)
-    ),
-    maxLength: withMessage(
-      "El codigo postal debe tener 5 digitos",
-      maxLength(5)
-    ),
+    minDate: withMessage("Debes ser mayor de 18 años", (value) => {
+      const birthDate = new Date(value);
+      const currentDate = new Date();
+      const eighteenYearsAgo = new Date(
+        currentDate.getFullYear() - 18,
+        currentDate.getMonth(),
+        currentDate.getDate()
+      );
+      return birthDate <= eighteenYearsAgo;
+    }),
   },
-  estate: {
-    required: withMessage("El estado es requerido", required),
-  },
-  town: {
-    required: withMessage("La ciudad es requerida", required),
-  },
-  suburb: {
-    required: withMessage("La colonia es requerida", required),
-  },
-  street: {
-    required: withMessage("La calle es requerida", required),
-  },
-  num_ext: {
-    required: withMessage("El número exterior es requerido", required),
-    integer: withMessage("El número exterior debe ser un número", integer),
-    regex: withMessage(
-      "El número exterior solo debe contener números",
-      regex(/^\d+$/)
-    ),
-    minLength: withMessage(
-      "El numero exterior debe tener al menos 1 caracter",
-      minLength(1)
-    ),
-    maxLength: withMessage(
-      "El numero exterior debe tener menos de 10 caracteres",
-      maxLength(10)
-    ),
-  },
-  num_int: {
-    integer: withMessage("El número interior debe ser un número", integer),
-    regex: withMessage(
-      "El número interior solo debe contener números",
-      regex(/^\d+$/)
-    ),
-    minLength: withMessage(
-      "El numero interior debe tener al menos 1 caracter",
-      minLength(1)
-    ),
-    maxLength: withMessage(
-      "El numero interior debe tener menos de 10 caracteres",
-      maxLength(10)
-    ),
-  },
-  email: {
+  username: {
     required: withMessage("El correo electrónico es requerido", required),
-    email: withMessage("El correo electrónico no es válido", regex(/^.+@.+\..+$/)),
+    username: withMessage(
+      "El correo electrónico no es válido",
+      regex(/^.+@.+\..+$/)
+    ),
   },
   password: {
     required: withMessage("La contraseña es requerida", required),
@@ -450,48 +478,73 @@ const rules = {
     ),
   },
   confirm_password: {
-    required: withMessage("La confirmación de contraseña es requerida", required),
-    sameAs: withMessage("Las contraseñas no coinciden", (value) => value === state.password),
+    required: withMessage(
+      "La confirmación de contraseña es requerida",
+      required
+    ),
+    sameAs: withMessage(
+      "Las contraseñas no coinciden",
+      (value) => value === state.password
+    ),
   },
-  //regla para imagen
-  //  image: {
-  //   required: withMessage("La imagen es requerida", required),
-  //   size: withMessage("La imagen debe pesar menos de 2mb", (value) => value.size < 2000000),
-  //   ext: withMessage("La imagen debe ser un archivo jpg", (value) => value.name.endsWith('.jpg')),
-  //  }
+  profilepic: {
+    required: withMessage("La foto de perfil es obligatoria", required),
+    imgSizeValidate: withMessage(
+      `El tamaño de la imagen no debe exceder ${max_size}MB`,
+      imgSizeValidate()
+    ),
+  },
 };
 
-
 const v$ = useVuelidate(rules, state);
+
+const backStep = () => {
+  step.value--;
+  progress.value -= 47;
+};
 
 const checkStep = () => {
   switch (step.value) {
     case 1:
-      if (hasErrorsInFields(["name", "surname", "phone", "gender"])) {
+      if (
+        hasErrorsInFields(["name", "surname", "phone", "gender", "birthdate"])
+      ) {
       } else {
         step.value++;
+        progress.value += 47;
       }
       break;
     case 2:
-      if (hasErrorsInFields(["cp", "estate", "town", "suburb", "street", "num_ext", "num_int"])) {
+      if (hasErrorsInFields(["username", "password", "confirm_password"])) {
       } else {
         step.value++;
+        progress.value += 47;
       }
       break;
     case 3:
-      if (hasErrorsInFields(["email", "password", "confirm_password"])) {
+      if (hasErrorsInFields(["profilepic"])) {
       } else {
-        step.value++;
       }
       break;
     default:
       break;
   }
-}
+};
+
+const onFileChange = (e) => {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+
+  reader.onload = (e) => {
+    img_view.value = e.target.result;
+  };
+
+  reader.readAsDataURL(file);
+};
 
 const hasErrorsInFields = (fields) => {
-  for (const fieldsKey in fields) {
-    eval(`v$.value.${fields[fieldsKey]}.$touch();`)
+  for (const fields_key in fields) {
+    eval(`v$.value.${fields[fields_key]}.$touch();`);
   }
   for (const field in v$.value.$errors) {
     const property = v$.value.$errors[field];
@@ -501,15 +554,56 @@ const hasErrorsInFields = (fields) => {
   }
   return false;
 };
-
 const submit = () => {
   v$.value.$touch();
   if (v$.value.$error) {
-    console.log('error')
+    console.log("error");
     return;
   }
   state.captchaToken = widget.value.getToken();
   alert(JSON.stringify(state));
 };
 
+const captchaContainer = ref();
+const widget = ref();
+
+async function getCaptchaToken(solution) {
+  let response = await CaptchaSolution.verificarCaptcha(solution);
+  console.log(response);
+}
+
+const doneCallback = (solution) => {
+  console.log("Captcha completado");
+};
+
+const errorCallback = (error) => {
+  console.log("Error en el captcha");
+};
+
+const renderCaptcha = () => {
+  if (captchaContainer.value) {
+    widget.value = new WidgetInstance(captchaContainer.value, {
+      startMode: "none",
+      doneCallback,
+      errorCallback,
+    });
+  }
+};
+
+onMounted(() => {
+  renderCaptcha();
+});
+
+watch(captchaContainer, () => {
+  if (captchaContainer.value) {
+    renderCaptcha();
+  }
+});
+
+onUnmounted(() => {
+  console.log("Captcha destruido");
+  if (widget.value) {
+    widget.value.destroy();
+  }
+});
 </script>
