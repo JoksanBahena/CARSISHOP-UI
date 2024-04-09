@@ -18,7 +18,6 @@
             icon="mdi-alert-circle-outline"
             type="error"
             :text="error.message"
-            closable
           />
         </v-slide-y-transition>
 
