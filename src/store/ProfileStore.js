@@ -29,5 +29,33 @@ export const useProfileStore = defineStore("profile", {
         throw new Error("Error fetching profile");
       }
     },
+    async updateProfile(state) {
+      try {
+        console.log(state)
+        const params = {
+          name: state.name,
+          surname: state.surname,
+          phone: state.phone,
+          gender: state.genere,
+          profilepic: state.img,
+          username: state.email,
+        };
+
+        const response = await axios.post(
+          baseUrl + "users/updateInfo",
+          params,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
+
+        return response.data;
+      } catch (err) {
+        throw new Error("Error al actualizar información");
+      }
+    },
   },
 });
