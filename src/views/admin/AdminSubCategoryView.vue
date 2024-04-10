@@ -1,12 +1,9 @@
 <template>
-  <v-container>
-    <v-card outlined v-if="!loading">
-      <breadcrumbs-component :items="items" />
+  <breadcrumbs-component :items="items" />
 
-      <v-container>
-        <admin-subcategory-table-component />
-      </v-container>
-    </v-card>
+  <v-container>
+    <p class="text-h4 font-weight-medium mb-2">Subcategorías</p>
+    <admin-subcategory-table-component />
   </v-container>
 </template>
 

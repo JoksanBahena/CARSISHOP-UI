@@ -37,8 +37,12 @@
               append-icon="mdi-check-circle-outline"
               @click="submitForm()"
               block
+              :loading="loading"
             >
               Guardar
+              <template v-slot:loader>
+                <v-progress-linear indeterminate></v-progress-linear>
+              </template>
             </v-btn>
           </v-form>
         </v-container>
@@ -49,13 +53,13 @@
 
 <script setup>
 import Colors from "@/utils/Colors.js";
-import { reactive, watch } from "vue";
+import { reactive, watch, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import Swal from "sweetalert2";
 import { required, minLength, maxLength, helpers } from "@vuelidate/validators";
 import { useCategoryStore } from "@/store/CategoryStore";
 
-const { createCategory } = useCategoryStore();
+const { updateCategory } = useCategoryStore();
 const { withMessage } = helpers;
 
 const colors = {
@@ -94,30 +98,37 @@ const rules = {
 };
 
 const v$ = useVuelidate(rules, state);
+const loading = ref(false);
 
 const submitForm = async () => {
   v$.value.$touch();
   if (v$.value.$error) return;
+  loading.value = true;
+
   try {
-    const response = await createCategory(state.category);
+    const response = await updateCategory(
+      props.selectedCategory.id,
+      state.category
+    );
     Swal.fire({
       icon: "success",
-      title: "Categoria creada",
+      title: "Categoria actualizada",
       showConfirmButton: false,
       timer: 1500,
     }).then(() => {
-      window.history.back();
+      window.location.reload();
     });
   } catch (error) {
-    console.error("Error al crear la categoría", error);
+    console.error("Error al actualizar la categoría", error);
     Swal.fire({
       icon: "error",
-      title: "Error al crear la categoría",
+      title: "Error al actualizar la categoría",
       showConfirmButton: false,
       timer: 1500,
     });
   } finally {
     clear();
+    loading.value = false;
   }
 };
 
