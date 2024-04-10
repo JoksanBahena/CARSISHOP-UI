@@ -9,6 +9,10 @@
           >
             <admin-subcategory-form-component />
           </modal-component>
+          <admin-update-subcategory-form-component
+            v-model="isEditModalOpen"
+            :selectedSubcategory="selectedSubcategory"
+          />
 
           <v-text-field
             v-model="search"
@@ -83,7 +87,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import Colors from "@/utils/Colors.js";
-import { useCategoryStore } from "@/store/CategoryStore.js";
 import Swal from "sweetalert2";
 import { useSubcategoryStore } from "@/store/SubcategoryStore";
 
@@ -141,13 +144,12 @@ const loadItems = async ({ page, itemsPerPage, sortBy }) => {
   loading.value = false;
 };
 const isEditModalOpen = ref(false);
-const selectedCategory = ref({});
+const selectedSubcategory = ref({});
 
 const onEdit = (item) => {
-  selectedCategory.value = item;
-  console.log("selectedCategory", selectedCategory.value);
-
   isEditModalOpen.value = true;
+  selectedSubcategory.value = item;
+  console.log("selectedSubcategory", selectedSubcategory.value);
 };
 
 const onDisableOrEnableSubcategory = (id, status) => {
