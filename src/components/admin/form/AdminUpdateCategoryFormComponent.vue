@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :activator="btn" max-width="600" persistent>
+  <v-dialog max-width="600" persistent>
     <template v-slot:default="{ isActive }">
       <v-card rounded="lg">
         <v-card-title class="d-flex justify-space-between align-center">
@@ -12,7 +12,7 @@
           ></v-btn>
         </v-card-title>
 
-        <v-divider></v-divider>
+        <v-divider />
         <v-container>
           <v-form class="ma-2">
             <div class="mb-4">
@@ -42,7 +42,6 @@
             </v-btn>
           </v-form>
         </v-container>
-        <v-slot></v-slot>
       </v-card>
     </template>
   </v-dialog>
@@ -50,7 +49,7 @@
 
 <script setup>
 import Colors from "@/utils/Colors.js";
-import { ref, reactive, onMounted } from "vue";
+import { reactive, watch } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import Swal from "sweetalert2";
 import { required, minLength, maxLength, helpers } from "@vuelidate/validators";
@@ -127,13 +126,12 @@ const clear = () => {
   v$.value.$reset();
 };
 
-const closeDialogInAnotherComponent = () => {
-  props.dialog.isActive = false;
-};
-
-onMounted(() => {
-  console.log("hola");
-  console.log("selectedCategory", props.selectedCategory.name);
-  state.category = props.selectedCategory.name;
-});
+watch(
+  () => props.selectedCategory,
+  (newValue) => {
+    if (newValue) {
+      state.category = newValue.name;
+    }
+  }
+);
 </script>

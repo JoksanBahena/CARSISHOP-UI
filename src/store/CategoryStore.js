@@ -15,7 +15,6 @@ export const useCategoryStore = defineStore("category", {
 
   actions: {
     async findAllCategories(page, itemsPerPage, sortBy) {
-      console.log(itemsPerPage);
       const params = {
         value: "",
         paginationType: {

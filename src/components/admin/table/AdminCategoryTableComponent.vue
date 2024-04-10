@@ -148,8 +148,6 @@ const selectedCategory = ref({});
 
 const onEdit = (item) => {
   selectedCategory.value = item;
-  console.log("selectedCategory", selectedCategory.value);
-
   isEditModalOpen.value = true;
 };
 
