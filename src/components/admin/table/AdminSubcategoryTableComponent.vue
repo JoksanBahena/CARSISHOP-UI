@@ -62,20 +62,23 @@
               :color="colors.primary_dark"
               variant="outlined"
               @click="onEdit(item)"
+              :disabled="item.status ? false : true"
             >
               <v-tooltip activator="parent" location="top"> Editar </v-tooltip>
               <v-icon>mdi-pencil-outline</v-icon>
             </v-btn>
             <v-btn
               class="ma-1 text-none"
-              :color="colors.red"
+              :color="item.status ? colors.red : colors.primary_dark"
               variant="outlined"
               @click="onDisableOrEnableSubcategory(item.id, item.status)"
             >
               <v-tooltip activator="parent" location="top">
-                Eliminar
+                {{ item.status ? "Desactivar" : "Activar" }}
               </v-tooltip>
-              <v-icon>mdi-delete-outline</v-icon>
+              <v-icon>
+                {{ item.status ? "mdi-delete" : "mdi-delete-restore" }}
+              </v-icon>
             </v-btn>
           </v-row>
         </template>
@@ -85,13 +88,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import Colors from "@/utils/Colors.js";
 import Swal from "sweetalert2";
 import { useSubcategoryStore } from "@/store/SubcategoryStore";
 
-const { subcategories, findAllsubcategories, disableSubcategory } =
-  useSubcategoryStore();
+const { findAllsubcategories, disableSubcategory } = useSubcategoryStore();
 
 const colors = {
   primary: Colors.cs_primary,
@@ -158,28 +160,26 @@ const onDisableOrEnableSubcategory = (id, status) => {
     let confirmButtonText;
 
     if (status) {
-      successMessage = "The category has been deactivated.";
-      confirmButtonText = "Yes, deactivate!";
+      successMessage = "La categoría ha sido desactivada.";
+      confirmButtonText = "Confirmar";
     } else {
-      successMessage = "The category has been activated.";
-      confirmButtonText = "Yes, activate!";
+      successMessage = "La categoría ha sido activada.";
+      confirmButtonText = "Confirmar";
     }
 
     Swal.fire({
-      title: "Are you sure?",
-      text: `You are about to ${
-        status ? "deactivate" : "activate"
-      } the selected category!`,
+      title: "Estás seguro?",
+      text: "Desactivarás la categoría seleccionada.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: confirmButtonText,
-      cancelButtonText: "Cancel",
+      cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
         disableSubcategory(id);
-        Swal.fire("Done!", successMessage, "success");
+        Swal.fire("Hecho", successMessage, "success");
         location.reload();
       }
     });
