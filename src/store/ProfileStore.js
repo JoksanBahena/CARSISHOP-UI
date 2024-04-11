@@ -31,29 +31,27 @@ export const useProfileStore = defineStore("profile", {
     },
     async updateProfile(state) {
       try {
-        console.log(state)
-        const params = {
-          name: state.name,
-          surname: state.surname,
-          phone: state.phone,
-          gender: state.genere,
-          profilepic: state.img,
-          username: state.email,
-        };
-
         const response = await axios.post(
           baseUrl + "users/updateInfo",
-          params,
+          {
+            name: state.name,
+            surname: state.surname,
+            username: state.email,
+            phone: state.phone,
+            gender: state.genere,
+          },
           {
             headers: {
-              "Content-Type": "multipart/form-data",
+              "Content-Type": "application/json",
               Authorization: `Bearer ${this.token}`,
             },
           }
         );
 
-        return response.data;
+        this.profile = response.data;
+        return this.profile;
       } catch (err) {
+        console.log(err);
         throw new Error("Error al actualizar información");
       }
     },

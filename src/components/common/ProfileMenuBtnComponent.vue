@@ -9,7 +9,7 @@
     </template>
     <v-list>
       <v-list-item>
-        <user-profile-card-component />
+        <user-profile-card-component v-bind:user="userData"/>
       </v-list-item>
 
       <v-divider />
@@ -40,6 +40,31 @@
 <script setup>
 import { useAuthStore } from "@/store/AuthStore.js";
 import Colors from "@/utils/Colors.js";
+import { onMounted, reactive } from "vue";
+import { useProfileStore } from '@/store/ProfileStore';
+
+const { fetchProfile } = useProfileStore();
+
+const userData = reactive({
+  name: '',
+  email: '',
+  avatar: ''
+});
+
+const getUserInfo = async () => {
+  try {
+    const response = await fetchProfile();
+    userData.name = response.name + ' ' + response.surname;
+    userData.email = response.username;
+    userData.avatar = response.profilepic;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+onMounted(() => {
+  getUserInfo();
+});
 
 const colors = {
   primary_dark: Colors.cs_primary_dark,

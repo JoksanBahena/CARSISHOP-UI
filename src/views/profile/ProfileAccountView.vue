@@ -78,8 +78,9 @@
                 Género
               </div>
               <v-select density="compact" placeholder="Género" prepend-inner-icon="mdi-account-outline"
-                variant="outlined" chips :items="generes" :readonly="is_disabled" v-model="state.genere"
-                @input="v$.genere.$touch" @blur="v$.genere.$touch" :error-messages="v$.genere.$errors.map((e) => e.$message)
+                variant="outlined" chips :items="genders" item-title="gender" item-value="id_gender"
+                :readonly="is_disabled" v-model="state.genere" @input="v$.genere.$touch" @blur="v$.genere.$touch"
+                :error-messages="v$.genere.$errors.map((e) => e.$message)
     " />
             </v-col>
 
@@ -93,7 +94,8 @@
             </v-col>
             <v-col :cols="is_disabled ? '12' : '6'">
               <v-btn variant="flat" append-icon="mdi-check-circle-outline" class="text-none"
-                :color="colors.primary_dark" size="large" block @click="is_disabled ? onEdit() : submitForm()">
+                :color="colors.primary_dark" size="large" block @click="is_disabled ? onEdit() : submitForm()"
+                :loading="!is_disabled && loading">
                 {{ is_disabled ? 'Editar' : 'Guardar' }}
               </v-btn>
             </v-col>
@@ -115,11 +117,12 @@ import {
   maxLength,
   helpers,
 } from '@vuelidate/validators';
-import Swal from 'sweetalert2';
 import { useProfileStore } from '@/store/ProfileStore';
+import { Toast } from "@/utils/Alerts.js"
 
 const { withMessage, regex } = helpers;
 const { fetchProfile, updateProfile } = useProfileStore();
+const error = ref({ error: "", message: "" });
 
 const colors = {
   primary: Colors.cs_primary,
@@ -141,7 +144,11 @@ const items = [
   },
 ];
 
-const generes = ['Masculino', 'Femenino', 'Otro'];
+const genders = [
+  { gender: "Masculino", id_gender: "1" },
+  { gender: "Femenino", id_gender: "2" },
+  { gender: "Otro", id_gender: "3" },
+];
 
 const user = {
   name: '',
@@ -160,7 +167,7 @@ const getUserInfo = async () => {
     state.surname = response.surname;
     state.email = response.username;
     state.phone = response.phone;
-    state.genere = response.gender ? response.gender.gender : 'ADMIN';
+    state.genere = response.gender ? response.gender : 'ADMIN';
     state.img = response.profilepic ? response.profilepic : null;
   } catch (err) {
     console.log(err);
@@ -233,6 +240,7 @@ const rules = {
 const v$ = useVuelidate(rules, state);
 
 const is_disabled = ref(true);
+const loading = ref(false)
 
 const onEdit = () => {
   is_disabled.value = false;
@@ -240,16 +248,27 @@ const onEdit = () => {
 
 const submitForm = async () => {
   v$.value.$touch();
+  loading.value = true
+
+  error.value = { error: "", message: "" };
+
   if (v$.value.$error) {
     return;
   } else {
     try {
-      console.log(state, image_url);
-      const response = await updateProfile(state)
-      console.log(response);
+      const response = await updateProfile({ ...state, genere: state.genere.id ? state.genere.id : state.genere })
+      if (response.status === 200) {
+        Toast.fire({
+          icon: "success",
+          title: "Perfil actualizado"
+        });
+      }
       is_disabled.value = true;
+      loading.value = false
     } catch (err) {
-      console.log(err);
+      error.value = getErrorMessage(err);
+    } finally {
+      loading.value = false;
     }
   }
 };
