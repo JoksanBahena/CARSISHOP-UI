@@ -51,6 +51,7 @@ export const useAuthStore = defineStore("auth", {
         return response.data;
       } catch (error) {
         console.log(error.response.data);
+        throw error.response.data;
       }
     },
     async forgotPassword(email) {

@@ -118,7 +118,7 @@ div
                       prepend-inner-icon="mdi-calendar-range-outline"
                       variant="outlined"
                       readonly
-                      
+
                       @blur="v$.birthdate.$touch"
                       @input="v$.birthdate.$touch"
                       :error-messages="
@@ -316,7 +316,7 @@ div
           </v-btn>
           <v-btn
             v-if="step < 3"
-            @click="checkStep"
+            @click="showAlert"
             class="text-none flex-grow-1"
             :color="colors.primary_dark"
             variant="flat"
@@ -356,7 +356,8 @@ import {
   maxLength,
   helpers,
 } from "@vuelidate/validators";
-
+import router from "@/router";
+import Swal from "sweetalert2";
 const { captcha, register } = useAuthStore();
 const { withMessage, regex } = helpers;
 
@@ -375,7 +376,7 @@ const genders = [
   { gender: "Otro", id_gender: "3" },
 ];
 const today = new Date().toISOString().split("T")[0];
-const max_size = 2;
+const max_size = 1;
 const img_view = ref(null);
 const loading = ref(false);
 
@@ -577,7 +578,7 @@ const submit = async () => {
   try {
     const response = await register(state);
     if (response.status === 200) {
-      router.push({ name: "Login" });
+      showAlert();
     } else {
       error.value = response;
       window.scrollTo({
@@ -590,6 +591,23 @@ const submit = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+const showAlert = () =>{
+  Swal.fire({
+    title: "Cuenta registrada",
+    text: 'Ahora solo falta confirmar tu correo electrónico para activar tu cuenta',
+    icon: 'success',
+    confirmButtonText: 'Continuar',
+    timer: 4000,
+    timerProgressBar: true,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      router.push({ name: "Login" })
+    }else{
+      router.push({ name: "Login" })
+    }
+  });
 };
 
 const captchaContainer = ref();
