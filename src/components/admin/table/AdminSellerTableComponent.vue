@@ -16,14 +16,19 @@
       </template>
 
       <template v-slot:item.seller="{ item }">
-        <v-list-item
-          :color="colors.white"
-          :prepend-avatar="item.user.profilePic"
-          :subtitle="item.user.username"
-          :title="item.user.name"
-        >
+        <v-list-item :color="colors.white">
+          <v-avatar v-if="item.user.profilepic" :size="40">
+            <img :src="item.user.profilepic" alt="Avatar" />
+          </v-avatar>
+          <v-list-item-content>
+            <v-list-item-title>{{ item.user.name }}</v-list-item-title>
+            <v-list-item-subtitle>{{
+              item.user.username
+            }}</v-list-item-subtitle>
+          </v-list-item-content>
         </v-list-item>
       </template>
+
       <template v-slot:item.status="{ item }">
         <v-chip :color="getStatusColor(item.status)">
           {{ item.status ? "ACTIVO" : "INACTIVO" }}
@@ -32,21 +37,15 @@
       <template v-slot:item.actions="{ item }">
         <v-row>
           <v-col>
-            <v-spacer />
-            <!-- <v-btn variant="outlined" :style="{ borderColor: colors.primary }">
-              <v-icon
-                icon="mdi-eye"
-                :color="colors.primary_dark"
-                class="text-h4"
-              />
-            </v-btn> -->
-          </v-col>
-          <v-col>
             <v-btn
               variant="outlined"
               :style="{ borderColor: colors.primary }"
               @click="onDisableOrEnableSeller(item.id, item.status)"
             >
+              <v-tooltip activator="parent" location="top">
+                {{ item.status ? "DESACTIVAR" : "ACTVAR" }}
+              </v-tooltip>
+
               <v-icon
                 :icon="
                   item.status ? 'mdi-delete-outline' : 'mdi-delete-restore'

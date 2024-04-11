@@ -14,13 +14,18 @@
       <template v-slot:item.id="{ index }">
         {{ index + 1 }}
       </template>
+
       <template v-slot:item.user="{ item }">
-        <v-list-item
-          :color="colors.white"
-          :prepend-avatar="item.user.profilePic"
-          :subtitle="item.user.username"
-          :title="item.user.name"
-        >
+        <v-list-item :color="colors.white">
+          <v-avatar v-if="item.user.profilepic" :size="40">
+            <img :src="item.user.profilepic" alt="Avatar" />
+          </v-avatar>
+          <v-list-item-content>
+            <v-list-item-title>{{ item.user.name }}</v-list-item-title>
+            <v-list-item-subtitle>{{
+              item.user.username
+            }}</v-list-item-subtitle>
+          </v-list-item-content>
         </v-list-item>
       </template>
 
@@ -39,13 +44,13 @@
           class="align-center my-1"
         >
           <v-col cols="12" xl="12" lg="8" md="6">
-            <v-btn variant="outlined" :style="{ borderColor: colors.primary }">
+            <!-- <v-btn variant="outlined" :style="{ borderColor: colors.primary }">
               <v-icon
                 icon="mdi-eye"
                 :color="colors.primary_dark"
                 class="text-h4"
               />
-            </v-btn>
+            </v-btn> -->
             <v-btn
               class="my-1 mx-1"
               variant="outlined"
@@ -54,13 +59,19 @@
                 approveSellerReq(item.id, item.rfc, item.curp, item.user.id)
               "
             >
+              <v-tooltip activator="parent" location="top"> Aprobar </v-tooltip>
               <v-icon
                 icon="mdi-check"
                 :color="colors.primary_dark"
                 class="text-h4"
               />
             </v-btn>
+
             <v-btn variant="outlined" :style="{ borderColor: colors.primary }">
+              <v-tooltip activator="parent" location="top">
+                Rechazar
+              </v-tooltip>
+
               <v-icon
                 icon="mdi-close"
                 :color="colors.primary_dark"
