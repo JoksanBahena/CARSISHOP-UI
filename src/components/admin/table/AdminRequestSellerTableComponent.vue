@@ -1,29 +1,35 @@
 <template>
   <v-card outlined>
     <v-divider></v-divider>
-    <v-data-table :headers="headers" :items="items" :items-per-page="5">
-      <template v-slot:item.user="{ item }">
-        <v-list color="transparent">
-          <v-list-item
-            :color="colors.white"
-            prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-            subtitle="sandra_a88@gmailcom"
-            title="Sandra Adams"
-          >
-          </v-list-item>
-        </v-list>
+    <v-data-table-server
+      :headers="headers"
+      :items="serverItems"
+      :items-length="totalItems"
+      :search="search"
+      no-data-text="No se encontraron vendedores"
+      :loading="loading"
+      item-value="name"
+      @update:options="loadItems"
+    >
+      <template v-slot:item.id="{ index }">
+        {{ index + 1 }}
       </template>
-      <template v-slot:item.img="{ item }">
-        <v-card class="my-2" elevation="2" rounded>
-          <v-img
-            :src="`/src/assets/imgs/${item.img}`"
-            height="64"
-            cover
-          ></v-img>
-        </v-card>
+      <template v-slot:item.user="{ item }">
+        <v-list-item
+          :color="colors.white"
+          :prepend-avatar="item.user.profilePic"
+          :subtitle="item.user.username"
+          :title="item.user.name"
+        >
+        </v-list-item>
       </template>
 
-      <template v-slot:item.actions>
+      <template v-slot:item.img="{ item }">
+        <v-card class="my-2" elevation="2" rounded>
+          <v-img :src="item.image" height="64" cover></v-img>
+        </v-card>
+      </template>
+      <template v-slot:item.actions="{ item }">
         <v-row
           cols="12"
           xl="12"
@@ -44,6 +50,9 @@
               class="my-1 mx-1"
               variant="outlined"
               :style="{ borderColor: colors.primary }"
+              @click="
+                approveSellerReq(item.id, item.rfc, item.curp, item.user.id)
+              "
             >
               <v-icon
                 icon="mdi-check"
@@ -56,17 +65,31 @@
                 icon="mdi-close"
                 :color="colors.primary_dark"
                 class="text-h4"
+                @click="
+                  rejectedSellerReq(item.id, item.rfc, item.curp, item.user.id)
+                "
               />
             </v-btn>
           </v-col>
         </v-row>
       </template>
-    </v-data-table>
+    </v-data-table-server>
   </v-card>
 </template>
 <script setup>
 import { ref } from "vue";
 import Colors from "@/utils/Colors.js";
+import { useSellerStore } from "@/store/SellerStore";
+import Swal from "sweetalert2";
+
+const { findAllRequestSeller, approveSeller, rejectedSeller } =
+  useSellerStore();
+
+const itemsPerPage = ref(5);
+const serverItems = ref([]);
+const totalItems = ref(0);
+const search = ref("");
+const loading = ref(true);
 
 const colors = {
   primary: Colors.cs_primary,
@@ -78,28 +101,80 @@ const headers = ref([
   { title: "Usuario", key: "user", align: "start" },
   { title: "CURP", key: "curp", align: "start" },
   { title: "RFC ", key: "rfc", align: "start" },
-  { title: "Telefono", key: "phoneNumber", align: "start" },
+  { title: "Telefono", key: "user.phone", align: "start" },
   { title: "Identificacion", key: "img", align: "center" },
   { title: "Acciones", key: "actions", align: "center" },
 ]);
-const items = [
-  {
-    id: 1,
-    user: "",
-    curp: "OIDB930313HDFLNS09",
-    rfc: " VECJ880326VVE",
-    phoneNumber: "1234567890",
-    img: "ine.png",
-    actions: "",
-  },
-  {
-    id: 2,
-    user: "",
-    curp: "OIDB930313HDFLNS09",
-    rfc: " VECJ880326VVE",
-    phoneNumber: "1234567890",
-    img: "ine.png",
-    actions: "",
-  },
-];
+
+const loadItems = async ({ page, itemsPerPage, sortBy }) => {
+  loading.value = true;
+
+  const indexPage = page - 1;
+  await findAllRequestSeller(indexPage, itemsPerPage, sortBy);
+  const { sellers } = useSellerStore();
+  const start = indexPage * itemsPerPage;
+  const end = start + itemsPerPage;
+  const items = sellers.slice();
+  if (sortBy.length) {
+    const sortKey = sortBy[0].key;
+    const sortOrder = sortBy[0].order;
+    items.sort((a, b) => {
+      const aValue = a[sortKey];
+      const bValue = b[sortKey];
+      return sortOrder === "desc" ? bValue - aValue : aValue - bValue;
+    });
+  }
+  const paginated = items.slice(start, end);
+  serverItems.value = paginated;
+  totalItems.value = items.length;
+  loading.value = false;
+};
+
+const approveSellerReq = async (id, rfc, curp, user) => {
+  try {
+    Swal.fire({
+      title: "¿Estas seguro?",
+      text: "¿Deseas aprobar este vendedor?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: colors.primary,
+      cancelButtonColor: colors.primary_dark,
+      confirmButtonText: "Si",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        approveSeller(id, rfc, curp, user);
+        Swal.fire("Aprobado", "El vendedor ha sido aprobado", "success");
+        window.location.reload();
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const rejectedSellerReq = async (id, rfc, curp, user) => {
+  try {
+    Swal.fire({
+      title: "¿Estas seguro?",
+      text: "¿Deseas rechazar este vendedor?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: colors.primary,
+      cancelButtonColor: colors.primary_dark,
+      confirmButtonText: "Si",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        rejectedSeller(id, rfc, curp, user);
+        Swal.fire("Aprobado", "El vendedor ha sido rechazado", "success");
+        window.location.reload();
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+loadItems({ page: 1, itemsPerPage: 5, sortBy: [] });
 </script>
