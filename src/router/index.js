@@ -65,9 +65,9 @@ const routes = [
     //se comenta para que pueda trabajar con las vistas de admin sin necesidad de estar logueado
     children: [
       {
-        path: "users",
+        path: "seller",
         name: "AdminUsers",
-        component: () => import("@/views/admin/AdminUsersView"),
+        component: () => import("@/views/admin/AdminSellerView"),
       },
       {
         path: "users/add",

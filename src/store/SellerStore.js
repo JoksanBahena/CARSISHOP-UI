@@ -119,6 +119,23 @@ export const useSellerStore = defineStore("seller", {
       } catch (error) {
         throw error;
       }
+    },
+    async disbleSeller(id) {
+      const params = {
+        id: id,
+      };
+      try {
+        const response = await axios.put(baseURL + "sellers/change-status", params, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("response", response);
+      } catch (error) {
+        throw error;
+
+      }
     }
   }
 });
