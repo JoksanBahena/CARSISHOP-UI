@@ -14,7 +14,7 @@
       <template v-slot:item.id="{ index }">
         {{ index + 1 }}
       </template>
-
+      <!-- E -->
       <template v-slot:item.seller="{ item }">
         <v-list-item :color="colors.white">
           <v-avatar v-if="item.user.profilepic" :size="40">
