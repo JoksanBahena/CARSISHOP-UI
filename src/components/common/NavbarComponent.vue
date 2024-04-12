@@ -56,20 +56,31 @@
       <search-btn-component />
 
       <v-btn
-        v-for="action in actions"
-        :key="action.index"
         :style="{ color: toolbar.primary_dark }"
-        :icon="action.icon"
-        :to="action.to"
+        icon="mdi-cart-outline"
+        :to="{ name: 'Cart' }"
       />
+
+      <v-btn
+        v-if="!isAuthenticated"
+        :style="{ color: toolbar.primary_dark }"
+        icon="mdi-login-variant"
+        :to="{ name: 'Login' }"
+      />
+
+      <profile-menu-btn-component v-else />
     </v-toolbar>
   </v-app-bar>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import SearchBtnComponent from "@/components/common/SearchBtnComponent.vue";
+import ProfileMenuBtnComponent from "@/components/common/ProfileMenuBtnComponent.vue";
 import Colors from "@/utils/Colors.js";
+import { useAuthStore } from "@/store/AuthStore.js";
+
+const { isAuthenticated } = useAuthStore();
 
 const toolbar = {
   bg_color: Colors.cs_primary,
@@ -100,14 +111,4 @@ const categories = ref([
   },
 ]);
 
-const actions = ref([
-  {
-    icon: "mdi-cart-outline",
-    to: { name: "Cart" },
-  },
-  {
-    icon: "mdi-login-variant",
-    to: { name: "Login" },
-  },
-]);
 </script>

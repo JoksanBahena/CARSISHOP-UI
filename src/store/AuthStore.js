@@ -1,15 +1,18 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import router from "@/router";
 import { jwtDecode } from "jwt-decode";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
-// console.log("baseURL", baseURL)
+
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     token: localStorage.getItem("token") || "",
-    tokenExpiration: localStorage.getItem("token") ? jwtDecode(localStorage.getItem("token")).exp : "",
-    user: localStorage.getItem("token") ? jwtDecode(localStorage.getItem("token")).role : "",
+    tokenExpiration: localStorage.getItem("token")
+      ? jwtDecode(localStorage.getItem("token")).exp
+      : "",
+    user: localStorage.getItem("token")
+      ? jwtDecode(localStorage.getItem("token")).role
+      : "",
   }),
   getters: {
     isAuthenticated: (state) => !!state.token,
@@ -17,18 +20,61 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     async login(email, password) {
       try {
+        const response = await axios.post(baseURL + "auth/login", {
+          email,
+          password,
+        });
+        this.token = response.data.data.token;
+        localStorage.setItem("token", this.token);
+        return response.data;
+      } catch (error) {
+        return error.response.data.message;
+      }
+    },
+    async captcha(solution) {
+      try {
         const response = await axios.post(
-          baseURL + "auth/login",
+          baseURL + "auth/captcha/?solution=" + solution
+        );
+        return response.data;
+      } catch (error) {
+        throw new Error("error captcha");
+      }
+    },
+    async register(user) {
+      try {
+        const response = await axios.post(baseURL + "auth/register", user, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        return response.data;
+      } catch (error) {
+        console.log(error.response.data);
+      }
+    },
+    async forgotPassword(email) {
+      try {
+        const response = await axios.post(baseURL + "auth/forgotPassword", {
+          email,
+        });
+        return response.data;
+      } catch (error) {
+        throw new Error("error");
+      }
+    },
+    async resetPassword(token, newPassword, confirmNewPassword) {
+      try {
+        const response = await axios.post(
+          baseURL + "auth/resetPassword/" + token,
           {
-            email,
-            password,
+            newPassword,
+            confirmNewPassword,
           }
         );
-        this.token = response.data.data.token;
-        localStorage.setItem("token", this.token)
-        router.push("/");
+        return response.data;
       } catch (error) {
-        throw error;
+        throw new Error("error");
       }
     },
     logout() {

@@ -22,12 +22,12 @@ const routes = [
     component: () => import("@/views/auth/RegisterView.vue"),
   },
   {
-    path: "/forgotPassword",
+    path: "/forgot-password",
     name: "ForgotPassword",
     component: () => import("@/views/auth/ForgotPasswordView.vue"),
   },
   {
-    path: "/forgotPasswordConfirm/:token",
+    path: "/reset-password/:token",
     name: "ForgotPasswordConfirm",
     component: () => import("@/views/auth/ForgotPasswordConfirmView.vue"),
   },
@@ -35,11 +35,13 @@ const routes = [
     path: "/cart",
     name: "Cart",
     component: () => import("@/views/cart/CartView.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/cart/payment",
     name: "Payment",
     component: () => import("@/views/cart/PaymentView.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/category/:category/:subcategory",
@@ -61,8 +63,7 @@ const routes = [
     name: "Admin",
     redirect: { name: "AdminUsers" },
     component: () => import("@/views/admin/AdminView.vue"),
-    // meta: { requiresAuth: true, roles: ["admin"] },
-    //se comenta para que pueda trabajar con las vistas de admin sin necesidad de estar logueado
+    meta: { requiresAuth: true, roles: ["ADMIN"] },
     children: [
       {
         path: "seller",
@@ -84,7 +85,6 @@ const routes = [
         path: "salles",
         name: "AdminSalles",
         component: () => import("@/views/admin/AdminSallesView.vue"),
-
       },
       {
         path: "categories",
@@ -105,8 +105,7 @@ const routes = [
         path: "subcategories/add",
         name: "AdminAddSubCategory",
         component: () => import("@/views/admin/AdminAddSubcategoryView.vue"),
-      }
-
+      },
     ],
   },
 
@@ -115,10 +114,10 @@ const routes = [
     name: "Profile",
     redirect: { name: "ProfileSummary" },
     component: () => import("@/views/profile/ProfileView.vue"),
-    meta: { requiresAuth: true },
+    // meta: { requiresAuth: true },
     children: [
       {
-        path: "",
+        path: "summary",
         name: "ProfileSummary",
         component: () => import("@/views/profile/ProfileResumeView.vue"),
       },
@@ -159,19 +158,43 @@ const routes = [
       },
       {
         path: "sales",
-        name: "ProfileSales",
-        component: () => import("@/views/profile/ProfileSalesView.vue"),
-      },
-      {
-        path: "sales/request",
-        name: "ProfileSalesRequest",
-        component: () => import("@/views/profile/ProfileSalesRequest.vue"),
+        name: "Sales",
+        component: () => import("@/views/seller/SellerView.vue"),
+        children: [
+          {
+            path: "",
+            name: "SellerSales",
+            component: () => import("@/views/seller/SellerSalesView.vue"),
+          },
+          {
+            path: "request",
+            name: "SellerRequest",
+            component: () => import("@/views/seller/SellerRequestView.vue"),
+          },
+          {
+            path: "summary",
+            name: "SellerResumen",
+            component: () => import("@/views/seller/SellerSummaryView.vue"),
+          },
+          {
+            path: "my-sales",
+            name: "SellerMySales",
+            component: () => import("@/views/seller/SellerSalesTableView.vue"),
+          },
+          {
+            path: "my-products",
+            name: "SellerProducts",
+            component: () => import("@/views/seller/SellerProductsTableView.vue"),
+          },
+          {
+            path: "my-products/add",
+            name: "SellerAddProduct",
+            component: () => import("@/views/seller/SellerAddProductView.vue"),
+          }
+        ],
       },
     ],
   },
-
-
-
 ];
 
 const router = createRouter({
@@ -187,27 +210,31 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(route => route.meta.requiresAuth)) {
+  if (to.matched.some((route) => route.meta.requiresAuth)) {
     if (useAuthStore().isAuthenticated) {
       if (to.meta.roles) {
         if (to.meta.roles.includes(useAuthStore().user)) {
           next();
         } else {
-          next({ name: 'Home' });
+          next({ name: "Home" });
         }
       }
       next();
     } else {
-      next({ name: 'Login' });
+      next({ name: "Login" });
     }
-  } else if (useAuthStore().isAuthenticated && (to.name === 'Login' || to.name === 'Register' || to.name === 'ForgotPassword' || to.name === 'ForgotPasswordConfirm')) {
-    next({ name: 'Home' });
-
+  } else if (
+    useAuthStore().isAuthenticated &&
+    (to.name === "Login" ||
+      to.name === "Register" ||
+      to.name === "ForgotPassword" ||
+      to.name === "ForgotPasswordConfirm")
+  ) {
+    next({ name: "Home" });
   } else {
     // console.log("enrtra aqui");
     next();
   }
 });
-
 
 export default router;

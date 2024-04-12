@@ -17,7 +17,7 @@ const items = [
   },
   {
     title: "Ventas",
-    to: { name: "ProfileSales" },
+    to: { name: "SellerSales" },
   },
   {
     title: "Solicitud de vendedor",

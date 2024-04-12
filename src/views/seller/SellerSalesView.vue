@@ -2,13 +2,13 @@
   <breadcrumbs-component :items="items" />
 
   <v-container>
-    <p class="text-h4 font-weight-medium mb-2">Mis ventas</p>
+    <p class="text-h4 font-weight-medium mb-2">Ventas</p>
 
     <orders-not-found-component
       advise="Actualmente no eres un vendedor"
       recomendation="Puedes solicitar ser vendedor para empezar a comercializar tus productos"
       action="Solicitar ser vendedor"
-      :to="{ name: 'ProfileSalesRequest' }"
+      :to="{ name: 'SellerRequest' }"
     />
   </v-container>
 </template>
@@ -24,7 +24,7 @@ const items = [
     to: { name: "ProfileSummary" },
   },
   {
-    title: "Mis ventas",
+    title: "Ventas",
   },
 ];
 </script>

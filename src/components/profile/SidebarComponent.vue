@@ -7,13 +7,7 @@
     @mouseover="rail = false"
     @mouseleave="rail = true"
   >
-    <v-list>
-      <v-list-item
-        prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-        subtitle="sandra_a88@gmailcom"
-        title="Sandra Adams"
-      />
-    </v-list>
+    <user-profile-card-component />
 
     <v-divider />
 
@@ -47,14 +41,15 @@
 </template>
 
 <script setup>
-
 import { ref } from "vue";
 import Colors from "@/utils/Colors.js";
-import { useRoute } from 'vue-router';
+import { useRoute } from "vue-router";
 
 const route = useRoute();
 
-const isProfileRoute = route.matched.some(record => record.name.startsWith('Profile'));
+const isProfileRoute = route.matched.some((record) =>
+  record.name.startsWith("Profile")
+);
 
 const isActive = (to) => {
   if (isProfileRoute && to.name === route.name) {
@@ -102,7 +97,7 @@ const nav_items = [
   {
     icon: "mdi-currency-usd",
     title: "Ventas",
-    to: { name: "ProfileSales" },
+    to: { name: "SellerSales" },
   },
 ];
 </script>

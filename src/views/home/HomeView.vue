@@ -1,15 +1,13 @@
 <template>
   <default-layout>
     <v-parallax src="@/assets/imgs/background.png">
-      <v-layout class="d-flex flex-column fill-height align-center text-black">
-        <div class="text-center text-wrap mb-16">
-          <h2 class="font-weight-bold my-16 text-h2">
-            TU ESTILO NUESTRA PASIÓN
-          </h2>
-          <p class="font-weight-medium text-h6 my-2">
-            Moda exclusiva para tu personalidad única
-          </p>
-        </div>
+      <v-layout class="d-flex flex-column text-center text-black h-screen">
+        <h2 class="font-weight-medium mt-12 text-h2">
+          TU ESTILO NUESTRA PASIÓN
+        </h2>
+        <p class="font-weight-medium text-h5 my-4">
+          Moda exclusiva para tu personalidad única
+        </p>
       </v-layout>
     </v-parallax>
 
