@@ -29,5 +29,28 @@ export const useProfileStore = defineStore("profile", {
         throw new Error("Error fetching profile");
       }
     },
+    async createAdmin(name, surname, username, phone, birthdate, password, gender) {
+      const params = {
+        name: name,
+        surname: surname,
+        username: username,
+        phone: phone,
+        birthdate: birthdate,
+        password: password,
+        gender: gender
+      }
+      console.log(params)
+      try {
+        const response = await axios.post(baseUrl + "users/register-admin", params, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+
+      } catch (error) {
+        throw new Error("Error creating admin")
+      }
+    }
   },
 });

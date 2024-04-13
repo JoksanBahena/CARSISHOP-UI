@@ -106,6 +106,11 @@ const routes = [
         name: "AdminAddSubCategory",
         component: () => import("@/views/admin/AdminAddSubcategoryView.vue"),
       },
+      {
+        path: "admin",
+        name: "AdminAdmin",
+        component: () => import("@/views/admin/AdminAdminView.vue"),
+      }
     ],
   },
 
