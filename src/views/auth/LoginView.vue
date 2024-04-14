@@ -72,7 +72,7 @@
           size="large"
           variant="flat"
           block
-          @click="submit()"
+          @click="submit"
           :disabled="v$.$errors.length > 0"
           :loading="loading"
         >
@@ -107,13 +107,13 @@ import Colors from "@/utils/Colors.js";
 import { reactive, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { helpers, required } from "@vuelidate/validators";
-import { getErrorMessage } from "@/utils/Errors";
 import { useAuthStore } from "@/store/AuthStore.js";
 import router from "@/router";
-import { encryptSHA256 } from "@/utils/Crypto.js";
+import Swal from "sweetalert2";
+import {encryptAES} from "@/utils/Crypto";
 
 const { withMessage, regex } = helpers;
-const { login } = useAuthStore();
+const { login, resend } = useAuthStore();
 
 const visible = ref(false);
 
@@ -152,7 +152,6 @@ const rules = {
 const v$ = useVuelidate(rules, state);
 
 const submit = async () => {
-  // const password = encryptSHA256(state.password);
 
   v$.value.$touch();
   if (v$.value.$error) return;
@@ -161,17 +160,78 @@ const submit = async () => {
   loading.value = true;
 
   try {
-    const response = await login(state.email, state.password);
-    // console.log("pass: ", password);
+    const response = await login(encryptAES(state.email), encryptAES(state.password));
     if (response.status === 200) {
-      router.push({ name: "Home" });
-    } else {
-      error.value = { error: "error", message: "Credenciales incorrectas" };
+      await router.push({name: "Home"});
     }
   } catch (err) {
-    error.value = getErrorMessage(err);
+    if (err.data.status === 400) {
+      showSendAlert(err.data.message);
+    }else{
+      error.value = { error: "error", message: err.data.message};
+    }
   } finally {
     loading.value = false;
   }
+};
+
+const resubmit = async (email) => {
+  showLoadingAlert();
+  try {
+    const response = await resend(email);
+    if (response.status === 200) {
+      await Swal.fire({
+        title: "Correo de confirmación enviado",
+        text: 'Por favor revisa tu bandeja de entrada',
+        icon: 'success'
+      });
+    }
+  } catch (err) {
+    console.log(err)
+    if (err.data.status === 403 ){
+      showSendAlert(err.data.message);
+    } else if (err.data.status === 404) {
+      showErrorAlert(err.data.message);
+    } else {
+      showErrorAlert(err.data.message);
+    }
+  }finally {
+    loading.value = false;
+  }
+}
+
+const showErrorAlert = (error) => {
+  Swal.fire({
+    title: "Error",
+    text: error,
+    icon: 'error',
+    confirmButtonText: 'Continuar',
+    timer: 4000,
+    timerProgressBar: true,
+  })
+};
+
+const showSendAlert = (error) => {
+  Swal.fire({
+    title: error,
+    text: 'Tu cuenta no ha sido confirmada, por favor solicita un nuevo correo de confirmación',
+    icon: 'warning',
+    confirmButtonText: 'Solicitar confirmación',
+    input: 'email',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      resubmit(result.value);
+    }
+  });
+};
+
+const showLoadingAlert = () => {
+  Swal.fire({
+    title: "Enviando correo de confirmación",
+    text: 'Por favor espera un momento',
+    icon: 'info',
+    showConfirmButton: false,
+    allowOutsideClick: false
+  });
 };
 </script>

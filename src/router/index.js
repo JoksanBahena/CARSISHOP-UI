@@ -22,6 +22,11 @@ const routes = [
     component: () => import("@/views/auth/RegisterView.vue"),
   },
   {
+    path: "/confirm/:token",
+    name: "Confirm",
+    component: () => import("@/views/auth/ConfirmView.vue"),
+  },
+  {
     path: "/forgot-password",
     name: "ForgotPassword",
     component: () => import("@/views/auth/ForgotPasswordView.vue"),
@@ -228,7 +233,9 @@ router.beforeEach((to, from, next) => {
     (to.name === "Login" ||
       to.name === "Register" ||
       to.name === "ForgotPassword" ||
-      to.name === "ForgotPasswordConfirm")
+      to.name === "ForgotPasswordConfirm" ||
+      to.name === "Confirm"
+    )
   ) {
     next({ name: "Home" });
   } else {
