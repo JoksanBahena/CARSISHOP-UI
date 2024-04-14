@@ -38,8 +38,8 @@ export const useProfileStore = defineStore("profile", {
         birthdate: birthdate,
         password: password,
         gender: gender
-      }
-      console.log(params)
+      };
+
       try {
         const response = await axios.post(baseUrl + "users/register-admin", params, {
           headers: {
@@ -48,8 +48,12 @@ export const useProfileStore = defineStore("profile", {
           },
         });
 
+        console.log("Response from server:", response.data);
+
+        return response.data;
       } catch (error) {
-        throw new Error("Error creating admin")
+        console.error("Error creating admin:", error);
+        throw new Error("Error creating admin");
       }
     }
   },

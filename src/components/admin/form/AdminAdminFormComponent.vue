@@ -10,8 +10,9 @@
             prepend-inner-icon="mdi-account-outline"
             variant="outlined"
             v-model="state.name"
-            @input="v$.admin.$touch"
-            :error-messages="v$.admin.$errors.map((e) => e.$message)"
+            @input="v$.name.$touch"
+            @blur="v$.name.$touch"
+            :error-messages="v$.name.$errors.map((e) => e.$message)"
           />
         </div>
         <div class="text-subtitle-1 font-weight-medium">Apellidos</div>
@@ -21,8 +22,9 @@
           prepend-inner-icon="mdi-account-outline"
           variant="outlined"
           v-model="state.surname"
-          @input="v$.admin.$touch"
-          :error-messages="v$.admin.$errors.map((e) => e.$message)"
+          @input="v$.surname.$touch"
+          @blur="v$.surname.$touch"
+          :error-messages="v$.surname.$errors.map((e) => e.$message)"
         />
         <div class="text-subtitle-1 font-weight-medium">Correo</div>
         <v-text-field
@@ -31,8 +33,9 @@
           prepend-inner-icon="mdi-email-outline"
           variant="outlined"
           v-model="state.username"
-          @input="v$.admin.$touch"
-          :error-messages="v$.admin.$errors.map((e) => e.$message)"
+          @input="v$.username.$touch"
+          @blur="v$.username.$touch"
+          :error-messages="v$.username.$errors.map((e) => e.$message)"
         />
         <div class="text-subtitle-1 font-weight-medium">Teléfono</div>
         <v-text-field
@@ -43,8 +46,9 @@
           type="number"
           hide-spin-buttons
           v-model="state.phone"
-          @input="v$.admin.$touch"
-          :error-messages="v$.admin.$errors.map((e) => e.$message)"
+          @input="v$.phone.$touch"
+          @blur="v$.phone.$touch"
+          :error-messages="v$.phone.$errors.map((e) => e.$message)"
           :counter="10"
         />
 
@@ -55,39 +59,62 @@
         <v-text-field
           v-model="state.birthdate"
           density="compact"
-          placeholder="Fecha de nacimiento"
-          prepend-inner-icon="mdi-account-outline"
+          placeholder="2001-01-01"
           variant="outlined"
-          @blur="v$.admin.$touch"
-          @input="v$.admin.$touch"
-          :error-messages="v$.admin.$errors.map((e) => e.$message)"
+          type="date"
+          @input="v$.birthdate.$touch"
+          @blur="v$.birthdate.$touch"
+          :error-messages="v$.birthdate.$errors.map((e) => e.$message)"
         />
-        <div class="text-subtitle-1 font-weight-medium">Genero</div>
-        <v-text-field
+        <div class="text-subtitle-1 font-weight-medium">Género</div>
+        <v-select
           v-model="state.gender"
           density="compact"
           placeholder="Género"
-          prepend-inner-icon="mdi-account-outline"
+          :items="genders"
+          item-title="gender"
+          item-value="id_gender"
           variant="outlined"
-          @blur="v$.admin.$touch"
-          @input="v$.admin.$touch"
-          :error-messages="v$.admin.$errors.map((e) => e.$message)"
+          @input="v$.gender.$touch"
+          @blur="v$.gender.$touch"
+          :error-messages="v$.gender.$errors.map((e) => e.$message)"
         />
-        <div class="text-subtitle-1 font-weight-medium">Contraseña</div>
-        <v-text-field
-          density="compact"
-          placeholder="Contraseña"
-          variant="outlined"
-          :append-inner-icon="
-            pass_visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
-          "
-          :type="pass_visible ? 'text' : 'password'"
-          @click:append-inner="pass_visible = !pass_visible"
-          v-model="state.password"
-          @input="v$.admin.$touch"
-          @blur="v$.admin.$touch"
-          :error-messages="v$.admin.$errors.map((e) => e.$message)"
-        />
+        <div class="mb-2">
+          <div class="text-subtitle-1 font-weight-medium">Contraseña</div>
+          <v-text-field
+            v-model="state.password"
+            :append-inner-icon="
+              pass_visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
+            "
+            :type="pass_visible ? 'text' : 'password'"
+            density="compact"
+            placeholder="Contraseña"
+            prepend-inner-icon="mdi-lock-outline"
+            variant="outlined"
+            hide-details
+            @click:append-inner="pass_visible = !pass_visible"
+            @input="v$.password.$touch"
+            @blur="v$.password.$touch"
+          />
+
+          <div class="d-flex align-center mt-2">
+            <v-list-item-title class="text-subtitle-2 mr-auto">
+              • La contraseña es obligatoria
+            </v-list-item-title>
+            <v-icon v-if="state.password" size="xsmall"> mdi-check </v-icon>
+          </div>
+          <div class="d-flex align-center mb-6">
+            <v-list-item-title class="text-subtitle-2 mr-auto">
+              • Ingrese al menos 8 caracteres
+            </v-list-item-title>
+            <v-icon
+              v-if="state.password && !v$.password.$errors.length"
+              size="xsmall"
+            >
+              mdi-check
+            </v-icon>
+          </div>
+        </div>
         <div class="text-subtitle-1 font-weight-medium">
           Confirmar contraseña
         </div>
@@ -100,10 +127,10 @@
           "
           :type="confirm_visible ? 'text' : 'password'"
           @click:append-inner="confirm_visible = !confirm_visible"
-          v-model="state.confirmPassword"
-          @input="v$.admin.$touch"
-          @blur="v$.admin.$touch"
-          :error-messages="v$.admin.$errors.map((e) => e.$message)"
+          v-model="state.confirmpassword"
+          @input="v$.confirmpassword.$touch"
+          @blur="v$.confirmpassword.$touch"
+          :error-messages="v$.confirmpassword.$errors.map((e) => e.$message)"
         />
       </div>
       <v-btn
@@ -143,7 +170,11 @@ const colors = {
   primary_dark: Colors.cs_primary_dark,
   white: Colors.cs_white,
 };
-
+const genders = [
+  { gender: "Masculino", id_gender: "1" },
+  { gender: "Femenino", id_gender: "2" },
+  { gender: "Otro", id_gender: "3" },
+];
 const pass_visible = ref(false);
 const confirm_visible = ref(false);
 
@@ -152,34 +183,95 @@ const admin = {
   surname: "",
   username: "",
   phone: "",
-  birthdate: "",
+  birthdate: new Date().toISOString().substr(0, 10),
   password: "",
   confirmpassword: "",
-  gender: "",
+  gender: null,
 };
 
 const state = reactive({ ...admin });
+const today = new Date().toISOString().split("T")[0];
 
 const rules = {
-  admin: {
-    name: { required: withMessage("El nombre es requerido", required) },
-    surname: { required: withMessage("El apellido es requerido", required) },
-    username: { required: withMessage("El correo es requerido", required) },
-    phone: { required: withMessage("El teléfono es requerido", required) },
-    birthdate: {
-      required: withMessage("La fecha de nacimiento es requerida", required),
-    },
-    password: { required: withMessage("La contraseña es requerida", required) },
-    confirmPassword: {
-      required: withMessage(
-        "La confirmación de la contraseña es requerida",
-        required
-      ),
-      sameAsPassword: withMessage(
-        "Las contraseñas no coinciden",
-        (value) => value === state.password
-      ),
-    },
+  name: {
+    required: withMessage("El nombre es requerido", required),
+    regex: withMessage(
+      "El nombre no puede tener caracteres especiales",
+      regex(
+        /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]*$/
+      )
+    ),
+    minLength: withMessage("El nombre mínimo de 3 caracteres", minLength(3)),
+    maxLength: withMessage("El nombre máximo de 50 caracteres", maxLength(50)),
+  },
+  surname: {
+    required: withMessage("El apellido es requerido", required),
+    regex: withMessage(
+      "El apellido no puede tener carácteres especiales",
+      regex(
+        /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]*$/
+      )
+    ),
+    minLength: withMessage("El apellido mínimo de 3 caracteres", minLength(3)),
+    maxLength: withMessage(
+      "El apellido máximo de 50 caracteres",
+      maxLength(50)
+    ),
+  },
+  phone: {
+    required: withMessage("El teléfono es requerido", required),
+    integer: withMessage("El teléfono debe ser un número", integer),
+    regex: withMessage("El teléfono debe ser un número", regex(/^\d+$/)),
+    minLength: withMessage("El teléfono debe tener 10 digitos", minLength(10)),
+    maxLength: withMessage("El teléfono debe tener 10 digitos", maxLength(10)),
+  },
+  gender: {
+    required: withMessage("El genero es requerido", required),
+  },
+  username: {
+    required: withMessage("El correo electrónico es requerido", required),
+    username: withMessage(
+      "El correo electrónico no es válido",
+      regex(/^.+@.+\..+$/)
+    ),
+  },
+  password: {
+    required: withMessage("La contraseña es requerida", required),
+    minLength: withMessage(
+      "La contraseña debe tener al menos 8 caracteres",
+      minLength(8)
+    ),
+    maxLength: withMessage(
+      "La contraseña debe tener menos de 50 caracteres",
+      maxLength(50)
+    ),
+  },
+  confirmpassword: {
+    required: withMessage(
+      "La confirmación de contraseña es requerida",
+      required
+    ),
+    sameAs: withMessage(
+      "Las contraseñas no coinciden",
+      (value) => value === state.password
+    ),
+  },
+  birthdate: {
+    required: withMessage("La fecha es requerida", required),
+    maxDate: withMessage(
+      "La fecha no debe ser mayor a la actual",
+      (value) => value < today
+    ),
+    minDate: withMessage("Debes ser mayor de 18 años", (value) => {
+      const birthDate = new Date(value);
+      const currentDate = new Date();
+      const eighteenYearsAgo = new Date(
+        currentDate.getFullYear() - 18,
+        currentDate.getMonth(),
+        currentDate.getDate()
+      );
+      return birthDate <= eighteenYearsAgo;
+    }),
   },
 };
 
@@ -198,21 +290,34 @@ const submitForm = async () => {
       state.password,
       state.gender
     );
-    Swal.fire({
-      icon: "success",
-      title: "Admin creada",
-      showConfirmButton: false,
-      timer: 1500,
-    }).then(() => {
+    console.log("Response", response);
+    if (response.error === false) {
+      console.log("Entra");
+      console.log("Mensaje", response.message);
+      alert(response.message);
+      Swal.fire({
+        icon: "success",
+        title: response.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
       location.reload();
-    });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Error al crear el admin",
+        text: response.message,
+        showConfirmButton: true,
+      });
+      location.reload();
+    }
   } catch (error) {
     console.error("Error al crear el admin", error);
     Swal.fire({
       icon: "error",
-      title: "Error al crear la categoría",
-      showConfirmButton: false,
-      timer: 1500,
+      title: "Error al crear el admin",
+      text: "Hubo un problema al procesar tu solicitud. Por favor, inténtalo de nuevo más tarde.",
+      showConfirmButton: true,
     });
   } finally {
     clear();
