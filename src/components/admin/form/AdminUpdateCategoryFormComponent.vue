@@ -112,7 +112,8 @@ const submitForm = async () => {
     );
     Swal.fire({
       icon: "success",
-      title: "Categoria actualizada",
+      title: response.message,
+
       showConfirmButton: false,
       timer: 1500,
     }).then(() => {
@@ -122,7 +123,8 @@ const submitForm = async () => {
     console.error("Error al actualizar la categoría", error);
     Swal.fire({
       icon: "error",
-      title: "Error al actualizar la categoría",
+      title: response.message,
+
       showConfirmButton: false,
       timer: 1500,
     });

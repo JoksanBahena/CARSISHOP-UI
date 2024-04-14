@@ -20,6 +20,7 @@
         variant="flat"
         class="text-none"
         :color="colors.primary_dark"
+        :loading="loading"
         append-icon="mdi-check-circle-outline"
         @click="submitForm()"
         block
@@ -57,7 +58,7 @@ const colors = {
 const subcategory = {
   subcategory: "",
 };
-
+const loading = ref(false);
 const state = reactive({ ...subcategory });
 
 const rules = {
@@ -80,6 +81,7 @@ const rules = {
 const v$ = useVuelidate(rules, state);
 
 const submitForm = async () => {
+  loading.value = true;
   v$.value.$touch();
   if (v$.value.$error) return;
   try {
@@ -102,6 +104,7 @@ const submitForm = async () => {
     });
   } finally {
     clear();
+    loading.value = false;
   }
 };
 

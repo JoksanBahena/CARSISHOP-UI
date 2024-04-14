@@ -57,8 +57,8 @@
         <v-list>
           <v-list-item v-for="stockItem in item.stock" :key="stockItem.id">
             <v-list-item-content>
-              <v-chip color="primary" class="" small outlined>
-                {{ stockItem.price }}
+              <v-chip color="success" class="" small outlined>
+                {{ "$" + stockItem.price }}
               </v-chip>
             </v-list-item-content>
           </v-list-item>

@@ -17,6 +17,7 @@
         />
       </div>
       <v-btn
+        :loading="loading"
         variant="flat"
         class="text-none"
         :color="colors.primary_dark"
@@ -37,13 +38,7 @@ import { ref } from "vue";
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import Swal from "sweetalert2";
-import {
-  required,
-  integer,
-  minLength,
-  maxLength,
-  helpers,
-} from "@vuelidate/validators";
+import { required, minLength, maxLength, helpers } from "@vuelidate/validators";
 import { useCategoryStore } from "@/store/CategoryStore";
 const { createCategory } = useCategoryStore();
 const { withMessage, regex } = helpers;
@@ -57,6 +52,7 @@ const colors = {
 const category = {
   category: "",
 };
+const loading = ref(false);
 
 const state = reactive({ ...category });
 
@@ -77,28 +73,32 @@ const rules = {
 const v$ = useVuelidate(rules, state);
 
 const submitForm = async () => {
+  loading.value = true;
+
   v$.value.$touch();
   if (v$.value.$error) return;
+
   try {
     const response = await createCategory(state.category);
     Swal.fire({
       icon: "success",
-      title: "Categoria creada",
+      title: response.message,
       showConfirmButton: false,
       timer: 1500,
     }).then(() => {
-      window.history.back();
+      location.reload();
     });
   } catch (error) {
     console.error("Error al crear la categoría", error);
     Swal.fire({
       icon: "error",
-      title: "Error al crear la categoría",
+      title: response.message,
       showConfirmButton: false,
       timer: 1500,
     });
   } finally {
     clear();
+    loading.value = false;
   }
 };
 

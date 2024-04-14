@@ -38,6 +38,7 @@ export const useSubcategoryStore = defineStore("subcategory", {
         );
         this.subcategories = response.data.data;
         console.log("this.subcategories", this.subcategories)
+
       } catch (error) {
         throw error;
       }
@@ -58,6 +59,7 @@ export const useSubcategoryStore = defineStore("subcategory", {
           }
         );
         console.log("response", response)
+        return response.data;
       } catch (error) {
         throw error;
       }
@@ -80,6 +82,7 @@ export const useSubcategoryStore = defineStore("subcategory", {
           }
         );
         console.log("response", response)
+        return response.data;
       } catch (error) {
         throw error;
       }
@@ -101,6 +104,7 @@ export const useSubcategoryStore = defineStore("subcategory", {
           }
         );
         console.log("response", response)
+        return response.data;
       } catch (error) {
         throw error;
       }

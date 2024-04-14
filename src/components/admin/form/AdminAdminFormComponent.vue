@@ -294,14 +294,13 @@ const submitForm = async () => {
     if (response.error === false) {
       console.log("Entra");
       console.log("Mensaje", response.message);
-      alert(response.message);
+      // alert(response.message);
       Swal.fire({
         icon: "success",
         title: response.message,
         showConfirmButton: false,
         timer: 1500,
       });
-      location.reload();
     } else {
       Swal.fire({
         icon: "error",
@@ -309,7 +308,6 @@ const submitForm = async () => {
         text: response.message,
         showConfirmButton: true,
       });
-      location.reload();
     }
   } catch (error) {
     console.error("Error al crear el admin", error);
@@ -321,9 +319,9 @@ const submitForm = async () => {
     });
   } finally {
     clear();
+    location.reload();
   }
 };
-
 const clear = () => {
   state.admin = "";
 
