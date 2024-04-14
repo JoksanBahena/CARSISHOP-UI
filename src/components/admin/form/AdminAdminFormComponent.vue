@@ -304,8 +304,7 @@ const submitForm = async () => {
     } else {
       Swal.fire({
         icon: "error",
-        title: "Error al crear el admin",
-        text: response.message,
+        title: response.message,
         showConfirmButton: true,
       });
     }
@@ -315,7 +314,7 @@ const submitForm = async () => {
       icon: "error",
       title: "Error al crear el admin",
       text: "Hubo un problema al procesar tu solicitud. Por favor, inténtalo de nuevo más tarde.",
-      showConfirmButton: true,
+      timer: 1500,
     });
   } finally {
     clear();

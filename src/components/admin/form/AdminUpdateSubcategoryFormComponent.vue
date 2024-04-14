@@ -109,27 +109,35 @@ const submitForm = async () => {
       props.selectedSubcategory.id,
       state.subcategory
     );
-    Swal.fire({
-      icon: "success",
-      title: response.message,
-
-      showConfirmButton: false,
-      timer: 1500,
-    }).then(() => {
-      window.location.reload();
-    });
+    if (response.error === false) {
+      console.log("Entra");
+      console.log("Mensaje", response.message);
+      // alert(response.message);
+      Swal.fire({
+        icon: "success",
+        title: response.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: response.message,
+        showConfirmButton: true,
+      });
+    }
   } catch (error) {
     console.error("Error al actualizar la categoría", error);
     Swal.fire({
       icon: "error",
-      title: response.message,
-
-      showConfirmButton: false,
+      title: "Error al actualizar la subcategoría",
+      text: "Hubo un problema al procesar tu solicitud. Por favor, inténtalo de nuevo más tarde.",
       timer: 1500,
     });
   } finally {
     clear();
     loading.value = false;
+    window.location.reload();
   }
 };
 
