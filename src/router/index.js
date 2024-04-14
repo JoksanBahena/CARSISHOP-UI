@@ -22,6 +22,11 @@ const routes = [
     component: () => import("@/views/auth/RegisterView.vue"),
   },
   {
+    path: "/confirm/:token",
+    name: "Confirm",
+    component: () => import("@/views/auth/ConfirmView.vue"),
+  },
+  {
     path: "/forgot-password",
     name: "ForgotPassword",
     component: () => import("@/views/auth/ForgotPasswordView.vue"),

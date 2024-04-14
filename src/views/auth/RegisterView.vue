@@ -316,7 +316,7 @@ div
           </v-btn>
           <v-btn
             v-if="step < 3"
-            @click="showAlert"
+            @click="checkStep"
             class="text-none flex-grow-1"
             :color="colors.primary_dark"
             variant="flat"

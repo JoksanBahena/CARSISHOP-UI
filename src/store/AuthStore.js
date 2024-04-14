@@ -54,6 +54,14 @@ export const useAuthStore = defineStore("auth", {
         throw error.response.data;
       }
     },
+    async confirm(token){
+      try {
+        const response = await axios.post(baseURL + "auth/confirm/" + token);
+        return response.data;
+      } catch (error) {
+        throw new Error("error");
+      }
+    },
     async forgotPassword(email) {
       try {
         const response = await axios.post(baseURL + "auth/forgotPassword", {
