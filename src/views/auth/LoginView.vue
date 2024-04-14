@@ -110,7 +110,7 @@ import { helpers, required } from "@vuelidate/validators";
 import { useAuthStore } from "@/store/AuthStore.js";
 import router from "@/router";
 import Swal from "sweetalert2";
-import {encryptAES, encryptSHA256} from "@/utils/Crypto";
+import {encryptAES} from "@/utils/Crypto";
 
 const { withMessage, regex } = helpers;
 const { login, resend } = useAuthStore();
