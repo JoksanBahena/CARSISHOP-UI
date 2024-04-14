@@ -162,11 +162,10 @@ const submit = async () => {
   try {
     const response = await login(encryptAES(state.email), encryptAES(state.password));
     if (response.status === 200) {
-      router.push({ name: "Home" });
+      await router.push({name: "Home"});
     }
   } catch (err) {
-    console.log(err)
-    if (err.data.status === 403) {
+    if (err.data.status === 400) {
       showSendAlert(err.data.message);
     }else{
       error.value = { error: "error", message: err.data.message};

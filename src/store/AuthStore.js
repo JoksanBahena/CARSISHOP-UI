@@ -1,6 +1,6 @@
-import { defineStore } from "pinia";
+import {defineStore} from "pinia";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -24,10 +24,8 @@ export const useAuthStore = defineStore("auth", {
           email,
           password,
         });
-        if (response.data.token){
-          this.token = response.data.data.token;
-          localStorage.setItem("token", this.token);
-        }
+        this.token = response.data.data.token;
+        localStorage.setItem("token", this.token);
         return response.data;
       } catch (error) {
         throw error.response;
@@ -56,7 +54,7 @@ export const useAuthStore = defineStore("auth", {
         throw error.response.data;
       }
     },
-    async confirm(token){
+    async confirm(token) {
       try {
         const response = await axios.post(baseURL + "auth/confirm/" + token);
         return response.data;
@@ -64,7 +62,7 @@ export const useAuthStore = defineStore("auth", {
         throw error.response.data;
       }
     },
-    async resend(email){
+    async resend(email) {
       try {
         const response = await axios.post(baseURL + "auth/resend-confirm", {
           email,
