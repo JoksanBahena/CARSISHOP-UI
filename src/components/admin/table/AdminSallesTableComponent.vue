@@ -1,50 +1,54 @@
 <template>
-  <v-card outlined>
-    <v-divider></v-divider>
-    <v-data-table :headers="headers" :items="items" :items-per-page="5">
-      <template v-slot:item.seller>
-        <v-list color="transparent">
-          <v-list-item
-            prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-            subtitle="sandra_a88@gmailcom"
-            title="Sandra Adams"
-          >
-          </v-list-item>
-        </v-list>
-      </template>
-      <template v-slot:item.buyer>
-        <v-list color="transparent">
-          <v-list-item
-            prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-            subtitle="sandra_a88@gmailcom"
-            title="Sandra Adams"
-          >
-          </v-list-item>
-        </v-list>
-      </template>
-      <template v-slot:item.product="{ item }">
-        <v-card flat>
-          <div class="d-flex flex-no-wrap my-3">
-            <v-avatar class="" rounded="0" size="125">
-              <v-img :src="`/src/assets/imgs/${item.product}`"></v-img>
-            </v-avatar>
-            <div>
-              <v-card-title> ITEM </v-card-title>
+  <v-container>
+    <p class="text-h4 font-weight-medium mb-2">VENTAS</p>
 
-              <v-card-subtitle>Descripción</v-card-subtitle>
+    <v-card variant="flat">
+      <v-divider></v-divider>
+      <v-data-table :headers="headers" :items="items" :items-per-page="5">
+        <template v-slot:item.seller>
+          <v-list color="transparent">
+            <v-list-item
+              prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
+              subtitle="sandra_a88@gmailcom"
+              title="Sandra Adams"
+            >
+            </v-list-item>
+          </v-list>
+        </template>
+        <template v-slot:item.buyer>
+          <v-list color="transparent">
+            <v-list-item
+              prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
+              subtitle="sandra_a88@gmailcom"
+              title="Sandra Adams"
+            >
+            </v-list-item>
+          </v-list>
+        </template>
+        <template v-slot:item.product="{ item }">
+          <v-card flat>
+            <div class="d-flex flex-no-wrap my-3">
+              <v-avatar class="" rounded="0" size="125">
+                <v-img :src="`/src/assets/imgs/${item.product}`"></v-img>
+              </v-avatar>
+              <div>
+                <v-card-title> ITEM </v-card-title>
+
+                <v-card-subtitle>Descripción</v-card-subtitle>
+              </div>
             </div>
+          </v-card>
+        </template>
+        <template v-slot:item.status="{ item }">
+          <div class="text-end">
+            <v-chip :color="getStatusColor(item.status)">
+              {{ getStatusText(item.status) }}
+            </v-chip>
           </div>
-        </v-card>
-      </template>
-      <template v-slot:item.status="{ item }">
-        <div class="text-end">
-          <v-chip :color="getStatusColor(item.status)">
-            {{ getStatusText(item.status) }}
-          </v-chip>
-        </div>
-      </template>
-    </v-data-table>
-  </v-card>
+        </template>
+      </v-data-table>
+    </v-card>
+  </v-container>
 </template>
 <script setup>
 import { ref } from "vue";

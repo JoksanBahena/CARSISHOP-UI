@@ -1,14 +1,16 @@
 import Colors from '@/utils/Colors.js';
 <template>
   <v-container class="">
+    <p class="text-h4 font-weight-medium mb-2">VENDEDORES</p>
+
     <v-tabs v-model="tab" :color="colors.primary_dark">
-      <v-tab value="1">LISTA DE USUARIOS</v-tab>
+      <v-tab value="1">LISTA DE VENDEDORES</v-tab>
       <v-tab value="2">SOLICITUD DE VENDEDORES</v-tab>
     </v-tabs>
     <v-window v-model="tab">
       <v-window-item value="1">
         <v-container fluid>
-          <admin-user-table-component />
+          <admin-seller-table-component />
         </v-container>
       </v-window-item>
       <v-window-item value="2">

@@ -1,17 +1,21 @@
 <template>
   <breadcrumbs-component :items="items" />
-  <header-admin-component
-    :is-visible="true"
-    :href="'categories/add'"
-    :button-text="'Agregar nueva categoría'"
-    :title="'Categorias'"
-  />
+
   <v-container>
-    <admin-category-table-component />
+    <p class="text-h4 font-weight-medium mb-2">Categorías</p>
+
+    <admin-category-table-component  />
   </v-container>
 </template>
 
 <script setup>
+import { ref, onMounted } from "vue";
+import { useCategoryStore } from "@/store/CategoryStore.js";
+
+const { findAllCategories } = useCategoryStore();
+
+const loading = ref(true);
+
 const items = [
   {
     title: "Inicio",
@@ -24,4 +28,14 @@ const items = [
     href: "/admin/categories",
   },
 ];
+
+// onMounted(async () => {
+//   try {
+//     await findAllCategories(0, 100, { sortBy: "name", order: "asc" });
+//   } catch (error) {
+//     console.log("error al cargar las categorias");
+//   } finally {
+//     loading.value = false;
+//   }
+// });
 </script>

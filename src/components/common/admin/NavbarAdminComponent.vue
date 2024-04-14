@@ -77,8 +77,8 @@ const toolbar = {
 
 const categories = ref([
   {
-    name: "Usuarios",
-    to: "/admin/users",
+    name: "Vendedores",
+    to: "/admin/seller",
   },
   {
     name: "Productos",
@@ -89,8 +89,8 @@ const categories = ref([
     to: "/admin/salles",
   },
   {
-    name: "Compras",
-    to: "/",
+    name: "Administradores",
+    to: "/admin/admin",
   },
   {
     name: "Cateogrias ",

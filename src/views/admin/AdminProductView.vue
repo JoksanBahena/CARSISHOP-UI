@@ -1,10 +1,5 @@
 <template>
   <breadcrumbs-component :items="items" />
-  <header-admin-component
-    :is-visible="false"
-    :href="'/'"
-    :title="'Productos'"
-  />
 
   <admin-products-tab-component />
 </template>

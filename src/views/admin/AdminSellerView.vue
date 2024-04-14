@@ -1,9 +1,7 @@
 <template>
   <breadcrumbs-component :items="items" />
 
-  <v-container>
-    <admin-salles-table-component />
-  </v-container>
+  <admin-seller-tab-component />
 </template>
 
 <script setup>
@@ -14,9 +12,9 @@ const items = [
     href: "/",
   },
   {
-    title: "Ventas",
+    title: "Vendedores",
     disabled: true,
-    href: "/admin/salles",
+    href: "/admin/seller",
   },
 ];
 </script>

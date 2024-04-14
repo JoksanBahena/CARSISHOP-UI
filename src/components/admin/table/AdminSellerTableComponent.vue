@@ -15,8 +15,8 @@
         <template v-slot:item.id="{ index }">
           {{ index + 1 }}
         </template>
-
-        <template v-slot:item.user="{ item }">
+        <!-- E -->
+        <template v-slot:item.seller="{ item }">
           <v-list-item :color="colors.white">
             <v-avatar v-if="item.user.profilepic" :size="40">
               <img :src="item.user.profilepic" alt="Avatar" />
@@ -30,66 +30,29 @@
           </v-list-item>
         </template>
 
-        <template v-slot:item.img="{ item }">
-          <v-card class="my-2" elevation="2" rounded>
-            <v-img :src="item.image" height="64" cover></v-img>
-          </v-card>
+        <template v-slot:item.status="{ item }">
+          <v-chip :color="getStatusColor(item.status)">
+            {{ item.status ? "ACTIVO" : "INACTIVO" }}
+          </v-chip>
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-row
-            cols="12"
-            xl="12"
-            lg="8"
-            md="6"
-            justify="center"
-            class="align-center my-1"
-          >
-            <v-col cols="12" xl="12" lg="8" md="6">
-              <!-- <v-btn variant="outlined" :style="{ borderColor: colors.primary }">
-              <v-icon
-                icon="mdi-eye"
-                :color="colors.primary_dark"
-                class="text-h4"
-              />
-            </v-btn> -->
-              <v-btn
-                class="my-1 mx-1"
-                variant="outlined"
-                :style="{ borderColor: colors.primary }"
-                @click="
-                  approveSellerReq(item.id, item.rfc, item.curp, item.user.id)
-                "
-              >
-                <v-tooltip activator="parent" location="top">
-                  Aprobar
-                </v-tooltip>
-                <v-icon
-                  icon="mdi-check"
-                  :color="colors.primary_dark"
-                  class="text-h4"
-                />
-              </v-btn>
-
+          <v-row>
+            <v-col>
               <v-btn
                 variant="outlined"
                 :style="{ borderColor: colors.primary }"
+                @click="onDisableOrEnableSeller(item.id, item.status)"
               >
                 <v-tooltip activator="parent" location="top">
-                  Rechazar
+                  {{ item.status ? "DESACTIVAR" : "ACTVAR" }}
                 </v-tooltip>
 
                 <v-icon
-                  icon="mdi-close"
-                  :color="colors.primary_dark"
-                  class="text-h4"
-                  @click="
-                    rejectedSellerReq(
-                      item.id,
-                      item.rfc,
-                      item.curp,
-                      item.user.id
-                    )
+                  :icon="
+                    item.status ? 'mdi-delete-outline' : 'mdi-delete-restore'
                   "
+                  :color="colors.primary_dark"
+                  class="text-h4"
                 />
               </v-btn>
             </v-col>
@@ -105,8 +68,7 @@ import Colors from "@/utils/Colors.js";
 import { useSellerStore } from "@/store/SellerStore";
 import Swal from "sweetalert2";
 
-const { findAllRequestSeller, approveSeller, rejectedSeller } =
-  useSellerStore();
+const { findAllActiveSeller, disbleSeller } = useSellerStore();
 
 const itemsPerPage = ref(5);
 const serverItems = ref([]);
@@ -121,23 +83,26 @@ const colors = {
 };
 const headers = ref([
   { title: "#", key: "id", align: "start" },
-  { title: "Usuario", key: "user", align: "start" },
+  { title: "Vendedor", key: "seller", align: "start" },
   { title: "CURP", key: "curp", align: "start" },
   { title: "RFC ", key: "rfc", align: "start" },
   { title: "Telefono", key: "user.phone", align: "start" },
-  { title: "Identificacion", key: "img", align: "center" },
+  { title: "Correo electronico ", key: "user.username", align: "start" },
+  { title: "Estado", key: "status", align: "center" },
   { title: "Acciones", key: "actions", align: "center" },
 ]);
-
+const getStatusColor = (status) => {
+  return status === true ? "success" : "error";
+};
 const loadItems = async ({ page, itemsPerPage, sortBy }) => {
   loading.value = true;
 
   const indexPage = page - 1;
-  await findAllRequestSeller(indexPage, itemsPerPage, sortBy);
-  const { sellers } = useSellerStore();
+  await findAllActiveSeller(indexPage, itemsPerPage, sortBy);
+  const { activeSellers } = useSellerStore();
   const start = indexPage * itemsPerPage;
   const end = start + itemsPerPage;
-  const items = sellers.slice();
+  const items = activeSellers.slice();
   if (sortBy.length) {
     const sortKey = sortBy[0].key;
     const sortOrder = sortBy[0].order;
@@ -153,49 +118,37 @@ const loadItems = async ({ page, itemsPerPage, sortBy }) => {
   loading.value = false;
 };
 
-const approveSellerReq = async (id, rfc, curp, user) => {
+const onDisableOrEnableSeller = (id, status) => {
   try {
-    Swal.fire({
-      title: "¿Estas seguro?",
-      text: "¿Deseas aprobar este vendedor?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: colors.primary,
-      cancelButtonColor: colors.primary_dark,
-      confirmButtonText: "Si",
-      cancelButtonText: "No",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        approveSeller(id, rfc, curp, user);
-        Swal.fire("Aprobado", "El vendedor ha sido aprobado", "success");
-        window.location.reload();
-      }
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+    let successMessage;
+    let confirmButtonText;
 
-const rejectedSellerReq = async (id, rfc, curp, user) => {
-  try {
+    if (status) {
+      successMessage = "El vendedor ha sido desactivado.";
+      confirmButtonText = "Confirmar";
+    } else {
+      successMessage = "El vendedor ha sido activado.";
+      confirmButtonText = "Confirmar";
+    }
+
     Swal.fire({
-      title: "¿Estas seguro?",
-      text: "¿Deseas rechazar este vendedor?",
+      title: "Estás seguro?",
+      text: "Desactivarás el vendedor seleccionado.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: colors.primary,
-      cancelButtonColor: colors.primary_dark,
-      confirmButtonText: "Si",
-      cancelButtonText: "No",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: confirmButtonText,
+      cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        rejectedSeller(id, rfc, curp, user);
-        Swal.fire("Aprobado", "El vendedor ha sido rechazado", "success");
-        window.location.reload();
+        disbleSeller(id);
+        Swal.fire("Hecho", successMessage, "success");
+        location.reload();
       }
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 

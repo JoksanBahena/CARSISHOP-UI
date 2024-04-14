@@ -1,58 +1,45 @@
 <template>
   <v-container>
-    <p class="text-h4 font-weight-medium mb-2 text-decoration-none">
-      Añadir Categoria
-    </p>
+    <v-form class="ma-2">
+      <div class="mb-4">
+        <div class="text-subtitle-1 font-weight-medium">
+          Nombre de la categoría
+        </div>
 
-    <v-card variant="flat" class="mt-4">
-      <v-card-item>
-        <v-form>
-          <v-row>
-            <v-col cols="12" lg="8">
-              <div>
-                <div class="text-subtitle-1 font-weight-medium">Categoria</div>
-                <v-text-field
-                  v-model="state.category"
-                  density="compact"
-                  placeholder="Ingresa el nombre de la categoria"
-                  prepend-inner-icon="mdi-account-outline"
-                  variant="outlined"
-                  @blur="v$.category.$touch"
-                  @input="v$.category.$touch"
-                  :error-messages="v$.category.$errors.map((e) => e.$message)"
-                />
-              </div>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="9" lg="4">
-              <v-btn
-                variant="flat"
-                class="text-none"
-                :color="colors.primary"
-                block
-                append-icon="mdi-close-circle-outline"
-                @click="clear()"
-              >
-                Cancelar
-              </v-btn>
-            </v-col>
-            <v-col cols="9" lg="4">
-              <v-btn
-                variant="flat"
-                class="text-none"
-                :color="colors.primary_dark"
-                block
-                append-icon="mdi-check-circle-outline"
-                @click="submitForm()"
-              >
-                Guardar
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-form>
-      </v-card-item>
-    </v-card>
+        <v-text-field
+          v-model="state.category"
+          density="compact"
+          placeholder="Nombre"
+          prepend-inner-icon="mdi-tag-outline"
+          variant="outlined"
+          @blur="v$.category.$touch"
+          @input="v$.category.$touch"
+          :error-messages="v$.category.$errors.map((e) => e.$message)"
+        />
+      </div>
+      <v-btn
+        :loading="loading"
+        variant="flat"
+        class="text-none"
+        :color="colors.primary_dark"
+        append-icon="mdi-check-circle-outline"
+        @click="submitForm()"
+        block
+      >
+        Guardar
+      </v-btn>
+    </v-form>
+    <v-dialog v-model="dialog2">
+      <v-card>
+        <v-alert
+          v-if="state.alertMessage"
+          :value="true"
+          :type="state.alertType"
+          variant="tonal"
+          >{{ state.alertMessage }}</v-alert
+        >
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -62,18 +49,14 @@ import Colors from "@/utils/Colors.js";
 import { ref } from "vue";
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { createCategory } from "@/services/CategoryService.js";
 import Swal from "sweetalert2";
-import {
-  required,
-  integer,
-  minLength,
-  maxLength,
-  helpers,
-} from "@vuelidate/validators";
-
+import { required, minLength, maxLength, helpers } from "@vuelidate/validators";
+import { useCategoryStore } from "@/store/CategoryStore";
+const { createCategory } = useCategoryStore();
 const { withMessage, regex } = helpers;
+import { shallowRef } from "vue";
 
+const dialog2 = shallowRef(false);
 const colors = {
   primary: Colors.cs_primary,
   primary_dark: Colors.cs_primary_dark,
@@ -83,19 +66,20 @@ const colors = {
 const category = {
   category: "",
 };
+const loading = ref(false);
 
 const state = reactive({ ...category });
 
 const rules = {
   category: {
-    required: withMessage("El campo es requerido", required),
+    required: withMessage("El nombre de la categoría es obligatorio", required),
     minLength: withMessage(
-      "El campo debe tener al menos 3 caracteres",
+      "El nombre de la categoría debe tener al menos 3 carácteres",
       minLength(3)
     ),
     maxLength: withMessage(
-      "El campo debe tener menos de 50 caracteres",
-      maxLength(50)
+      "El nombre de la categoría no debe tener más de 20 carácteres",
+      maxLength(20)
     ),
   },
 };
@@ -103,28 +87,25 @@ const rules = {
 const v$ = useVuelidate(rules, state);
 
 const submitForm = async () => {
+  loading.value = true;
+
   v$.value.$touch();
   if (v$.value.$error) return;
+
   try {
     const response = await createCategory(state.category);
-    Swal.fire({
-      icon: "success",
-      title: "Categoria creada",
-      showConfirmButton: false,
-      timer: 1500,
-    }).then(() => {
-      window.history.back();
-    });
+    if (response.error === false) {
+      showAlertInDialog(response.message, "success");
+    } else {
+      showAlertInDialog(response.message, "error");
+    }
   } catch (error) {
     console.error("Error al crear la categoría", error);
-    Swal.fire({
-      icon: "error",
-      title: "Error al crear la categoría",
-      showConfirmButton: false,
-      timer: 1500,
-    });
+    showAlertInDialog("Error al crear la categoría", "error");
   } finally {
     clear();
+    loading.value = false;
+    location.reload();
   }
 };
 
@@ -136,5 +117,20 @@ const clear = () => {
   for (const [key, value] of Object.entries(category)) {
     state[key] = value;
   }
+};
+
+const showAlertInDialog = (message, type) => {
+  state.alertMessage = message;
+  state.alertType = type;
+  dialog2.value = true;
+
+  setTimeout(() => {
+    hideAlert();
+  }, 4500);
+};
+
+const hideAlert = () => {
+  state.alertMessage = "";
+  state.alertType = "";
 };
 </script>
