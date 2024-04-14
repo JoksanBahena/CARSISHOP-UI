@@ -14,7 +14,7 @@
             :selectedSubcategory="selectedSubcategory"
           />
 
-          <v-text-field
+          <!-- <v-text-field
             v-model="search"
             label="Buscar subcategoría"
             prepend-inner-icon="mdi-magnify"
@@ -27,6 +27,7 @@
           <p class="text-subtitle-1 ml-auto my-auto mx-1">
             {{ totalItems }} Resultados obtenidos
           </p>
+           -->
         </div>
       </template>
 
@@ -117,34 +118,39 @@ const headers = ref([
 const getStatusColor = (status) => {
   return status === true ? "success" : "error";
 };
+const loadItems = async ({ page, itemsPerPage, sortBy, value }) => {
+  if (value) {
+    findAllsubcategories({ page, itemsPerPage, sortBy, value });
+  } else {
+    loading.value = true;
+    const indexPage = page - 1;
+    await findAllsubcategories(indexPage, itemsPerPage, sortBy);
 
-const loadItems = async ({ page, itemsPerPage, sortBy }) => {
-  loading.value = true;
-  const indexPage = page - 1;
-  await findAllsubcategories(indexPage, itemsPerPage, sortBy);
+    const { subcategories } = useSubcategoryStore();
 
-  const { subcategories } = useSubcategoryStore();
+    const start = indexPage * itemsPerPage;
+    const end = start + itemsPerPage;
+    const items = subcategories.slice();
 
-  const start = indexPage * itemsPerPage;
-  const end = start + itemsPerPage;
-  const items = subcategories.slice();
+    if (sortBy.length) {
+      const sortKey = sortBy[0].key;
+      const sortOrder = sortBy[0].order;
+      items.sort((a, b) => {
+        const aValue = a[sortKey];
+        const bValue = b[sortKey];
+        return sortOrder === "desc" ? bValue - aValue : aValue - bValue;
+      });
+    }
 
-  if (sortBy.length) {
-    const sortKey = sortBy[0].key;
-    const sortOrder = sortBy[0].order;
-    items.sort((a, b) => {
-      const aValue = a[sortKey];
-      const bValue = b[sortKey];
-      return sortOrder === "desc" ? bValue - aValue : aValue - bValue;
-    });
+    const paginated = items.slice(start, end);
+
+    serverItems.value = paginated;
+    totalItems.value = items.length;
+    loading.value = false;
   }
-
-  const paginated = items.slice(start, end);
-
-  serverItems.value = paginated;
-  totalItems.value = items.length;
-  loading.value = false;
 };
+
+const searchByName = async ({ page, itemsPerPage, sortBy, value }) => {};
 const isEditModalOpen = ref(false);
 const selectedSubcategory = ref({});
 

@@ -7,6 +7,7 @@ const token = localStorage.getItem("token") || "";
 export const useSubcategoryStore = defineStore("subcategory", {
   state: () => ({
     subcategories: [],
+
   }),
 
   getters: {
@@ -14,9 +15,37 @@ export const useSubcategoryStore = defineStore("subcategory", {
   },
 
   actions: {
-    async findAllsubcategories(page, limit) {
+    async findAllsubcategories(page, itemsPerPage, sortBy, value) {
       const params = {
-        value: "",
+        value: value ? value : "",
+        paginationType: {
+          filter: sortBy?.key ? sortBy.key : "name",
+          sortBy: sortBy?.key ? sortBy.key : "name",
+          order: sortBy?.order ? sortBy.order : "asc",
+          page: page,
+          limit: itemsPerPage,
+        },
+      }
+
+      try {
+        const response = await axios.post(
+          baseURL + "subcategories/find-all", params,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+        this.subcategories = response.data.data;
+        console.log("this.subcategories", this.subcategories)
+      } catch (error) {
+        throw error;
+      }
+    },
+    async findsubcategoriesByName(page, limit, value) {
+      const params = {
+        value: value ? value : "",
         paginationType: {
           filter: "name",
           sortBy: "name",
@@ -37,12 +66,11 @@ export const useSubcategoryStore = defineStore("subcategory", {
           }
         );
         this.subcategories = response.data.data;
-        console.log("this.subcategories", this.subcategories)
-
       } catch (error) {
         throw error;
       }
     },
+
     async createSubcategory(name) {
       const params = {
         name: name

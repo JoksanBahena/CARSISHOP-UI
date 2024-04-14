@@ -1,7 +1,6 @@
 <template>
   <breadcrumbs-component :items="items" />
 
-  <header-admin-component :is-visible="false" :href="'/'" :title="'Ventas'" />
   <v-container>
     <admin-salles-table-component />
   </v-container>

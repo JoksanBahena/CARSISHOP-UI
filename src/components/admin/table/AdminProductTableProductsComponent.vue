@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined>
+  <v-card variant="flat">
     <v-divider></v-divider>
     <v-data-table-server
       :headers="headers"
