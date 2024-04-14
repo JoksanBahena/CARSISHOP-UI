@@ -24,11 +24,13 @@ export const useAuthStore = defineStore("auth", {
           email,
           password,
         });
-        this.token = response.data.data.token;
-        localStorage.setItem("token", this.token);
+        if (response.data.token){
+          this.token = response.data.data.token;
+          localStorage.setItem("token", this.token);
+        }
         return response.data;
       } catch (error) {
-        return error.response.data.message;
+        throw error.response;
       }
     },
     async captcha(solution) {
@@ -67,9 +69,10 @@ export const useAuthStore = defineStore("auth", {
         const response = await axios.post(baseURL + "auth/resend-confirm", {
           email,
         });
+        console.log(response)
         return response.data;
       } catch (error) {
-        throw error.response.data;
+        throw error.response;
       }
     },
     async forgotPassword(email) {
