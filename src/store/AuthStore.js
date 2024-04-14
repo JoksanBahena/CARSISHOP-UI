@@ -34,7 +34,7 @@ export const useAuthStore = defineStore("auth", {
     async captcha(solution) {
       try {
         const response = await axios.post(
-          baseURL + "auth/captcha/?solution=" + solution
+          baseURL + "captcha/verifyCaptcha?solution=" + solution
         );
         return response.data;
       } catch (error) {
