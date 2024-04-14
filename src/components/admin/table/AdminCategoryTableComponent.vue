@@ -184,13 +184,24 @@ const onDisableOrEnableCategory = (id, status) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        disableCategory(id);
-        Swal.fire("Hecho", successMessage, "success");
-        location.reload();
+        disableCategory(id)
+          .then((response) => {
+            Swal.fire("Hecho", response.message || successMessage, "success");
+            location.reload();
+          })
+          .catch((error) => {
+            console.error("Error al desactivar la categoría:", error);
+            Swal.fire(
+              "Error",
+              "Hubo un error al desactivar la categoría.",
+              "error"
+            );
+          });
       }
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error inesperado:", error);
+    Swal.fire("Error", "Hubo un error inesperado.", "error");
   }
 };
 </script>

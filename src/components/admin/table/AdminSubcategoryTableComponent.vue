@@ -166,16 +166,16 @@ const onDisableOrEnableSubcategory = (id, status) => {
     let confirmButtonText;
 
     if (status) {
-      successMessage = "La categoría ha sido desactivada.";
+      successMessage = "La subcategoría ha sido desactivada.";
       confirmButtonText = "Confirmar";
     } else {
-      successMessage = "La categoría ha sido activada.";
+      successMessage = "La subcategoría ha sido activada.";
       confirmButtonText = "Confirmar";
     }
 
     Swal.fire({
-      title: "Estás seguro?",
-      text: "Desactivarás la categoría seleccionada.",
+      title: "¿Estás seguro?",
+      text: "Desactivarás la subcategoría seleccionada.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -184,13 +184,24 @@ const onDisableOrEnableSubcategory = (id, status) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        disableSubcategory(id);
-        Swal.fire("Hecho", successMessage, "success");
-        location.reload();
+        disableSubcategory(id)
+          .then((response) => {
+            Swal.fire("Hecho", response.message || successMessage, "success");
+            location.reload();
+          })
+          .catch((error) => {
+            console.error("Error al desactivar la subcategoría:", error);
+            Swal.fire(
+              "Error",
+              "Hubo un error al desactivar la subcategoría.",
+              "error"
+            );
+          });
       }
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error inesperado:", error);
+    Swal.fire("Error", "Hubo un error inesperado.", "error");
   }
 };
 </script>
