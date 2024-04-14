@@ -110,6 +110,7 @@ import { helpers, required } from "@vuelidate/validators";
 import { useAuthStore } from "@/store/AuthStore.js";
 import router from "@/router";
 import Swal from "sweetalert2";
+import {encryptAES, encryptSHA256} from "@/utils/Crypto";
 
 const { withMessage, regex } = helpers;
 const { login, resend } = useAuthStore();
@@ -151,7 +152,6 @@ const rules = {
 const v$ = useVuelidate(rules, state);
 
 const submit = async () => {
-  // const password = encryptSHA256(state.password);
 
   v$.value.$touch();
   if (v$.value.$error) return;
@@ -160,7 +160,7 @@ const submit = async () => {
   loading.value = true;
 
   try {
-    const response = await login(state.email, state.password);
+    const response = await login(encryptAES(state.email), encryptAES(state.password));
     if (response.status === 200) {
       router.push({ name: "Home" });
     }
