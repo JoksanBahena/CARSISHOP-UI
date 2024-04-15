@@ -41,7 +41,7 @@ export const useProfileStore = defineStore("profile", {
         password: password,
         gender: gender
       };
-
+      console.log("Params:", params)
       try {
         const response = await axios.post(baseUrl + "users/register-admin", params, {
           headers: {

@@ -162,6 +162,8 @@ import {
   maxLength,
   helpers,
 } from "@vuelidate/validators";
+import { encryptAES } from "@/utils/Crypto";
+
 const { withMessage, regex } = helpers;
 
 const { createAdmin } = useProfileStore();
@@ -282,12 +284,12 @@ const submitForm = async () => {
   if (v$.value.$error) return;
   try {
     const response = await createAdmin(
-      state.name,
-      state.surname,
-      state.username,
-      state.phone,
-      state.birthdate,
-      state.password,
+      encryptAES(state.name),
+      encryptAES(state.surname),
+      encryptAES(state.username),
+      encryptAES(state.phone),
+      encryptAES(state.birthdate),
+      encryptAES(state.password),
       state.gender
     );
     console.log("Response", response);
@@ -318,7 +320,6 @@ const submitForm = async () => {
     });
   } finally {
     clear();
-    location.reload();
   }
 };
 const clear = () => {
