@@ -74,7 +74,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import SearchBtnComponent from "@/components/common/SearchBtnComponent.vue";
 import ProfileMenuBtnComponent from "@/components/common/ProfileMenuBtnComponent.vue";
 import Colors from "@/utils/Colors.js";
