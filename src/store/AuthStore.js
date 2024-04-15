@@ -22,7 +22,7 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     async verifyTokenExp() {
       const currentTimeInSeconds = Math.floor(Date.now() / 1000);
-      if( this.tokenExpiration < currentTimeInSeconds) {
+      if(this.tokenExpiration && this.tokenExpiration < currentTimeInSeconds) {
         Swal.fire({
           icon: "error",
           title: "La sesión ha expirado",

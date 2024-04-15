@@ -237,8 +237,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((route) => route.meta.requiresAuth)) {
-    useAuthStore().verifyTokenExp();
     if (useAuthStore().isAuthenticated) {
+      useAuthStore().verifyTokenExp();
       if (to.meta.roles) {
         if (to.meta.roles.includes(useAuthStore().user)) {
           next();
