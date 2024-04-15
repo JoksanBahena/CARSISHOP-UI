@@ -3,7 +3,7 @@
     <breadcrumbs-component :items="items" />
     <v-container>
       <product-info-component />
-      <product-reviews-component />
+      <!-- <product-reviews-component /> -->
       <v-divider class="my-12" />
       <product-list-component title="Productos relacionados" />
     </v-container>

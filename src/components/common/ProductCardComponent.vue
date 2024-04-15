@@ -7,12 +7,9 @@
     min-height="500"
     max-height="500"
     :color="colors.secondary"
+    :href="`/product/${item.id}`"
   >
-    <v-img
-      class="my-4"
-      height="300"
-      :src="item.images.length > 0 ? item.images[0] : ''"
-    />
+    <v-img class="my-4" height="300" :src="item.images[0]?.url ?? ''" />
 
     <v-card-title>
       {{ item.name }}
@@ -26,12 +23,6 @@
       <p class="font-weight-bold text-h5 mr-2" :style="{ color: colors.red }">
         {{ item.stock[0].price }}
       </p>
-      <!-- <p
-        class="font-weight-medium text-subtitle-2 text-decoration-line-through"
-        :style="{ color: colors.gray }"
-      >
-        {{ item.priceDiscount }}
-      </p> -->
       <v-spacer />
       <v-btn variant="outlined" :style="{ borderColor: colors.primary_dark }">
         <v-icon

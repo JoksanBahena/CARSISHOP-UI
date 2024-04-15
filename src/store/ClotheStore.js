@@ -8,14 +8,16 @@ export const useClotheStore = defineStore("clothe", {
   state: () => ({
     clothes: [],
     pendingClothes: [],
+    clothe: []
   }),
   getters: {
     getClothes: (state) => state.clothes,
     getPendingClothes: (state) => state.pendingClothes,
+    getClothe: (state) => state.clothe
 
   },
   actions: {
-    async finAllClothes(page, itemsPerPage, sortBy) {
+    async findAllClothes(page, itemsPerPage, sortBy) {
       const params = {
         value: "APPROVED",
         paginationType: {
@@ -45,7 +47,7 @@ export const useClotheStore = defineStore("clothe", {
       }
 
     },
-    async finAllClothesHome() {
+    async findAllClothesHome() {
       const params = {
         value: "APPROVED",
         paginationType: {
@@ -76,6 +78,23 @@ export const useClotheStore = defineStore("clothe", {
         throw error;
       }
 
+    },
+    async findClotheById(id) {
+      const url = baseURL + `clothes/getOne/${id}`;
+      console.log(url)
+      try {
+        const response = await axios.get(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("Response", response.data.data)
+        this.clothe = response.data.data;
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
     },
     async findAllRequestClothe(page, itemsPerPage, sortBy) {
       const params = {

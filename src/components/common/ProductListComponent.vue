@@ -25,13 +25,13 @@ import ProductCardComponent from "@/components/common/ProductCardComponent.vue";
 import Colors from "@/utils/Colors.js";
 import { useClotheStore } from "@/store/ClotheStore";
 
-const { finAllClothesHome } = useClotheStore();
+const { findAllClothesHome } = useClotheStore();
 
 const clothes = ref([]);
 
 onMounted(async () => {
   try {
-    await finAllClothesHome();
+    await findAllClothesHome();
     clothes.value = useClotheStore().clothes;
   } catch (error) {
     console.log(error);
