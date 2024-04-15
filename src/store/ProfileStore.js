@@ -31,6 +31,32 @@ export const useProfileStore = defineStore("profile", {
         throw new Error("Error fetching profile");
       }
     },
+    async updateProfile(state) {
+      try {
+        const response = await axios.post(
+          baseUrl + "users/updateInfo",
+          {
+            name: state.name,
+            surname: state.surname,
+            username: state.email,
+            phone: state.phone,
+            gender: state.genere,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
+
+        this.profile = response.data;
+        return this.profile;
+      } catch (err) {
+        console.log(err);
+        throw new Error("Error al actualizar información");
+      }
+    },
     async createAdmin(name, surname, username, phone, birthdate, password, gender) {
       const params = {
         name: name,

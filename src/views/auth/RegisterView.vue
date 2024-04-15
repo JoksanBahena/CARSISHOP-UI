@@ -358,6 +358,7 @@ import {
 } from "@vuelidate/validators";
 import router from "@/router";
 import Swal from "sweetalert2";
+import { encryptAES } from "@/utils/Crypto";
 const { captcha, register } = useAuthStore();
 const { withMessage, regex } = helpers;
 
@@ -576,7 +577,18 @@ const submit = async () => {
   loading.value = true;
 
   try {
-    const response = await register(state);
+    const params = {
+      name: encryptAES(state.name),
+      surname: encryptAES(state.surname),
+      username: encryptAES(state.username),
+      phone: encryptAES(state.phone),
+      birthdate: encryptAES(state.birthdate),
+      password: encryptAES(state.password),
+      profilepic: state.profilepic,
+      gender: state.gender,
+    };
+
+    const response = await register(params);
     if (response.status === 200) {
       showAlert();
     } else {
@@ -593,19 +605,19 @@ const submit = async () => {
   }
 };
 
-const showAlert = () =>{
+const showAlert = () => {
   Swal.fire({
     title: "Cuenta registrada",
-    text: 'Ahora solo falta confirmar tu correo electrónico para activar tu cuenta',
-    icon: 'success',
-    confirmButtonText: 'Continuar',
+    text: "Ahora solo falta confirmar tu correo electrónico para activar tu cuenta",
+    icon: "success",
+    confirmButtonText: "Continuar",
     timer: 4000,
     timerProgressBar: true,
   }).then((result) => {
     if (result.isConfirmed) {
-      router.push({ name: "Login" })
-    }else{
-      router.push({ name: "Login" })
+      router.push({ name: "Login" });
+    } else {
+      router.push({ name: "Login" });
     }
   });
 };
@@ -614,8 +626,14 @@ const captchaContainer = ref();
 const widget = ref();
 
 const doneCallback = async (solution) => {
-  state.captcha_token = solution;
-  // let response = await captcha(solution);
+  let solutionCaptcha = await captcha(solution);
+
+  if (solutionCaptcha.success === true) {
+    state.captcha_token = true;
+  } else {
+    error.value = { error: "error", message: "Error en el captcha" };
+    renderCaptcha();
+  }
 };
 
 const errorCallback = (error) => {
