@@ -7,12 +7,15 @@
     min-height="500"
     max-height="500"
     :color="colors.secondary"
-    href="/product/1"
   >
-    <v-img class="my-4" height="300" src="@/assets/imgs/item.webp" />
+    <v-img
+      class="my-4"
+      height="300"
+      :src="item.images.length > 0 ? item.images[0] : ''"
+    />
 
     <v-card-title>
-      {{ item.title }}
+      {{ item.name }}
     </v-card-title>
 
     <p class="mx-4">
@@ -21,14 +24,14 @@
 
     <v-card-actions class="align-end">
       <p class="font-weight-bold text-h5 mr-2" :style="{ color: colors.red }">
-        {{ item.price }}
+        {{ item.stock[0].price }}
       </p>
-      <p
+      <!-- <p
         class="font-weight-medium text-subtitle-2 text-decoration-line-through"
         :style="{ color: colors.gray }"
       >
-        {{ item.price }}
-      </p>
+        {{ item.priceDiscount }}
+      </p> -->
       <v-spacer />
       <v-btn variant="outlined" :style="{ borderColor: colors.primary_dark }">
         <v-icon
@@ -42,6 +45,7 @@
 </template>
 
 <script setup>
+import { defineProps } from "vue";
 import Colors from "@/utils/Colors.js";
 
 const colors = {
@@ -53,12 +57,12 @@ const colors = {
   gray: Colors.cs_opacity_gray,
 };
 
-const item = {
-  id: 1,
-  title: "Item 1",
-  description: "Lorem ipsum dolor sit amet consectetur. ",
-  price: "$615 MX",
-  priceDiscount: "$500 MX",
-  image: "@/assets/imgs/item.webp",
-};
+const props = defineProps({
+  item: {
+    type: Object,
+    required: true,
+  },
+});
+
+console.log(props.item);
 </script>

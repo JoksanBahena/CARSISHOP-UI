@@ -45,6 +45,38 @@ export const useClotheStore = defineStore("clothe", {
       }
 
     },
+    async finAllClothesHome() {
+      const params = {
+        value: "APPROVED",
+        paginationType: {
+          filter: "request_status",
+          sortBy: "name",
+          order: "asc",
+          page: 0,
+          limit: 100,
+        },
+      };
+      const url = baseURL + "clothes/find-all";
+      console.log(url)
+      console.log(params)
+      try {
+        const response = await axios.post(url, params,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("Response", response.data.data)
+
+        this.clothes = response.data.data;
+
+      } catch (error) {
+        throw error;
+      }
+
+    },
     async findAllRequestClothe(page, itemsPerPage, sortBy) {
       const params = {
         value: "PENDING",
