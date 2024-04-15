@@ -7,8 +7,8 @@
             <v-img
               v-for="(image, index) in imagesArray"
               :key="index"
-              :lazy-src="image.url"
-              :src="image.url"
+              :lazy-src="image ? image.url || defaultImage : defaultImage"
+              :src="image ? image.url || defaultImage : defaultImage"
               aspect-ratio="1"
               class="bg-grey-lighten-2 my-2 mx-1"
               width="80"
@@ -126,6 +126,7 @@ const colors = {
 
 const mainImage = ref(null);
 const imagesArray = ref([]);
+const defaultImage = "https://via.placeholder.com/500";
 
 onMounted(async () => {
   await getOneClothe();
@@ -179,7 +180,7 @@ const getChipVariant = (size) => {
 };
 
 const updateMainImage = (index) => {
-  mainImage.value = imagesArray.value[index].url;
+  mainImage.value = imagesArray.value[index].url || defaultImage;
 };
 
 const selectSize = (selectedSize) => {

@@ -9,7 +9,11 @@
     :color="colors.secondary"
     :href="`/product/${item.id}`"
   >
-    <v-img class="my-4" height="300" :src="item.images[0]?.url ?? ''" />
+    <v-img
+      class="my-4"
+      height="300"
+      :src="item.images[0]?.url || defaultImage"
+    />
 
     <v-card-title>
       {{ item.name }}
@@ -47,6 +51,7 @@ const colors = {
   red: Colors.cs_red,
   gray: Colors.cs_opacity_gray,
 };
+const defaultImage = "https://via.placeholder.com/500";
 
 const props = defineProps({
   item: {
