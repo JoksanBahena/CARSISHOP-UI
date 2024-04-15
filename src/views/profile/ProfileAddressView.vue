@@ -30,7 +30,11 @@
 </template>
 
 <script setup>
+import { ref, reactive, onMounted } from "vue";
+import { useProfileStore } from "@/store/ProfileStore";
 import Colors from "@/utils/Colors.js";
+
+const { fetchAddressess } = useProfileStore();
 
 const colors = {
   primary: Colors.cs_primary,
@@ -51,4 +55,17 @@ const items = [
     title: "Mis direcciones",
   },
 ];
+
+const getAddresses = async () => {
+  try {
+    const response = await fetchAddressess();
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+onMounted(() => {
+  getAddresses();
+});
 </script>

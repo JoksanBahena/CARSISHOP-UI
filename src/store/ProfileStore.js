@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
+import { AsyncCompiler } from "sass";
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -8,20 +8,18 @@ export const useProfileStore = defineStore("profile", {
   state: () => ({
     token: localStorage.getItem("token") || "",
     profile: {},
-    admins: []
+    addressess: [],
+    admins: [],
   }),
   getters: {
     getProfile: (state) => state.profile,
-    getAdmins: (state) => state.admins
+    getAdmins: (state) => state.admins,
   },
   actions: {
     async fetchProfile() {
       try {
-        const username = jwtDecode(this.token).sub;
-        const params = { username: username };
-        const response = await axios.post(baseUrl + "users/info", params, {
+        const response = await axios.post(baseUrl + "users/info", {}, {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${this.token}`,
           },
         });
@@ -38,7 +36,6 @@ export const useProfileStore = defineStore("profile", {
           {
             name: state.name,
             surname: state.surname,
-            username: state.email,
             phone: state.phone,
             gender: state.genere,
           },
@@ -57,7 +54,15 @@ export const useProfileStore = defineStore("profile", {
         throw new Error("Error al actualizar información");
       }
     },
-    async createAdmin(name, surname, username, phone, birthdate, password, gender) {
+    async createAdmin(
+      name,
+      surname,
+      username,
+      phone,
+      birthdate,
+      password,
+      gender
+    ) {
       const params = {
         name: name,
         surname: surname,
@@ -65,16 +70,20 @@ export const useProfileStore = defineStore("profile", {
         phone: phone,
         birthdate: birthdate,
         password: password,
-        gender: gender
+        gender: gender,
       };
 
       try {
-        const response = await axios.post(baseUrl + "users/register-admin", params, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${this.token}`,
-          },
-        });
+        const response = await axios.post(
+          baseUrl + "users/register-admin",
+          params,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
 
         console.log("Response from server:", response.data);
 
@@ -94,7 +103,7 @@ export const useProfileStore = defineStore("profile", {
           page: page,
           limit: itemsPerPage,
         },
-      }
+      };
       try {
         const response = await axios.post(baseUrl + "users/find-all", params, {
           headers: {
@@ -106,6 +115,20 @@ export const useProfileStore = defineStore("profile", {
         return this.admins;
       } catch (error) {
         throw error;
+      }
+    },
+    async fetchAddressess() {
+      try {
+        const response = await axios.get(baseUrl + "address/getByUser", {}, {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+        console.log(response);
+        this.addressess = response.data.data;
+        return this.addressess;
+      } catch (error) {
+        throw new Error("Error fetching addresses");
       }
     }
   },
