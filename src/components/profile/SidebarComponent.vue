@@ -70,6 +70,11 @@ const colors = {
 
 const nav_items = [
   {
+    icon: "mdi-account-outline",
+    title: "Mi cuenta",
+    to: { name: "ProfileAccount" },
+  },
+  {
     icon: "mdi-history",
     title: "Resumen",
     to: { name: "ProfileSummary" },
@@ -78,11 +83,6 @@ const nav_items = [
     icon: "mdi-shopping-outline",
     title: "Pedidos y devoluciones",
     to: { name: "ProfileOrders" },
-  },
-  {
-    icon: "mdi-account-outline",
-    title: "Mi cuenta",
-    to: { name: "ProfileAccount" },
   },
   {
     icon: "mdi-map-marker-outline",
