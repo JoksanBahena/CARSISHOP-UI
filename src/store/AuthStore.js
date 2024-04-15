@@ -1,9 +1,11 @@
 import {defineStore} from "pinia";
 import axios from "axios";
 import {jwtDecode} from "jwt-decode";
+import Swal from "sweetalert2";
+import {useRouter} from "vue-router";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
-
+const route = useRouter();
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     token: localStorage.getItem("token") || "",
@@ -18,6 +20,22 @@ export const useAuthStore = defineStore("auth", {
     isAuthenticated: (state) => !!state.token,
   },
   actions: {
+    async verifyTokenExp() {
+      const currentTimeInSeconds = Math.floor(Date.now() / 1000);
+      if( this.tokenExpiration < currentTimeInSeconds) {
+        Swal.fire({
+          icon: "error",
+          title: "La sesión ha expirado",
+          text: "Por favor inicie sesión nuevamente",
+          showConfirmButton: true,
+          confirmButtonText: "Aceptar",
+          allowOutsideClick: false,
+        }).then(() => {
+          this.logout();
+          route.push("/login")
+        });
+      }
+    },
     async login(email, password) {
       try {
         const response = await axios.post(baseURL + "auth/login", {
