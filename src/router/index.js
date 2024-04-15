@@ -71,9 +71,9 @@ const routes = [
     meta: { requiresAuth: true, roles: ["ADMIN"] },
     children: [
       {
-        path: "users",
+        path: "seller",
         name: "AdminUsers",
-        component: () => import("@/views/admin/AdminUsersView"),
+        component: () => import("@/views/admin/AdminSellerView"),
       },
       {
         path: "users/add",
@@ -111,6 +111,11 @@ const routes = [
         name: "AdminAddSubCategory",
         component: () => import("@/views/admin/AdminAddSubcategoryView.vue"),
       },
+      {
+        path: "admin",
+        name: "AdminAdmin",
+        component: () => import("@/views/admin/AdminAdminView.vue"),
+      }
     ],
   },
 
@@ -239,6 +244,7 @@ router.beforeEach((to, from, next) => {
   ) {
     next({ name: "Home" });
   } else {
+    // console.log("enrtra aqui");
     next();
   }
 });

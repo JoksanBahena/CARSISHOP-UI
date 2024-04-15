@@ -1,6 +1,8 @@
 import Colors from '@/utils/Colors.js';
 <template>
   <v-container class="">
+    <p class="text-h4 font-weight-medium mb-2">PRODUCTOS</p>
+
     <v-tabs v-model="tab" :color="colors.primary_dark">
       <v-tab value="1">LISTA DE productos</v-tab>
       <v-tab value="2">SOLICITUD DE productos</v-tab>

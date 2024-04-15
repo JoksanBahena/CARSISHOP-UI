@@ -8,9 +8,11 @@ export const useProfileStore = defineStore("profile", {
   state: () => ({
     token: localStorage.getItem("token") || "",
     profile: {},
+    admins: []
   }),
   getters: {
     getProfile: (state) => state.profile,
+    getAdmins: (state) => state.admins
   },
   actions: {
     async fetchProfile() {
@@ -55,5 +57,56 @@ export const useProfileStore = defineStore("profile", {
         throw new Error("Error al actualizar información");
       }
     },
+    async createAdmin(name, surname, username, phone, birthdate, password, gender) {
+      const params = {
+        name: name,
+        surname: surname,
+        username: username,
+        phone: phone,
+        birthdate: birthdate,
+        password: password,
+        gender: gender
+      };
+
+      try {
+        const response = await axios.post(baseUrl + "users/register-admin", params, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+
+        console.log("Response from server:", response.data);
+
+        return response.data;
+      } catch (error) {
+        console.error("Error creating admin:", error);
+        throw new Error("Error creating admin");
+      }
+    },
+    async findAllAdmins(page, itemsPerPage, sortBy) {
+      const params = {
+        value: "ADMIN",
+        paginationType: {
+          filter: sortBy?.key ? sortBy.key : "role",
+          sortBy: sortBy?.key ? sortBy.key : "role",
+          order: sortBy?.order ? sortBy.order : "asc",
+          page: page,
+          limit: itemsPerPage,
+        },
+      }
+      try {
+        const response = await axios.post(baseUrl + "users/find-all", params, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+        this.admins = response.data.data;
+        return this.admins;
+      } catch (error) {
+        throw error;
+      }
+    }
   },
 });
