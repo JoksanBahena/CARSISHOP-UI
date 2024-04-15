@@ -3,19 +3,19 @@
 
   <v-container>
     <p class="text-h4 font-weight-medium mb-2">Mis direcciones</p>
-
-    <address-component
-      user="Cristopher Soto Ventura"
-      state="Morelos"
-      town="Emiliano Zapata"
-      suburb="Tetacalita"
-      street="Calle del Déposito"
-      extrnumber="S/N"
-      intnumber="132"
-      cp="62768"
-    />
-    <address-component />
-
+    <v-row v-for="address in addressData" :key="address.id">
+      <address-component
+        :id="address.id"
+        :user="address.name"
+        :state="address.state.name"
+        :town="address.town.name"
+        :suburb="address.suburb"
+        :street="address.street"
+        :extrnumber="address.extnumber"
+        :intnumber="address.intnumber"
+        :cp="address.cp"
+      />
+    </v-row>
     <v-btn
       variant="flat"
       class="my-10 text-none"
@@ -30,8 +30,9 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { reactive, onMounted } from "vue";
 import { useProfileStore } from "@/store/ProfileStore";
+import { decryptValue } from "@/utils/Crypto";
 import Colors from "@/utils/Colors.js";
 
 const { fetchAddressess } = useProfileStore();
@@ -41,6 +42,8 @@ const colors = {
   primary_dark: Colors.cs_primary_dark,
   white: Colors.cs_white,
 };
+
+const addressData = reactive([])
 
 const items = [
   {
@@ -59,7 +62,23 @@ const items = [
 const getAddresses = async () => {
   try {
     const response = await fetchAddressess();
-    console.log(response);
+    response.forEach(address => {
+      addressData.push({
+        id: address.id,
+        cp: decryptValue(address.cp),
+        extnumber: decryptValue(address.extnumber),
+        intnumber: decryptValue(address.intnumber),
+        state: {
+          name: address.state.name,
+        },
+        street: decryptValue(address.street),
+        suburb: decryptValue(address.suburb),
+        town: {
+          name: address.town.name,
+        },
+        name: decryptValue(address.name),
+      });
+    })
   } catch (error) {
     console.log(error);
   }

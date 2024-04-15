@@ -1,11 +1,8 @@
 <template>
   <v-card variant="flat" class="mb-4">
-    <v-card-item>
+    <v-card-item :key="id">
       <div>
-        <div
-          v-if="!resume & !details"
-          class="d-flex align-center text-body-2 text-none font-weight-bold mb-1"
-        >
+        <div v-if="!resume & !details" class="d-flex align-center text-body-2 text-none font-weight-bold mb-1">
           <v-icon size="20" class="mr-1"> mdi-map-marker-outline</v-icon>
           Dirección de envio:
         </div>
@@ -20,24 +17,12 @@
       </div>
     </v-card-item>
 
-    <v-card-actions
-      v-if="!resume & !details"
-      class="flex-column align-start flex-lg-row flex-md-row"
-    >
-      <v-btn
-        variant="outlined"
-        class="mb-4 mr-4 text-none"
-        :color="colors.primary_dark"
-        prepend-icon="mdi-delete-outline"
-      >
+    <v-card-actions v-if="!resume & !details" class="flex-column align-start flex-lg-row flex-md-row">
+      <v-btn variant="outlined" class="mb-4 mr-4 text-none" :color="colors.primary_dark"
+        prepend-icon="mdi-delete-outline" @click="addressDelete(id)" :loading="loading">
         Eliminar dirección
       </v-btn>
-      <v-btn
-        variant="outlined"
-        class="ma-0 text-none"
-        :color="colors.primary_dark"
-        prepend-icon="mdi-pencil"
-      >
+      <v-btn variant="outlined" class="ma-0 text-none" :color="colors.primary_dark" prepend-icon="mdi-pencil">
         Editar dirección
       </v-btn>
     </v-card-actions>
@@ -47,12 +32,23 @@
 
 <script setup>
 import Colors from "@/utils/Colors.js";
+import { ref } from 'vue'
+import { useProfileStore } from "@/store/ProfileStore";
+import { Toast } from "@/utils/Alerts.js";
+import { encryptAES } from "@/utils/Crypto";
+
+const { deleteAddress } = useProfileStore();
 
 const colors = {
   primary_dark: Colors.cs_primary_dark,
 };
 
+const loading = ref(false);
+
 const props = defineProps({
+  id: {
+    type: String,
+  },
   user: {
     type: String,
     default: "Tu nombre",
@@ -94,4 +90,23 @@ const props = defineProps({
     default: false,
   },
 });
+
+const addressDelete = async (id) => {
+  loading.value = true;
+  try {
+    const response = await deleteAddress(encryptAES(String(id)));
+    console.log(response);
+    if (response.status === 200) {
+      Toast.fire({
+        icon: "success",
+        title: "Dirección eliminada correctamente",
+      });
+    }
+    loading.value = false;
+  } catch (error) {
+    console.log(error);
+  } finally {
+    loading.value = false;
+  }
+};
 </script>

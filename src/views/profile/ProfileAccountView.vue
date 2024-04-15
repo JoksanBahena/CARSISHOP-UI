@@ -177,6 +177,7 @@ import {
 } from "@vuelidate/validators";
 import { useProfileStore } from "@/store/ProfileStore";
 import { Toast } from "@/utils/Alerts.js";
+import { encryptAES } from "@/utils/Crypto";
 
 const { withMessage, regex } = helpers;
 const { fetchProfile, updateProfile } = useProfileStore();
@@ -315,7 +316,9 @@ const submitForm = async () => {
   } else {
     try {
       const response = await updateProfile({
-        ...state,
+        name: encryptAES(state.name),
+        surname: encryptAES(state.surname),
+        phone: encryptAES(state.phone),
         genere: state.genere.id ? state.genere.id : state.genere,
       });
       if (response.status === 200) {

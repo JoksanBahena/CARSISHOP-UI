@@ -13,16 +13,21 @@ export const useProfileStore = defineStore("profile", {
   }),
   getters: {
     getProfile: (state) => state.profile,
+    getAddressess: (state) => state.addressess,
     getAdmins: (state) => state.admins,
   },
   actions: {
     async fetchProfile() {
       try {
-        const response = await axios.post(baseUrl + "users/info", {}, {
-          headers: {
-            Authorization: `Bearer ${this.token}`,
-          },
-        });
+        const response = await axios.post(
+          baseUrl + "users/info",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
         this.profile = response.data.data;
         return this.profile;
       } catch (error) {
@@ -46,7 +51,6 @@ export const useProfileStore = defineStore("profile", {
             },
           }
         );
-
         this.profile = response.data;
         return this.profile;
       } catch (err) {
@@ -119,17 +123,37 @@ export const useProfileStore = defineStore("profile", {
     },
     async fetchAddressess() {
       try {
-        const response = await axios.get(baseUrl + "address/getByUser", {}, {
+        const response = await axios.get(baseUrl + "address/getByUser", {
           headers: {
             Authorization: `Bearer ${this.token}`,
           },
         });
-        console.log(response);
         this.addressess = response.data.data;
         return this.addressess;
       } catch (error) {
         throw new Error("Error fetching addresses");
       }
-    }
+    },
+    async deleteAddress(id) {
+      const params = {
+        id: id,
+      };
+
+      try {
+        const response = await axios.delete(
+          baseUrl + "address/delete",
+          params,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
+        return response.data;
+      } catch (error) {
+        throw new Error("Error deleting address");
+      }
+    },
   },
 });
