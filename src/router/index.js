@@ -240,15 +240,16 @@ router.beforeEach((to, from, next) => {
       if (to.meta.roles) {
         if (to.meta.roles.includes(useAuthStore().user)) {
           next();
+          return;
         } else {
           if (useAuthStore().user === "CUSTOMER") next({name: "Home"});
           if (useAuthStore().user === "SELLER") next({name: "SellerResumen"});
           if (useAuthStore().user === "ADMIN") next({name: "Admin"});
         }
       }
-      next();
     } else {
       next({name: "Login"});
+      return;
     }
   } else if (useAuthStore().isAuthenticated &&
     (to.name === "Login" ||
@@ -259,13 +260,17 @@ router.beforeEach((to, from, next) => {
     )
   ) {
     next({name: "Home"});
+    return;
   } else {
     if (useAuthStore().user === "ADMIN") {
       next({name: "Admin"});
+      return;
     } else if (useAuthStore().user === "SELLER") {
       next({name: "SellerResumen"});
+      return;
     }
     next();
+    return;
   }
 });
 
