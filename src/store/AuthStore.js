@@ -26,6 +26,8 @@ export const useAuthStore = defineStore("auth", {
         });
         this.token = response.data.data.token;
         localStorage.setItem("token", this.token);
+        this.tokenExpiration = jwtDecode(this.token).exp;
+        this.user = jwtDecode(this.token).role;
         return response.data;
       } catch (error) {
         throw error.response;

@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory } from "vue-router";
-import { useAuthStore } from "@/store/AuthStore";
+import {createRouter, createWebHistory} from "vue-router";
+import {useAuthStore} from "@/store/AuthStore";
+import {Logger} from "sass";
 
 const routes = [
   {
@@ -10,6 +11,7 @@ const routes = [
     path: "/",
     name: "Home",
     component: () => import("@/views/home/HomeView.vue"),
+    meta: {roles: ["CUSTOMER"]},
   },
   {
     path: "/login",
@@ -40,13 +42,13 @@ const routes = [
     path: "/cart",
     name: "Cart",
     component: () => import("@/views/cart/CartView.vue"),
-    meta: { requiresAuth: true },
+    meta: {requiresAuth: true, roles: ["CUSTOMER"]},
   },
   {
     path: "/cart/payment",
     name: "Payment",
     component: () => import("@/views/cart/PaymentView.vue"),
-    meta: { requiresAuth: true },
+    meta: {requiresAuth: true, roles: ["CUSTOMER"]},
   },
   {
     path: "/category/:category/:subcategory",
@@ -66,9 +68,9 @@ const routes = [
   {
     path: "/admin",
     name: "Admin",
-    redirect: { name: "AdminUsers" },
+    redirect: {name: "AdminUsers"},
     component: () => import("@/views/admin/AdminView.vue"),
-    meta: { requiresAuth: true, roles: ["ADMIN"] },
+    meta: {requiresAuth: true, roles: ["ADMIN", "SELLER"]},
     children: [
       {
         path: "seller",
@@ -122,24 +124,27 @@ const routes = [
   {
     path: "/profile",
     name: "Profile",
-    redirect: { name: "ProfileSummary" },
+    redirect: {name: "ProfileSummary"},
     component: () => import("@/views/profile/ProfileView.vue"),
-    // meta: { requiresAuth: true },
+    meta: {requiresAuth: true, roles: ["CUSTOMER", "SELLER"]},
     children: [
       {
         path: "summary",
         name: "ProfileSummary",
         component: () => import("@/views/profile/ProfileResumeView.vue"),
+        meta: {roles: ["CUSTOMER"]},
       },
       {
         path: "orders",
         name: "ProfileOrders",
         component: () => import("@/views/profile/ProfileOrdersReturnsView.vue"),
+        meta: {roles: ["CUSTOMER"]},
       },
       {
         path: "details/:id",
         name: "ProfileOrderDetails",
         component: () => import("@/views/profile/ProfileOrderDetailsView.vue"),
+        meta: {roles: ["CUSTOMER"]},
       },
       {
         path: "account",
@@ -150,51 +155,61 @@ const routes = [
         path: "addresses",
         name: "ProfileAddresses",
         component: () => import("@/views/profile/ProfileAddressView.vue"),
+        meta: {roles: ["CUSTOMER", "SELLER"]},
       },
       {
         path: "addresses/add",
         name: "ProfileAddAddress",
         component: () => import("@/views/profile/ProfileAddAddressView.vue"),
+        meta: {roles: ["CUSTOMER", "SELLER"]},
       },
       {
         path: "payments",
         name: "ProfilePayments",
         component: () => import("@/views/profile/ProfilePaymentView.vue"),
+        meta: {roles: ["CUSTOMER"]},
       },
       {
         path: "payments/add",
         name: "ProfileAddPayment",
         component: () => import("@/views/profile/ProfileAddPaymentView.vue"),
+        meta: {roles: ["CUSTOMER"]},
       },
       {
         path: "sales",
         name: "Sales",
         component: () => import("@/views/seller/SellerView.vue"),
+        meta: {roles: ["SELLER"]},
         children: [
           {
             path: "",
             name: "SellerSales",
             component: () => import("@/views/seller/SellerSalesView.vue"),
+            meta: {roles: ["SELLER", "CUSTOMER"]},
           },
           {
             path: "request",
             name: "SellerRequest",
             component: () => import("@/views/seller/SellerRequestView.vue"),
+            meta: {roles: ["CUSTOMER"]},
           },
           {
             path: "summary",
             name: "SellerResumen",
             component: () => import("@/views/seller/SellerSummaryView.vue"),
+
           },
           {
             path: "my-sales",
             name: "SellerMySales",
             component: () => import("@/views/seller/SellerSalesTableView.vue"),
+
           },
           {
             path: "my-products",
             name: "SellerProducts",
             component: () => import("@/views/seller/SellerProductsTableView.vue"),
+
           },
           {
             path: "my-products/add",
@@ -212,9 +227,9 @@ const router = createRouter({
   routes,
   scrollBehavior(to, from, savedPosition) {
     if (to.hash) {
-      return { el: to.hash };
+      return {el: to.hash};
     } else {
-      return { top: 0 };
+      return {top: 0};
     }
   },
 });
@@ -225,16 +240,18 @@ router.beforeEach((to, from, next) => {
       if (to.meta.roles) {
         if (to.meta.roles.includes(useAuthStore().user)) {
           next();
+          return;
         } else {
-          next({ name: "Home" });
+          if (useAuthStore().user === "CUSTOMER") next({name: "Home"});
+          if (useAuthStore().user === "SELLER") next({name: "SellerResumen"});
+          if (useAuthStore().user === "ADMIN") next({name: "Admin"});
         }
       }
-      next();
     } else {
-      next({ name: "Login" });
+      next({name: "Login"});
+      return;
     }
-  } else if (
-    useAuthStore().isAuthenticated &&
+  } else if (useAuthStore().isAuthenticated &&
     (to.name === "Login" ||
       to.name === "Register" ||
       to.name === "ForgotPassword" ||
@@ -242,10 +259,18 @@ router.beforeEach((to, from, next) => {
       to.name === "Confirm"
     )
   ) {
-    next({ name: "Home" });
+    next({name: "Home"});
+    return;
   } else {
-    // console.log("enrtra aqui");
+    if (useAuthStore().user === "ADMIN") {
+      next({name: "Admin"});
+      return;
+    } else if (useAuthStore().user === "SELLER") {
+      next({name: "SellerResumen"});
+      return;
+    }
     next();
+    return;
   }
 });
 
