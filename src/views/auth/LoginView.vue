@@ -162,7 +162,7 @@ const submit = async () => {
   try {
     const response = await login(encryptAES(state.email), encryptAES(state.password));
     if (response.status === 200) {
-      await router.push({name: "Home"});
+      window.location.reload();
     }
   } catch (err) {
     if (err.data.status === 400) {
