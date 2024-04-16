@@ -72,13 +72,11 @@
     </v-toolbar>
   </v-app-bar>
 </template>
-
 <script setup>
+import { onBeforeRouteUpdate } from "vue-router";
 import { ref } from "vue";
-import SearchBtnComponent from "@/components/common/SearchBtnComponent.vue";
-import ProfileMenuBtnComponent from "@/components/common/ProfileMenuBtnComponent.vue";
-import Colors from "@/utils/Colors.js";
 import { useAuthStore } from "@/store/AuthStore.js";
+import Colors from "@/utils/Colors.js";
 
 const { isAuthenticated } = useAuthStore();
 
@@ -92,23 +90,26 @@ const categories = ref([
     name: "Mujeres",
     to: {
       name: "CategorizedProducts",
-      params: { category: "mujeres", subcategory: "todo" },
+      params: { category: "Mujer", subcategory: "todo" },
     },
   },
   {
     name: "Hombres",
     to: {
       name: "CategorizedProducts",
-      params: { category: "hombres", subcategory: "todo" },
+      params: { category: "Hombre", subcategory: "todo" },
     },
   },
   {
     name: "Niños",
     to: {
       name: "CategorizedProducts",
-      params: { category: "kids", subcategory: "todo" },
+      params: { category: "Niño", subcategory: "todo" },
     },
   },
 ]);
 
+onBeforeRouteUpdate(() => {
+  console.log("Route updated");
+});
 </script>

@@ -8,14 +8,17 @@ export const useClotheStore = defineStore("clothe", {
   state: () => ({
     clothes: [],
     pendingClothes: [],
+    clothe: [],
+    clothesByCategory: []
   }),
   getters: {
     getClothes: (state) => state.clothes,
     getPendingClothes: (state) => state.pendingClothes,
+    getClothe: (state) => state.clothe
 
   },
   actions: {
-    async finAllClothes(page, itemsPerPage, sortBy) {
+    async findAllClothes(page, itemsPerPage, sortBy) {
       const params = {
         value: "APPROVED",
         paginationType: {
@@ -40,6 +43,73 @@ export const useClotheStore = defineStore("clothe", {
         );
         console.log("Response", response.data.data)
         this.clothes = response.data.data;
+      } catch (error) {
+        throw error;
+      }
+
+    },
+    async findAllClothesHome() {
+      const params = {
+        value: "APPROVED",
+        paginationType: {
+          filter: "request_status",
+          sortBy: "name",
+          order: "asc",
+          page: 0,
+          limit: 100,
+        },
+      };
+      const url = baseURL + "clothes/find-all";
+      console.log(url)
+      console.log(params)
+      try {
+        const response = await axios.post(url, params,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("Response", response.data.data)
+
+        this.clothes = response.data.data;
+
+      } catch (error) {
+        throw error;
+      }
+
+    },
+    async findClotheById(id) {
+      const url = baseURL + `clothes/getOne/${id}`;
+      console.log(url)
+      try {
+        const response = await axios.get(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("Response", response.data.data)
+        this.clothe = response.data.data;
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+    },
+    async findAllClothesByCategory(category) {
+      const url = baseURL + `clothes/getByCategory/${category}`;
+      console.log(url)
+      try {
+        const response = await axios.get(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("Response", response.data.data)
+        this.clothesByCategory = response.data.data;
+        return response.data.data;
       } catch (error) {
         throw error;
       }

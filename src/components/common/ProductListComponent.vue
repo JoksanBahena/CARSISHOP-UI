@@ -11,18 +11,42 @@
         Ver más <v-icon>mdi-chevron-right</v-icon>
       </router-link>
     </div>
-    <v-slide-group v-model="model" class="my-4" show-arrows>
-      <v-slide-group-item v-for="n in 15" :key="n">
-        <product-card-component />
+
+    <div v-if="clothes.length === 0 && !details" class="my-4">
+      No hay productos disponibles en este momento.
+    </div>
+
+    <v-slide-group
+      v-model="model"
+      class="my-4"
+      show-arrows
+      v-if="clothes.length > 0"
+    >
+      <v-slide-group-item v-for="(clothe, index) in clothes" :key="index">
+        <product-card-component :item="clothe" />
       </v-slide-group-item>
     </v-slide-group>
   </v-container>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import ProductCardComponent from "@/components/common/ProductCardComponent.vue";
 import Colors from "@/utils/Colors.js";
+import { useClotheStore } from "@/store/ClotheStore";
+
+const { findAllClothesHome } = useClotheStore();
+
+const clothes = ref([]);
+
+onMounted(async () => {
+  try {
+    await findAllClothesHome();
+    clothes.value = useClotheStore().clothes;
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 const colors = {
   primary: Colors.cs_primary,
