@@ -27,9 +27,7 @@ export const useSellerStore = defineStore("seller", {
         },
       };
       const url = baseURL + "sellers/find-all";
-      console.log(url);
-      console.log(params);
-      console.log(token);
+
       try {
         const response = await axios.post(url, params, {
           headers: {
@@ -37,7 +35,6 @@ export const useSellerStore = defineStore("seller", {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("Response", response.data.data);
         this.sellers = response.data.data;
       } catch (error) {
         throw error;
@@ -52,8 +49,6 @@ export const useSellerStore = defineStore("seller", {
       formData.append("user", user);
       formData.append("request_status", "APPROVED");
 
-      console.log(formData);
-
       try {
         const response = await axios.put(baseURL + "sellers/", formData, {
           headers: {
@@ -61,7 +56,6 @@ export const useSellerStore = defineStore("seller", {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("response", response);
       } catch (error) {
         throw error;
       }
@@ -74,8 +68,6 @@ export const useSellerStore = defineStore("seller", {
       formData.append("user", user);
       formData.append("request_status", "REJECTED");
 
-      console.log(formData);
-
       try {
         const response = await axios.put(baseURL + "sellers/", formData, {
           headers: {
@@ -83,7 +75,6 @@ export const useSellerStore = defineStore("seller", {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("response", response);
       } catch (error) {
         throw error;
       }
@@ -99,9 +90,7 @@ export const useSellerStore = defineStore("seller", {
           limit: itemsPerPage,
         },
       };
-      console.log(params);
       const url = baseURL + "sellers/find-all";
-      console.log(url);
       try {
         const response = await axios.post(url, params, {
           headers: {
@@ -109,7 +98,6 @@ export const useSellerStore = defineStore("seller", {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("Response", response.data.data);
         this.activeSellers = response.data.data;
       } catch (error) {
         throw error;
@@ -130,7 +118,6 @@ export const useSellerStore = defineStore("seller", {
             },
           }
         );
-        console.log("response", response);
       } catch (error) {
         throw error;
       }

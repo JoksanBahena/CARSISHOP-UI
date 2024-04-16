@@ -175,8 +175,6 @@ const submitForm = async () => {
       state.password,
       state.confirm_password
     );
-
-    console.log(alert.value);
   } catch (error) {
     alert.value = getErrorMessage(error);
   } finally {

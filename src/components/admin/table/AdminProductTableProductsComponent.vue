@@ -93,7 +93,7 @@ import Colors from "@/utils/Colors.js";
 import { useClotheStore } from "@/store/ClotheStore";
 import Swal from "sweetalert2";
 
-const { finAllClothes } = useClotheStore();
+const { findAllClothes } = useClotheStore();
 
 const itemsPerPage = ref(5);
 const serverItems = ref([]);
@@ -121,7 +121,7 @@ const loadItems = async ({ page, itemsPerPage, sortBy }) => {
   loading.value = true;
 
   const indexPage = page - 1;
-  await finAllClothes(indexPage, itemsPerPage, sortBy);
+  await findAllClothes(indexPage, itemsPerPage, sortBy);
   const { clothes } = useClotheStore();
   const start = indexPage * itemsPerPage;
   const end = start + itemsPerPage;

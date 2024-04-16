@@ -157,7 +157,6 @@ const selectedSubcategory = ref({});
 const onEdit = (item) => {
   isEditModalOpen.value = true;
   selectedSubcategory.value = item;
-  console.log("selectedSubcategory", selectedSubcategory.value);
 };
 
 const onDisableOrEnableSubcategory = (id, status) => {

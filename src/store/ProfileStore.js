@@ -100,7 +100,6 @@ export const useProfileStore = defineStore("profile", {
         password: password,
         gender: gender,
       };
-
       try {
         const response = await axios.post(
           baseUrl + "users/register-admin",
@@ -113,7 +112,6 @@ export const useProfileStore = defineStore("profile", {
           }
         );
 
-        console.log("Response from server:", response.data);
 
         return response.data;
       } catch (error) {
