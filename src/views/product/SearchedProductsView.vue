@@ -46,7 +46,6 @@ onMounted(async () => {
   try {
     await findAllClothesHome();
     clothes.value = useClotheStore().clothes;
-    console.log(clothes.value);
   } catch (error) {
     console.log(error);
   }

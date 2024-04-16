@@ -109,7 +109,5 @@ const categories = ref([
   },
 ]);
 
-onBeforeRouteUpdate(() => {
-  console.log("Route updated");
-});
+onBeforeRouteUpdate(() => {});
 </script>

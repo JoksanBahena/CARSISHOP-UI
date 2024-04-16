@@ -126,9 +126,6 @@ const submitForm = async () => {
       state.category
     );
     if (response.error === false) {
-      console.log("Entra");
-      console.log("Mensaje", response.message);
-      // alert(response.message);
       Swal.fire({
         icon: "success",
         title: response.message,

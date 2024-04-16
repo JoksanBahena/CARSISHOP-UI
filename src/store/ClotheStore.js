@@ -30,8 +30,6 @@ export const useClotheStore = defineStore("clothe", {
         },
       };
       const url = baseURL + "clothes/find-all";
-      console.log(url)
-      console.log(params)
       try {
         const response = await axios.post(url, params,
           {
@@ -41,7 +39,6 @@ export const useClotheStore = defineStore("clothe", {
             },
           }
         );
-        console.log("Response", response.data.data)
         this.clothes = response.data.data;
       } catch (error) {
         throw error;
@@ -60,8 +57,7 @@ export const useClotheStore = defineStore("clothe", {
         },
       };
       const url = baseURL + "clothes/find-all";
-      console.log(url)
-      console.log(params)
+
       try {
         const response = await axios.post(url, params,
           {
@@ -71,7 +67,6 @@ export const useClotheStore = defineStore("clothe", {
             },
           }
         );
-        console.log("Response", response.data.data)
 
         this.clothes = response.data.data;
 
@@ -82,7 +77,6 @@ export const useClotheStore = defineStore("clothe", {
     },
     async findClotheById(id) {
       const url = baseURL + `clothes/getOne/${id}`;
-      console.log(url)
       try {
         const response = await axios.get(url, {
           headers: {
@@ -90,7 +84,6 @@ export const useClotheStore = defineStore("clothe", {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("Response", response.data.data)
         this.clothe = response.data.data;
         return response.data.data;
       } catch (error) {
@@ -99,7 +92,6 @@ export const useClotheStore = defineStore("clothe", {
     },
     async findAllClothesByCategory(category) {
       const url = baseURL + `clothes/getByCategory/${category}`;
-      console.log(url)
       try {
         const response = await axios.get(url, {
           headers: {
@@ -107,7 +99,6 @@ export const useClotheStore = defineStore("clothe", {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("Response", response.data.data)
         this.clothesByCategory = response.data.data;
         return response.data.data;
       } catch (error) {
@@ -128,9 +119,7 @@ export const useClotheStore = defineStore("clothe", {
         },
       };
       const url = baseURL + "clothes/find-all";
-      console.log(url)
-      console.log(params)
-      console.log(token)
+
       try {
         const response = await axios.post(url, params,
           {
@@ -140,7 +129,6 @@ export const useClotheStore = defineStore("clothe", {
             },
           }
         );
-        console.log("Response", response.data.data)
         this.pendingClothes = response.data.data;
       } catch (error) {
         throw error;
@@ -152,9 +140,7 @@ export const useClotheStore = defineStore("clothe", {
         id: id,
         request_status: "APPROVED",
       };
-      console.log(params)
       const url = baseURL + "clothes/isAccepted";
-      console.log(url)
       try {
         const response = await axios.post(url, params, {
           headers: {
@@ -162,7 +148,6 @@ export const useClotheStore = defineStore("clothe", {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("response APPROVED", response);
 
         return response.data;
       } catch (error) {
@@ -174,7 +159,6 @@ export const useClotheStore = defineStore("clothe", {
         id: id,
         request_status: "REJECTED",
       };
-      console.log(params)
       const url = baseURL + "clothes/isAccepted";
 
       try {
@@ -184,7 +168,6 @@ export const useClotheStore = defineStore("clothe", {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("response rejected", response);
         return response.data;
       } catch (error) {
         throw error;

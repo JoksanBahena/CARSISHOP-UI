@@ -52,7 +52,6 @@ onMounted(async () => {
     await findAllClothesByCategory(category);
 
     clothesByCategory.value = useClotheStore().clothesByCategory;
-    console.log(clothesByCategory.value);
   } catch (error) {
     console.log(error);
   }
@@ -65,7 +64,6 @@ watch(
       try {
         await findAllClothesByCategory(newCategory);
         clothesByCategory.value = useClotheStore().clothesByCategory;
-        console.log(clothesByCategory.value);
       } catch (error) {
         console.log(error);
       }
