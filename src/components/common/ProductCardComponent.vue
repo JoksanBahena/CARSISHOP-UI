@@ -4,14 +4,14 @@
     variant="flat"
     min-width="280"
     max-width="280"
-    min-height="500"
-    max-height="500"
+    min-height="400"
+    max-height="400"
     :color="colors.secondary"
     :href="`/product/${item.id}`"
   >
     <v-img
-      class="my-4"
-      height="300"
+      class="my-0"
+      style="height: fit-content"
       :src="item.images[0]?.url || defaultImage"
     />
 

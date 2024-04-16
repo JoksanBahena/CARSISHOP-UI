@@ -49,7 +49,7 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: "/category/:category/:subcategory",
+    path: "/category/:category/",
     name: "CategorizedProducts",
     component: () => import("@/views/product/CategorizedProductsView.vue"),
   },

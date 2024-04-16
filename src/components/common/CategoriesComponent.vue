@@ -44,7 +44,7 @@ const categories = ref([
     img: "/src/assets/imgs/girl_card.webp",
     to: {
       name: "CategorizedProducts",
-      params: { category: "mujeres", subcategory: "todo" },
+      params: { category: "Mujer", subcategory: "todo" },
     },
   },
   {
@@ -52,7 +52,7 @@ const categories = ref([
     img: "/src/assets/imgs/men_card.webp",
     to: {
       name: "CategorizedProducts",
-      params: { category: "hombres", subcategory: "todo" },
+      params: { category: "Hombre", subcategory: "todo" },
     },
   },
   {
@@ -60,7 +60,7 @@ const categories = ref([
     img: "/src/assets/imgs/kids_card.webp",
     to: {
       name: "CategorizedProducts",
-      params: { category: "kids", subcategory: "todo" },
+      params: { category: "Niño", subcategory: "todo" },
     },
   },
 ]);

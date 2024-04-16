@@ -8,7 +8,8 @@ export const useClotheStore = defineStore("clothe", {
   state: () => ({
     clothes: [],
     pendingClothes: [],
-    clothe: []
+    clothe: [],
+    clothesByCategory: []
   }),
   getters: {
     getClothes: (state) => state.clothes,
@@ -95,6 +96,24 @@ export const useClotheStore = defineStore("clothe", {
       } catch (error) {
         throw error;
       }
+    },
+    async findAllClothesByCategory(category) {
+      const url = baseURL + `clothes/getByCategory/${category}`;
+      console.log(url)
+      try {
+        const response = await axios.get(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("Response", response.data.data)
+        this.clothesByCategory = response.data.data;
+        return response.data.data;
+      } catch (error) {
+        throw error;
+      }
+
     },
     async findAllRequestClothe(page, itemsPerPage, sortBy) {
       const params = {
