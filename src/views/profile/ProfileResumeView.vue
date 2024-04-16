@@ -9,7 +9,7 @@
       action="Editar"
       :to="{ name: 'ProfileAccount' }"
     >
-      <user-profile-card-component v-bind:user="userData"/>
+      <user-profile-card-component />
     </resumen-card-component>
 
     <resumen-card-component
@@ -50,31 +50,6 @@
 
 <script setup>
 import ResumenCardComponent from "@/components/profile/ResumenCardComponent.vue";
-import { onMounted, reactive } from "vue";
-import { useProfileStore } from '@/store/ProfileStore';
-
-const { fetchProfile } = useProfileStore();
-
-const userData = reactive({
-  name: '',
-  email: '',
-  avatar: ''
-});
-
-const getUserInfo = async () => {
-  try {
-    const response = await fetchProfile();
-    userData.name = response.name + ' ' + response.surname;
-    userData.email = response.username;
-    userData.avatar = response.profilepic;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-onMounted(() => {
-  getUserInfo();
-});
 
 const items = [
   {

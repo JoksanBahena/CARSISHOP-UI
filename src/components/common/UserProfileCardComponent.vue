@@ -9,15 +9,20 @@
 </template>
 
 <script setup>
-defineProps({
-  user: {
-    type: Object,
-    required: true,
-    default: {
-      name: "Maximiliano Carsi",
-      email: "carsimax@gmail.com",
-      avatar: "https://randomuser.me/api/portraits/men/2.jpg",
-    },
-  },
+import { onMounted, ref, watch } from "vue";
+import { useProfileStore } from "@/store/ProfileStore";
+
+const { profile } = useProfileStore();
+
+const user = ref({
+  name: "Bienvenido",
+  email: "tucorreo@dominio.com",
+  avatar: "https://randomuser.me/api/portraits/lego/2.jpg",
+});
+
+onMounted(() => {
+  user.value.name = profile.name + " " + profile.surname;
+  user.value.email = profile.username;
+  user.value.avatar = profile.profilepic;
 });
 </script>

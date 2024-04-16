@@ -1,18 +1,37 @@
 <template>
-  <v-navigation-drawer v-model="drawer" expand-on-hover permanent :rail="rail" @mouseover="rail = false"
-    @mouseleave="rail = true">
-    <user-profile-card-component v-bind:user="userData" />
+  <v-navigation-drawer
+    v-model="drawer"
+    expand-on-hover
+    permanent
+    :rail="rail"
+    @mouseover="rail = false"
+    @mouseleave="rail = true"
+  >
+    <user-profile-card-component />
 
     <v-divider />
 
     <v-list density="compact" nav>
-      <v-list-item class="mt-3" v-for="item in nav_items" :key="item.index" :prepend-icon="item.icon"
-        :title="item.title" :to="item.to" :active="isActive(item.to)" />
+      <v-list-item
+        class="mt-3"
+        v-for="item in nav_items"
+        :key="item.index"
+        :prepend-icon="item.icon"
+        :title="item.title"
+        :to="item.to"
+        :active="isActive(item.to)"
+      />
     </v-list>
 
     <template v-slot:append>
       <div class="px-2">
-        <v-btn class="mb-8 text-none" :color="colors.primary_dark" size="large" variant="flat" block>
+        <v-btn
+          class="mb-8 text-none"
+          :color="colors.primary_dark"
+          size="large"
+          variant="flat"
+          block
+        >
           <v-icon>mdi-logout</v-icon>
           <p v-if="!rail">Cerrar sesión</p>
         </v-btn>
@@ -22,34 +41,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, reactive } from "vue";
+import { ref } from "vue";
 import Colors from "@/utils/Colors.js";
 import { useRoute } from "vue-router";
-import { useProfileStore } from '@/store/ProfileStore';
+import { useAuthStore } from "@/store/AuthStore";
 
+const { user } = useAuthStore();
 const route = useRoute();
-const { fetchProfile } = useProfileStore();
-
-const userData = reactive({
-  name: '',
-  email: '',
-  avatar: ''
-});
-
-const getUserInfo = async () => {
-  try {
-    const response = await fetchProfile();
-    userData.name = response.name + ' ' + response.surname;
-    userData.email = response.username;
-    userData.avatar = response.profilepic;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-onMounted(() => {
-  getUserInfo();
-});
 
 const isProfileRoute = route.matched.some((record) =>
   record.name.startsWith("Profile")
@@ -101,7 +99,9 @@ const nav_items = [
   {
     icon: "mdi-currency-usd",
     title: "Ventas",
-    to: { name: "SellerSales" },
+    to: user === "SELLER"
+    ? { name: "SellerResumen" }
+    : { name: "SellerSales" },
   },
 ];
 </script>
