@@ -88,9 +88,6 @@
               <v-icon>mdi-delete-outline</v-icon>
             </v-btn>
           </v-row>
-          <!-- @click="viewProduct(item)"
-            @click="editProduct(item)"
-            @click="deleteProduct(item)" -->
         </template>
       </v-data-table>
     </v-card>

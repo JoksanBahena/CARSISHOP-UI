@@ -2,19 +2,20 @@
   <v-card
     class="ma-1"
     variant="flat"
-    style="width: 280px; height: 400px"
+    min-width="280"
+    max-width="280"
+    min-height="450"
+    max-height="450"
     :color="colors.secondary"
     :href="`/product/${item.id}`"
   >
-    <div style="height: 200px; overflow: hidden">
-      <v-img
-        class="my-0"
-        style="height: 100%; width: 100%; object-fit: cover"
-        :src="item.images[0]?.url || defaultImage"
-      />
-    </div>
+    <v-img
+      class="mb-4"
+      height="280"
+      :src="item.images[0]?.url || defaultImage"
+    />
 
-    <v-card-title class="text-h4">
+    <v-card-title class="text-h5 pl-4">
       {{ item.name }}
     </v-card-title>
 
@@ -24,7 +25,7 @@
 
     <v-card-actions class="align-end">
       <p class="font-weight-bold text-h5 mr-2" :style="{ color: colors.red }">
-        {{ "$MX" + item.stock[0].price }}
+        {{ "$" + item.stock[0].price + "MX" }}
       </p>
       <v-spacer />
       <v-btn variant="outlined" :style="{ borderColor: colors.primary_dark }">
