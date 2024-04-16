@@ -87,9 +87,9 @@
                       <v-chip
                         v-for="(size, index) in sizes"
                         :key="index"
-                        :value="size"
+                        :value="size.size"
                       >
-                        {{ size }}
+                        {{ size.size }}
                       </v-chip>
                     </v-chip-group>
 
@@ -97,20 +97,26 @@
                       <v-row>
                         <v-col cols="6" lg="4" md="4">
                           <div class="text-subtitle-1 font-weight-medium">
-                            Stock {{ size.size }}
+                            Stock
+                            {{
+                              typeof size.size === "string"
+                                ? size.size
+                                : size.size.size
+                            }}
                           </div>
                           <v-text-field
                             v-model="size.quantity"
                             density="compact"
                             placeholder="0"
                             :prepend-inner-icon="
-                              'mdi-size-' + size.size.toLowerCase()
+                              'mdi-size-' +
+                              (typeof size.size === 'string'
+                                ? size.size.toLowerCase()
+                                : size.size.size.toLowerCase())
                             "
                             variant="outlined"
                             type="number"
                             autofocus
-                            @blur="v$.stock.$touch"
-                            @input="v$.stock.$touch"
                             :error-messages="
                               v$.stock.$each.$response.$errors[
                                 index
@@ -131,8 +137,6 @@
                             variant="outlined"
                             type="number"
                             hide-spin-buttons
-                            @blur="v$.stock.$touch"
-                            @input="v$.stock.$touch"
                             :error-messages="
                               v$.stock.$each.$response.$errors[index].price.map(
                                 (e) => e.$message
@@ -155,6 +159,8 @@
                   v-model="state.category"
                   placeholder="Selecciona una categoría"
                   :items="categories"
+                  item-title="name"
+                  item-value="id"
                   density="compact"
                   variant="outlined"
                   prepend-inner-icon="mdi-tag-outline"
@@ -173,6 +179,8 @@
                   v-model="state.subcategory"
                   placeholder="Selecciona una subcategoría"
                   :items="subcategories"
+                  item-title="name"
+                  item-value="id"
                   density="compact"
                   variant="outlined"
                   prepend-inner-icon="mdi-tag-multiple-outline"
@@ -256,9 +264,9 @@
             @dragenter.prevent
           >
             <v-icon>mdi-trash-can-outline</v-icon>
-            <span class="ml-2 text-button text-none"
-              >Arrastra para eliminar</span
-            >
+            <span class="ml-2 text-button text-none">
+              Arrastra para eliminar
+            </span>
           </div>
         </v-col>
       </v-row>
@@ -271,8 +279,9 @@
             block
             prepend-icon="mdi-close-circle-outline"
             @click="clear()"
-            >Cancelar</v-btn
           >
+            Cancelar
+          </v-btn>
         </v-col>
         <v-col cols="6">
           <v-btn
@@ -281,9 +290,12 @@
             :color="colors.primary_dark"
             block
             append-icon="mdi-check-circle-outline"
+            :disabled="v$.$errors.length > 0"
+            :loading="loading"
             @click="submitForm()"
-            >Guardar</v-btn
           >
+            Guardar
+          </v-btn>
         </v-col>
       </v-row>
     </v-form>
@@ -291,7 +303,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from "vue";
+import { ref, reactive, watch, onMounted } from "vue";
 import Colors from "@/utils/Colors.js";
 import { useVuelidate } from "@vuelidate/core";
 import {
@@ -300,7 +312,20 @@ import {
   minLength,
   maxLength,
   helpers,
+  minValue,
 } from "@vuelidate/validators";
+import { useClotheStore } from "@/store/ClotheStore";
+import { useCategoryStore } from "@/store/CategoryStore";
+import { useSubcategoryStore } from "@/store/SubcategoryStore";
+import { useProfileStore } from "@/store/ProfileStore";
+import { encryptAES } from "@/utils/Crypto";
+import { Toast } from "@/utils/Alerts.js";
+import router from "@/router";
+
+const { createClothe } = useClotheStore();
+const { findAllCategories } = useCategoryStore();
+const { findAllsubcategories } = useSubcategoryStore();
+const { profile } = useProfileStore();
 
 const { withMessage, forEach, regex } = helpers;
 
@@ -333,27 +358,33 @@ const colors = {
   red: Colors.cs_red,
 };
 
-const categories = ["Hombre", "Mujer", "Niño", "Niña"];
+const categories = [
+  { name: "Hombre", id: 1 },
+  { name: "Mujer", id: 2 },
+  { name: "Niño", id: 3 },
+];
 
 const subcategories = [
-  "Camiss",
-  "Pantalón",
-  "Zapatos",
-  "Accesorio",
-  "Ropa interior",
+  { name: "Top", id: 1 },
+  { name: "Bottom", id: 2 },
+  { name: "Calzado", id: 3 },
+  { name: "Accesorios", id: 4 },
+  { name: "Ropa interior", id: 5 },
 ];
 
 const product = {
   name: "",
   description: "",
+  stock: [],
+  sellerEmail: "",
   category: null,
   subcategory: null,
-  stock: [],
   image_urls: [],
 };
 
 const max_size = 2;
 const max_images = 5;
+const loading = ref(false);
 
 const state = reactive({ ...product });
 
@@ -394,6 +425,7 @@ const rules = {
       quantity: {
         required: withMessage("El stock es obligatorio", required),
         regex: withMessage("El stock debe ser valido", regex(/^\d+$/)),
+        minValue: withMessage("El stock debe ser mayor a 0", minValue(1)),
       },
       price: {
         required: withMessage("El precio es obligatorio", required),
@@ -402,6 +434,7 @@ const rules = {
           "El precio debe tener máximo 2 decimales",
           regex(/^\d+(\.\d{1,2})?$/)
         ),
+        minValue: withMessage("El precio debe ser mayor a 0", minValue(1)),
       },
     }),
   },
@@ -421,18 +454,55 @@ const rules = {
 
 const v$ = useVuelidate(rules, state);
 
-const sizes = ["XS", "S", "M", "L", "XL"];
+const sizes = [
+  { size: "XS", id: 1 },
+  { size: "S", id: 2 },
+  { size: "M", id: 3 },
+  { size: "L", id: 4 },
+  { size: "XL", id: 5 },
+];
 
 const selected_sizes = ref([]);
 
-const submitForm = () => {
+const submitForm = async () => {
   v$.value.$touch();
-
-  console.log(v$.value.stock);
-
   if (v$.value.$error) return;
 
-  alert(JSON.stringify(state));
+  const new_stock = state.stock.map((item) => {
+    const size_object = sizes.find((size) => size.size === item.size);
+    return {
+      size: { id: size_object.id, size: item.size },
+      quantity: item.quantity,
+      price: item.price,
+    };
+  });
+  state.stock = new_stock;
+
+  state.category = { id: state.category };
+  state.subcategory = { id: state.subcategory };
+  state.sellerEmail = encryptAES(state.sellerEmail);
+
+  console.log(state);
+
+  try {
+    loading.value = true;
+    const response = await createClothe(state);
+
+    if (response.status === 200) {
+      clear();
+      Toast.fire({
+        icon: "success",
+        title: "Producto creado exitosamente",
+      });
+      router.push({ name: "SellerMySales" });
+    }
+
+    console.log(response);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    loading.value = false;
+  }
 };
 
 const onFileChange = (e) => {
@@ -501,12 +571,16 @@ watch(selected_sizes, (value, old_value) => {
   const existingSizes = state.stock.map((item) => item.size);
   const newSizes = value.filter((size) => !existingSizes.includes(size));
 
-  const newStock = newSizes.map((size) => ({
+  const new_stock = newSizes.map((size) => ({
     size,
-    quantity: 0,
-    price: "",
+    quantity: 1,
+    price: "1.00",
   }));
 
-  state.stock = [...state.stock, ...newStock];
+  state.stock = [...state.stock, ...new_stock];
+});
+
+onMounted(async () => {
+  state.sellerEmail = profile.username;
 });
 </script>

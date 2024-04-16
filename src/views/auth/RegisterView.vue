@@ -95,6 +95,7 @@ div
                   v-model="state.gender"
                   density="compact"
                   placeholder="Género"
+                  prepend-inner-icon="mdi-account-outline"
                   :items="genders"
                   item-title="gender"
                   item-value="id_gender"

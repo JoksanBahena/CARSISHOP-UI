@@ -8,56 +8,89 @@ export const useProfileStore = defineStore("profile", {
   state: () => ({
     token: localStorage.getItem("token") || "",
     profile: {},
-    admins: []
+    admins: [],
   }),
   getters: {
     getProfile: (state) => state.profile,
-    getAdmins: (state) => state.admins
+    getAdmins: (state) => state.admins,
+    getId: (state) => state.profile.id,
+    getImage: (state) => state.profile.profilepic,
   },
   actions: {
     async fetchProfile() {
       try {
-        const username = jwtDecode(this.token).sub;
-        const params = { username: username };
-        const response = await axios.post(baseUrl + "users/info", params, {
+        const username = jwtDecode(localStorage.getItem("token")).sub;
+        const response = await axios.post(baseUrl + "users/info", username, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${this.token}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
         this.profile = response.data.data;
         return this.profile;
       } catch (error) {
-        throw new Error("Error fetching profile");
+        console.log(error);
       }
     },
-    async updateProfile(state) {
+    async updateProfile(profile) {
       try {
         const response = await axios.post(
           baseUrl + "users/updateInfo",
-          {
-            name: state.name,
-            surname: state.surname,
-            username: state.email,
-            phone: state.phone,
-            gender: state.genere,
-          },
+          profile,
           {
             headers: {
-              "Content-Type": "application/json",
               Authorization: `Bearer ${this.token}`,
             },
           }
         );
 
-        this.profile = response.data;
-        return this.profile;
+        this.profile = response.data.data;
+        return response.data;
       } catch (err) {
-        console.log(err);
-        throw new Error("Error al actualizar información");
+        throw err;
       }
     },
-    async createAdmin(name, surname, username, phone, birthdate, password, gender) {
+    async updateProfileImage(profilePic) {
+      try {
+        const response = await axios.put(
+          baseUrl + "users/updateProfilePic",
+          profilePic,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
+        this.profile = response.data.data;
+        return response.data;
+      } catch (err) {
+        console.log(err);
+        throw new Error("Error al actualizar imagen de perfil");
+      }
+    },
+    async updateSellerProfile(seller) {
+      try {
+        const response = await axios.put(baseUrl + "sellers/", seller, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+        return response.data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    async createAdmin(
+      name,
+      surname,
+      username,
+      phone,
+      birthdate,
+      password,
+      gender
+    ) {
       const params = {
         name: name,
         surname: surname,
@@ -65,16 +98,20 @@ export const useProfileStore = defineStore("profile", {
         phone: phone,
         birthdate: birthdate,
         password: password,
-        gender: gender
+        gender: gender,
       };
 
       try {
-        const response = await axios.post(baseUrl + "users/register-admin", params, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${this.token}`,
-          },
-        });
+        const response = await axios.post(
+          baseUrl + "users/register-admin",
+          params,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
 
         console.log("Response from server:", response.data);
 
@@ -94,7 +131,7 @@ export const useProfileStore = defineStore("profile", {
           page: page,
           limit: itemsPerPage,
         },
-      }
+      };
       try {
         const response = await axios.post(baseUrl + "users/find-all", params, {
           headers: {
@@ -107,6 +144,6 @@ export const useProfileStore = defineStore("profile", {
       } catch (error) {
         throw error;
       }
-    }
+    },
   },
 });

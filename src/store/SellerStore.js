@@ -27,33 +27,32 @@ export const useSellerStore = defineStore("seller", {
         },
       };
       const url = baseURL + "sellers/find-all";
-      console.log(url)
-      console.log(params)
-      console.log(token)
+      console.log(url);
+      console.log(params);
+      console.log(token);
       try {
-        const response = await axios.post(url, params,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log("Response", response.data.data)
+        const response = await axios.post(url, params, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("Response", response.data.data);
         this.sellers = response.data.data;
       } catch (error) {
         throw error;
       }
     },
     async approveSeller(id, rfc, curp, user) {
+      console.log("entra");
       const formData = new FormData();
-      formData.append('id', id);
-      formData.append('rfc', rfc);
-      formData.append('curp', curp);
-      formData.append('user', user);
-      formData.append('request_status', 'APPROVED');
+      formData.append("id", id);
+      formData.append("rfc", rfc);
+      formData.append("curp", curp);
+      formData.append("user", user);
+      formData.append("request_status", "APPROVED");
 
-      console.log(formData)
+      console.log(formData);
 
       try {
         const response = await axios.put(baseURL + "sellers/", formData, {
@@ -69,13 +68,13 @@ export const useSellerStore = defineStore("seller", {
     },
     async rejectedSeller(id, rfc, curp, user) {
       const formData = new FormData();
-      formData.append('id', id);
-      formData.append('rfc', rfc);
-      formData.append('curp', curp);
-      formData.append('user', user);
-      formData.append('request_status', 'REJECTED');
+      formData.append("id", id);
+      formData.append("rfc", rfc);
+      formData.append("curp", curp);
+      formData.append("user", user);
+      formData.append("request_status", "REJECTED");
 
-      console.log(formData)
+      console.log(formData);
 
       try {
         const response = await axios.put(baseURL + "sellers/", formData, {
@@ -100,21 +99,17 @@ export const useSellerStore = defineStore("seller", {
           limit: itemsPerPage,
         },
       };
-      console.log(params)
+      console.log(params);
       const url = baseURL + "sellers/find-all";
-      console.log(url)
+      console.log(url);
       try {
-        const response = await axios.post(
-          url,
-          params,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log("Response", response.data.data)
+        const response = await axios.post(url, params, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("Response", response.data.data);
         this.activeSellers = response.data.data;
       } catch (error) {
         throw error;
@@ -125,17 +120,33 @@ export const useSellerStore = defineStore("seller", {
         id: id,
       };
       try {
-        const response = await axios.put(baseURL + "sellers/change-status", params, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.put(
+          baseURL + "sellers/change-status",
+          params,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         console.log("response", response);
       } catch (error) {
         throw error;
-
       }
-    }
-  }
+    },
+    async requestSeller(seller) {
+      try {
+        const response = await axios.post(baseURL + "sellers/", seller, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return response.data;
+      } catch (error) {
+        throw error.response.data.message;
+      }
+    },
+  },
 });

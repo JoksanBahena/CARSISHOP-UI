@@ -124,7 +124,7 @@ const routes = [
     name: "Profile",
     redirect: { name: "ProfileSummary" },
     component: () => import("@/views/profile/ProfileView.vue"),
-    // meta: { requiresAuth: true },
+    meta: { requiresAuth: true },
     children: [
       {
         path: "summary",
@@ -170,36 +170,43 @@ const routes = [
         path: "sales",
         name: "Sales",
         component: () => import("@/views/seller/SellerView.vue"),
+        meta: { requiresAuth: true },
         children: [
           {
             path: "",
             name: "SellerSales",
             component: () => import("@/views/seller/SellerSalesView.vue"),
+            meta: { roles: ["CUSTOMER"] },
           },
           {
             path: "request",
             name: "SellerRequest",
             component: () => import("@/views/seller/SellerRequestView.vue"),
+            meta: { roles: ["CUSTOMER"] },
           },
           {
             path: "summary",
             name: "SellerResumen",
             component: () => import("@/views/seller/SellerSummaryView.vue"),
+            meta: { roles: ["SELLER"] },
           },
           {
             path: "my-sales",
             name: "SellerMySales",
             component: () => import("@/views/seller/SellerSalesTableView.vue"),
+            meta: { roles: ["SELLER"] },
           },
           {
             path: "my-products",
             name: "SellerProducts",
             component: () => import("@/views/seller/SellerProductsTableView.vue"),
+            meta: { roles: ["SELLER"] },
           },
           {
             path: "my-products/add",
             name: "SellerAddProduct",
             component: () => import("@/views/seller/SellerAddProductView.vue"),
+            meta: { roles: ["SELLER"] },
           }
         ],
       },
@@ -244,7 +251,6 @@ router.beforeEach((to, from, next) => {
   ) {
     next({ name: "Home" });
   } else {
-    // console.log("enrtra aqui");
     next();
   }
 });
