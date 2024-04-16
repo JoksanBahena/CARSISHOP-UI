@@ -1,6 +1,6 @@
 <template>
   <default-layout>
-    <subcategories-navbar-component />
+    <!-- <subcategories-navbar-component /> -->
     <breadcrumbs-component :items="items" />
     <v-container>
       <p class="text-h4 font-weight-medium mb-2">
@@ -8,24 +8,23 @@
       </p>
 
       <!-- <filter-products-component /> -->
-
-      <div
-        class="d-flex flex-wrap justify-center justify-lg-start justify-md-start mb-16"
-      >
+      <v-row>
         <template v-if="clothesByCategory?.length > 0">
-          <v-slide-group v-model="model" class="my-4" show-arrows>
-            <v-slide-group-item
-              v-for="(clothe, index) in clothesByCategory"
-              :key="index"
-            >
-              <product-card-component :item="clothe" />
-            </v-slide-group-item>
-          </v-slide-group>
+          <v-col
+            cols="12"
+            sm="6"
+            md="4"
+            lg="3"
+            v-for="(clothe, index) in clothesByCategory"
+            :key="index"
+          >
+            <product-card-component :item="clothe" />
+          </v-col>
         </template>
         <template v-else>
           <p>No hay productos en esta categoría.</p>
         </template>
-      </div>
+      </v-row>
     </v-container>
   </default-layout>
 </template>
@@ -46,10 +45,10 @@ const { findAllClothesByCategory } = useClotheStore();
 
 const clothesByCategory = ref([]);
 const model = ref(0);
+const category = params.category;
 
 onMounted(async () => {
   try {
-    const category = params.category;
     await findAllClothesByCategory(category);
 
     clothesByCategory.value = useClotheStore().clothesByCategory;
@@ -59,7 +58,6 @@ onMounted(async () => {
   }
 });
 
-// Observa cambios en la ruta
 watch(
   () => route.params.category,
   async (newCategory, oldCategory) => {
@@ -92,17 +90,10 @@ const items = [
     to: { name: "Home" },
   },
   {
-    title: props.category,
+    title: category,
     to: {
       name: "CategorizedProducts",
-      params: { category: props.category, subcategory: "todo" },
-    },
-  },
-  {
-    title: props.subcategory,
-    to: {
-      name: "CategorizedProducts",
-      params: { category: props.category, subcategory: "subcategory" },
+      params: { category: category },
     },
   },
 ];
