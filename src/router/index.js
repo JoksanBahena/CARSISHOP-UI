@@ -43,13 +43,13 @@ const routes = [
     path: "/cart",
     name: "Cart",
     component: () => import("@/views/cart/CartView.vue"),
-    meta: { requiresAuth: true, roles: ["CUSTOMER"] },
+    meta: { requiresAuth: true, roles: ["CUSTOMER", "SELLER"] },
   },
   {
     path: "/cart/payment",
     name: "Payment",
     component: () => import("@/views/cart/PaymentView.vue"),
-    meta: { requiresAuth: true, roles: ["CUSTOMER"] },
+    meta: { requiresAuth: true, roles: ["CUSTOMER", "SELLER"] },
   },
   {
     path: "/category/:category/",

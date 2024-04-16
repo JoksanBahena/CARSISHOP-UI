@@ -1,5 +1,67 @@
 <template>
   <default-layout>
+    <breadcrumbs-component :items="items" />
+    <v-container>
+      <p class="text-h4 font-weight-medium mb-2">Carrito</p>
+      <v-row>
+        <v-col cols="12" lg="9" md="9">
+          <seller-card-component cart>
+            <product-list-cart-component />
+            <product-list-cart-component />
+          </seller-card-component>
+
+          <seller-card-component cart>
+            <product-list-cart-component />
+            <product-list-cart-component />
+          </seller-card-component>
+        </v-col>
+        <v-col cols="12" lg="3" md="3">
+          <v-card variant="flat">
+            <v-card-title>Resumen de compra</v-card-title>
+            <v-card-item>
+              <p>Total ({{ totalItems }} productos): ${{ totalPrice }} MXN</p>
+              <v-divider class="my-3" />
+              <v-btn
+                class="text-none"
+                :color="colors.primary_dark"
+                variant="flat"
+                block
+              >
+                Continuar compra
+              </v-btn>
+            </v-card-item>
+          </v-card>
+        </v-col>
+      </v-row>
+
+      <product-list-component title="También te puede interesar" />
+    </v-container>
+  </default-layout>
+</template>
+<script setup>
+import DefaultLayout from "@/layouts/user/DefaultLayout.vue";
+import Colors from "@/utils/Colors.js";
+
+const colors = {
+  primary: Colors.cs_primary,
+  primary_dark: Colors.cs_primary_dark,
+  white: Colors.cs_white,
+  secondary: Colors.cs_secondary,
+};
+
+const items = [
+  {
+    title: "Inicio",
+    to: { name: "Home" },
+  },
+  {
+    title: "Carrito",
+  },
+];
+</script>
+
+<!-- <template>
+  <default-layout>
     <v-breadcrumbs :items="['Inicio', 'Carrito']" />
     <v-container>
       <v-row>
@@ -149,4 +211,4 @@ const colors = {
   secondary: Colors.cs_secondary,
 };
 </script>
-<style lang=""></style>
+<style lang=""></style> -->

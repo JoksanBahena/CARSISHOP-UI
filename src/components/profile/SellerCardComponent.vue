@@ -5,7 +5,7 @@
         <v-card-title>{{ title }}</v-card-title>
         <v-spacer />
         <p
-          v-if="!details"
+          v-if="!details && !cart"
           class="text-subtitle-1"
           :style="{ color: colors.gray }"
         >
@@ -37,6 +37,10 @@ const props = defineProps({
     default: "01/01/2001",
   },
   details: {
+    type: Boolean,
+    default: false,
+  },
+  cart: {
     type: Boolean,
     default: false,
   },
