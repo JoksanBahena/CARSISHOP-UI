@@ -12,16 +12,9 @@
                 <div class="text-subtitle-1 font-weight-medium">
                   Nombre en la tarjeta
                 </div>
-                <v-text-field
-                  v-model="state.owner"
-                  density="compact"
-                  placeholder="Nombre en la tarjeta"
-                  prepend-inner-icon="mdi-account-outline"
-                  variant="outlined"
-                  @blur="v$.owner.$touch"
-                  @input="v$.owner.$touch"
-                  :error-messages="v$.owner.$errors.map((e) => e.$message)"
-                />
+                <v-text-field v-model="state.owner" density="compact" placeholder="Nombre en la tarjeta"
+                  prepend-inner-icon="mdi-account-outline" variant="outlined" @blur="v$.owner.$touch"
+                  @input="v$.owner.$touch" :error-messages="v$.owner.$errors.map((e) => e.$message)" />
               </div>
             </v-col>
             <v-col cols="12" lg="9">
@@ -29,19 +22,10 @@
                 <div class="text-subtitle-1 font-weight-medium">
                   Numero de tarjeta
                 </div>
-                <v-text-field
-                  v-model="state.number"
-                  density="compact"
-                  placeholder="Numero de tarjeta"
-                  prepend-inner-icon="mdi-credit-card-outline"
-                  variant="outlined"
-                  :counter="16"
-                  type="number"
-                  hide-spin-buttons
-                  @blur="v$.number.$touch"
-                  @input="v$.number.$touch"
-                  :error-messages="v$.number.$errors.map((e) => e.$message)"
-                />
+                <v-text-field v-model="state.number" density="compact" placeholder="Numero de tarjeta"
+                  prepend-inner-icon="mdi-credit-card-outline" variant="outlined" :counter="16" type="number"
+                  hide-spin-buttons @blur="v$.number.$touch" @input="v$.number.$touch"
+                  :error-messages="v$.number.$errors.map((e) => e.$message)" />
               </div>
             </v-col>
           </v-row>
@@ -51,19 +35,10 @@
                 <div class="text-subtitle-1 font-weight-medium">
                   Mes de vencimiento
                 </div>
-                <v-select
-                  v-model="state.expiration_month"
-                  density="compact"
-                  placeholder="Mes de vencimiento"
-                  prepend-inner-icon="mdi-calendar-month-outline"
-                  variant="outlined"
-                  :items="months"
-                  @blur="v$.expiration_month.$touch"
-                  @input="v$.expiration_month.$touch"
-                  :error-messages="
-                    v$.expiration_month.$errors.map((e) => e.$message)
-                  "
-                />
+                <v-select v-model="state.expiration_month" density="compact" placeholder="Mes de vencimiento"
+                  prepend-inner-icon="mdi-calendar-month-outline" variant="outlined" :items="months"
+                  @blur="v$.expiration_month.$touch" @input="v$.expiration_month.$touch" :error-messages="v$.expiration_month.$errors.map((e) => e.$message)
+                  " />
               </div>
             </v-col>
             <v-col cols="6" lg="3">
@@ -71,66 +46,33 @@
                 <div class="text-subtitle-1 font-weight-medium">
                   Año de vencimiento
                 </div>
-                <v-select
-                  v-model="state.expiration_year"
-                  density="compact"
-                  placeholder="Año de vencimiento"
-                  prepend-inner-icon="mdi-calendar-range-outline"
-                  variant="outlined"
-                  :items="years"
-                  @blur="v$.expiration_year.$touch"
-                  @input="v$.expiration_year.$touch"
-                  :error-messages="
-                    v$.expiration_year.$errors.map((e) => e.$message)
-                  "
-                />
+                <v-select v-model="state.expiration_year" density="compact" placeholder="Año de vencimiento"
+                  prepend-inner-icon="mdi-calendar-range-outline" variant="outlined" :items="years"
+                  @blur="v$.expiration_year.$touch" @input="v$.expiration_year.$touch" :error-messages="v$.expiration_year.$errors.map((e) => e.$message)
+                  " />
               </div>
             </v-col>
             <v-col cols="12" lg="3">
               <div>
                 <div class="text-subtitle-1 font-weight-medium">CCV</div>
-                <v-text-field
-                  v-model="state.cvv"
-                  density="compact"
-                  placeholder="CCV"
-                  prepend-inner-icon="mdi-lock-outline"
-                  variant="outlined"
-                  :counter="3"
-                  :type="visible ? 'text' : 'password'"
-                  hide-spin-buttons
-                  :append-inner-icon="
-                    visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
-                  "
-                  @click:append-inner="visible = !visible"
-                  @blur="v$.cvv.$touch"
-                  @input="v$.cvv.$touch"
-                  :error-messages="v$.cvv.$errors.map((e) => e.$message)"
-                />
+                <v-text-field v-model="state.cvv" density="compact" placeholder="CCV"
+                  prepend-inner-icon="mdi-lock-outline" variant="outlined" :counter="3"
+                  :type="visible ? 'text' : 'password'" hide-spin-buttons :append-inner-icon="visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
+                  " @click:append-inner="visible = !visible" @blur="v$.cvv.$touch" @input="v$.cvv.$touch"
+                  :error-messages="v$.cvv.$errors.map((e) => e.$message)" />
               </div>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="6" lg="9">
-              <v-btn
-                variant="flat"
-                class="text-none"
-                :color="colors.primary"
-                block
-                append-icon="mdi-close-circle-outline"
-                @click="clear()"
-              >
+              <v-btn variant="flat" class="text-none" :color="colors.primary" block
+                append-icon="mdi-close-circle-outline" @click="clear()">
                 Cancelar
               </v-btn>
             </v-col>
             <v-col cols="6" lg="9">
-              <v-btn
-                variant="flat"
-                class="text-none"
-                :color="colors.primary_dark"
-                block
-                append-icon="mdi-check-circle-outline"
-                @click="submitForm()"
-              >
+              <v-btn variant="flat" class="text-none" :color="colors.primary_dark" block
+                append-icon="mdi-check-circle-outline" @click="submitForm()">
                 Guardar
               </v-btn>
             </v-col>
@@ -154,6 +96,9 @@ import {
   maxLength,
   helpers,
 } from "@vuelidate/validators";
+import { useProfileStore } from "@/store/ProfileStore";
+import { Toast } from "@/utils/Alerts";
+import { encryptAES } from "@/utils/Crypto";
 
 const { withMessage, regex } = helpers;
 
@@ -164,6 +109,8 @@ const colors = {
 };
 
 const visible = ref(false);
+const loading = ref(false);
+const { registerCard } = useProfileStore();
 
 const months = Array.from({ length: 12 }, (_, i) => i + 1);
 
@@ -228,13 +175,41 @@ const rules = {
 
 const v$ = useVuelidate(rules, state);
 
-const submitForm = () => {
+const submitForm = async () => {
   v$.value.$touch();
   if (v$.value.$error) return;
 
   state.expiration_date = `${state.expiration_month}/${state.expiration_year}`;
 
-  alert(JSON.stringify(state));
+  const params = {
+    number: encryptAES(state.number),
+    expirationDate: state.expiration_date,
+    cvv: encryptAES(state.cvv),
+    owner: encryptAES(state.owner),
+  }
+
+  try {
+    loading.value = true;
+    const response = await registerCard(params);
+    if (response.status === 200) {
+      Toast.fire({
+        icon: "success",
+        title: "Tarjeta registrada correctamente",
+      });
+      clear();
+      loading.value = false;
+      window.history.back();
+    }
+  } catch (error) {
+    console.log(error);
+    Toast.fire({
+      icon: "error",
+      title: "Error al registrar la tarjeta",
+    });
+    loading.value = false;
+  } finally {
+    loading.value = false;
+  }
 };
 
 const image_url = ref("");

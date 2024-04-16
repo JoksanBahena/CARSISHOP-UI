@@ -136,7 +136,7 @@ export const useProfileStore = defineStore("profile", {
       const params = {
         id: id,
       };
-      
+
       try {
         const response = await axios.post(
           baseUrl + "address/delete",
@@ -171,6 +171,48 @@ export const useProfileStore = defineStore("profile", {
         console.log("Error registering address:", error);
         throw new Error("Error registering address");
       }
-    }
+    },
+    async fetchCards() {
+      try {
+        const response = await axios.get(baseUrl + "card/get", {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+        return response.data.data;
+      } catch (error) {
+        throw new Error("Error fetching cards");
+      }
+    },
+    async registerCard(card) {
+      try {
+        const response = await axios.post(baseUrl + "card/register", card, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+        return response.data;
+      } catch (error) {
+        throw new Error("Error registering card");
+      }
+    },
+    async deleteCard(id) {
+      const params = {
+        id: id,
+      };
+
+      try {
+        const response = await axios.post(baseUrl + "card/delete", params, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+        return response.data;
+      } catch (error) {
+        throw new Error("Error deleting card");
+      }
+    },
   },
 });

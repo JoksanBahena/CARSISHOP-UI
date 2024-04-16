@@ -109,7 +109,6 @@ const addressDelete = async (id) => {
       getAddresses();
     }
   } catch (error) {
-    console.log(error);
     Toast.fire({
       icon: "error",
       title: "Error al eliminar la dirección",
