@@ -208,6 +208,11 @@
             multiple
             chips
             @change="onFileChange"
+            :hint="
+              state.image_urls.length > 4
+                ? 'Máximo 5 imágenes!'
+                : ''
+            "
             @blur="v$.image_urls.$touch"
             @input="v$.image_urls.$touch"
             :error-messages="v$.image_urls.$errors.map((e) => e.$message)"
@@ -215,9 +220,8 @@
             <template v-slot:selection="{ fileNames }">
               <template v-for="(fileName, index) in fileNames" :key="fileName">
                 <v-chip
-                  v-if="index < max_images"
                   class="me-2"
-                  color="deep-purple-accent-4"
+                  :color="colors.primary_dark"
                   size="small"
                   label
                 >
@@ -322,7 +326,7 @@ import { encryptAES } from "@/utils/Crypto";
 import { Toast } from "@/utils/Alerts.js";
 import router from "@/router";
 
-const { createClothe } = useClotheStore();
+const { createClothe, imagesClothe } = useClotheStore();
 const { findAllCategories } = useCategoryStore();
 const { findAllsubcategories } = useSubcategoryStore();
 const { profile } = useProfileStore();
@@ -447,7 +451,7 @@ const rules = {
     minLength: withMessage("Mínimo 2 imágenes del producto", minLength(2)),
     maxLength: withMessage(
       `Máximo ${max_images} imágenes del producto`,
-      maxLength(4)
+      maxLength(5)
     ),
   },
 };
@@ -482,22 +486,34 @@ const submitForm = async () => {
   state.subcategory = { id: state.subcategory };
   state.sellerEmail = encryptAES(state.sellerEmail);
 
-  console.log(state);
-
   try {
     loading.value = true;
     const response = await createClothe(state);
 
     if (response.status === 200) {
-      clear();
-      Toast.fire({
-        icon: "success",
-        title: "Producto creado exitosamente",
-      });
-      router.push({ name: "SellerMySales" });
-    }
+      const payload = {
+        clothesId: response.data.id,
+      };
 
-    console.log(response);
+      for (let i = 0; i < state.image_urls.length; i++) {
+        (payload[`images[${i}].image`] = state.image_urls.value[i]),
+          (payload[`images[${i}].index`] = i);
+      }
+
+      const images_response = await imagesClothe(payload);
+
+      clear();
+
+      if (images_response.status === 200) {
+        Toast.fire({
+          icon: "success",
+          title: "Producto creado exitosamente",
+        });
+        router.push({ name: "SellerMySales" });
+      } else {
+        Toast("error", "Error al añadir las imágenes del producto");
+      }
+    }
   } catch (err) {
     console.log(err);
   } finally {

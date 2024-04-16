@@ -83,6 +83,21 @@ export const useClotheStore = defineStore("clothe", {
         throw error;
       }
     },
+    async imagesClothe(payload) {
+      console.log(payload);
+      const url = baseURL + "images/addImages";
+      try {
+        const response = await axios.put(url, payload, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    },
     async approveClothe(id) {
       const params = {
         id: id,
