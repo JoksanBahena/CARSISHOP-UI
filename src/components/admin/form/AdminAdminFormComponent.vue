@@ -305,7 +305,6 @@ const submitForm = async () => {
       encryptAES(state.password),
       state.gender
     );
-    console.log("Response", response);
     if (response.error === false) {
       showAlertInDialog(response.message, "success");
     } else {

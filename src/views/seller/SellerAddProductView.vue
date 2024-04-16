@@ -428,8 +428,6 @@ const selected_sizes = ref([]);
 const submitForm = () => {
   v$.value.$touch();
 
-  console.log(v$.value.stock);
-
   if (v$.value.$error) return;
 
   alert(JSON.stringify(state));
