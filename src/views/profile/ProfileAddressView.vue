@@ -3,7 +3,7 @@
 
   <v-container>
     <p class="text-h4 font-weight-medium mb-2">Mis direcciones</p>
-    <v-row v-for="address in addressData" :key="address.id">
+    <v-row v-if="addressData.length > 0" v-for="address in addressData" :key="address.id">
       <address-component
         :id="address.id"
         :user="address.name"
@@ -15,6 +15,13 @@
         :intnumber="address.intnumber"
         :cp="address.cp"
       />
+    </v-row>
+    <v-row v-else>
+      <v-col cols="12">
+        <v-card variant="flat" class="text-center">
+          <v-card-title class="text-h6">No tienes direcciones registradas</v-card-title>
+        </v-card>
+      </v-col>
     </v-row>
     <v-btn
       variant="flat"

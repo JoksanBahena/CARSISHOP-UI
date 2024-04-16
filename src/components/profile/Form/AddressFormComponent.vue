@@ -7,6 +7,24 @@
       <v-card-item>
         <v-form>
           <v-row>
+            <v-col>
+              <div class="text-subtitle-1 font-weight-medium">
+                Nombre de la dirección (Referencia)
+              </div>
+              <v-text-field
+                density="compact"
+                placeholder="Nombre de la dirección"
+                prepend-inner-icon="mdi-map-marker-outline"
+                variant="outlined"
+                type="text"
+                hide-spin-buttons
+                :counter="33"
+                v-model="state.name"
+                @blur="v$.name.$touch"
+                @input="v$.name.$touch"
+                :error-messages="v$.name.$errors.map((e) => e.$message)"
+              />
+            </v-col>
             <v-col cols="12" md="4">
               <div class="text-subtitle-1 font-weight-medium">
                 Codigo Postal
@@ -30,7 +48,7 @@
               <v-select
                 clearable
                 placeholder="Estado"
-                :items="states"
+                :items="statesData"
                 density="compact"
                 variant="outlined"
                 prepend-inner-icon="mdi-map-marker-outline"
@@ -45,9 +63,10 @@
               <v-select
                 clearable
                 placeholder="Estado"
-                :items="towns"
+                :items="getFilteredTowns()"
                 density="compact"
                 variant="outlined"
+                no-data-text="Selecciona un estado"
                 prepend-inner-icon="mdi-map-marker-outline"
                 v-model="state.town"
                 @blur="v$.town.$touch"
@@ -136,6 +155,7 @@
                 block
                 append-icon="mdi-check-circle-outline"
                 @click="submitForm()"
+                :loading="loading"
                 >Guardar</v-btn
               >
             </v-col>
@@ -148,7 +168,7 @@
 
 <script setup>
 import Colors from "@/utils/Colors.js";
-import { reactive } from "vue";
+import { reactive, onMounted, watch, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import {
   required,
@@ -157,14 +177,14 @@ import {
   maxLength,
   helpers,
 } from "@vuelidate/validators";
+import { useStateAndTownStore } from "@/store/StateAndTownStore";
+import { useProfileStore } from "@/store/ProfileStore";
+import { encryptAES } from "@/utils/Crypto";
+
+const { fetchStates } = useStateAndTownStore();
+const { registerAddress } = useProfileStore();
 
 const { withMessage, regex } = helpers;
-
-const user = "Crristofer Soto ventura";
-
-const states = ["Morelos"];
-
-const towns = ["Cuernavaca"];
 
 const colors = {
   primary: Colors.cs_primary,
@@ -173,7 +193,7 @@ const colors = {
 };
 
 const address = {
-  user: user,
+  name: "",
   street: "",
   suburb: "",
   extnumber: "",
@@ -184,6 +204,45 @@ const address = {
 };
 
 const state = reactive({ ...address });
+const statesData = reactive([]);
+const townsData = reactive([]);
+const loading = ref(false);
+
+const fetchStatesData = async () => {
+  try {
+    const response = await fetchStates();
+    response.forEach((stateData) => {
+      statesData.push(stateData.name);
+    });
+    response.forEach((stateData) => {
+      townsData.push(stateData.towns.map((town) => town.name));
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+onMounted(() => {
+  fetchStatesData();
+});
+
+const getFilteredTowns = () => {
+  if (state.state) {
+    const stateIndex = statesData.findIndex(
+      (stateData) => stateData === state.state
+    );
+    return townsData[stateIndex] || [];
+  } else {
+    return [];
+  }
+};
+
+watch(
+  () => state.state,
+  () => {
+    state.town = null;
+  }
+);
 
 const rules = {
   street: {
@@ -245,11 +304,18 @@ const rules = {
       regex(/^\d+$/)
     ),
   },
+  name: {
+    required: withMessage("El nombre de la dirección es requerido", required),
+    maxLength: withMessage(
+      "El nombre de la dirección debe tener menos de 33 carácteres",
+      maxLength(33)
+    ),
+  },
 };
 
 const v$ = useVuelidate(rules, state);
 
-const submitForm = () => {
+const submitForm = async () => {
   v$.value.$touch();
   if (v$.value.$error) return;
 
@@ -260,7 +326,41 @@ const submitForm = () => {
     state.extnumber = "S/N";
   }
 
-  alert(JSON.stringify(state));
+  const address = {
+    name: encryptAES(state.name),
+    state: state.state,
+    town: state.town,
+    cp: encryptAES(state.cp),
+    suburb: encryptAES(state.suburb),
+    street: encryptAES(state.street),
+    intnumber: encryptAES(state.intnumber),
+    extnumber: encryptAES(state.extnumber),
+  };
+  console.log(address);
+
+  loading.value = true;
+
+  try {
+    const response = await registerAddress(address);
+    console.log(response);
+    if (response.status === 200) {
+      Toast.fire({
+        icon: "success",
+        title: "Dirección registrada correctamente",
+      });
+      clear();
+      loading.value = false;
+    }
+  } catch (error) {
+    Toast.fire({
+      icon: "error",
+      title: "Error al registrar la dirección",
+    });
+    loading.value = false;
+    console.error(error);
+  } finally {
+    loading.value = false;
+  }
 };
 
 const clear = () => {
@@ -269,6 +369,8 @@ const clear = () => {
   for (const [key, value] of Object.entries(address)) {
     state[key] = value;
   }
+
+  state.name = "";
   state.street = "";
   state.suburb = "";
   state.extnumber = "";

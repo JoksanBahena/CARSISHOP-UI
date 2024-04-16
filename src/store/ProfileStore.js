@@ -140,6 +140,7 @@ export const useProfileStore = defineStore("profile", {
       };
 
       try {
+        console.log("Deleting address with id:", params);
         const response = await axios.delete(
           baseUrl + "address/delete",
           params,
@@ -152,8 +153,27 @@ export const useProfileStore = defineStore("profile", {
         );
         return response.data;
       } catch (error) {
+        console.log("Error deleting address:", error);
         throw new Error("Error deleting address");
       }
     },
+    async registerAddress(address) {
+      try {
+        const response = await axios.post(
+          baseUrl + "address/register",
+          address,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
+        return response.data;
+      } catch (error) {
+        console.log("Error registering address:", error);
+        throw new Error("Error registering address");
+      }
+    }
   },
 });
