@@ -104,6 +104,7 @@ import { ref } from "vue";
 import Colors from "@/utils/Colors.js";
 import { useSellerStore } from "@/store/SellerStore";
 import Swal from "sweetalert2";
+import { encryptAES } from "@/utils/Crypto";
 
 const { findAllRequestSeller, approveSeller, rejectedSeller } =
   useSellerStore();
@@ -166,7 +167,7 @@ const approveSellerReq = async (id, rfc, curp, user) => {
       cancelButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
-        approveSeller(id, rfc, curp, user);
+        approveSeller(id, encryptAES(rfc), encryptAES(curp), user);
         Swal.fire("Aprobado", "El vendedor ha sido aprobado", "success");
         window.location.reload();
       }
@@ -189,7 +190,7 @@ const rejectedSellerReq = async (id, rfc, curp, user) => {
       cancelButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
-        rejectedSeller(id, rfc, curp, user);
+        rejectedSeller(id, encryptAES(rfc), encryptAES(curp), user);
         Swal.fire("Aprobado", "El vendedor ha sido rechazado", "success");
         window.location.reload();
       }

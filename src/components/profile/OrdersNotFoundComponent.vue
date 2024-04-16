@@ -1,6 +1,6 @@
 <template>
   <v-container class="d-flex align-center justify-start flex-column h-screen">
-    <v-icon class="mdi mdi-cart-outline" size="64" />
+    <v-icon size="64" > {{ icon }} </v-icon>
     <h2 class="text-center mt-4">{{ advise }}</h2>
     <p class="text-center mt-4">{{ recomendation }}</p>
 
@@ -26,6 +26,10 @@ const colors = {
 };
 
 const props = defineProps({
+  icon: {
+    type: String,
+    default: "mdi-cart-outline",
+  },
   advise: {
     type: String,
     default: "Actualmente no cuentas con esa información",

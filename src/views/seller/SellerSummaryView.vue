@@ -13,6 +13,7 @@
         <v-col cols="12" lg="6" md="6">
           <div class="text-subtitle-1 font-weight-medium">CURP</div>
           <v-text-field
+            v-model="profile_info.curp"
             density="compact"
             placeholder="Nombre(s)"
             prepend-inner-icon="mdi-account-outline"
@@ -23,6 +24,7 @@
         <v-col cols="12" lg="6" md="6">
           <div class="text-subtitle-1 font-weight-medium">RFC</div>
           <v-text-field
+            v-model="profile_info.rfc"
             density="compact"
             placeholder="RFC"
             prepend-inner-icon="mdi-account-outline"
@@ -55,6 +57,10 @@
 
 <script setup>
 import ResumenCardComponent from "@/components/profile/ResumenCardComponent.vue";
+import { useProfileStore } from "@/store/ProfileStore.js";
+import { onMounted, ref } from "vue";
+
+const { profile } = useProfileStore();
 
 const items = [
   {
@@ -73,4 +79,14 @@ const items = [
     title: "Resumen",
   },
 ];
+
+const profile_info = ref({
+  curp: "",
+  rfc: "",
+});
+
+onMounted(() => {
+  profile_info.value.curp = profile.seller.curp;
+  profile_info.value.rfc = profile.seller.rfc;
+});
 </script>
