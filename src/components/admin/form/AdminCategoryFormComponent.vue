@@ -49,7 +49,6 @@ import Colors from "@/utils/Colors.js";
 import { ref } from "vue";
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import Swal from "sweetalert2";
 import { required, minLength, maxLength, helpers } from "@vuelidate/validators";
 import { useCategoryStore } from "@/store/CategoryStore";
 const { createCategory } = useCategoryStore();

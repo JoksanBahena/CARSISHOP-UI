@@ -45,7 +45,7 @@
 <script setup>
 import Colors from "@/utils/Colors.js";
 
-import { ref } from "vue";
+import { ref, shallowRef } from "vue";
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import Swal from "sweetalert2";
@@ -59,7 +59,6 @@ import {
 } from "@vuelidate/validators";
 const { createSubcategory } = useSubcategoryStore();
 const { withMessage, regex } = helpers;
-import { shallowRef } from "vue";
 
 const dialog2 = shallowRef(false);
 const colors = {
@@ -81,11 +80,11 @@ const rules = {
       required
     ),
     minLength: withMessage(
-      "El nombre de la subcategoría debe tener al menos 3 carácteres",
+      "El nombre de la subcategoría debe tener al menos 3 caracteres",
       minLength(3)
     ),
     maxLength: withMessage(
-      "El nombre de la subcategoría no debe tener más de 20 carácteres",
+      "El nombre de la subcategoría no debe tener más de 20 caracteres",
       maxLength(20)
     ),
   },
@@ -104,35 +103,20 @@ const submitForm = async () => {
     } else {
       showAlertInDialog(response.message, "error");
     }
+    location.reload();
   } catch (error) {
     console.error("Error al crear la subcategoría", error);
     showAlertInDialog("Error al crear la subcategoría", "error");
+    location.reload();
   } finally {
     clear();
     loading.value = false;
-    location.reload();
   }
 };
 
 const clear = () => {
   state.subcategory = "";
-
   v$.value.$reset();
-
-  for (const [key, value] of Object.entries(subcategory)) {
-    state[key] = value;
-  }
-};
-
-const props = defineProps({
-  dialog: {
-    type: Object,
-    default: null,
-  },
-});
-
-const closeDialogInAnotherComponent = () => {
-  props.dialog.isActive = false;
 };
 
 const showAlertInDialog = (message, type) => {

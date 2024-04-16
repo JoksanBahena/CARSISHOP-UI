@@ -49,6 +49,18 @@
       </v-card>
     </template>
   </v-dialog>
+
+  <v-dialog v-model="dialog2">
+    <v-card>
+      <v-alert
+        v-if="state.alertMessage"
+        :value="true"
+        :type="state.alertType"
+        variant="tonal"
+        >{{ state.alertMessage }}</v-alert
+      >
+    </v-card>
+  </v-dialog>
 </template>
 
 <script setup>
@@ -58,6 +70,9 @@ import { useVuelidate } from "@vuelidate/core";
 import Swal from "sweetalert2";
 import { required, minLength, maxLength, helpers } from "@vuelidate/validators";
 import { useCategoryStore } from "@/store/CategoryStore";
+import { shallowRef } from "vue";
+
+const dialog2 = shallowRef(false);
 
 const { updateCategory } = useCategoryStore();
 const { withMessage } = helpers;
@@ -127,6 +142,7 @@ const submitForm = async () => {
         showConfirmButton: true,
       });
     }
+    location.reload();
   } catch (error) {
     console.error("Error al actualizar la categoría", error);
     Swal.fire({
@@ -135,10 +151,10 @@ const submitForm = async () => {
       text: "Hubo un problema al procesar tu solicitud. Por favor, inténtalo de nuevo más tarde.",
       timer: 1500,
     });
+    location.reload();
   } finally {
     clear();
     loading.value = false;
-    location.reload();
   }
 };
 
