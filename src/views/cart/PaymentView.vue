@@ -26,7 +26,6 @@
 </template>
 <script setup>
 import DefaultLayout from "@/layouts/user/DefaultLayout.vue";
-import ItemProduct from "@/components/common/ItemProduct.vue";
 import FeaturedProductsComponent from "@/components/common/FeaturedProductsComponent.vue";
 import PaymentMethodComponent from "@/components/cart/PaymentMethodComponent.vue"
 import AdressInfoComponent from "@/components/cart/AddressInfoComponent.vue"

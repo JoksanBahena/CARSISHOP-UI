@@ -329,8 +329,8 @@ const submitForm = async () => {
 
   const params = {
     name: encryptAES(state.name),
-    state: encryptAES(state.state),
-    town: encryptAES(state.town),
+    state: state.state,
+    town: state.town,
     cp: encryptAES(state.cp),
     suburb: encryptAES(state.suburb),
     street: encryptAES(state.street),
