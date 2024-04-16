@@ -144,13 +144,24 @@
         Guardar
       </v-btn>
     </v-form>
+    <v-dialog v-model="dialog2">
+      <v-card>
+        <v-alert
+          v-if="state.alertMessage"
+          :value="true"
+          :type="state.alertType"
+          variant="tonal"
+          >{{ state.alertMessage }}</v-alert
+        >
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script setup>
 import Colors from "@/utils/Colors.js";
 
-import { ref } from "vue";
+import { ref, shallowRef } from "vue";
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import Swal from "sweetalert2";
@@ -162,9 +173,13 @@ import {
   maxLength,
   helpers,
 } from "@vuelidate/validators";
+import { encryptAES } from "@/utils/Crypto";
+
 const { withMessage, regex } = helpers;
 
 const { createAdmin } = useProfileStore();
+const dialog2 = shallowRef(false);
+
 const colors = {
   primary: Colors.cs_primary,
   primary_dark: Colors.cs_primary_dark,
@@ -282,43 +297,27 @@ const submitForm = async () => {
   if (v$.value.$error) return;
   try {
     const response = await createAdmin(
-      state.name,
-      state.surname,
-      state.username,
-      state.phone,
-      state.birthdate,
-      state.password,
+      encryptAES(state.name),
+      encryptAES(state.surname),
+      encryptAES(state.username),
+      encryptAES(state.phone),
+      encryptAES(state.birthdate),
+      encryptAES(state.password),
       state.gender
     );
     console.log("Response", response);
     if (response.error === false) {
-      console.log("Entra");
-      console.log("Mensaje", response.message);
-      // alert(response.message);
-      Swal.fire({
-        icon: "success",
-        title: response.message,
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      showAlertInDialog(response.message, "success");
     } else {
-      Swal.fire({
-        icon: "error",
-        title: response.message,
-        showConfirmButton: true,
-      });
+      showAlertInDialog(response.message, "error");
     }
+    location.reload();
   } catch (error) {
     console.error("Error al crear el admin", error);
-    Swal.fire({
-      icon: "error",
-      title: "Error al crear el admin",
-      text: "Hubo un problema al procesar tu solicitud. Por favor, inténtalo de nuevo más tarde.",
-      timer: 1500,
-    });
+    showAlertInDialog("Error al crear el admin", "error");
+    location.reload();
   } finally {
     clear();
-    location.reload();
   }
 };
 const clear = () => {
@@ -338,7 +337,18 @@ const props = defineProps({
   },
 });
 
-const closeDialogInAnotherComponent = () => {
-  props.dialog.isActive = false;
+const showAlertInDialog = (message, type) => {
+  state.alertMessage = message;
+  state.alertType = type;
+  dialog2.value = true;
+
+  setTimeout(() => {
+    hideAlert();
+  }, 4500);
+};
+
+const hideAlert = () => {
+  state.alertMessage = "";
+  state.alertType = "";
 };
 </script>
