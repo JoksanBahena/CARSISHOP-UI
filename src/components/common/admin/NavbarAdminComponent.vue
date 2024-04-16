@@ -14,14 +14,13 @@
         <v-list>
           <v-list-item v-for="category in categories" :key="category.index">
             <v-list-item-title>
-              <a
+              <router-link
                 class="text-decoration-none"
                 :style="{ color: toolbar.primary_dark }"
-                rel="noopener noreferrer"
-                :href="category.to"
+                :to="category.to"
               >
                 {{ category.name }}
-              </a>
+              </router-link>
             </v-list-item-title>
           </v-list-item>
         </v-list>
@@ -34,7 +33,7 @@
           :color="toolbar.primary_dark"
           class="text-none"
           variant="plain"
-          :href="category.to"
+          :to="category.to"
         >
           {{ category.name }}
         </v-btn>
@@ -80,27 +79,27 @@ const toolbar = {
 const categories = ref([
   {
     name: "Vendedores",
-    to: "/admin/seller",
+    to: { name: "AdminUsers" },
   },
   {
     name: "Productos",
-    to: "/admin/products",
+    to: { name: "AdminProducts" },
   },
   {
     name: "Ventas",
-    to: "/admin/salles",
+    to: { name: "AdminSalles" },
   },
   {
     name: "Administradores",
-    to: "/admin/admin",
+    to: { name: "AdminAdmin" },
   },
   {
-    name: "Cateogrias ",
-    to: "/admin/categories",
+    name: "Categorías",
+    to: { name: "AdminCategories" },
   },
   {
     name: "Subcategorias",
-    to: "/admin/subcategories",
+    to: { name: "AdminSubCategories" },
   },
 ]);
 

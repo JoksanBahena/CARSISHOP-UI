@@ -14,20 +14,6 @@
             v-model="isEditModalOpen"
             :selectedCategory="selectedCategory"
           />
-
-          <!-- <v-text-field
-            v-model="search"
-            label="Buscar venta"
-            prepend-inner-icon="mdi-magnify"
-            variant="outlined"
-            hide-details
-            single-line
-            density="compact"
-            class="mx-1 my-4"
-          />
-          <p class="text-subtitle-1 ml-auto my-auto mx-1">
-            {{ totalItems }} Resultados obtenidos
-          </p> -->
         </div>
       </template>
 
@@ -84,7 +70,7 @@
                 {{ item.status ? "Desactivar" : "Activar" }}
               </v-tooltip>
               <v-icon>
-                {{ item.status ? "mdi-delete" : "mdi-delete-restore" }}
+                {{ item.status ? "mdi-delete-outline" : "mdi-delete-restore" }}
               </v-icon>
             </v-btn>
           </v-row>

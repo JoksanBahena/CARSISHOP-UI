@@ -1,104 +1,72 @@
 <template>
-  <v-container>
-    <v-card variant="flat">
-      <v-divider></v-divider>
-      <v-data-table-server
-        :headers="headers"
-        :items="serverItems"
-        :items-length="totalItems"
-        :search="search"
-        no-data-text="No se encontraron vendedores"
-        :loading="loading"
-        item-value="name"
-        @update:options="loadItems"
-      >
-        <template v-slot:item.id="{ index }">
-          {{ index + 1 }}
-        </template>
+  <v-card variant="flat">
+    <v-divider />
+    <v-data-table-server
+      :headers="headers"
+      :items="serverItems"
+      :items-length="totalItems"
+      :search="search"
+      no-data-text="No se encontraron vendedores"
+      :loading="loading"
+      item-value="name"
+      @update:options="loadItems"
+    >
+      <template v-slot:item.id="{ index }">
+        {{ index + 1 }}
+      </template>
 
-        <template v-slot:item.user="{ item }">
-          <v-list-item :color="colors.white">
-            <v-avatar v-if="item.user.profilepic" :size="40">
-              <img :src="item.user.profilepic" alt="Avatar" />
-            </v-avatar>
-            <v-list-item-content>
-              <v-list-item-title>{{ item.user.name }}</v-list-item-title>
-              <v-list-item-subtitle>{{
-                item.user.username
-              }}</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </template>
+      <template v-slot:item.user="{ item }">
+        <user-card-list-component :user="item.user" />
+      </template>
 
-        <template v-slot:item.img="{ item }">
-          <v-card class="my-2" elevation="2" rounded>
-            <v-img :src="item.image" height="64" cover></v-img>
-          </v-card>
-        </template>
-        <template v-slot:item.actions="{ item }">
-          <v-row
-            cols="12"
-            xl="12"
-            lg="8"
-            md="6"
-            justify="center"
-            class="align-center my-1"
+      <template v-slot:item.img="{ item }">
+        <v-dialog max-width="500">
+          <template v-slot:activator="{ props: activatorProps }">
+            <v-card v-bind="activatorProps" class="my-4">
+              <v-img :src="item.image" height="64" />
+            </v-card>
+          </template>
+
+          <template v-slot:default="{ isActive }">
+            <v-card title="Identificación" max-width="550">
+              <v-card-text>
+                <v-img :src="item.image" height="450" />
+              </v-card-text>
+            </v-card>
+          </template>
+        </v-dialog>
+      </template>
+
+      <template v-slot:item.actions="{ item }">
+        <v-row class="my-4" justify="center">
+          <v-btn
+            class="ma-1 text-none"
+            :color="colors.primary_dark"
+            variant="outlined"
+            @click="
+              approveSellerReq(item.id, item.rfc, item.curp, item.user.id)
+            "
           >
-            <v-col cols="12" xl="12" lg="8" md="6">
-              <!-- <v-btn variant="outlined" :style="{ borderColor: colors.primary }">
-              <v-icon
-                icon="mdi-eye"
-                :color="colors.primary_dark"
-                class="text-h4"
-              />
-            </v-btn> -->
-              <v-btn
-                class="my-1 mx-1"
-                variant="outlined"
-                :style="{ borderColor: colors.primary }"
-                @click="
-                  approveSellerReq(item.id, item.rfc, item.curp, item.user.id)
-                "
-              >
-                <v-tooltip activator="parent" location="top">
-                  Aprobar
-                </v-tooltip>
-                <v-icon
-                  icon="mdi-check"
-                  :color="colors.primary_dark"
-                  class="text-h4"
-                />
-              </v-btn>
-
-              <v-btn
-                variant="outlined"
-                :style="{ borderColor: colors.primary }"
-              >
-                <v-tooltip activator="parent" location="top">
-                  Rechazar
-                </v-tooltip>
-
-                <v-icon
-                  icon="mdi-close"
-                  :color="colors.primary_dark"
-                  class="text-h4"
-                  @click="
-                    rejectedSellerReq(
-                      item.id,
-                      item.rfc,
-                      item.curp,
-                      item.user.id
-                    )
-                  "
-                />
-              </v-btn>
-            </v-col>
-          </v-row>
-        </template>
-      </v-data-table-server>
-    </v-card>
-  </v-container>
+            <v-tooltip activator="parent" location="top"> Aprobar </v-tooltip>
+            <v-icon>mdi-check</v-icon>
+          </v-btn>
+          <v-btn
+            class="ma-1 text-none"
+            :color="colors.red"
+            variant="outlined"
+            @click="
+              rejectedSellerReq(item.id, item.rfc, item.curp, item.user.id)
+            "
+          >
+            <v-tooltip activator="parent" location="top"> Rechazar </v-tooltip>
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-row>
+      </template>
+    </v-data-table-server>
+  </v-card>
 </template>
+
 <script setup>
 import { ref } from "vue";
 import Colors from "@/utils/Colors.js";
@@ -119,6 +87,7 @@ const colors = {
   primary: Colors.cs_primary,
   primary_dark: Colors.cs_primary_dark,
   white: Colors.cs_white,
+  red: Colors.cs_red,
 };
 const headers = ref([
   { title: "#", key: "id", align: "start" },

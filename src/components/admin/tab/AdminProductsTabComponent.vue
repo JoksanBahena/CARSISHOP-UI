@@ -1,4 +1,3 @@
-import Colors from '@/utils/Colors.js';
 <template>
   <v-container class="">
     <p class="text-h4 font-weight-medium mb-2">PRODUCTOS</p>

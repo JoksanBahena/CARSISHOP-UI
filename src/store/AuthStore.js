@@ -1,8 +1,8 @@
-import {defineStore} from "pinia";
+import { defineStore } from "pinia";
 import axios from "axios";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 const route = useRouter();
@@ -22,7 +22,7 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     async verifyTokenExp() {
       const currentTimeInSeconds = Math.floor(Date.now() / 1000);
-      if(this.tokenExpiration && this.tokenExpiration < currentTimeInSeconds) {
+      if (this.tokenExpiration && this.tokenExpiration < currentTimeInSeconds) {
         Swal.fire({
           icon: "error",
           title: "La sesión ha expirado",
@@ -32,7 +32,7 @@ export const useAuthStore = defineStore("auth", {
           allowOutsideClick: false,
         }).then(() => {
           this.logout();
-          route.push("/login")
+          route.push("/login");
         });
       }
     },
@@ -87,7 +87,7 @@ export const useAuthStore = defineStore("auth", {
         const response = await axios.post(baseURL + "auth/resend-confirm", {
           email,
         });
-        console.log(response)
+        console.log(response);
         return response.data;
       } catch (error) {
         throw error.response;

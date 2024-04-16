@@ -78,7 +78,7 @@
                 {{ item.status ? "Desactivar" : "Activar" }}
               </v-tooltip>
               <v-icon>
-                {{ item.status ? "mdi-delete" : "mdi-delete-restore" }}
+                {{ item.status ? "mdi-delete-outline" : "mdi-delete-restore" }}
               </v-icon>
             </v-btn>
           </v-row>

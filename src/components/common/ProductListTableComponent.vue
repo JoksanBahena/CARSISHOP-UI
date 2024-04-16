@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex align-center my-3">
-    <v-img :src="product.img" width="80" />
+    <!-- <v-img :src="product.image" width="80" /> -->
     <v-list min-width="120">
       <v-list-item
         :title="product.name"
@@ -19,7 +19,7 @@ defineProps({
     default: {
       name: "Tu producto",
       description: "Descripción en proceso",
-      img: "/src/assets/imgs/item.webp",
+      image: "/src/assets/imgs/item.webp",
     },
   },
 });

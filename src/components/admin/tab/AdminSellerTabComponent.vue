@@ -1,6 +1,5 @@
-import Colors from '@/utils/Colors.js';
 <template>
-  <v-container class="">
+  <v-container>
     <p class="text-h4 font-weight-medium mb-2">VENDEDORES</p>
 
     <v-tabs v-model="tab" :color="colors.primary_dark">
