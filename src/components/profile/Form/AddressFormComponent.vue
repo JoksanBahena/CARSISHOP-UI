@@ -11,153 +11,69 @@
               <div class="text-subtitle-1 font-weight-medium">
                 Nombre de la dirección (Referencia)
               </div>
-              <v-text-field
-                density="compact"
-                placeholder="Nombre de la dirección"
-                prepend-inner-icon="mdi-map-marker-outline"
-                variant="outlined"
-                type="text"
-                hide-spin-buttons
-                :counter="33"
-                v-model="state.name"
-                @blur="v$.name.$touch"
-                @input="v$.name.$touch"
-                :error-messages="v$.name.$errors.map((e) => e.$message)"
-              />
+              <v-text-field density="compact" placeholder="Nombre de la dirección"
+                prepend-inner-icon="mdi-map-marker-outline" variant="outlined" type="text" hide-spin-buttons
+                :counter="33" v-model="state.name" @blur="v$.name.$touch" @input="v$.name.$touch"
+                :error-messages="v$.name.$errors.map((e) => e.$message)" />
             </v-col>
             <v-col cols="12" md="4">
               <div class="text-subtitle-1 font-weight-medium">
                 Codigo Postal
               </div>
-              <v-text-field
-                density="compact"
-                placeholder="Codigo Postal"
-                prepend-inner-icon="mdi-pound"
-                variant="outlined"
-                type="number"
-                hide-spin-buttons
-                :counter="5"
-                v-model="state.cp"
-                @blur="v$.cp.$touch"
-                @input="v$.cp.$touch"
-                :error-messages="v$.cp.$errors.map((e) => e.$message)"
-              />
+              <v-text-field density="compact" placeholder="Codigo Postal" prepend-inner-icon="mdi-pound"
+                variant="outlined" type="number" hide-spin-buttons :counter="5" v-model="state.cp" @blur="v$.cp.$touch"
+                @input="v$.cp.$touch" :error-messages="v$.cp.$errors.map((e) => e.$message)" />
             </v-col>
             <v-col cols="6" md="4">
               <div class="text-subtitle-1 font-weight-medium">Estado</div>
-              <v-select
-                clearable
-                placeholder="Estado"
-                :items="statesData"
-                density="compact"
-                variant="outlined"
-                prepend-inner-icon="mdi-map-marker-outline"
-                v-model="state.state"
-                @blur="v$.state.$touch"
-                @input="v$.state.$touch"
-                :error-messages="v$.state.$errors.map((e) => e.$message)"
-              />
+              <v-select clearable placeholder="Estado" :items="statesData" density="compact" variant="outlined"
+                prepend-inner-icon="mdi-map-marker-outline" v-model="state.state" @blur="v$.state.$touch"
+                @input="v$.state.$touch" :error-messages="v$.state.$errors.map((e) => e.$message)" />
             </v-col>
             <v-col cols="6" md="4">
               <div class="text-subtitle-1 font-weight-medium">Ciudad</div>
-              <v-select
-                clearable
-                placeholder="Estado"
-                :items="getFilteredTowns()"
-                density="compact"
-                variant="outlined"
-                no-data-text="Selecciona un estado"
-                prepend-inner-icon="mdi-map-marker-outline"
-                v-model="state.town"
-                @blur="v$.town.$touch"
-                @input="v$.town.$touch"
-                :error-messages="v$.town.$errors.map((e) => e.$message)"
-              />
+              <v-select clearable placeholder="Estado" :items="getFilteredTowns()" density="compact" variant="outlined"
+                no-data-text="Selecciona un estado" prepend-inner-icon="mdi-map-marker-outline" v-model="state.town"
+                @blur="v$.town.$touch" @input="v$.town.$touch"
+                :error-messages="v$.town.$errors.map((e) => e.$message)" />
             </v-col>
             <v-col cols="12" md="4">
               <div class="text-subtitle-1 font-weight-medium">Colonia</div>
-              <v-text-field
-                density="compact"
-                placeholder="Calle"
-                prepend-inner-icon="mdi-map-marker-outline"
-                variant="outlined"
-                v-model="state.suburb"
-                @blur="v$.suburb.$touch"
-                @input="v$.suburb.$touch"
-                :error-messages="v$.suburb.$errors.map((e) => e.$message)"
-              />
+              <v-text-field density="compact" placeholder="Calle" prepend-inner-icon="mdi-map-marker-outline"
+                variant="outlined" v-model="state.suburb" @blur="v$.suburb.$touch" @input="v$.suburb.$touch"
+                :error-messages="v$.suburb.$errors.map((e) => e.$message)" />
             </v-col>
             <v-col cols="12" md="4">
               <div class="text-subtitle-1 font-weight-medium">Calle</div>
-              <v-text-field
-                density="compact"
-                placeholder="Calle"
-                prepend-inner-icon="mdi-map-marker-outline"
-                variant="outlined"
-                v-model="state.street"
-                @blur="v$.street.$touch"
-                @input="v$.street.$touch"
-                :error-messages="v$.street.$errors.map((e) => e.$message)"
-              />
+              <v-text-field density="compact" placeholder="Calle" prepend-inner-icon="mdi-map-marker-outline"
+                variant="outlined" v-model="state.street" @blur="v$.street.$touch" @input="v$.street.$touch"
+                :error-messages="v$.street.$errors.map((e) => e.$message)" />
             </v-col>
             <v-col cols="6" md="2">
               <div class="text-subtitle-1 font-weight-medium">
                 Número exterior
               </div>
-              <v-text-field
-                density="compact"
-                placeholder="Núm. ext."
-                prepend-inner-icon="mdi-map-marker-outline"
-                variant="outlined"
-                type="number"
-                hide-spin-buttons
-                v-model="state.extnumber"
-                @blur="v$.extnumber.$touch"
-                @input="v$.extnumber.$touch"
-                :error-messages="v$.extnumber.$errors.map((e) => e.$message)"
-              />
+              <v-text-field density="compact" placeholder="Núm. ext." prepend-inner-icon="mdi-map-marker-outline"
+                variant="outlined" type="number" hide-spin-buttons v-model="state.extnumber" @blur="v$.extnumber.$touch"
+                @input="v$.extnumber.$touch" :error-messages="v$.extnumber.$errors.map((e) => e.$message)" />
             </v-col>
             <v-col cols="6" md="2">
               <div class="text-subtitle-1 font-weight-medium">
                 Número interior
               </div>
-              <v-text-field
-                density="compact"
-                placeholder="Núm. int."
-                prepend-inner-icon="mdi-map-marker-outline"
-                variant="outlined"
-                type="number"
-                hide-spin-buttons
-                v-model="state.intnumber"
-                @blur="v$.intnumber.$touch"
-                @input="v$.intnumber.$touch"
-                :error-messages="v$.intnumber.$errors.map((e) => e.$message)"
-              />
+              <v-text-field density="compact" placeholder="Núm. int." prepend-inner-icon="mdi-map-marker-outline"
+                variant="outlined" type="number" hide-spin-buttons v-model="state.intnumber" @blur="v$.intnumber.$touch"
+                @input="v$.intnumber.$touch" :error-messages="v$.intnumber.$errors.map((e) => e.$message)" />
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="6">
-              <v-btn
-                variant="flat"
-                class="text-none"
-                :color="colors.primary"
-                block
-                prepend-icon="mdi-close-circle-outline"
-                @click="clear()"
-                >Cancelar</v-btn
-              >
+              <v-btn variant="flat" class="text-none" :color="colors.primary" block
+                prepend-icon="mdi-close-circle-outline" @click="clear()">Cancelar</v-btn>
             </v-col>
             <v-col cols="6">
-              <v-btn
-                variant="flat"
-                class="mb-8 text-none"
-                :color="colors.primary_dark"
-                block
-                append-icon="mdi-check-circle-outline"
-                @click="submitForm()"
-                :loading="loading"
-                >Guardar</v-btn
-              >
+              <v-btn variant="flat" class="mb-8 text-none" :color="colors.primary_dark" block
+                append-icon="mdi-check-circle-outline" @click="submitForm()" :loading="loading">Guardar</v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -180,6 +96,7 @@ import {
 import { useStateAndTownStore } from "@/store/StateAndTownStore";
 import { useProfileStore } from "@/store/ProfileStore";
 import { encryptAES } from "@/utils/Crypto";
+import { Toast } from "@/utils/Alerts";
 
 const { fetchStates } = useStateAndTownStore();
 const { registerAddress } = useProfileStore();
@@ -326,7 +243,7 @@ const submitForm = async () => {
     state.extnumber = "S/N";
   }
 
-  const address = {
+  const params = {
     name: encryptAES(state.name),
     state: state.state,
     town: state.town,
@@ -336,18 +253,17 @@ const submitForm = async () => {
     intnumber: encryptAES(state.intnumber),
     extnumber: encryptAES(state.extnumber),
   };
-  console.log(address);
 
   loading.value = true;
 
   try {
-    const response = await registerAddress(address);
-    console.log(response);
+    const response = await registerAddress(params);
     if (response.status === 200) {
       Toast.fire({
         icon: "success",
         title: "Dirección registrada correctamente",
       });
+      window.histoy.back()
       clear();
       loading.value = false;
     }

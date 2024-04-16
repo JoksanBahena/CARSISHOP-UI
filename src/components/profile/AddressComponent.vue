@@ -19,7 +19,7 @@
 
     <v-card-actions v-if="!resume & !details" class="flex-column align-start flex-lg-row flex-md-row">
       <v-btn variant="outlined" class="mb-4 mr-4 text-none" :color="colors.primary_dark"
-        prepend-icon="mdi-delete-outline" @click="addressDelete(id)" :loading="loading">
+        prepend-icon="mdi-delete-outline" @click="onDeleteHandle(id)" :loading="loading">
         Eliminar dirección
       </v-btn>
       <v-btn variant="outlined" class="ma-0 text-none" :color="colors.primary_dark" prepend-icon="mdi-pencil">
@@ -32,18 +32,10 @@
 
 <script setup>
 import Colors from "@/utils/Colors.js";
-import { ref } from 'vue'
-import { useProfileStore } from "@/store/ProfileStore";
-import { Toast } from "@/utils/Alerts.js";
-import { encryptAES } from "@/utils/Crypto";
-
-const { deleteAddress } = useProfileStore();
 
 const colors = {
   primary_dark: Colors.cs_primary_dark,
 };
-
-const loading = ref(false);
 
 const props = defineProps({
   id: {
@@ -89,28 +81,6 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  onDeleteHandle: Function,
 });
-
-const addressDelete = async (id) => {
-  loading.value = true;
-  try {
-    const response = await deleteAddress(encryptAES(String(id)));
-    console.log(response);
-    if (response.status === 200) {
-      Toast.fire({
-        icon: "success",
-        title: "Dirección eliminada correctamente",
-      });
-    }
-    loading.value = false;
-  } catch (error) {
-    console.log(error);
-    Toast.fire({
-      icon: "error",
-      title: "Error al eliminar la dirección",
-    });
-  } finally {
-    loading.value = false;
-  }
-};
 </script>

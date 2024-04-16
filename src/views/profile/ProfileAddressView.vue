@@ -14,6 +14,7 @@
         :extrnumber="address.extnumber"
         :intnumber="address.intnumber"
         :cp="address.cp"
+        :onDeleteHandle="addressDelete"
       />
     </v-row>
     <v-row v-else>
@@ -37,12 +38,14 @@
 </template>
 
 <script setup>
-import { reactive, onMounted } from "vue";
+import { reactive, onMounted, ref } from "vue";
 import { useProfileStore } from "@/store/ProfileStore";
 import { decryptValue } from "@/utils/Crypto";
+import { encryptAES } from "@/utils/Crypto";
+import { Toast } from "@/utils/Alerts";
 import Colors from "@/utils/Colors.js";
 
-const { fetchAddressess } = useProfileStore();
+const { fetchAddressess, deleteAddress } = useProfileStore();
 
 const colors = {
   primary: Colors.cs_primary,
@@ -51,6 +54,7 @@ const colors = {
 };
 
 const addressData = reactive([])
+const loading = ref(false);
 
 const items = [
   {
@@ -88,6 +92,31 @@ const getAddresses = async () => {
     })
   } catch (error) {
     console.log(error);
+  }
+};
+
+const addressDelete = async (id) => {
+  loading.value = true;
+  try {
+    const response = await deleteAddress(encryptAES(String(id)));
+    loading.value = false;
+    window.location.reload();
+    if (response.status === 200) {
+      Toast.fire({
+        icon: "success",
+        title: "Dirección eliminada correctamente",
+      });
+      getAddresses();
+    }
+  } catch (error) {
+    console.log(error);
+    Toast.fire({
+      icon: "error",
+      title: "Error al eliminar la dirección",
+    });
+    loading.value = false;
+  } finally {
+    loading.value = false;
   }
 };
 

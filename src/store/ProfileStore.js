@@ -138,10 +138,9 @@ export const useProfileStore = defineStore("profile", {
       const params = {
         id: id,
       };
-
+      
       try {
-        console.log("Deleting address with id:", params);
-        const response = await axios.delete(
+        const response = await axios.post(
           baseUrl + "address/delete",
           params,
           {
