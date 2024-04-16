@@ -99,13 +99,14 @@ const submitForm = async () => {
     } else {
       showAlertInDialog(response.message, "error");
     }
+    location.reload();
   } catch (error) {
     console.error("Error al crear la categoría", error);
     showAlertInDialog("Error al crear la categoría", "error");
+    location.reload();
   } finally {
     clear();
     loading.value = false;
-    location.reload();
   }
 };
 

@@ -28,6 +28,17 @@
         Guardar
       </v-btn>
     </v-form>
+    <v-dialog v-model="dialog2">
+      <v-card>
+        <v-alert
+          v-if="state.alertMessage"
+          :value="true"
+          :type="state.alertType"
+          variant="tonal"
+          >{{ state.alertMessage }}</v-alert
+        >
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -48,7 +59,9 @@ import {
 } from "@vuelidate/validators";
 const { createSubcategory } = useSubcategoryStore();
 const { withMessage, regex } = helpers;
+import { shallowRef } from "vue";
 
+const dialog2 = shallowRef(false);
 const colors = {
   primary: Colors.cs_primary,
   primary_dark: Colors.cs_primary_dark,
@@ -87,30 +100,13 @@ const submitForm = async () => {
   try {
     const response = await createSubcategory(state.subcategory);
     if (response.error === false) {
-      console.log("Entra");
-      console.log("Mensaje", response.message);
-      // alert(response.message);
-      Swal.fire({
-        icon: "success",
-        title: response.message,
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      showAlertInDialog(response.message, "success");
     } else {
-      Swal.fire({
-        icon: "error",
-        title: response.message,
-        showConfirmButton: true,
-      });
+      showAlertInDialog(response.message, "error");
     }
   } catch (error) {
     console.error("Error al crear la subcategoría", error);
-    Swal.fire({
-      icon: "error",
-      title: "Error al crear la subcategoría",
-      text: "Hubo un problema al procesar tu solicitud. Por favor, inténtalo de nuevo más tarde.",
-      timer: 1500,
-    });
+    showAlertInDialog("Error al crear la subcategoría", "error");
   } finally {
     clear();
     loading.value = false;
@@ -137,5 +133,20 @@ const props = defineProps({
 
 const closeDialogInAnotherComponent = () => {
   props.dialog.isActive = false;
+};
+
+const showAlertInDialog = (message, type) => {
+  state.alertMessage = message;
+  state.alertType = type;
+  dialog2.value = true;
+
+  setTimeout(() => {
+    hideAlert();
+  }, 4500);
+};
+
+const hideAlert = () => {
+  state.alertMessage = "";
+  state.alertType = "";
 };
 </script>
