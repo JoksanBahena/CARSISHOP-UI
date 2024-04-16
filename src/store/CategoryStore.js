@@ -46,7 +46,6 @@ export const useCategoryStore = defineStore("category", {
       const params = {
         name: name,
       };
-      console.log(params);
       try {
         const response = await axios.post(baseURL + "categories/", params, {
           headers: {
@@ -54,7 +53,6 @@ export const useCategoryStore = defineStore("category", {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("response", response);
         return response.data;
       } catch (error) {
         throw error;
@@ -72,7 +70,6 @@ export const useCategoryStore = defineStore("category", {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("response", response);
         return response.data;
       } catch (error) {
         throw error;
@@ -93,7 +90,6 @@ export const useCategoryStore = defineStore("category", {
             },
           }
         );
-        console.log("response", response);
         return response.data;
       } catch (error) {
         throw error;

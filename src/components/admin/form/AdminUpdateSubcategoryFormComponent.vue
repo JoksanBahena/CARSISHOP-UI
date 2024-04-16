@@ -110,9 +110,6 @@ const submitForm = async () => {
       state.subcategory
     );
     if (response.error === false) {
-      console.log("Entra");
-      console.log("Mensaje", response.message);
-      // alert(response.message);
       Swal.fire({
         icon: "success",
         title: response.message,
@@ -126,6 +123,7 @@ const submitForm = async () => {
         showConfirmButton: true,
       });
     }
+    location.reload();
   } catch (error) {
     console.error("Error al actualizar la categoría", error);
     Swal.fire({
@@ -134,10 +132,10 @@ const submitForm = async () => {
       text: "Hubo un problema al procesar tu solicitud. Por favor, inténtalo de nuevo más tarde.",
       timer: 1500,
     });
+    location.reload();
   } finally {
     clear();
     loading.value = false;
-    window.location.reload();
   }
 };
 

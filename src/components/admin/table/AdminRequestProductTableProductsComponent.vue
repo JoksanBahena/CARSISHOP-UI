@@ -206,7 +206,6 @@ const aproveClotheReq = async (id) => {
       if (result.isConfirmed) {
         approveClothe(id);
         Swal.fire("Aprobado", "El producto ha sido aprobado", "success");
-        console.log("Aprobado");
         window.location.reload();
       }
     });
@@ -229,7 +228,6 @@ const rejectClotheReq = async (id) => {
     }).then((result) => {
       if (result.isConfirmed) {
         rejectClothe(id);
-        console.log("Rechazado");
 
         Swal.fire("Rechazado", "El producto ha sido rechazado", "success");
         window.location.reload();

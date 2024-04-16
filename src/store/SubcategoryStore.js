@@ -38,7 +38,6 @@ export const useSubcategoryStore = defineStore("subcategory", {
           }
         );
         this.subcategories = response.data.data;
-        console.log("this.subcategories", this.subcategories)
       } catch (error) {
         throw error;
       }
@@ -75,7 +74,6 @@ export const useSubcategoryStore = defineStore("subcategory", {
       const params = {
         name: name
       }
-      console.log(params)
       try {
         const response = await axios.post(
           baseURL + "subcategories/", params,
@@ -86,7 +84,6 @@ export const useSubcategoryStore = defineStore("subcategory", {
             }
           }
         );
-        console.log("response", response)
         return response.data;
       } catch (error) {
         throw error;
@@ -98,7 +95,6 @@ export const useSubcategoryStore = defineStore("subcategory", {
       const params = {
         id: id
       }
-      console.log(params)
       try {
         const response = await axios.put(
           baseURL + "subcategories/change-status", params,
@@ -109,7 +105,6 @@ export const useSubcategoryStore = defineStore("subcategory", {
             }
           }
         );
-        console.log("response", response)
         return response.data;
       } catch (error) {
         throw error;
@@ -120,7 +115,6 @@ export const useSubcategoryStore = defineStore("subcategory", {
         id: id,
         name: name
       }
-      console.log(params)
       try {
         const response = await axios.put(
           baseURL + "subcategories/", params,
@@ -131,7 +125,6 @@ export const useSubcategoryStore = defineStore("subcategory", {
             }
           }
         );
-        console.log("response", response)
         return response.data;
       } catch (error) {
         throw error;

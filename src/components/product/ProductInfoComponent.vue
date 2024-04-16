@@ -5,19 +5,21 @@
         <v-slide-group show-arrows>
           <div class="d-flex flex-row flex-lg-column flex-md-column">
             <v-img
-              v-for="n in 5"
-              :key="n"
-              :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
-              :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
+              v-for="(image, index) in imagesArray"
+              :key="index"
+              :lazy-src="image ? image.url || defaultImage : defaultImage"
+              :src="image ? image.url || defaultImage : defaultImage"
               aspect-ratio="1"
               class="bg-grey-lighten-2 my-2 mx-1"
               width="80"
               cover
-              @mouseenter="updateMainImage(n)"
-              @mouseover="hoverImage = n"
+              @mouseenter="updateMainImage(index)"
+              @mouseover="hoverImage = index"
               :style="{
                 border:
-                  hoverImage === n ? '3px solid ' + colors.bg_color : 'none',
+                  hoverImage === index
+                    ? '3px solid ' + colors.bg_color
+                    : 'none',
               }"
             >
               <template v-slot:placeholder>
@@ -46,7 +48,8 @@
       </div>
     </v-col>
     <v-col>
-      <h4 class="text-h4 font-weight-medium">Chamarra Capitonada Marino</h4>
+      <h4 class="text-h4 font-weight-medium">{{ clotheName }}</h4>
+
       <div class="d-flex mb-4">
         <span class="my-2">{{ rating }}</span>
         <v-rating
@@ -62,19 +65,12 @@
           class="text-h4 font-weight-medium mr-2"
           :style="{ color: colors.red }"
         >
-          $320MX
+          {{ selection ? `$MX${clothePrice}` : "Selecciona una talla" }}
         </h4>
-        <p
-          class="text-subtitle-1 font-weight-medium text-decoration-line-through"
-          :style="{ color: colors.gray }"
-        >
-          $499MX
-        </p>
       </div>
 
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
+        {{ clotheDescription }}
       </p>
 
       <div class="my-4">
@@ -85,14 +81,15 @@
           mandatory
         >
           <v-chip
-            v-for="size in sizes"
+            v-for="size in clotheSizes"
             :key="size.id"
-            :value="size.size"
-            :disabled="size.disabled"
+            :value="size.size.name"
+            :disabled="size.quantity === 0"
             :variant="getChipVariant(size)"
             class="px-4"
+            @click="selectSize(size.size.name)"
           >
-            {{ size.size }}
+            {{ size.size.name }} ({{ size.quantity }} disponibles)
           </v-chip>
         </v-chip-group>
       </div>
@@ -110,14 +107,16 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, watch } from "vue";
 import Colors from "@/utils/Colors.js";
+import { useClotheStore } from "@/store/ClotheStore";
 
-const mainImage = ref("https://cdn.vuetifyjs.com/images/parallax/material.jpg");
+const store = useClotheStore();
+
 const hoverImage = ref(null);
 const rating = ref(4);
 const selection = ref(null);
-
+const clothe = ref([]);
 const colors = {
   bg_color: Colors.cs_primary,
   primary_dark: Colors.cs_primary_dark,
@@ -125,19 +124,66 @@ const colors = {
   gray: Colors.cs_opacity_gray,
 };
 
-const sizes = [
-  { id: 1, size: "XS", disabled: false },
-  { id: 2, size: "S", disabled: false },
-  { id: 3, size: "M", disabled: true },
-  { id: 4, size: "L", disabled: true },
-  { id: 5, size: "XL", disabled: false },
-];
+const mainImage = ref(null);
+const imagesArray = ref([]);
+const defaultImage = "https://via.placeholder.com/500";
 
-const getChipVariant = (size) => {
-  return selection.value === size.size ? "flat" : "outlined";
+onMounted(async () => {
+  await getOneClothe();
+});
+
+const getOneClothe = async () => {
+  const id = getIdFromUrl();
+  await store.findClotheById(id);
+  clothe.value = store.getClothe;
+
+  if (clothe.value.images.length < 5) {
+    imagesArray.value = Array.from(
+      { length: 5 },
+      (_, i) => clothe.value.images[i % clothe.value.images.length]
+    );
+  } else {
+    imagesArray.value = clothe.value.images.slice(0, 5);
+  }
+
+  mainImage.value = imagesArray.value[0].url;
 };
 
-const updateMainImage = (n) => {
-  mainImage.value = `https://picsum.photos/500/300?image=${n * 5 + 10}`;
+const clotheName = ref(null);
+const clotheDescription = ref(null);
+const clothePrice = ref(null);
+const clotheSizes = ref([]);
+
+watch(clothe, (newValue) => {
+  clotheName.value = newValue.name;
+  clotheDescription.value = newValue.description;
+  clotheSizes.value = newValue.stock;
+});
+
+watch(selection, (newSize) => {
+  const selectedSize = clotheSizes.value.find(
+    (size) => size.size.name === newSize
+  );
+  if (selectedSize) {
+    clothePrice.value = selectedSize.price;
+  }
+});
+
+const getIdFromUrl = () => {
+  const url = window.location.href;
+  const id = url.split("/").pop();
+  return id;
+};
+
+const getChipVariant = (size) => {
+  return selection.value === size.size.name ? "flat" : "outlined";
+};
+
+const updateMainImage = (index) => {
+  mainImage.value = imagesArray.value[index].url || defaultImage;
+};
+
+const selectSize = (selectedSize) => {
+  selection.value = selectedSize;
 };
 </script>

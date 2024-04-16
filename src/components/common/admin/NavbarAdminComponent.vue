@@ -61,6 +61,7 @@
         :style="{ color: toolbar.primary_dark }"
         :icon="action.icon"
         :href="action.to"
+        @click="action.click"
       />
     </v-toolbar>
   </v-app-bar>
@@ -69,7 +70,8 @@
 <script setup>
 import { ref } from "vue";
 import Colors from "@/utils/Colors.js";
-
+import { useAuthStore } from "@/store/AuthStore.js";
+const { logout } = useAuthStore();
 const toolbar = {
   bg_color: Colors.cs_primary,
   primary_dark: Colors.cs_primary_dark,
@@ -105,6 +107,7 @@ const categories = ref([
 const actions = ref([
   {
     icon: "mdi-login-variant",
+    click: logout,
     to: "/login",
   },
 ]);

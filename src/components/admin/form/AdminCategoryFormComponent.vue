@@ -49,7 +49,6 @@ import Colors from "@/utils/Colors.js";
 import { ref } from "vue";
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import Swal from "sweetalert2";
 import { required, minLength, maxLength, helpers } from "@vuelidate/validators";
 import { useCategoryStore } from "@/store/CategoryStore";
 const { createCategory } = useCategoryStore();
@@ -99,13 +98,14 @@ const submitForm = async () => {
     } else {
       showAlertInDialog(response.message, "error");
     }
+    location.reload();
   } catch (error) {
     console.error("Error al crear la categoría", error);
     showAlertInDialog("Error al crear la categoría", "error");
+    location.reload();
   } finally {
     clear();
     loading.value = false;
-    location.reload();
   }
 };
 
