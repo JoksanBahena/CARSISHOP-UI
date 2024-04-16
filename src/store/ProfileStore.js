@@ -136,7 +136,7 @@ export const useProfileStore = defineStore("profile", {
       const params = {
         id: id,
       };
-      
+
       try {
         const response = await axios.post(
           baseUrl + "address/delete",
@@ -155,6 +155,7 @@ export const useProfileStore = defineStore("profile", {
       }
     },
     async registerAddress(address) {
+      console.log("address", address)
       try {
         const response = await axios.post(
           baseUrl + "address/register",
