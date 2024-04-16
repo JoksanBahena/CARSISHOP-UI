@@ -1,11 +1,8 @@
 <template>
   <v-card variant="flat" class="mb-4">
-    <v-card-item>
+    <v-card-item :key="id">
       <div>
-        <div
-          v-if="!resume & !details"
-          class="d-flex align-center text-body-2 text-none font-weight-bold mb-1"
-        >
+        <div v-if="!resume & !details" class="d-flex align-center text-body-2 text-none font-weight-bold mb-1">
           <v-icon size="20" class="mr-1"> mdi-map-marker-outline</v-icon>
           Dirección de envio:
         </div>
@@ -20,24 +17,12 @@
       </div>
     </v-card-item>
 
-    <v-card-actions
-      v-if="!resume & !details"
-      class="flex-column align-start flex-lg-row flex-md-row"
-    >
-      <v-btn
-        variant="outlined"
-        class="mb-4 mr-4 text-none"
-        :color="colors.primary_dark"
-        prepend-icon="mdi-delete-outline"
-      >
+    <v-card-actions v-if="!resume & !details" class="flex-column align-start flex-lg-row flex-md-row">
+      <v-btn variant="outlined" class="mb-4 mr-4 text-none" :color="colors.primary_dark"
+        prepend-icon="mdi-delete-outline" @click="onDeleteHandle(id)" :loading="loading">
         Eliminar dirección
       </v-btn>
-      <v-btn
-        variant="outlined"
-        class="ma-0 text-none"
-        :color="colors.primary_dark"
-        prepend-icon="mdi-pencil"
-      >
+      <v-btn variant="outlined" class="ma-0 text-none" :color="colors.primary_dark" prepend-icon="mdi-pencil">
         Editar dirección
       </v-btn>
     </v-card-actions>
@@ -53,6 +38,9 @@ const colors = {
 };
 
 const props = defineProps({
+  id: {
+    type: String,
+  },
   user: {
     type: String,
     default: "Tu nombre",
@@ -93,5 +81,6 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  onDeleteHandle: Function,
 });
 </script>

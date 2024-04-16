@@ -1,7 +1,7 @@
 <template>
   <v-card variant="flat" class="mt-4">
     <v-card-title>Método de pago:</v-card-title>
-    <v-card-item>
+    <v-card-item :key="id">
       <template v-slot:prepend>
         <v-img src="@/assets/imgs/mc.webp" width="50" height="50" class="mr-2" />
       </template>
@@ -15,7 +15,7 @@
 
     <v-card-actions v-if="!resume & !details" class="flex-column align-start flex-lg-row flex-md-row">
       <v-btn variant="outlined" class="mb-4 mr-4 text-none" :color="colors.primary_dark"
-        prepend-icon="mdi-delete-outline">
+        prepend-icon="mdi-delete-outline" @click="onDeleteHandle(id)">
         Eliminar tarjeta
       </v-btn>
       <v-btn variant="outlined" class="ma-0 text-none" :color="colors.primary_dark" prepend-icon="mdi-pencil">
@@ -39,6 +39,9 @@ const colors = {
 };
 
 const props = defineProps({
+  id: {
+    type: String,
+  },
   user: {
     type: String,
     default: "Dueño de la tarjeta",
@@ -55,5 +58,6 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  onDeleteHandle: Function,
 });
 </script>

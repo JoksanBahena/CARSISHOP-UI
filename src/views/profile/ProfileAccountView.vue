@@ -18,7 +18,6 @@
               <v-avatar size="200" :color="colors.primary_dark">
                 <v-img
                   v-if="state.img"
-                  :lazy-src="state.img"
                   :src="state.img"
                   alt="profile picture"
                 />
@@ -39,29 +38,11 @@
                     prepend-icon="mdi-camera-outline"
                     chips
                     show-size
-                    @change="onProfilepicChange"
+                    @change="onFileChange"
                     :readonly="is_disabled"
-                    v-model="state.new_img"
-                    @blur="v$.new_img.$touch"
-                    @input="v$.new_img.$touch"
-                    :error-messages="v$.new_img.$errors.map((e) => e.$message)"
-                  >
-                    <template v-slot:selection="{ fileNames }">
-                      <template
-                        v-for="(fileName, index) in fileNames"
-                        :key="fileName"
-                      >
-                        <v-chip
-                          class="me-2"
-                          :color="colors.primary_dark"
-                          size="small"
-                          label
-                        >
-                          {{ fileName }}
-                        </v-chip>
-                      </template>
-                    </template>
-                  </v-file-input>
+                    v-model="image_url"
+                    :error-messages="v$.img.$errors.map((e) => e.$message)"
+                  />
                 </v-col>
                 <v-col cols="12" lg="6" md="6">
                   <div>
@@ -138,15 +119,16 @@
             <v-col cols="12" md="4">
               <div class="text-subtitle-1 font-weight-medium">Género</div>
               <v-select
-                v-model="state.genere"
                 density="compact"
                 placeholder="Género"
                 prepend-inner-icon="mdi-account-outline"
-                :readonly="is_disabled"
+                variant="outlined"
+                chips
                 :items="genders"
                 item-title="gender"
                 item-value="id_gender"
-                variant="outlined"
+                :readonly="is_disabled"
+                v-model="state.genere"
                 @input="v$.genere.$touch"
                 @blur="v$.genere.$touch"
                 :error-messages="v$.genere.$errors.map((e) => e.$message)"
@@ -264,6 +246,7 @@
                 prepend-icon="mdi-close-circle-outline"
                 class="text-none"
                 :color="colors.primary"
+                size="large"
                 block
                 @click="clear()"
               >
@@ -276,10 +259,11 @@
                 append-icon="mdi-check-circle-outline"
                 class="text-none"
                 :color="colors.primary_dark"
+                size="large"
                 block
                 @click="is_disabled ? onEdit() : submitForm()"
-                :disabled="v$.$errors.length > 0"
                 :loading="!is_disabled && loading"
+                :disabled="v$.$errors.length > 0"
               >
                 {{ is_disabled ? "Editar" : "Guardar" }}
               </v-btn>
@@ -304,7 +288,6 @@ import {
 } from "@vuelidate/validators";
 import { useProfileStore } from "@/store/ProfileStore";
 import { Toast } from "@/utils/Alerts.js";
-import { getErrorMessage } from "@/utils/Errors";
 import { encryptAES } from "@/utils/Crypto";
 
 const { withMessage, regex } = helpers;
@@ -342,8 +325,8 @@ const genders = [
 const user = {
   name: "",
   surname: "",
+  genere: null,
   phone: "",
-  genere: {},
   email: "",
   img: null,
   new_img: [],
@@ -360,17 +343,16 @@ const panel = ref([]);
 const state = reactive({ ...user });
 
 const getUserInfo = async () => {
-  state.name = profile.name;
-  state.surname = profile.surname;
-  state.email = profile.username;
-  state.phone = profile.phone;
-  state.genere = profile.gender ? profile.gender : "ADMIN";
-  state.img = profile.profilepic ? profile.profilepic : null;
-
-  if (profile.seller?.request_status === "APPROVED") {
-    state.curp = profile.seller.curp;
-    state.rfc = profile.seller.rfc;
-    state.image_view = profile.seller.image;
+  try {
+    const response = await fetchProfile();
+    state.name = response.name;
+    state.surname = response.surname;
+    state.email = response.username;
+    state.phone = response.phone;
+    state.genere = response.gender ? response.gender : "ADMIN";
+    state.img = response.profilepic ? response.profilepic : null;
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -447,39 +429,8 @@ const rules = {
     required: withMessage("El correo es requerido", required),
     email: withMessage("El correo no es válido", regex(/^.+@.+\..+$/)),
   },
-  new_img: {
-    imgSizeValidate: withMessage(
-      `El tamaño de la imagen no debe exceder ${max_size}MB`,
-      imgSizeValidate()
-    ),
-  },
-  curp: {
-    required: withMessage("El CURP es requerido", required),
-    minLength: withMessage("El CURP debe tener 18 caracteres", minLength(18)),
-    maxLength: withMessage("El CURP debe tener 18 caracteres", maxLength(18)),
-    regex: withMessage(
-      "El CURP no es válido",
-      regex(
-        /^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/
-      )
-    ),
-  },
-  rfc: {
-    required: withMessage("El RFC es requerido", required),
-    minLength: withMessage("El RFC debe tener 13 caracteres", minLength(13)),
-    maxLength: withMessage("El RFC debe tener 13 caracteres", maxLength(13)),
-    regex: withMessage(
-      "El RFC no es válido",
-      regex(
-        /^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$/
-      )
-    ),
-  },
-  image: {
-    imgSizeValidate: withMessage(
-      `El tamaño de la imagen no debe exceder ${max_size}MB`,
-      imgSizeValidate()
-    ),
+  img: {
+    required: withMessage("La imagen es requerida", required),
   },
 };
 
@@ -494,61 +445,33 @@ const onEdit = () => {
 
 const submitForm = async () => {
   v$.value.$touch();
-  if (v$.value.$error) return;
-
-  error.value = { error: "", message: "" };
   loading.value = true;
 
-  try {
-    let response;
+  error.value = { error: "", message: "" };
 
-    if (typeof state.genere === "object") {
-      state.gender_id = state.genere.id;
-    } else {
-      state.gender_id = state.genere;
-    }
-
-    response = await updateProfile({
-      name: encryptAES(state.name),
-      surname: encryptAES(state.surname),
-      phone: encryptAES(state.phone),
-      gender: state.gender_id,
-    });
-
-    if (state.new_img.length > 0) {
-      response = await updateProfileImage({
-        profilepic: state.new_img[0],
-        username: state.email,
+  if (v$.value.$error) {
+    return;
+  } else {
+    try {
+      const response = await updateProfile({
+        name: encryptAES(state.name),
+        surname: encryptAES(state.surname),
+        phone: encryptAES(state.phone),
+        genere: state.genere.id ? state.genere.id : state.genere,
       });
+      if (response.status === 200) {
+        Toast.fire({
+          icon: "success",
+          title: "Perfil actualizado",
+        });
+      }
+      is_disabled.value = true;
+      loading.value = false;
+    } catch (err) {
+      error.value = getErrorMessage(err);
+    } finally {
+      loading.value = false;
     }
-
-    if (state.curp || state.rfc || state.image.length > 0) {
-      const seller = {
-        id: profile.seller.id,
-        user: profile.id,
-        request_status: profile.seller.request_status,
-        curp: encryptAES(state.curp),
-        rfc: encryptAES(state.rfc),
-        image: state?.image[0] || null,
-      };
-
-      if (seller.image === null) delete seller.image;
-
-      response = await updateSellerProfile(seller);
-    }
-
-    if (response.status === 200) {
-      Toast.fire({
-        icon: "success",
-        title: "Perfil actualizado",
-      });
-    }
-  } catch (err) {
-    console.log(err);
-    error.value = getErrorMessage(err);
-  } finally {
-    is_disabled.value = true;
-    loading.value = false;
   }
 };
 
@@ -564,23 +487,24 @@ const clear = () => {
   getUserInfo();
 };
 
-const onProfilepicChange = (e) => {
+const image_url = ref("");
+
+const onFileChange = (e) => {
   const file = e.target.files[0];
   const reader = new FileReader();
 
   reader.onload = (e) => {
-    state.img = e.target.result;
-  };
-  reader.readAsDataURL(file);
-};
-
-const onImageChange = (e) => {
-  const file = e.target.files[0];
-  const reader = new FileReader();
-
-  reader.onload = (e) => {
-    panel.value = [0];
-    state.image_view = e.target.result;
+    if (file.size > 2_000_000) {
+      state.img = null;
+      Swal.fire({
+        title: "Error!",
+        text: "La imagen no debe pesar más de 2MB",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      return;
+    }
+    image_url.value = e.target.result;
   };
   reader.readAsDataURL(file);
 };
