@@ -50,7 +50,7 @@
       title="Productos publicados"
       :to="{ name: 'SellerProducts' }"
     >
-      <product-list-component details />
+      <seller-product-list-component details />
     </resumen-card-component>
   </v-container>
 </template>
