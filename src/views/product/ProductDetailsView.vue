@@ -13,7 +13,6 @@
 <script setup>
 import DefaultLayout from "@/layouts/user/DefaultLayout.vue";
 import ProductInfoComponent from "@/components/product/ProductInfoComponent.vue";
-import ProductReviewsComponent from "@/components/product/ProductReviewsComponent.vue";
 import ProductListComponent from "@/components/common/ProductListComponent.vue";
 
 const props = defineProps({

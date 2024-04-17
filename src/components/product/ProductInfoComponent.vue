@@ -12,7 +12,6 @@
               aspect-ratio="1"
               class="bg-grey-lighten-2 my-2 mx-1"
               width="80"
-              cover
               @mouseenter="updateMainImage(index)"
               @mouseover="hoverImage = index"
               :style="{
@@ -36,7 +35,6 @@
             class="bg-grey-lighten-2"
             :src="mainImage"
             width="500"
-            cover
           >
             <template v-slot:placeholder>
               <v-row align="center" class="fill-height ma-0" justify="center">
