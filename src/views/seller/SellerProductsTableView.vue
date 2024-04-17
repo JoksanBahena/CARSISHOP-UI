@@ -37,13 +37,13 @@
         :headers="headers"
         :items="clothes"
         :search="search"
+        no-data-text="No se encontraron productos"
       >
         <template v-slot:item.id="{ index }">
           {{ index + 1 }}
         </template>
 
         <template v-slot:item.name="{ item }">
-          
           <seller-product-list-table-component :product="item" />
         </template>
 
@@ -81,7 +81,7 @@
               variant="outlined"
               :to="{
                 name: 'Product',
-                params: { id: item.id },
+                params: { id: encryptAES(item.id.toString()) },
               }"
             >
               <v-tooltip activator="parent" location="top">
@@ -89,19 +89,19 @@
               </v-tooltip>
               <v-icon>mdi-eye-outline</v-icon>
             </v-btn>
-            <v-btn
+            <!-- <v-btn
               class="ma-1 text-none"
               :color="colors.primary_dark"
               variant="outlined"
             >
-              <!-- <v-tooltip activator="parent" location="top"> Editar </v-tooltip>
+              <v-tooltip activator="parent" location="top"> Editar </v-tooltip>
               <v-icon>mdi-pencil-outline</v-icon>
-            </v-btn>
+            </v-btn> -->
             <v-btn
               class="ma-1 text-none"
               :color="colors.red"
               variant="outlined"
-            > -->
+            >
               <v-tooltip activator="parent" location="top">
                 Eliminar
               </v-tooltip>
@@ -119,6 +119,7 @@ import { onMounted, ref } from "vue";
 import Colors from "@/utils/Colors.js";
 import { useClotheStore } from "@/store/ClotheStore";
 import { useProfileStore } from "@/store/ProfileStore";
+import { encryptAES } from "@/utils/Crypto";
 
 const { fetchClothesBySellerId } = useClotheStore();
 const { profile } = useProfileStore();

@@ -498,7 +498,7 @@ const submitForm = async () => {
           icon: "success",
           title: "Producto creado exitosamente",
         });
-        router.push({ name: "SellerMySales" });
+        router.push({ name: "SellerProducts" });
       } else {
         Toast("error", "Error al añadir las imágenes del producto");
       }
