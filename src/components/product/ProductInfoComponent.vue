@@ -7,8 +7,8 @@
             <v-img
               v-for="(image, index) in imagesArray"
               :key="index"
-              :lazy-src="image ? image.url || defaultImage : defaultImage"
-              :src="image ? image.url || defaultImage : defaultImage"
+              :lazy-src="image ? image?.url || defaultImage : defaultImage"
+              :src="image ? image?.url || defaultImage : defaultImage"
               aspect-ratio="1"
               class="bg-grey-lighten-2 my-2 mx-1"
               width="80"
@@ -108,7 +108,10 @@
 import { ref, onMounted, watch } from "vue";
 import Colors from "@/utils/Colors.js";
 import { useClotheStore } from "@/store/ClotheStore";
+import { decryptValue } from "@/utils/Crypto";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const store = useClotheStore();
 
 const hoverImage = ref(null);
@@ -128,10 +131,18 @@ const defaultImage = "https://via.placeholder.com/500";
 
 onMounted(async () => {
   await getOneClothe();
+  watch(
+    () => router.currentRoute.value,
+    async (to, from) => {
+      if (to.params.id !== from.params.id) {
+        await getOneClothe();
+      }
+    }
+  );
 });
 
 const getOneClothe = async () => {
-  const id = getIdFromUrl();
+  const id = getIdFromParams();
   await store.findClotheById(id);
   clothe.value = store.getClothe;
 
@@ -167,10 +178,10 @@ watch(selection, (newSize) => {
   }
 });
 
-const getIdFromUrl = () => {
-  const url = window.location.href;
-  const id = url.split("/").pop();
-  return id;
+const getIdFromParams = () => {
+  const id = router.currentRoute.value.params.id;
+
+  return decryptValue(id);
 };
 
 const getChipVariant = (size) => {

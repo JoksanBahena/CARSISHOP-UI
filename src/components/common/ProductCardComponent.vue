@@ -7,7 +7,7 @@
     min-height="450"
     max-height="450"
     :color="colors.secondary"
-    :href="`/product/${item.id}`"
+    :to="{ name: 'Product', params: { id: encryptedId } }"
   >
     <v-img
       class="mb-4"
@@ -42,6 +42,7 @@
 <script setup>
 import { defineProps } from "vue";
 import Colors from "@/utils/Colors.js";
+import { encryptAES } from "@/utils/Crypto";
 
 const colors = {
   primary: Colors.cs_primary,
@@ -59,4 +60,5 @@ const props = defineProps({
     required: true,
   },
 });
+const encryptedId = encryptAES(props.item.id.toString());
 </script>

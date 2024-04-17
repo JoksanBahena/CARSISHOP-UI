@@ -90,21 +90,21 @@ const categories = ref([
     name: "Mujeres",
     to: {
       name: "CategorizedProducts",
-      params: { category: "Mujer", subcategory: "todo" },
+      params: { category: "Mujer" },
     },
   },
   {
     name: "Hombres",
     to: {
       name: "CategorizedProducts",
-      params: { category: "Hombre", subcategory: "todo" },
+      params: { category: "Hombre" },
     },
   },
   {
     name: "Niños",
     to: {
       name: "CategorizedProducts",
-      params: { category: "Niño", subcategory: "todo" },
+      params: { category: "Niño" },
     },
   },
 ]);
