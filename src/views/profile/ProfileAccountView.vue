@@ -298,8 +298,8 @@ const items = [
 ];
 
 const genders = [
-  { gender: "Femenino", id_gender: "1" },
-  { gender: "Masculino", id_gender: "2" },
+  { gender: "Masculino", id_gender: "1" },
+  { gender: "Femenino", id_gender: "2" },
   { gender: "Otro", id_gender: "3" },
 ];
 
