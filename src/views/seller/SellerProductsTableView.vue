@@ -26,7 +26,7 @@
             class="mx-1 my-4"
           />
           <p class="text-subtitle-1 ml-auto my-auto mx-1">
-            {{ result }} Resultados obtenidos
+            {{ total }} Resultados obtenidos
           </p>
         </div>
       </template>
@@ -34,22 +34,42 @@
       <v-data-table
         v-model:items-per-page="products_per_page"
         :items-length="total_products"
-        :loading="loading"
         :headers="headers"
-        :items="sales"
+        :items="clothes"
         :search="search"
       >
         <template v-slot:item.id="{ index }">
           {{ index + 1 }}
         </template>
 
-        <template v-slot:item.product.name="{ item }">
-          <product-list-table-component :product="item.product" />
+        <template v-slot:item.name="{ item }">
+          
+          <seller-product-list-table-component :product="item" />
+        </template>
+
+        <template v-slot:item.category="{ item }">
+          {{ item.category.name }}
+        </template>
+
+        <template v-slot:item.subcategory="{ item }">
+          {{ item.subcategory.name }}
+        </template>
+
+        <template v-slot:item.request_status="{ item }">
+          <v-chip :color="getRequestsColor(item.request_status)">
+            {{ getRequestsStatus(item.request_status) }}
+          </v-chip>
         </template>
 
         <template v-slot:item.status="{ item }">
-          <v-chip :color="getStatusColor(item.status)">
-            {{ item.status.toUpperCase() }}
+          <v-chip
+            variant="flat"
+            size="small"
+            :color="getStatusColor(item.status)"
+          >
+            <v-icon>
+              {{ item.status ? "mdi-check" : "mdi-close" }}
+            </v-icon>
           </v-chip>
         </template>
 
@@ -61,7 +81,7 @@
               variant="outlined"
               :to="{
                 name: 'Product',
-                params: { id: '1' },
+                params: { id: item.id },
               }"
             >
               <v-tooltip activator="parent" location="top">
@@ -74,14 +94,14 @@
               :color="colors.primary_dark"
               variant="outlined"
             >
-              <v-tooltip activator="parent" location="top"> Editar </v-tooltip>
+              <!-- <v-tooltip activator="parent" location="top"> Editar </v-tooltip>
               <v-icon>mdi-pencil-outline</v-icon>
             </v-btn>
             <v-btn
               class="ma-1 text-none"
               :color="colors.red"
               variant="outlined"
-            >
+            > -->
               <v-tooltip activator="parent" location="top">
                 Eliminar
               </v-tooltip>
@@ -95,8 +115,26 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Colors from "@/utils/Colors.js";
+import { useClotheStore } from "@/store/ClotheStore";
+import { useProfileStore } from "@/store/ProfileStore";
+
+const { fetchClothesBySellerId } = useClotheStore();
+const { profile } = useProfileStore();
+
+const clothes = ref([]);
+const total = ref(0);
+
+onMounted(async () => {
+  try {
+    const response = await fetchClothesBySellerId(profile.seller.id);
+    clothes.value = response.data;
+    total.value = response.total;
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 const colors = {
   primary_dark: Colors.cs_primary_dark,
@@ -130,10 +168,36 @@ const total_products = ref(0);
 
 const getStatusColor = (status) => {
   switch (status) {
-    case "Activo":
+    case true:
       return "green";
-    case "Inactivo":
+    case false:
       return "red";
+    default:
+      return "default";
+  }
+};
+
+const getRequestsStatus = (status) => {
+  switch (status) {
+    case "REJECTED":
+      return "Rechazado";
+    case "APPROVED":
+      return "Aprobado";
+    case "PENDING":
+      return "Pendiente";
+    default:
+      return "Desconocido";
+  }
+};
+
+const getRequestsColor = (status) => {
+  switch (status) {
+    case "REJECTED":
+      return "red";
+    case "APPROVED":
+      return "green";
+    case "PENDING":
+      return "blue";
     default:
       return "default";
   }
@@ -146,56 +210,16 @@ const headers = [
     align: "start",
     sortable: false,
   },
-  { key: "product.name", title: "Producto" },
-  { key: "price", title: "Precio" },
+  { key: "name", title: "Producto" },
   { key: "category", title: "Categoría" },
   { key: "subcategory", title: "Subcategoría" },
-  { key: "stock", title: "Stock total" },
-  { key: "status", title: "Estado", align: "center" },
+  { key: "request_status", title: "Estado" },
+  { key: "status", title: "Activo" },
   {
     key: "actions",
     title: "Acciones",
     align: "center",
     sortable: false,
-  },
-];
-
-const sales = [
-  {
-    product: {
-      img: "https://via.placeholder.com/150",
-      name: "Producto",
-      description: "Descripción del producto",
-    },
-    price: "$121",
-    category: "hombre",
-    subcategory: "sudadera",
-    stock: 10,
-    status: "Activo",
-  },
-  {
-    product: {
-      img: "https://via.placeholder.com/150",
-      name: "Pantalón de mezclilla",
-      description: "Descripción del producto",
-    },
-    price: "$259",
-    category: "hombre",
-    subcategory: "pantalón",
-    stock: 5,
-    status: "Inactivo",
-  },
-  {
-    product: {
-      img: "https://via.placeholder.com/150",
-      name: "Producto",
-      description: "Descripción del producto",
-    },
-    price: "$499",
-    category: "mujer",
-    subcategory: "sudadera",
-    stock: 1,
-    status: "Inactivo",
   },
 ];
 </script>
