@@ -3,7 +3,7 @@
     <v-col cols="12" lg="9">
       <v-row class="align-center">
         <v-col cols="12" lg="3" class="py-2">
-          <v-img src="@/assets/imgs/item.webp" width="120" class="mx-auto" />
+          <v-img :src="image" width="120" class="mx-auto" />
         </v-col>
         <v-col>
           <p class="text-h6 mb-4">{{ product }}</p>
@@ -57,19 +57,18 @@ const colors = {
 const props = defineProps({
   product: {
     type: String,
-    default: "Tu producto",
+  },
+  image: {
+    type: String,
   },
   status: {
     type: String,
-    default: "EN PROCESO",
   },
   description: {
     type: String,
-    default: "Descripción en proceso",
   },
   date: {
     type: String,
-    default: "01/01/2001",
   },
   details: {
     type: Boolean,

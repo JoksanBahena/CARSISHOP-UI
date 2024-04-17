@@ -88,7 +88,6 @@ export const useProfileStore = defineStore("profile", {
           }
         );
 
-
         return response.data;
       } catch (error) {
         console.error("Error creating admin:", error);
@@ -138,16 +137,12 @@ export const useProfileStore = defineStore("profile", {
       };
 
       try {
-        const response = await axios.post(
-          baseUrl + "address/delete",
-          params,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${this.token}`,
-            },
-          }
-        );
+        const response = await axios.post(baseUrl + "address/delete", params, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
         return response.data;
       } catch (error) {
         console.log("Error deleting address:", error);
@@ -155,7 +150,7 @@ export const useProfileStore = defineStore("profile", {
       }
     },
     async registerAddress(address) {
-      console.log("address", address)
+      console.log("address", address);
       try {
         const response = await axios.post(
           baseUrl + "address/register",
@@ -213,6 +208,22 @@ export const useProfileStore = defineStore("profile", {
         return response.data;
       } catch (error) {
         throw new Error("Error deleting card");
+      }
+    },
+    async fetchOrders() {
+      try {
+        const response = await axios.post(
+          baseUrl + "order/getOrders",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          }
+        );
+        return response.data.data;
+      } catch (error) {
+        throw new Error("Error fetching orders");
       }
     },
   },
