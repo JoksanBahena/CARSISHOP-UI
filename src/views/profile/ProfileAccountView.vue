@@ -195,42 +195,6 @@
                   :error-messages="v$.rfc.$errors.map((e) => e.$message)"
                 />
               </v-col>
-              <!-- <v-col cols="4">
-                <div class="text-subtitle-1 font-weight-medium">
-                  Identificación
-                </div>
-                <v-file-input
-                  density="compact"
-                  type="file"
-                  accept="image/png, image/jpeg, image/bmp"
-                  variant="outlined"
-                  prepend-icon="mdi-camera-outline"
-                  chips
-                  show-size
-                  :readonly="is_disabled"
-                  v-model="state.image"
-                  @blur="v$.image.$touch"
-                  @input="v$.image.$touch"
-                  :error-messages="v$.image.$errors.map((e) => e.$message)"
-                  @change="onImageChange"
-                >
-                  <template v-slot:selection="{ fileNames }">
-                    <template
-                      v-for="(fileName, index) in fileNames"
-                      :key="fileName"
-                    >
-                      <v-chip
-                        class="me-2"
-                        :color="colors.primary_dark"
-                        size="small"
-                        label
-                      >
-                        {{ fileName }}
-                      </v-chip>
-                    </template>
-                  </template>
-                </v-file-input>
-              </v-col> -->
               <v-col cols="12">
                 <v-card variant="outlined" :color="'grey-lighten-1'">
                   <v-expansion-panels v-model="panel" flat>
@@ -295,11 +259,6 @@
 import Colors from "@/utils/Colors.js";
 import { ref, reactive, onMounted } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { useProfileStore } from "@/store/ProfileStore";
-import { Toast } from "@/utils/Alerts.js";
-import { getErrorMessage } from "@/utils/Errors";
-import { encryptAES } from "@/utils/Crypto";
-
 import {
   required,
   integer,
@@ -307,12 +266,14 @@ import {
   maxLength,
   helpers,
 } from "@vuelidate/validators";
-
-const { profile, updateProfile, updateProfileImage, updateSellerProfile } =
-  useProfileStore();
+import { useProfileStore } from "@/store/ProfileStore";
+import { Toast } from "@/utils/Alerts.js";
+import { getErrorMessage } from "@/utils/Errors";
+import { encryptAES } from "@/utils/Crypto";
 
 const { withMessage, regex } = helpers;
-
+const { profile, updateProfile, updateProfileImage, updateSellerProfile } =
+  useProfileStore();
 const error = ref({ error: "", message: "" });
 
 const colors = {
@@ -457,7 +418,6 @@ const rules = {
     ),
   },
   curp: {
-    required: withMessage("El CURP es requerido", required),
     minLength: withMessage("El CURP debe tener 18 caracteres", minLength(18)),
     maxLength: withMessage("El CURP debe tener 18 caracteres", maxLength(18)),
     regex: withMessage(
@@ -468,7 +428,6 @@ const rules = {
     ),
   },
   rfc: {
-    required: withMessage("El RFC es requerido", required),
     minLength: withMessage("El RFC debe tener 13 caracteres", minLength(13)),
     maxLength: withMessage("El RFC debe tener 13 caracteres", maxLength(13)),
     regex: withMessage(
@@ -573,17 +532,6 @@ const onProfilepicChange = (e) => {
 
   reader.onload = (e) => {
     state.img = e.target.result;
-  };
-  reader.readAsDataURL(file);
-};
-
-const onImageChange = (e) => {
-  const file = e.target.files[0];
-  const reader = new FileReader();
-
-  reader.onload = (e) => {
-    panel.value = [0];
-    state.image_view = e.target.result;
   };
   reader.readAsDataURL(file);
 };
