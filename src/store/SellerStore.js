@@ -49,6 +49,11 @@ export const useSellerStore = defineStore("seller", {
       formData.append("user", user);
       formData.append("request_status", "APPROVED");
 
+      console.log(id);
+      console.log(rfc);
+      console.log(curp);
+      console.log(user);
+      console.log("APPROVED");
       try {
         const response = await axios.put(baseURL + "sellers/", formData, {
           headers: {

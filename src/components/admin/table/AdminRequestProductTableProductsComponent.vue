@@ -91,6 +91,7 @@ import { ref } from "vue";
 import Colors from "@/utils/Colors.js";
 import { useClotheStore } from "@/store/ClotheStore";
 import Swal from "sweetalert2";
+import { Toast } from "@/utils/Alerts";
 
 const { findAllRequestClothe, approveClothe, rejectClothe } = useClotheStore();
 
@@ -156,8 +157,11 @@ const aproveClotheReq = async (id) => {
     }).then((result) => {
       if (result.isConfirmed) {
         approveClothe(id);
-        Swal.fire("Aprobado", "El producto ha sido aprobado", "success");
-        window.location.reload();
+        Toast.fire({
+          icon: "success",
+          title: "Producto aprobado",
+        });
+        location.reload();
       }
     });
   } catch (error) {
@@ -180,7 +184,10 @@ const rejectClotheReq = async (id) => {
       if (result.isConfirmed) {
         rejectClothe(id);
 
-        Swal.fire("Rechazado", "El producto ha sido rechazado", "success");
+        Toast.fire({
+          icon: "success",
+          title: "Producto rechazado",
+        });
         window.location.reload();
       }
     });
