@@ -26,9 +26,9 @@
         :image="orderData.clothes[0].image"
       />
       <v-card v-else>
-        <v-card-title class="text-h6"
-          >No tienes compras registradas</v-card-title
-        >
+        <v-card-subtitle class="text-h6 mt-2">
+          No has realizado ninguna compra aun, ¡realiza tu primer pedido!
+        </v-card-subtitle>
       </v-card>
     </resumen-card-component>
 
@@ -50,9 +50,9 @@
         resume
       />
       <v-card v-else>
-        <v-card-title class="text-h6"
-          >No tienes dirección registrada</v-card-title
-        >
+        <v-card-subtitle class="text-h6 mt-2">
+          Realiza tu primer pedido para mostrar la información de tu dirección
+        </v-card-subtitle>
       </v-card>
     </resumen-card-component>
 
@@ -68,9 +68,9 @@
         resume
       />
       <v-card v-else>
-        <v-card-title class="text-h6"
-          >No tienes tarjeta registrada</v-card-title
-        >
+        <v-card-subtitle class="text-h6 mt-2">
+          Realiza tu primer pedido para mostrar la información de tu tarjeta
+        </v-card-subtitle>
       </v-card>
     </resumen-card-component>
   </v-container>

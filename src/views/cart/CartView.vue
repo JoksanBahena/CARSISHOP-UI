@@ -5,13 +5,19 @@
       <p class="text-h4 font-weight-medium mb-2">Carrito</p>
       <v-row>
         <v-col cols="12" lg="9" md="9">
+          <v-row v-for="item in cartData.clothes" :key="item.id">
+            <v-col cols="12">
+              <seller-card-component cart>
+                <product-list-cart-component
+                  :product="item.name"
+                  :description="item.description"
+                  :size="item.size"
+                  :price="item.price"
+                />
+              </seller-card-component>
+            </v-col>
+          </v-row>
           <seller-card-component cart>
-            <product-list-cart-component />
-            <product-list-cart-component />
-          </seller-card-component>
-
-          <seller-card-component cart>
-            <product-list-cart-component />
             <product-list-cart-component />
           </seller-card-component>
         </v-col>
@@ -41,6 +47,46 @@
 <script setup>
 import DefaultLayout from "@/layouts/user/DefaultLayout.vue";
 import Colors from "@/utils/Colors.js";
+import { useCartStore } from "@/store/CartStore";
+import { reactive, onMounted, ref } from "vue";
+import { Toast } from "@/utils/Alerts";
+
+const { fetchCart } = useCartStore();
+
+const cart = {
+  clothes: [
+    {
+      name: "",
+      description: "",
+      price: 0,
+      size: "",
+      image: "",
+      quantity: 0,
+    },
+  ]
+}
+
+const cartData = reactive({ ...cart });
+const loading = ref(false);
+
+const getCart = async () => {
+  loading.value = true;
+  try {
+    const response = await fetchCart();
+    cartData.clothes = response;
+    loading.value = false;
+    console.log(cartData);
+  } catch (error) {
+    loading.value = false;
+    throw new Error("Error al obtener el carrito");
+  } finally {
+    loading.value = false;
+  }
+};
+
+onMounted(() => {
+  getCart();
+});
 
 const colors = {
   primary: Colors.cs_primary,
