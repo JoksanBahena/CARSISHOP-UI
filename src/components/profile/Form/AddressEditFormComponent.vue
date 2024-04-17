@@ -1,11 +1,41 @@
 <template>
   <v-container>
-    <p class="text-h4 font-weight-medium mb-2">Agregar nueva dirección</p>
+    <p class="text-h4 font-weight-medium mb-2">Editar dirección</p>
 
     <v-card variant="flat" class="mt-4">
       <v-card-title>Dirección de envío</v-card-title>
-      <v-card-item>
-        <v-form>
+
+      <v-card-item v-if="error.message">
+        <v-slide-y-transition tag="v-alert">
+          <v-alert
+            class="mb-8"
+            variant="tonal"
+            icon="mdi-alert-circle-outline"
+            type="error"
+            :text="error.message"
+          />
+        </v-slide-y-transition>
+
+        <v-btn
+          variant="outlined"
+          class="text-none"
+          :color="colors.primary_dark"
+          block
+          :to="{ name: 'ProfileAddresses' }"
+        >
+          Regresar a la lista de direcciones
+        </v-btn>
+      </v-card-item>
+
+      <v-card-item v-else>
+        <v-progress-linear
+          v-if="loading"
+          indeterminate
+          class="mb-4"
+          :color="colors.primary_dark"
+        />
+
+        <v-form v-else>
           <v-row>
             <v-col cols="12" md="4">
               <div class="text-subtitle-1 font-weight-medium">
@@ -183,12 +213,16 @@ import {
 } from "@vuelidate/validators";
 import { useStateAndTownStore } from "@/store/StateAndTownStore";
 import { useProfileStore } from "@/store/ProfileStore";
-import { encryptAES } from "@/utils/Crypto";
+import { encryptAES, decryptValue } from "@/utils/Crypto";
 import { Toast } from "@/utils/Alerts";
-import router from "@/router";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+
+const address_id = route.params.id;
 
 const { fetchStates } = useStateAndTownStore();
-const { registerAddress } = useProfileStore();
+const { updateAddress, getAddressById } = useProfileStore();
 
 const { withMessage, regex } = helpers;
 
@@ -212,7 +246,8 @@ const address = {
 const state = reactive({ ...address });
 const statesData = reactive([]);
 const townsData = reactive([]);
-const loading = ref(false);
+const loading = ref(true);
+const error = ref({ error: "", message: "" });
 
 const fetchStatesData = async () => {
   try {
@@ -223,6 +258,31 @@ const fetchStatesData = async () => {
     response.forEach((stateData) => {
       townsData.push(stateData.towns.map((town) => town.name));
     });
+
+    const address_data = await getAddressById(address_id);
+
+    if (address_data.status === 200) {
+      const address_field = address_data.data;
+      console.log(address_field);
+
+      state.cp = decryptValue(address_field.cp);
+      state.state = address_field.state.name;
+      state.town = address_field.town.name;
+      state.name = decryptValue(address_field.name);
+      state.suburb = decryptValue(address_field.suburb);
+      state.street = decryptValue(address_field.street);
+      state.extnumber = decryptValue(address_field.extnumber);
+      state.intnumber =
+        address_field.intnumber === "S/N"
+          ? ""
+          : decryptValue(address_field.intnumber);
+    } else {
+      error.value = {
+        error: "error",
+        message: "No se encontró ninguna dirección",
+      };
+    }
+    loading.value = false;
   } catch (error) {
     console.error(error);
   }
@@ -331,6 +391,7 @@ const submitForm = async () => {
   }
 
   const params = {
+    id: address_id,
     name: encryptAES(state.name),
     state: state.state,
     town: state.town,
@@ -341,8 +402,10 @@ const submitForm = async () => {
     extnumber: encryptAES(state.extnumber),
   };
 
+  loading.value = true;
+
   try {
-    const response = await registerAddress(params);
+    const response = await updateAddress(params);
     if (response.status === 200) {
       Toast.fire({
         icon: "success",
@@ -379,7 +442,5 @@ const clear = () => {
   state.cp = "";
   state.state = null;
   state.town = null;
-
-  router.push({ name: "ProfileAddresses" });
 };
 </script>

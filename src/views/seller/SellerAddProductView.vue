@@ -158,6 +158,7 @@
                 <v-select
                   v-model="state.category"
                   placeholder="Selecciona una categoría"
+                  no-data-text="Categorías no encontradas"
                   :items="categories"
                   item-title="name"
                   item-value="id"
@@ -178,6 +179,7 @@
                 <v-select
                   v-model="state.subcategory"
                   placeholder="Selecciona una subcategoría"
+                  no-data-text="Subcategorías no encontradas"
                   :items="subcategories"
                   item-title="name"
                   item-value="id"
@@ -208,11 +210,7 @@
             multiple
             chips
             @change="onFileChange"
-            :hint="
-              state.image_urls.length > 4
-                ? 'Máximo 5 imágenes!'
-                : ''
-            "
+            :hint="state.image_urls.length > 4 ? '¡Máximo 5 imágenes!' : ''"
             @blur="v$.image_urls.$touch"
             @input="v$.image_urls.$touch"
             :error-messages="v$.image_urls.$errors.map((e) => e.$message)"
@@ -326,10 +324,10 @@ import { encryptAES } from "@/utils/Crypto";
 import { Toast } from "@/utils/Alerts.js";
 import router from "@/router";
 
-const { createClothe, imagesClothe } = useClotheStore();
-const { findAllCategories } = useCategoryStore();
-const { findAllsubcategories } = useSubcategoryStore();
 const { profile } = useProfileStore();
+const { createClothe, imagesClothe } = useClotheStore();
+const { findAllCategoriesWithoutPagination } = useCategoryStore();
+const { findAllsubcategoriesWithoutPagination } = useSubcategoryStore();
 
 const { withMessage, forEach, regex } = helpers;
 
@@ -362,19 +360,9 @@ const colors = {
   red: Colors.cs_red,
 };
 
-const categories = [
-  { name: "Hombre", id: 1 },
-  { name: "Mujer", id: 2 },
-  { name: "Niño", id: 3 },
-];
+const categories = ref([]);
 
-const subcategories = [
-  { name: "Top", id: 1 },
-  { name: "Bottom", id: 2 },
-  { name: "Calzado", id: 3 },
-  { name: "Accesorios", id: 4 },
-  { name: "Ropa interior", id: 5 },
-];
+const subcategories = ref([]);
 
 const product = {
   name: "",
@@ -495,11 +483,12 @@ const submitForm = async () => {
         clothesId: response.data.id,
       };
 
+
       for (let i = 0; i < state.image_urls.length; i++) {
         (payload[`images[${i}].image`] = state.image_urls.value[i]),
           (payload[`images[${i}].index`] = i);
       }
-
+    
       const images_response = await imagesClothe(payload);
 
       clear();
@@ -574,7 +563,6 @@ const clear = () => {
   state.category = null;
   state.subcategory = null;
   state.stock = [];
-  state.image_urls = [];
   selected_sizes.value = [];
 };
 
@@ -597,6 +585,12 @@ watch(selected_sizes, (value, old_value) => {
 });
 
 onMounted(async () => {
+  const resp_categories = await findAllCategoriesWithoutPagination();
+  const resp_subcategories = await findAllsubcategoriesWithoutPagination();
+
+  categories.value = resp_categories;
+  subcategories.value = resp_subcategories;
+
   state.sellerEmail = profile.username;
 });
 </script>

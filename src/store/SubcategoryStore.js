@@ -7,7 +7,7 @@ const token = localStorage.getItem("token") || "";
 export const useSubcategoryStore = defineStore("subcategory", {
   state: () => ({
     subcategories: [],
-
+    subcategoriesWithoutPagination: [],
   }),
 
   getters: {
@@ -38,6 +38,20 @@ export const useSubcategoryStore = defineStore("subcategory", {
           }
         );
         this.subcategories = response.data.data;
+      } catch (error) {
+        throw error;
+      }
+    },
+    async findAllsubcategoriesWithoutPagination() {
+      try {
+        const response = await axios.get(baseURL + "subcategories/all", {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          }
+        });
+        this.subcategoriesWithoutPagination = response.data.data;
+        return this.subcategoriesWithoutPagination;
       } catch (error) {
         throw error;
       }

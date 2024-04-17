@@ -30,7 +30,6 @@
         :color="colors.primary_dark"
         prepend-icon="mdi-delete-outline"
         @click="onDeleteHandle(id)"
-        :loading="loading"
       >
         Eliminar dirección
       </v-btn>
@@ -39,16 +38,18 @@
         class="ma-0 text-none"
         :color="colors.primary_dark"
         prepend-icon="mdi-pencil"
+        :to="{ name: 'ProfileEditAddress', params: { id: encrypt_id } }"
       >
         Editar dirección
       </v-btn>
     </v-card-actions>
-    <v-divider v-if="!resume" />
   </v-card>
+  <v-divider v-if="!resume" />
 </template>
 
 <script setup>
 import Colors from "@/utils/Colors.js";
+import { encryptAES, decryptValue } from "@/utils/Crypto";
 
 const colors = {
   primary_dark: Colors.cs_primary_dark,
@@ -92,4 +93,7 @@ const props = defineProps({
   },
   onDeleteHandle: Function,
 });
+
+const encrypt_id = encryptAES(props.id.toString());
+
 </script>

@@ -160,6 +160,11 @@ const routes = [
         component: () => import("@/views/profile/ProfileAddAddressView.vue"),
       },
       {
+        path: "addresses/edit/:id",
+        name: "ProfileEditAddress",
+        component: () => import("@/views/profile/ProfileEditAddressView.vue"),
+      },
+      {
         path: "payments",
         name: "ProfilePayments",
         component: () => import("@/views/profile/ProfilePaymentView.vue"),

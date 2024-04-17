@@ -70,6 +70,7 @@ import { useVuelidate } from "@vuelidate/core";
 import { helpers, required } from "@vuelidate/validators";
 import { useAuthStore } from "@/store/AuthStore";
 import { getErrorMessage } from "@/utils/Errors";
+import { encryptAES } from "@/utils/Crypto";
 
 const { withMessage, regex } = helpers;
 const { forgotPassword } = useAuthStore();
@@ -113,7 +114,7 @@ const submitForm = async () => {
   loading.value = true;
 
   try {
-    alert.value = await forgotPassword(state.email);
+    alert.value = await forgotPassword(encryptAES(state.email));
   } catch (error) {
     alert.value = getErrorMessage(error);
   } finally {
