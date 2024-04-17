@@ -97,13 +97,17 @@ export const useClotheStore = defineStore("clothe", {
             Authorization: `Bearer ${token}`,
           },
         });
-        this.clothesByCategory = response.data.data;
+
+        this.clothesByCategory = response.data.data.filter(clothe => clothe.request_status === "APPROVED");
         return response.data.data;
+
+
       } catch (error) {
         throw error;
       }
 
     },
+
     async findAllRequestClothe(page, itemsPerPage, sortBy) {
       const params = {
         value: "PENDING",

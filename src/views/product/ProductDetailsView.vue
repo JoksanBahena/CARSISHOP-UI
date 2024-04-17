@@ -13,7 +13,6 @@
 <script setup>
 import DefaultLayout from "@/layouts/user/DefaultLayout.vue";
 import ProductInfoComponent from "@/components/product/ProductInfoComponent.vue";
-import ProductReviewsComponent from "@/components/product/ProductReviewsComponent.vue";
 import ProductListComponent from "@/components/common/ProductListComponent.vue";
 
 const props = defineProps({
@@ -33,21 +32,15 @@ const items = [
     to: { name: "Home" },
   },
   {
-    title: props.category,
+    title: "Categoría",
     to: {
       name: "CategorizedProducts",
-      params: { category: props.category, subcategory: "todo" },
+      params: { category: "hombre" },
     },
   },
+
   {
-    title: "Subcategory",
-    to: {
-      name: "CategorizedProducts",
-      params: { category: props.category, subcategory: props.subcategory },
-    },
-  },
-  {
-    title: "Product name",
+    title: "Producto",
   },
 ];
 </script>
