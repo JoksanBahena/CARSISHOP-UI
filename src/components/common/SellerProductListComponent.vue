@@ -44,8 +44,7 @@ const clothes = ref([]);
 onMounted(async () => {
   try {
     const response = await fetchClothesBySellerId(profile.seller.id);
-    console.log(response);
-    clothes.value = response.data;
+    clothes.value = response.data.slice(0, 5);
   } catch (error) {
     console.log(error);
   }
