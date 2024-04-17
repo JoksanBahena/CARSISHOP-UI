@@ -6,7 +6,7 @@
 
     <resumen-card-component
       title="Mi cuenta"
-      action="Editar"
+      action="Ver cuenta"
       :to="{ name: 'ProfileAccount' }"
     >
       <user-profile-card-component />
@@ -15,6 +15,7 @@
     <resumen-card-component
       icon="mdi-shopping-outline"
       title="Ultima compra"
+      action="Ver compras"
       :to="{ name: 'ProfileOrders' }"
     >
       <product-list-card-component
@@ -26,15 +27,18 @@
         :image="orderData.clothes[0].image"
       />
       <v-card v-else>
-        <v-card-title class="text-h6"
-          >No tienes compras registradas</v-card-title
-        >
+        <div class="text-subtitle-1 mt-2 mb-4">
+          No tienes compras registradas
+        </div>
       </v-card>
     </resumen-card-component>
 
     <resumen-card-component
       icon="mdi-map-marker-outline"
       title="Mi dirección"
+      :action="
+        orderData.address.name !== '' ? 'Ver direcciones' : 'Agregar dirección'
+      "
       :to="{ name: 'ProfileAddresses' }"
     >
       <address-component
@@ -50,15 +54,16 @@
         resume
       />
       <v-card v-else>
-        <v-card-title class="text-h6"
-          >No tienes dirección registrada</v-card-title
-        >
+        <div class="text-subtitle-1 mt-2 mb-4">
+          No tienes dirección registrada
+        </div>
       </v-card>
     </resumen-card-component>
 
     <resumen-card-component
       icon="mdi-credit-card-outline"
       title="Métodos de pago"
+      :action="orderData.card.owner !== '' ? 'Ver tarjetas' : 'Agregar tarjeta'"
       :to="{ name: 'ProfilePayments' }"
     >
       <payment-method-component
@@ -68,9 +73,9 @@
         resume
       />
       <v-card v-else>
-        <v-card-title class="text-h6"
-          >No tienes tarjeta registrada</v-card-title
-        >
+        <div class="text-subtitle-1 mt-2 mb-4">
+          No tienes tarjeta registrada
+        </div>
       </v-card>
     </resumen-card-component>
   </v-container>
@@ -80,7 +85,6 @@
 import ResumenCardComponent from "@/components/profile/ResumenCardComponent.vue";
 import { useProfileStore } from "@/store/ProfileStore";
 import { reactive, onMounted } from "vue";
-import { Toast } from "@/utils/Alerts";
 import { decryptValue } from "@/utils/Crypto";
 
 const { fetchOrders } = useProfileStore();
@@ -129,6 +133,9 @@ const orderData = reactive({ ...order });
 const getOrder = async () => {
   try {
     const response = await fetchOrders();
+
+    console.log(response);
+
     orderData.card.owner = decryptValue(response.card.owner);
     orderData.card.last_four = response.card.lastFour;
     orderData.address.name = response.address.name;
@@ -146,7 +153,7 @@ const getOrder = async () => {
     orderData.clothes[0].date = formatDate(response.at);
     orderData.clothes[0].image = response.clothOrders[0].clothes.images[0].url;
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
   }
 };
 
