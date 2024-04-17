@@ -275,6 +275,16 @@ const rules = {
       );
       return birthDate <= eighteenYearsAgo;
     }),
+    maxDate: withMessage("Debes ser menor de 120 años", (value) => {
+      const birthDate = new Date(value);
+      const currentDate = new Date();
+      const oneHundredTwentyYearsAgo = new Date(
+        currentDate.getFullYear() - 120,
+        currentDate.getMonth(),
+        currentDate.getDate()
+      );
+      return birthDate >= oneHundredTwentyYearsAgo;
+    }),
   },
 };
 
