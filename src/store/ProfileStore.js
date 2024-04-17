@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import axios from "axios";
-import { AsyncCompiler } from "sass";
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -9,11 +8,13 @@ export const useProfileStore = defineStore("profile", {
     token: localStorage.getItem("token") || "",
     profile: {},
     addressess: [],
+    address: {},
     admins: [],
   }),
   getters: {
     getProfile: (state) => state.profile,
     getAddressess: (state) => state.addressess,
+    getAddress: (state) => state.address,
     getAdmins: (state) => state.admins,
   },
   actions: {
@@ -153,7 +154,39 @@ export const useProfileStore = defineStore("profile", {
         this.addressess = response.data.data;
         return this.addressess;
       } catch (error) {
-        throw new Error("Error fetching addresses");
+        throw error;
+      }
+    },
+    async getAddressById(id) {
+      const params = {
+        id: id,
+      };
+      try {
+        const response = await axios.post(baseUrl + "address/getById", params, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+
+        this.address = response.data.data;
+
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    },
+    async updateAddress(address) {
+      try {
+        const response = await axios.put(baseUrl + "address/update", address, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+        return response.data;
+      } catch (error) {
+        throw error;
       }
     },
     async deleteAddress(id) {
@@ -168,14 +201,17 @@ export const useProfileStore = defineStore("profile", {
             Authorization: `Bearer ${this.token}`,
           },
         });
+
+        this.addressess = this.addressess.filter(
+          (address) => address.id !== id
+        );
+
         return response.data;
       } catch (error) {
-        console.log("Error deleting address:", error);
-        throw new Error("Error deleting address");
+        throw error;
       }
     },
     async registerAddress(address) {
-      console.log("address", address);
       try {
         const response = await axios.post(
           baseUrl + "address/register",
@@ -248,7 +284,7 @@ export const useProfileStore = defineStore("profile", {
         );
         return response.data.data;
       } catch (error) {
-        throw new Error("Error fetching orders");
+        throw error;
       }
     },
   },
