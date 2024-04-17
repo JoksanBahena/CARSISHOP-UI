@@ -55,7 +55,7 @@ export const useCategoryStore = defineStore("category", {
         });
         return response.data;
       } catch (error) {
-        throw error;
+        throw new Error(error);
       }
     },
     async updateCategory(id, name) {

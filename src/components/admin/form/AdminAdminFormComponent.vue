@@ -144,17 +144,6 @@
         Guardar
       </v-btn>
     </v-form>
-    <v-dialog v-model="dialog2">
-      <v-card>
-        <v-alert
-          v-if="state.alertMessage"
-          :value="true"
-          :type="state.alertType"
-          variant="tonal"
-          >{{ state.alertMessage }}</v-alert
-        >
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
@@ -164,7 +153,6 @@ import Colors from "@/utils/Colors.js";
 import { ref, shallowRef } from "vue";
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import Swal from "sweetalert2";
 import { useProfileStore } from "@/store/ProfileStore";
 import {
   required,
@@ -174,11 +162,11 @@ import {
   helpers,
 } from "@vuelidate/validators";
 import { encryptAES } from "@/utils/Crypto";
+import { Toast } from "@/utils/Alerts";
 
 const { withMessage, regex } = helpers;
 
 const { createAdmin } = useProfileStore();
-const dialog2 = shallowRef(false);
 
 const colors = {
   primary: Colors.cs_primary,
@@ -305,15 +293,17 @@ const submitForm = async () => {
       encryptAES(state.password),
       state.gender
     );
-    if (response.error === false) {
-      showAlertInDialog(response.message, "success");
-    } else {
-      showAlertInDialog(response.message, "error");
-    }
+    Toast.fire({
+      icon: "success",
+      title: response.message,
+    });
     location.reload();
   } catch (error) {
     console.error("Error al crear el admin", error);
-    showAlertInDialog("Error al crear el admin", "error");
+    Toast.fire({
+      icon: "error",
+      title: "Error al crear el admin",
+    });
     location.reload();
   } finally {
     clear();
@@ -335,19 +325,4 @@ const props = defineProps({
     default: null,
   },
 });
-
-const showAlertInDialog = (message, type) => {
-  state.alertMessage = message;
-  state.alertType = type;
-  dialog2.value = true;
-
-  setTimeout(() => {
-    hideAlert();
-  }, 4500);
-};
-
-const hideAlert = () => {
-  state.alertMessage = "";
-  state.alertType = "";
-};
 </script>
