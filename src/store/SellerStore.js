@@ -42,12 +42,22 @@ export const useSellerStore = defineStore("seller", {
     },
     async approveSeller(id, rfc, curp, user) {
       console.log("entra");
+      const userID = {
+        id: user
+      };
+      console.log(userID)
       const formData = new FormData();
       formData.append("id", id);
       formData.append("rfc", rfc);
       formData.append("curp", curp);
-      formData.append("user", user);
+      formData.append("user", userID);
       formData.append("request_status", "APPROVED");
+
+      console.log("rfc", rfc);
+      console.log("curp", curp);
+      console.log("user que sera seller", userID);
+      console.log("APPROVED");
+      console.log("id de la solicitud", id);
 
       try {
         const response = await axios.put(baseURL + "sellers/", formData, {

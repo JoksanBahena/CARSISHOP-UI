@@ -1,9 +1,9 @@
 <template>
   <v-list min-width="200">
     <v-list-item
-      :prepend-avatar="user.image"
-      :title="user.rfc"
-      :subtitle="user.curp"
+      :title="user.user.name"
+      :subtitle="user.user.username"
+      :prepend-avatar="user.user.profilepic"
     />
   </v-list>
 </template>
@@ -16,7 +16,7 @@ defineProps({
     default: {
       rfc: "Maximiliano Carsi",
       curp: "carsimax@gmail.com",
-      image: "https://randomuser.me/api/portraits/men/2.jpg",
+      profilepic: "https://randomuser.me/api/portraits/men/2.jpg",
     },
   },
 });

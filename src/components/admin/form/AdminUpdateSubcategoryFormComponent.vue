@@ -58,6 +58,7 @@ import { useVuelidate } from "@vuelidate/core";
 import Swal from "sweetalert2";
 import { required, minLength, maxLength, helpers } from "@vuelidate/validators";
 import { useSubcategoryStore } from "@/store/SubcategoryStore";
+import { Toast } from "@/utils/Alerts";
 
 const { withMessage } = helpers;
 const { updateSubcategory } = useSubcategoryStore();
@@ -109,28 +110,17 @@ const submitForm = async () => {
       props.selectedSubcategory.id,
       state.subcategory
     );
-    if (response.error === false) {
-      Swal.fire({
-        icon: "success",
-        title: response.message,
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: response.message,
-        showConfirmButton: true,
-      });
-    }
+    Toast.fire({
+      icon: "success",
+      title: response.message,
+    });
+    location.reload();
     location.reload();
   } catch (error) {
-    console.error("Error al actualizar la categoría", error);
-    Swal.fire({
+    console.error("Error al actualizar la subcategiría", error);
+    Toast.fire({
       icon: "error",
       title: "Error al actualizar la subcategoría",
-      text: "Hubo un problema al procesar tu solicitud. Por favor, inténtalo de nuevo más tarde.",
-      timer: 1500,
     });
     location.reload();
   } finally {

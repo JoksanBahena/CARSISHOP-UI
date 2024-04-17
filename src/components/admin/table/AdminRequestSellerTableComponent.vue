@@ -73,6 +73,7 @@ import Colors from "@/utils/Colors.js";
 import { useSellerStore } from "@/store/SellerStore";
 import Swal from "sweetalert2";
 import { encryptAES } from "@/utils/Crypto";
+import { Toast } from "@/utils/Alerts";
 
 const { findAllRequestSeller, approveSeller, rejectedSeller } =
   useSellerStore();
@@ -137,12 +138,19 @@ const approveSellerReq = async (id, rfc, curp, user) => {
     }).then((result) => {
       if (result.isConfirmed) {
         approveSeller(id, encryptAES(rfc), encryptAES(curp), user);
-        Swal.fire("Aprobado", "El vendedor ha sido aprobado", "success");
+        Toast.fire({
+          icon: "success",
+          title: "Vendedor aprobado",
+        });
         window.location.reload();
       }
     });
   } catch (error) {
     console.log(error);
+    Toast.fire({
+      icon: "error",
+      title: "Error al aprobar",
+    });
   }
 };
 
@@ -160,12 +168,19 @@ const rejectedSellerReq = async (id, rfc, curp, user) => {
     }).then((result) => {
       if (result.isConfirmed) {
         rejectedSeller(id, encryptAES(rfc), encryptAES(curp), user);
-        Swal.fire("Aprobado", "El vendedor ha sido rechazado", "success");
+        Toast.fire({
+          icon: "success",
+          title: "Vendedor rechazado",
+        });
         window.location.reload();
       }
     });
   } catch (error) {
     console.log(error);
+    Toast.fire({
+      icon: "error",
+      title: "Error al rechazar",
+    });
   }
 };
 

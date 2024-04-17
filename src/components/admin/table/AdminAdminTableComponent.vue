@@ -14,20 +14,6 @@
             v-model="isEditModalOpen"
             :selectedCategory="selectedCategory"
           />
-
-          <v-text-field
-            v-model="search"
-            label="Buscar venta"
-            prepend-inner-icon="mdi-magnify"
-            variant="outlined"
-            hide-details
-            single-line
-            density="compact"
-            class="mx-1 my-4"
-          />
-          <p class="text-subtitle-1 ml-auto my-auto mx-1">
-            {{ totalItems }} Resultados obtenidos
-          </p>
         </div>
       </template>
 
@@ -51,6 +37,7 @@
 import { ref } from "vue";
 import Colors from "@/utils/Colors.js";
 import { useProfileStore } from "@/store/ProfileStore";
+import { decryptValue } from "@/utils/Crypto";
 
 const { findAllAdmins } = useProfileStore();
 
@@ -77,8 +64,13 @@ const headers = ref([
 const loadItems = async ({ page, itemsPerPage, sortBy }) => {
   loading.value = true;
   const indexPage = page - 1;
-  await findAllAdmins(indexPage, itemsPerPage, sortBy);
-
+  const response = await findAllAdmins(indexPage, itemsPerPage, sortBy);
+  response.forEach((admin) => {
+    admin.name = decryptValue(admin.name);
+    admin.surname = decryptValue(admin.surname);
+    admin.username = decryptValue(admin.username);
+    admin.phone = decryptValue(admin.phone);
+  });
   const { admins } = useProfileStore();
 
   const start = indexPage * itemsPerPage;
