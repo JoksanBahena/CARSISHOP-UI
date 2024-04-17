@@ -8,6 +8,12 @@
       />
     </template>
     <v-list>
+      <v-list-item class="d-flex justify-center font-weight-medium">
+        ¡Un placer que seas {{ getProfileType() }}!
+      </v-list-item>
+
+      <v-divider />
+
       <v-list-item>
         <user-profile-card-component />
       </v-list-item>
@@ -41,11 +47,19 @@
 import { useAuthStore } from "@/store/AuthStore.js";
 import Colors from "@/utils/Colors.js";
 
+const { user, logout } = useAuthStore();
+
 const colors = {
   primary_dark: Colors.cs_primary_dark,
 };
 
-const { logout } = useAuthStore();
+const getProfileType = () => {
+  if (user === "SELLER") {
+    return "vendedor";
+  } else if (user == "CUSTOMER") {
+    return "comprador";
+  }
+};
 
 const logoutSession = () => {
   logout();
