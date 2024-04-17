@@ -216,7 +216,6 @@ const submitForm = async () => {
       image: state.image[0],
       user: getId,
     };
-
     const response = await requestSeller(seller);
     if (response.status === 201) {
       Toast.fire({
@@ -252,7 +251,10 @@ const onFileChange = (e) => {
 };
 
 onMounted(() => {
-  if (profile.seller?.request_status === "PENDING" || profile.seller?.request_status === "REJECTED") {
+  if (
+    profile.seller?.request_status === "PENDING" ||
+    profile.seller?.request_status === "REJECTED"
+  ) {
     state.curp = profile.seller.curp;
     state.rfc = profile.seller.rfc;
     img_view.value = profile.seller.image;
