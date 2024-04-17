@@ -16,14 +16,8 @@
       </v-row>
     </v-col>
     <v-col cols="7" lg="3" md="3">
-      <div class="text-subtitle-1 font-weight-medium">Cantidad</div>
+      <div class="text-subtitle-1 font-weight-medium">Cantidad: {{amount}}</div>
       <div class="d-flex">
-        <v-select
-          placeholder="#"
-          :items="[1, 2, 3, 4, 5]"
-          density="compact"
-          variant="outlined"
-        />
         <p class="text-subtitle-1 mt-2 mb-8 ml-2">${{ price }}MX</p>
       </div>
     </v-col>

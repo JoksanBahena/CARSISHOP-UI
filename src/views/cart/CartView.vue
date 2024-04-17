@@ -7,12 +7,14 @@
         <v-col cols="12" lg="9" md="9">
           <v-row v-for="item in cartData.clothes" :key="item.id">
             <v-col cols="12">
-              <seller-card-component cart>
+              <seller-card-component cart
+              :title="item.clothes.seller.user.name">
                 <product-list-cart-component
-                  :product="item.name"
-                  :description="item.description"
+                  :product="item.clothes.name"
+                  :description="item.clothes.description"
                   :size="item.size.name"
-                  :price="item.price"
+                  :price="item.clothes.stock[0].price"
+                  :amount="item.amount"
                 />
               </seller-card-component>
             </v-col>
@@ -56,14 +58,6 @@ const { fetchCart } = useCartStore();
 
 const cart = {
   clothes: [
-    {
-      name: "",
-      description: "",
-      price: 0,
-      size: "",
-      image: "",
-      amount: 0,
-    },
   ]
 }
 
@@ -84,6 +78,8 @@ const getCart = async () => {
     loading.value = false;
   }
 };
+
+
 
 
 onMounted(() => {
