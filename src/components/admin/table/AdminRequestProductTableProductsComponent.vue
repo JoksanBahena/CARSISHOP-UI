@@ -166,6 +166,10 @@ const aproveClotheReq = async (id) => {
     });
   } catch (error) {
     console.log(error);
+    Toast.fire({
+      icon: "error",
+      title: "Error al aprobar el producto",
+    });
   }
 };
 
@@ -193,6 +197,10 @@ const rejectClotheReq = async (id) => {
     });
   } catch (error) {
     console.log(error);
+    Toast.fire({
+      icon: "error",
+      title: "Error al rechazar el producto",
+    });
   }
 };
 loadItems({ page: 1, itemsPerPage: 5, sortBy: [] });
