@@ -41,7 +41,6 @@ export const useSellerStore = defineStore("seller", {
       }
     },
     async approveSeller(id, rfc, curp, user) {
-      console.log("entra");
       const formData = new FormData();
       formData.append("id", id);
       formData.append("rfc", rfc);

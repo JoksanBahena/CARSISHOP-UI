@@ -136,7 +136,7 @@ import router from "@/router";
 import { Toast } from "@/utils/Alerts.js";
 
 const { requestSeller } = useSellerStore();
-const { profile, getId } = useProfileStore();
+const { profile, fetchProfile, getId } = useProfileStore();
 
 const colors = {
   primary: Colors.cs_primary,
@@ -223,6 +223,9 @@ const submitForm = async () => {
         icon: "success",
         title: "Solicitud enviada correctamente",
       });
+
+      await fetchProfile();
+      router.push({ name: "SellerSales" });
     }
   } catch (err) {
     error.value = { error: true, message: err };
