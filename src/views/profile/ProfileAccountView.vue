@@ -170,7 +170,7 @@
                   placeholder="CURP"
                   prepend-inner-icon="mdi-account-outline"
                   variant="outlined"
-                  :readonly="is_disabled"
+                  :disabled="!is_disabled"
                   :counter="18"
                   v-model="state.curp"
                   @keyup="uppercase"
@@ -186,7 +186,7 @@
                   placeholder="RFC"
                   prepend-inner-icon="mdi-account-outline"
                   variant="outlined"
-                  :readonly="is_disabled"
+                  :disabled="!is_disabled"
                   :counter="13"
                   v-model="state.rfc"
                   @keyup="uppercase"
@@ -484,20 +484,20 @@ const submitForm = async () => {
       });
     }
 
-    if (state.curp || state.rfc || state.image.length > 0) {
-      const seller = {
-        id: profile.seller.id,
-        user: profile.id,
-        request_status: profile.seller.request_status,
-        curp: encryptAES(state.curp),
-        rfc: encryptAES(state.rfc),
-        image: state?.image[0] || null,
-      };
+    // if (state.curp || state.rfc || state.image.length > 0) {
+    //   const seller = {
+    //     id: profile.seller.id,
+    //     user: profile.id,
+    //     request_status: profile.seller.request_status,
+    //     curp: encryptAES(state.curp),
+    //     rfc: encryptAES(state.rfc),
+    //     image: state?.image[0] || null,
+    //   };
 
-      if (seller.image === null) delete seller.image;
+    //   if (seller.image === null) delete seller.image;
 
-      response = await updateSellerProfile(seller);
-    }
+    //   response = await updateSellerProfile(seller);
+    // }
 
     if (response.status === 200) {
       Toast.fire({
