@@ -11,15 +11,12 @@
                 <product-list-cart-component
                   :product="item.name"
                   :description="item.description"
-                  :size="item.size"
+                  :size="item.size.name"
                   :price="item.price"
                 />
               </seller-card-component>
             </v-col>
           </v-row>
-          <seller-card-component cart>
-            <product-list-cart-component />
-          </seller-card-component>
         </v-col>
         <v-col cols="12" lg="3" md="3">
           <v-card variant="flat">
@@ -32,6 +29,7 @@
                 :color="colors.primary_dark"
                 variant="flat"
                 block
+
               >
                 Continuar compra
               </v-btn>
@@ -49,7 +47,10 @@ import DefaultLayout from "@/layouts/user/DefaultLayout.vue";
 import Colors from "@/utils/Colors.js";
 import { useCartStore } from "@/store/CartStore";
 import { reactive, onMounted, ref } from "vue";
-import { Toast } from "@/utils/Alerts";
+import ProductListCartComponent from "@/components/common/ProductListCartComponent.vue";
+import SellerCardComponent from "@/components/profile/SellerCardComponent.vue";
+import BreadcrumbsComponent from "@/components/common/BreadcrumbsComponent.vue";
+import ProductListComponent from "@/components/common/ProductListComponent.vue";
 
 const { fetchCart } = useCartStore();
 
@@ -61,7 +62,7 @@ const cart = {
       price: 0,
       size: "",
       image: "",
-      quantity: 0,
+      amount: 0,
     },
   ]
 }
@@ -75,7 +76,7 @@ const getCart = async () => {
     const response = await fetchCart();
     cartData.clothes = response;
     loading.value = false;
-    console.log(cartData);
+    console.log(cartData.clothes);
   } catch (error) {
     loading.value = false;
     throw new Error("Error al obtener el carrito");
@@ -83,6 +84,7 @@ const getCart = async () => {
     loading.value = false;
   }
 };
+
 
 onMounted(() => {
   getCart();

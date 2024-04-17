@@ -59,5 +59,9 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  amount: {
+    type: Number,
+    default: 1,
+  },
 });
 </script>

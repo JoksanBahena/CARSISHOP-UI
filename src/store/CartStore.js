@@ -20,7 +20,7 @@ export const useCartStore = defineStore("cart", {
           },
         });
         console.log(response.data.data);
-        this.cart = response.data.data;
+        this.cart = response.data.data.clothesCarts;
         return this.cart;
       } catch (error) {
         console.log(error);
