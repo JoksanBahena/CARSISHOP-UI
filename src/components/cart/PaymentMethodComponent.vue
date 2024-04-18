@@ -1,21 +1,18 @@
 <template>
-  <v-card variant="flat" class="mt-4">
+  <v-card variant="flat" :class="!resume & !details ? 'mt-4' : 'mb-4'">
     <v-card-item>
       <div
+        v-if="!resume & !details"
         class="d-flex align-center text-body-2 text-none font-weight-bold mb-1"
       >
         <v-icon size="20" class="mr-1"> mdi-credit-card-outline</v-icon>
         Método de pago:
       </div>
     </v-card-item>
-    
+
     <v-card-item class="my-0 py-0">
       <template v-slot:prepend>
-        <v-img
-          src="@/assets/imgs/mc.webp"
-          width="50"
-          height="50"
-        />
+        <v-img src="@/assets/imgs/mc.webp" width="50" height="50" />
       </template>
       <div class="d-flex flex-fow text-subtitle-1">
         <p>{{ user }}</p>
@@ -44,6 +41,7 @@
       class="flex-column align-start flex-lg-row flex-md-row"
     >
       <v-btn
+        v-if="!resume"
         variant="outlined"
         class="mb-4 mr-4 text-none"
         :color="colors.primary_dark"

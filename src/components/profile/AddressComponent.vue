@@ -1,5 +1,5 @@
 <template>
-  <v-card variant="flat" class="mt-4">
+  <v-card variant="flat" :class="!resume & !details ? 'mt-4' : 'mb-4'">
     <v-card-item>
       <div
         v-if="!resume & !details"
@@ -8,7 +8,6 @@
         <v-icon size="20" class="mr-1"> mdi-map-marker-outline</v-icon>
         Dirección de envio:
       </div>
-      <v-card-title v-else class="mb-2"> Dirección de envio </v-card-title>
       <div class="text-h6 mb-1">
         <p>{{ user.toLocaleUpperCase() }}</p>
       </div>
@@ -48,7 +47,7 @@
 
 <script setup>
 import Colors from "@/utils/Colors.js";
-import { encryptAES, decryptValue } from "@/utils/Crypto";
+import { encryptAES } from "@/utils/Crypto";
 
 const colors = {
   primary_dark: Colors.cs_primary_dark,

@@ -484,21 +484,6 @@ const submitForm = async () => {
       });
     }
 
-    // if (state.curp || state.rfc || state.image.length > 0) {
-    //   const seller = {
-    //     id: profile.seller.id,
-    //     user: profile.id,
-    //     request_status: profile.seller.request_status,
-    //     curp: encryptAES(state.curp),
-    //     rfc: encryptAES(state.rfc),
-    //     image: state?.image[0] || null,
-    //   };
-
-    //   if (seller.image === null) delete seller.image;
-
-    //   response = await updateSellerProfile(seller);
-    // }
-
     if (response.status === 200) {
       Toast.fire({
         icon: "success",
