@@ -4,7 +4,7 @@
   <v-container>
     <p class="text-h4 font-weight-medium mb-2">Mis direcciones</p>
 
-    <v-fade-transition>
+    <v-expand-transition>
       <v-row v-if="!loading">
         <address-component
           v-for="address in addressData"
@@ -21,7 +21,7 @@
           :onDeleteHandle="addressDelete"
         />
       </v-row>
-    </v-fade-transition>
+    </v-expand-transition>
 
     <v-row v-if="!loading && addressData.length === 0">
       <orders-not-found-component
