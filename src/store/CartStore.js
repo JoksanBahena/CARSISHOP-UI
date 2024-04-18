@@ -70,6 +70,23 @@ export const useCartStore = defineStore("cart", {
         console.log(error);
       }
     },
+    async updateFromCart(id, amount){
+        try{
+          const response = await axios.post(baseURL + "clothesCart/update",
+            {
+            id:id,
+            amount:amount,
+            },
+            {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+          return response;
+        } catch (error) {
+          console.log(error);
+        }
+    },
     groupClothesBySeller(clothes){
       const groupedClothes = clothes.reduce((acc, curr) => {
         const sellerId = curr.clothes.seller.id;

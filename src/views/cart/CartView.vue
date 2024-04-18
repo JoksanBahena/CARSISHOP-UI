@@ -68,6 +68,8 @@ const cart = {
 
 const cartData = reactive({ ...cart });
 const loading = ref(false);
+let totalItems = ref(0);
+const totalPrice = ref(0);
 
 const getCart = async () => {
   loading.value = true;
@@ -85,7 +87,9 @@ const getCart = async () => {
 };
 
 onMounted(() => {
-  getCart();
+  getCart().then(() => {
+    calculateTotals();
+  });
 });
 
 const deleteItem = async (id) => {
@@ -93,14 +97,14 @@ const deleteItem = async (id) => {
     const response = await deleteFromCart(id);
     if (response.status === 200) {
       await getCart();
-      Swal.fire({
+      await Swal.fire({
         icon: "success",
         title: "Producto eliminado",
         showConfirmButton: false,
         timer: 1500,
       });
     }else{
-      Swal.fire({
+      await Swal.fire({
         icon: "error",
         title: "Error al eliminar el producto",
         showConfirmButton: false,
@@ -108,13 +112,25 @@ const deleteItem = async (id) => {
       });
     }
   } catch (error) {
-    Swal.fire({
+    await Swal.fire({
       icon: "error",
       title: "Error al eliminar el producto",
       showConfirmButton: false,
       timer: 1500,
     });
   }
+};
+
+const calculateTotals = async () => {
+  let itemsCount = 0;
+  let totalPriceValue = 0;
+  cartData.clothes.forEach(item => {
+    console.log(item);
+    itemsCount += item.clothesCart.reduce((acc, product) => acc + product.amount, 0);
+    totalPriceValue += item.clothesCart.reduce((acc, product) => acc + (product.amount * product.clothes.stock[0].price), 0);
+  });
+  totalItems.value = itemsCount;
+  totalPrice.value = totalPriceValue;
 };
 
 const colors = {
