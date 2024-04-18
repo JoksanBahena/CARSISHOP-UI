@@ -6,7 +6,10 @@ const baseURL = import.meta.env.VITE_BASE_URL;
 export const useCartStore = defineStore("cart", {
   state: () => ({
     token: localStorage.getItem("token") || "",
-    cart: {},
+    cart: {
+      clothesCarts: [
+      ],
+    },
   }),
   getters: {
     getCart: (state) => state.cart,
@@ -19,8 +22,8 @@ export const useCartStore = defineStore("cart", {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        console.log(response.data.data);
-        this.cart = response.data.data.clothesCarts;
+        console.log(response);
+        this.cart = this.groupClothesBySeller(response.data.data.clothesCarts);
         return this.cart;
       } catch (error) {
         console.log(error);
@@ -58,5 +61,19 @@ export const useCartStore = defineStore("cart", {
         console.log(error);
       }
     },
+    groupClothesBySeller(clothes){
+      const groupedClothes = clothes.reduce((acc, curr) => {
+        const sellerId = curr.clothes.seller.id;
+        if (!acc[sellerId]) {
+          acc[sellerId] = {
+            seller: curr.clothes.seller,
+            clothesCart: [],
+          };
+        }
+        acc[sellerId].clothesCart.push(curr);
+        return acc;
+      }, {});
+      return Object.values(groupedClothes);
+    }
   },
 });

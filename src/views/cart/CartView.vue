@@ -8,13 +8,16 @@
           <v-row v-for="item in cartData.clothes" :key="item.id">
             <v-col cols="12">
               <seller-card-component cart
-              :title="item.clothes.seller.user.name">
+              :title="item.seller.user.name">
                 <product-list-cart-component
-                  :product="item.clothes.name"
-                  :description="item.clothes.description"
-                  :size="item.size.name"
-                  :price="item.clothes.stock[0].price"
-                  :amount="item.amount"
+                  v-for="product in item.clothesCart"
+                  :key="product.id"
+                  :image="product.clothes.images[0].url"
+                  :product="product.clothes.name"
+                  :description="product.clothes.description"
+                  :size="product.clothes.stock[0].size.name"
+                  :price="product.clothes.stock[0].price"
+                  :amount="product.amount"
                 />
               </seller-card-component>
             </v-col>
@@ -57,8 +60,7 @@ import ProductListComponent from "@/components/common/ProductListComponent.vue";
 const { fetchCart } = useCartStore();
 
 const cart = {
-  clothes: [
-  ]
+  clothes: []
 }
 
 const cartData = reactive({ ...cart });
@@ -70,7 +72,7 @@ const getCart = async () => {
     const response = await fetchCart();
     cartData.clothes = response;
     loading.value = false;
-    console.log(cartData.clothes);
+    console.log(response);
   } catch (error) {
     loading.value = false;
     throw new Error("Error al obtener el carrito");
