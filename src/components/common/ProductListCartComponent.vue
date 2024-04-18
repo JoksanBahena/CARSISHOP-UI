@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-end mt-4">
-    <v-btn variant="flat" icon="mdi-close" />
+    <v-btn variant="flat" icon="mdi-close" @click="deleteItem(id)"/>
   </div>
   <v-row class="mt-2 mb-4 align-center">
     <v-col cols="12" lg="6" md="6">
@@ -37,6 +37,13 @@ const colors = {
 };
 
 const props = defineProps({
+  deleteItem: {
+    type: Function
+  },
+  id: {
+    type: Number,
+    default: 0,
+  },
   image: {
     type: String,
     default: "@/assets/imgs/item.webp",

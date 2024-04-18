@@ -22,7 +22,6 @@ export const useCartStore = defineStore("cart", {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        console.log(response);
         this.cart = this.groupClothesBySeller(response.data.data.clothesCarts);
         return this.cart;
       } catch (error) {
@@ -57,13 +56,16 @@ export const useCartStore = defineStore("cart", {
     },
     async deleteFromCart(clotheId) {
       try {
-        const response = await axios.delete(baseURL + `cart/${clotheId}`, {
+        const response = await axios.post(baseURL + "clothesCart/delete",
+          {
+          id:clotheId,
+          },
+          {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        this.cart = response.data.data;
-        return this.cart;
+        return response;
       } catch (error) {
         console.log(error);
       }
