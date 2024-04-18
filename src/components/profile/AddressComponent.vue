@@ -57,7 +57,7 @@ const colors = {
 
 const props = defineProps({
   id: {
-    type: String,
+    type: Number,
   },
   user: {
     type: String,

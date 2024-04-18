@@ -39,20 +39,20 @@
           <v-row>
             <v-col cols="12" md="4">
               <div class="text-subtitle-1 font-weight-medium">
-                Codigo Postal
+                Nombre de la dirección
               </div>
               <v-text-field
                 density="compact"
-                placeholder="Codigo Postal"
-                prepend-inner-icon="mdi-pound"
+                placeholder="Nombre de la dirección"
+                prepend-inner-icon="mdi-map-marker-outline"
                 variant="outlined"
-                type="number"
+                type="text"
                 hide-spin-buttons
-                :counter="5"
-                v-model="state.cp"
-                @blur="v$.cp.$touch"
-                @input="v$.cp.$touch"
-                :error-messages="v$.cp.$errors.map((e) => e.$message)"
+                :counter="33"
+                v-model="state.name"
+                @blur="v$.name.$touch"
+                @input="v$.name.$touch"
+                :error-messages="v$.name.$errors.map((e) => e.$message)"
               />
             </v-col>
             <v-col cols="6" md="4">
@@ -77,7 +77,7 @@
                 :items="getFilteredTowns()"
                 density="compact"
                 variant="outlined"
-                no-data-text="Ciudades no encontradas"
+                no-data-text="Selecciona un estado primero"
                 prepend-inner-icon="mdi-map-marker-outline"
                 v-model="state.town"
                 @blur="v$.town.$touch"
@@ -87,20 +87,20 @@
             </v-col>
             <v-col cols="12" md="4">
               <div class="text-subtitle-1 font-weight-medium">
-                Referencias de la dirección
+                Codigo Postal
               </div>
               <v-text-field
                 density="compact"
-                placeholder="Referencias de la dirección"
-                prepend-inner-icon="mdi-map-marker-outline"
+                placeholder="Codigo Postal"
+                prepend-inner-icon="mdi-pound"
                 variant="outlined"
-                type="text"
+                type="number"
                 hide-spin-buttons
-                :counter="33"
-                v-model="state.name"
-                @blur="v$.name.$touch"
-                @input="v$.name.$touch"
-                :error-messages="v$.name.$errors.map((e) => e.$message)"
+                :counter="5"
+                v-model="state.cp"
+                @blur="v$.cp.$touch"
+                @input="v$.cp.$touch"
+                :error-messages="v$.cp.$errors.map((e) => e.$message)"
               />
             </v-col>
             <v-col cols="12" md="4">
@@ -131,7 +131,7 @@
             </v-col>
             <v-col cols="6" md="2">
               <div class="text-subtitle-1 font-weight-medium">
-                Número exterior
+                Núm. exterior
               </div>
               <v-text-field
                 density="compact"
@@ -149,7 +149,7 @@
             </v-col>
             <v-col cols="6" md="2">
               <div class="text-subtitle-1 font-weight-medium">
-                Número interior
+                Núm. interior
               </div>
               <v-text-field
                 density="compact"
@@ -250,6 +250,7 @@ const loading = ref(true);
 const error = ref({ error: "", message: "" });
 
 const fetchStatesData = async () => {
+  loading.value = true;
   try {
     const response = await fetchStates();
     response.forEach((stateData) => {
@@ -263,7 +264,6 @@ const fetchStatesData = async () => {
 
     if (address_data.status === 200) {
       const address_field = address_data.data;
-      console.log(address_field);
 
       state.cp = decryptValue(address_field.cp);
       state.state = address_field.state.name;
@@ -271,9 +271,12 @@ const fetchStatesData = async () => {
       state.name = decryptValue(address_field.name);
       state.suburb = decryptValue(address_field.suburb);
       state.street = decryptValue(address_field.street);
-      state.extnumber = decryptValue(address_field.extnumber);
+      state.extnumber =
+        decryptValue(address_field.extnumber) === "S/N"
+          ? ""
+          : decryptValue(address_field.extnumber);
       state.intnumber =
-        address_field.intnumber === "S/N"
+        decryptValue(address_field.intnumber) === "S/N"
           ? ""
           : decryptValue(address_field.intnumber);
     } else {
@@ -282,9 +285,10 @@ const fetchStatesData = async () => {
         message: "No se encontró ninguna dirección",
       };
     }
-    loading.value = false;
   } catch (error) {
     console.error(error);
+  } finally {
+    loading.value = false;
   }
 };
 
@@ -305,14 +309,18 @@ const getFilteredTowns = () => {
 
 watch(
   () => state.state,
-  () => {
-    state.town = null;
+  (aux, initial_state) => {
+    initial_state === null ? "" : (state.town = null);
   }
 );
 
 const rules = {
   street: {
     required: withMessage("La calle es requerida", required),
+    regex: withMessage(
+      "La calle solo debe contener letras y números",
+      regex(/^[a-zA-Z0-9\s]+$/)
+    ),
     maxLength: withMessage(
       "La calle debe tener menos de 50 carácteres",
       maxLength(50)
@@ -320,6 +328,10 @@ const rules = {
   },
   suburb: {
     required: withMessage("La colonia es requerida", required),
+    regex: withMessage(
+      "La calle solo debe contener letras y números",
+      regex(/^[a-zA-Z0-9\s]+$/)
+    ),
     maxLength: withMessage(
       "La colonia debe tener menos de 50 carácteres",
       maxLength(50)
@@ -348,26 +360,27 @@ const rules = {
     required: withMessage("La ciudad es requerida", required),
   },
   extnumber: {
-    regex: withMessage("El número exterior debe ser un número", regex(/^\d+$/)),
+    integer: withMessage("El número exterior debe ser valido", integer),
+    regex: withMessage("El número exterior debe ser valido", regex(/^\d+$/)),
     maxLength: withMessage(
-      "El número exterior debe tener menos de 5 caracteres",
+      "El núm ext debe tener menos de 5 caracteres",
       maxLength(5)
     ),
   },
   intnumber: {
-    integer: withMessage("El número interior debe ser un número", integer),
-    regex: withMessage("El número interior debe ser un número", regex(/^\d+$/)),
-    regex: withMessage(
-      "El número interior solo debe contener números",
-      regex(/^\d+$/)
-    ),
+    integer: withMessage("El número interior debe ser valido", integer),
+    regex: withMessage("El número interior debe ser valido", regex(/^\d+$/)),
     maxLength: withMessage(
-      "El número interior debe tener menos de 5 caracteres",
+      "El núm int debe tener menos de 5 caracteres",
       maxLength(5)
     ),
   },
   name: {
     required: withMessage("El nombre de la dirección es requerido", required),
+    regex: withMessage(
+      "La calle solo debe contener letras y números",
+      regex(/^[a-zA-Z0-9\s]+$/)
+    ),
     maxLength: withMessage(
       "El nombre de la dirección debe tener menos de 33 carácteres",
       maxLength(33)
