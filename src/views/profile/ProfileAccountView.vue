@@ -13,148 +13,154 @@
           </div>
           <v-divider class="mb-5" />
 
-          <v-row>
-            <v-col cols="12" lg="4" md="4" class="text-center">
-              <v-avatar size="200" :color="colors.primary_dark">
-                <v-img
-                  v-if="state.img"
-                  :lazy-src="state.img"
-                  :src="state.img"
-                  alt="profile picture"
-                />
-                <v-icon v-else size="80"> mdi-account </v-icon>
-              </v-avatar>
-            </v-col>
-            <v-col cols="12" lg="8" md="8">
-              <v-row>
-                <v-col cols="12">
-                  <div class="text-subtitle-1 font-weight-medium">
-                    Foto de perfil
-                  </div>
-                  <v-file-input
-                    density="compact"
-                    type="file"
-                    accept="image/png, image/jpeg, image/bmp"
-                    variant="outlined"
-                    prepend-icon="mdi-camera-outline"
-                    chips
-                    show-size
-                    @change="onProfilepicChange"
-                    :readonly="is_disabled"
-                    v-model="state.new_img"
-                    @blur="v$.new_img.$touch"
-                    @input="v$.new_img.$touch"
-                    :error-messages="v$.new_img.$errors.map((e) => e.$message)"
-                  >
-                    <template v-slot:selection="{ fileNames }">
-                      <template
-                        v-for="(fileName, index) in fileNames"
-                        :key="fileName"
-                      >
-                        <v-chip
-                          class="me-2"
-                          :color="colors.primary_dark"
-                          size="small"
-                          label
-                        >
-                          {{ fileName }}
-                        </v-chip>
-                      </template>
-                    </template>
-                  </v-file-input>
-                </v-col>
-                <v-col cols="12" lg="6" md="6">
-                  <div>
+          <v-expand-transition>
+            <v-row v-if="!loading">
+              <v-col cols="12" lg="4" md="4" class="text-center">
+                <v-avatar size="200" :color="colors.primary_dark">
+                  <v-img
+                    v-if="state.img"
+                    :lazy-src="state.img"
+                    :src="state.img"
+                    alt="profile picture"
+                  />
+                  <v-icon v-else size="80"> mdi-account </v-icon>
+                </v-avatar>
+              </v-col>
+              <v-col cols="12" lg="8" md="8">
+                <v-row>
+                  <v-col cols="12">
                     <div class="text-subtitle-1 font-weight-medium">
-                      Nombre(s)
+                      Foto de perfil
+                    </div>
+                    <v-file-input
+                      density="compact"
+                      type="file"
+                      accept="image/png, image/jpeg, image/bmp"
+                      variant="outlined"
+                      prepend-icon="mdi-camera-outline"
+                      chips
+                      show-size
+                      @change="onProfilepicChange"
+                      :readonly="is_disabled"
+                      v-model="state.new_img"
+                      @blur="v$.new_img.$touch"
+                      @input="v$.new_img.$touch"
+                      :error-messages="
+                        v$.new_img.$errors.map((e) => e.$message)
+                      "
+                    >
+                      <template v-slot:selection="{ fileNames }">
+                        <template
+                          v-for="(fileName, index) in fileNames"
+                          :key="fileName"
+                        >
+                          <v-chip
+                            class="me-2"
+                            :color="colors.primary_dark"
+                            size="small"
+                            label
+                          >
+                            {{ fileName }}
+                          </v-chip>
+                        </template>
+                      </template>
+                    </v-file-input>
+                  </v-col>
+                  <v-col cols="12" lg="6" md="6">
+                    <div>
+                      <div class="text-subtitle-1 font-weight-medium">
+                        Nombre(s)
+                      </div>
+                      <v-text-field
+                        density="compact"
+                        placeholder="Nombre(s)"
+                        prepend-inner-icon="mdi-account-outline"
+                        variant="outlined"
+                        :readonly="is_disabled"
+                        v-model="state.name"
+                        @input="v$.name.$touch"
+                        @blur="v$.name.$touch"
+                        :error-messages="v$.name.$errors.map((e) => e.$message)"
+                      />
+                    </div>
+                  </v-col>
+                  <v-col cols="12" lg="6" md="6">
+                    <div class="text-subtitle-1 font-weight-medium">
+                      Apellidos
                     </div>
                     <v-text-field
                       density="compact"
-                      placeholder="Nombre(s)"
+                      placeholder="Apellidos"
                       prepend-inner-icon="mdi-account-outline"
                       variant="outlined"
                       :readonly="is_disabled"
-                      v-model="state.name"
-                      @input="v$.name.$touch"
-                      @blur="v$.name.$touch"
-                      :error-messages="v$.name.$errors.map((e) => e.$message)"
+                      v-model="state.surname"
+                      @input="v$.surname.$touch"
+                      @blur="v$.surname.$touch"
+                      :error-messages="
+                        v$.surname.$errors.map((e) => e.$message)
+                      "
                     />
-                  </div>
-                </v-col>
-                <v-col cols="12" lg="6" md="6">
-                  <div class="text-subtitle-1 font-weight-medium">
-                    Apellidos
-                  </div>
-                  <v-text-field
-                    density="compact"
-                    placeholder="Apellidos"
-                    prepend-inner-icon="mdi-account-outline"
-                    variant="outlined"
-                    :readonly="is_disabled"
-                    v-model="state.surname"
-                    @input="v$.surname.$touch"
-                    @blur="v$.surname.$touch"
-                    :error-messages="v$.surname.$errors.map((e) => e.$message)"
-                  />
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" md="4">
-              <div class="text-subtitle-1 font-weight-medium">Correo</div>
-              <v-text-field
-                density="compact"
-                placeholder="Correo electrónico"
-                prepend-inner-icon="mdi-email-outline"
-                variant="outlined"
-                readonly
-                :disabled="!is_disabled"
-                v-model="state.email"
-                @input="v$.email.$touch"
-                @blur="v$.email.$touch"
-                :error-messages="v$.email.$errors.map((e) => e.$message)"
-              />
-            </v-col>
+                  </v-col>
+                </v-row>
+              </v-col>
 
-            <v-col cols="12" md="4">
-              <div class="text-subtitle-1 font-weight-medium">Teléfono</div>
-              <v-text-field
-                density="compact"
-                placeholder="Teléfono"
-                prepend-inner-icon="mdi-phone-outline"
-                variant="outlined"
-                type="number"
-                hide-spin-buttons
-                :readonly="is_disabled"
-                v-model="state.phone"
-                @input="v$.phone.$touch"
-                @blur="v$.phone.$touch"
-                :error-messages="v$.phone.$errors.map((e) => e.$message)"
-                :counter="10"
-              />
-            </v-col>
+              <v-col cols="12" md="4">
+                <div class="text-subtitle-1 font-weight-medium">Correo</div>
+                <v-text-field
+                  density="compact"
+                  placeholder="Correo electrónico"
+                  prepend-inner-icon="mdi-email-outline"
+                  variant="outlined"
+                  readonly
+                  :disabled="!is_disabled"
+                  v-model="state.email"
+                  @input="v$.email.$touch"
+                  @blur="v$.email.$touch"
+                  :error-messages="v$.email.$errors.map((e) => e.$message)"
+                />
+              </v-col>
 
-            <v-col cols="12" md="4">
-              <div class="text-subtitle-1 font-weight-medium">Género</div>
-              <v-select
-                v-model="state.genere"
-                density="compact"
-                placeholder="Género"
-                prepend-inner-icon="mdi-account-outline"
-                :readonly="is_disabled"
-                :items="genders"
-                item-title="gender"
-                item-value="id_gender"
-                variant="outlined"
-                @input="v$.genere.$touch"
-                @blur="v$.genere.$touch"
-                :error-messages="v$.genere.$errors.map((e) => e.$message)"
-              />
-            </v-col>
-          </v-row>
+              <v-col cols="12" md="4">
+                <div class="text-subtitle-1 font-weight-medium">Teléfono</div>
+                <v-text-field
+                  density="compact"
+                  placeholder="Teléfono"
+                  prepend-inner-icon="mdi-phone-outline"
+                  variant="outlined"
+                  type="number"
+                  hide-spin-buttons
+                  :readonly="is_disabled"
+                  v-model="state.phone"
+                  @input="v$.phone.$touch"
+                  @blur="v$.phone.$touch"
+                  :error-messages="v$.phone.$errors.map((e) => e.$message)"
+                  :counter="10"
+                />
+              </v-col>
 
-          <div v-if="is_seller">
+              <v-col cols="12" md="4">
+                <div class="text-subtitle-1 font-weight-medium">Género</div>
+                <v-select
+                  v-model="state.genere"
+                  density="compact"
+                  placeholder="Género"
+                  prepend-inner-icon="mdi-account-outline"
+                  :readonly="is_disabled"
+                  :items="genders"
+                  item-title="gender"
+                  item-value="id_gender"
+                  variant="outlined"
+                  @input="v$.genere.$touch"
+                  @blur="v$.genere.$touch"
+                  :error-messages="v$.genere.$errors.map((e) => e.$message)"
+                />
+              </v-col>
+            </v-row>
+          </v-expand-transition>
+          
+          <v-expand-transition>
+          <div v-if="!loading && is_seller">
             <div class="d-flex align-center mb-2 mt-12">
               <v-card-title>
                 <v-icon size="20"> mdi-account-outline </v-icon>
@@ -197,7 +203,7 @@
               </v-col>
               <v-col cols="12">
                 <v-card variant="outlined" :color="'grey-lighten-1'">
-                  <v-expansion-panels v-model="panel" flat>
+                  <v-expansion-panels flat>
                     <v-expansion-panel>
                       <v-expansion-panel-title
                         class="text-subtitle-1 font-weight-medium"
@@ -218,7 +224,7 @@
               </v-col>
             </v-row>
           </div>
-
+        </v-expand-transition>
           <v-divider class="mb-5" />
 
           <v-row class="mt-8">
@@ -319,7 +325,8 @@ const user = {
 };
 
 const is_seller = ref(false);
-const panel = ref([]);
+const is_disabled = ref(true);
+const loading = ref(true);
 
 const state = reactive({ ...user });
 
@@ -336,6 +343,7 @@ const getUserInfo = async () => {
     state.rfc = profile.seller.rfc;
     state.image_view = profile.seller.image;
   }
+  loading.value = false;
 };
 
 const uppercase = () => {
@@ -344,6 +352,7 @@ const uppercase = () => {
 };
 
 onMounted(() => {
+  loading.value = true;
   if (profile.seller?.request_status === "APPROVED") {
     is_seller.value = true;
   }
@@ -447,9 +456,6 @@ const rules = {
 
 const v$ = useVuelidate(rules, state);
 
-const is_disabled = ref(true);
-const loading = ref(false);
-
 const onEdit = () => {
   is_disabled.value = false;
 };
@@ -484,21 +490,6 @@ const submitForm = async () => {
       });
     }
 
-    // if (state.curp || state.rfc || state.image.length > 0) {
-    //   const seller = {
-    //     id: profile.seller.id,
-    //     user: profile.id,
-    //     request_status: profile.seller.request_status,
-    //     curp: encryptAES(state.curp),
-    //     rfc: encryptAES(state.rfc),
-    //     image: state?.image[0] || null,
-    //   };
-
-    //   if (seller.image === null) delete seller.image;
-
-    //   response = await updateSellerProfile(seller);
-    // }
-
     if (response.status === 200) {
       Toast.fire({
         icon: "success",
@@ -515,7 +506,6 @@ const submitForm = async () => {
 };
 
 const clear = () => {
-  panel.value = undefined;
   is_disabled.value = true;
   v$.value.$reset();
 

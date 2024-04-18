@@ -9,20 +9,20 @@
           <v-row>
             <v-col cols="12" md="4">
               <div class="text-subtitle-1 font-weight-medium">
-                Codigo Postal
+                Nombre de la dirección
               </div>
               <v-text-field
                 density="compact"
-                placeholder="Codigo Postal"
-                prepend-inner-icon="mdi-pound"
+                placeholder="Nombre de la dirección"
+                prepend-inner-icon="mdi-map-marker-outline"
                 variant="outlined"
-                type="number"
+                type="text"
                 hide-spin-buttons
-                :counter="5"
-                v-model="state.cp"
-                @blur="v$.cp.$touch"
-                @input="v$.cp.$touch"
-                :error-messages="v$.cp.$errors.map((e) => e.$message)"
+                :counter="33"
+                v-model="state.name"
+                @blur="v$.name.$touch"
+                @input="v$.name.$touch"
+                :error-messages="v$.name.$errors.map((e) => e.$message)"
               />
             </v-col>
             <v-col cols="6" md="4">
@@ -47,7 +47,7 @@
                 :items="getFilteredTowns()"
                 density="compact"
                 variant="outlined"
-                no-data-text="Ciudades no encontradas"
+                no-data-text="Selecciona un estado primero"
                 prepend-inner-icon="mdi-map-marker-outline"
                 v-model="state.town"
                 @blur="v$.town.$touch"
@@ -57,20 +57,20 @@
             </v-col>
             <v-col cols="12" md="4">
               <div class="text-subtitle-1 font-weight-medium">
-                Referencias de la dirección
+                Codigo Postal
               </div>
               <v-text-field
                 density="compact"
-                placeholder="Referencias de la dirección"
-                prepend-inner-icon="mdi-map-marker-outline"
+                placeholder="Codigo Postal"
+                prepend-inner-icon="mdi-pound"
                 variant="outlined"
-                type="text"
+                type="number"
                 hide-spin-buttons
-                :counter="33"
-                v-model="state.name"
-                @blur="v$.name.$touch"
-                @input="v$.name.$touch"
-                :error-messages="v$.name.$errors.map((e) => e.$message)"
+                :counter="5"
+                v-model="state.cp"
+                @blur="v$.cp.$touch"
+                @input="v$.cp.$touch"
+                :error-messages="v$.cp.$errors.map((e) => e.$message)"
               />
             </v-col>
             <v-col cols="12" md="4">
@@ -101,7 +101,7 @@
             </v-col>
             <v-col cols="6" md="2">
               <div class="text-subtitle-1 font-weight-medium">
-                Número exterior
+                Núm. exterior
               </div>
               <v-text-field
                 density="compact"
@@ -119,7 +119,7 @@
             </v-col>
             <v-col cols="6" md="2">
               <div class="text-subtitle-1 font-weight-medium">
-                Número interior
+                Núm. interior
               </div>
               <v-text-field
                 density="compact"
@@ -253,6 +253,10 @@ watch(
 const rules = {
   street: {
     required: withMessage("La calle es requerida", required),
+    regex: withMessage(
+      "La calle solo debe contener letras y números",
+      regex(/^[a-zA-Z0-9\s]+$/)
+    ),
     maxLength: withMessage(
       "La calle debe tener menos de 50 carácteres",
       maxLength(50)
@@ -260,6 +264,10 @@ const rules = {
   },
   suburb: {
     required: withMessage("La colonia es requerida", required),
+    regex: withMessage(
+      "La calle solo debe contener letras y números",
+      regex(/^[a-zA-Z0-9\s]+$/)
+    ),
     maxLength: withMessage(
       "La colonia debe tener menos de 50 carácteres",
       maxLength(50)
@@ -267,11 +275,8 @@ const rules = {
   },
   cp: {
     required: withMessage("El codigo postal es requerido", required),
-    integer: withMessage("El codigo postal debe ser un número", integer),
-    regex: withMessage(
-      "El codigo postal solo debe contener números",
-      regex(/^\d+$/)
-    ),
+    integer: withMessage("El codigo postal debe ser valido", integer),
+    regex: withMessage("El codigo postal debe ser valido", regex(/^\d+$/)),
     minLength: withMessage(
       "El codigo postal debe tener 5 digitos",
       minLength(5)
@@ -288,26 +293,27 @@ const rules = {
     required: withMessage("La ciudad es requerida", required),
   },
   extnumber: {
-    regex: withMessage("El número exterior debe ser un número", regex(/^\d+$/)),
+    integer: withMessage("El número exterior debe ser valido", integer),
+    regex: withMessage("El número exterior debe ser valido", regex(/^\d+$/)),
     maxLength: withMessage(
-      "El número exterior debe tener menos de 5 caracteres",
+      "El núm ext debe tener menos de 5 caracteres",
       maxLength(5)
     ),
   },
   intnumber: {
-    integer: withMessage("El número interior debe ser un número", integer),
-    regex: withMessage("El número interior debe ser un número", regex(/^\d+$/)),
-    regex: withMessage(
-      "El número interior solo debe contener números",
-      regex(/^\d+$/)
-    ),
+    integer: withMessage("El número interior debe ser valido", integer),
+    regex: withMessage("El número interior debe ser valido", regex(/^\d+$/)),
     maxLength: withMessage(
-      "El número interior debe tener menos de 5 caracteres",
+      "El núm int debe tener menos de 5 caracteres",
       maxLength(5)
     ),
   },
   name: {
     required: withMessage("El nombre de la dirección es requerido", required),
+    regex: withMessage(
+      "La calle solo debe contener letras y números",
+      regex(/^[a-zA-Z0-9\s]+$/)
+    ),
     maxLength: withMessage(
       "El nombre de la dirección debe tener menos de 33 carácteres",
       maxLength(33)
@@ -323,11 +329,14 @@ const submitForm = async () => {
 
   loading.value = true;
 
+  let new_intnumber = "";
+  let new_extnumber = "";
+
   if (state.intnumber == "") {
-    state.intnumber = "S/N";
+    new_intnumber = "S/N";
   }
   if (state.extnumber == "") {
-    state.extnumber = "S/N";
+    new_extnumber = "S/N";
   }
 
   const params = {
@@ -337,8 +346,8 @@ const submitForm = async () => {
     cp: encryptAES(state.cp),
     suburb: encryptAES(state.suburb),
     street: encryptAES(state.street),
-    intnumber: encryptAES(state.intnumber),
-    extnumber: encryptAES(state.extnumber),
+    intnumber: encryptAES(new_intnumber),
+    extnumber: encryptAES(new_extnumber),
   };
 
   try {

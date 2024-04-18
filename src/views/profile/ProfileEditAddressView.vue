@@ -4,7 +4,6 @@
 </template>
 
 <script setup>
-import AddressFormComponent from "@/components/profile/Form/AddressEditFormComponent.vue";
 
 const items = [
   {
