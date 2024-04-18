@@ -17,14 +17,16 @@
       </v-row>
     </v-expand-transition>
 
-    <v-row v-if="!loading && cards.length === 0">
-      <orders-not-found-component
-        icon="mdi-credit-card-off-outline"
-        advise="No tienes métodos de pago registradas"
-        recomendation="Agrega un método de pago para poder realizar tus compras"
-        disableActions
-      />
-    </v-row>
+    <v-expand-transition>
+      <v-row v-if="!loading && cards.length === 0">
+        <orders-not-found-component
+          icon="mdi-credit-card-off-outline"
+          advise="No tienes métodos de pago registradas"
+          recomendation="Agrega un método de pago para poder realizar tus compras"
+          disableActions
+        />
+      </v-row>
+    </v-expand-transition>
 
     <v-btn
       variant="flat"

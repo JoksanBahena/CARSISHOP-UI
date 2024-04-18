@@ -8,38 +8,50 @@
       <v-tab value="1">Pedidos</v-tab>
       <v-tab value="2">Devoluciones</v-tab>
     </v-tabs>
-    <v-window v-model="tab">
-      <v-window-item value="1">
-        <v-container fluid>
-          <!-- <seller-card-component>
+    <v-expand-transition>
+      <v-window v-model="tab" v-if="!loading">
+        <v-window-item value="1">
+          <v-container fluid>
+            <orders-not-found-component
+              icon="mdi-shopping-outline"
+              advise="No tienes ninguna compra"
+              recomendation="Puedes ver productos en la tienda y realizar una compra"
+              action="Ver productos"
+              :to="{ name: 'Home' }"
+              @click="tab = '1'"
+            />
+            <!-- <seller-card-component>
             <product-list-card-component />
             <product-list-card-component />
           </seller-card-component>
           <seller-card-component>
             <product-list-card-component />
           </seller-card-component> -->
-        </v-container>
-      </v-window-item>
-      <v-window-item value="2">
-        <v-container fluid>
-          <orders-not-found-component
-            advise="Actualmente no tienes ninguna devolución"
-            recomendation="Puedes iniciar una devolución desde el seguimiento de tu pedido"
-            action="Ver pedidos"
-            :to="{ name: 'ProfileOrders' }"
-            @click="tab = '1'"
-          />
-        </v-container>
-      </v-window-item>
-    </v-window>
+          </v-container>
+        </v-window-item>
+        <v-window-item value="2">
+          <v-container fluid>
+            <orders-not-found-component
+              icon="mdi-truck-fast-outline"
+              advise="No tienes ninguna devolución"
+              recomendation="Puedes iniciar una devolución desde el seguimiento de tu pedido"
+              action="Ver pedidos"
+              :to="{ name: 'ProfileOrders' }"
+              @click="tab = '1'"
+            />
+          </v-container>
+        </v-window-item>
+      </v-window>
+    </v-expand-transition>
   </v-container>
 </template>
 
 <script setup>
 import Colors from "@/utils/Colors.js";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 const tab = ref(null);
+const loading = ref(true);
 
 const colors = {
   primary: Colors.cs_primary,
@@ -60,4 +72,10 @@ const items = [
     title: "Pedidos y devoluciones",
   },
 ];
+
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false;
+  }, 50);
+});
 </script>

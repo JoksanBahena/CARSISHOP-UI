@@ -23,14 +23,16 @@
       </v-row>
     </v-expand-transition>
 
-    <v-row v-if="!loading && addressData.length === 0">
-      <orders-not-found-component
-        icon="mdi-map-marker-off-outline"
-        advise="No tienes direcciones registradas"
-        recomendation="Agrega una nueva dirección para poder realizar tus compras"
-        disableActions
-      />
-    </v-row>
+    <v-expand-transition>
+      <v-row v-if="!loading && addressData.length === 0">
+        <orders-not-found-component
+          icon="mdi-map-marker-off-outline"
+          advise="No tienes direcciones registradas"
+          recomendation="Agrega una nueva dirección para poder realizar tus compras"
+          disableActions
+        />
+      </v-row>
+    </v-expand-transition>
 
     <v-btn
       v-if="!loading"
