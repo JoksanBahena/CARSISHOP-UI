@@ -1,6 +1,6 @@
 <template>
   <default-layout>
-    <!-- <subcategories-navbar-component /> -->
+    <subcategories-navbar-component />
     <breadcrumbs-component :items="items" />
     <v-container>
       <p class="text-h4 font-weight-medium mb-2">
@@ -34,7 +34,6 @@ import DefaultLayout from "@/layouts/user/DefaultLayout.vue";
 import SubcategoriesNavbarComponent from "@/components/product/SubcategoriesNavbarComponent.vue";
 import ProductCardComponent from "@/components/common/ProductCardComponent.vue";
 import BreadcrumbsComponent from "@/components/common/BreadcrumbsComponent.vue";
-import FilterProductsComponent from "@/components/product/FilterProductsComponent.vue";
 import { useClotheStore } from "@/store/ClotheStore";
 import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
@@ -46,9 +45,10 @@ const { findAllClothesByCategory } = useClotheStore();
 const clothesByCategory = ref([]);
 const model = ref(0);
 const category = params.category;
-
+console.log(category);
 onMounted(async () => {
   try {
+    console.log(category);
     await findAllClothesByCategory(category);
 
     clothesByCategory.value = useClotheStore().clothesByCategory;
