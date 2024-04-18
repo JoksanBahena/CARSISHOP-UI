@@ -92,7 +92,7 @@ export const useClotheStore = defineStore("clothe", {
           },
         });
 
-        this.clothesByCategory = response.data.data?.filter(clothe => clothe.request_status === "APPROVED");
+        this.clothesByCategory = response.data.data;
         return response.data.data;
 
 
