@@ -7,12 +7,11 @@
             <v-img
               v-for="(image, index) in imagesArray"
               :key="index"
-              :lazy-src="image ? image.url || defaultImage : defaultImage"
-              :src="image ? image.url || defaultImage : defaultImage"
+              :lazy-src="image ? image?.url || defaultImage : defaultImage"
+              :src="image ? image?.url || defaultImage : defaultImage"
               aspect-ratio="1"
               class="bg-grey-lighten-2 my-2 mx-1"
               width="80"
-              cover
               @mouseenter="updateMainImage(index)"
               @mouseover="hoverImage = index"
               :style="{
@@ -36,7 +35,6 @@
             class="bg-grey-lighten-2"
             :src="mainImage"
             width="500"
-            cover
           >
             <template v-slot:placeholder>
               <v-row align="center" class="fill-height ma-0" justify="center">
@@ -112,9 +110,12 @@
 import { ref, onMounted, watch } from "vue";
 import Colors from "@/utils/Colors.js";
 import { useClotheStore } from "@/store/ClotheStore";
-import {useCartStore} from "@/store/CartStore";
+import { useCartStore } from "@/store/CartStore";
 import Swal from "sweetalert2";
+import { decryptValue } from "@/utils/Crypto";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const store = useClotheStore();
 const cartStore = useCartStore();
 const hoverImage = ref(null);
@@ -134,10 +135,18 @@ const defaultImage = "https://via.placeholder.com/500";
 
 onMounted(async () => {
   await getOneClothe();
+  watch(
+    () => router.currentRoute.value,
+    async (to, from) => {
+      if (to.params.id !== from.params.id) {
+        await getOneClothe();
+      }
+    }
+  );
 });
 
 const getOneClothe = async () => {
-  const id = getIdFromUrl();
+  const id = getIdFromParams();
   await store.findClotheById(id);
   clothe.value = store.getClothe;
 
@@ -166,7 +175,7 @@ const addToCart = async () => {
         title: "¡Producto agregado al carrito!",
         showConfirmButton: false,
         timer: 1500,
-      })
+      });
     }
   } catch (error) {
     console.log(error);
@@ -193,10 +202,10 @@ watch(selection, (newSize) => {
   }
 });
 
-const getIdFromUrl = () => {
-  const url = window.location.href;
-  const id = url.split("/").pop();
-  return id;
+const getIdFromParams = () => {
+  const id = router.currentRoute.value.params.id;
+
+  return decryptValue(id);
 };
 
 const getChipVariant = (size) => {
@@ -211,7 +220,7 @@ const selectSize = (selectedSize) => {
   selection.value = selectedSize;
 };
 
-const getSizeIdFromName = (clothe, sizeName)=> {
+const getSizeIdFromName = (clothe, sizeName) => {
   const stock = clothe.stock;
   for (const size of stock) {
     if (size.size.name === sizeName) {
@@ -220,5 +229,5 @@ const getSizeIdFromName = (clothe, sizeName)=> {
   }
   // Si no se encuentra el tamaño, se puede devolver null o un valor predeterminado según lo que prefieras
   return null;
-}
+};
 </script>

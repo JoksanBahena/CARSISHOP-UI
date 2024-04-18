@@ -1,11 +1,41 @@
 <template>
   <v-container>
-    <p class="text-h4 font-weight-medium mb-2">Agregar nueva dirección</p>
+    <p class="text-h4 font-weight-medium mb-2">Editar dirección</p>
 
     <v-card variant="flat" class="mt-4">
       <v-card-title>Dirección de envío</v-card-title>
-      <v-card-item>
-        <v-form>
+
+      <v-card-item v-if="error.message">
+        <v-slide-y-transition tag="v-alert">
+          <v-alert
+            class="mb-8"
+            variant="tonal"
+            icon="mdi-alert-circle-outline"
+            type="error"
+            :text="error.message"
+          />
+        </v-slide-y-transition>
+
+        <v-btn
+          variant="outlined"
+          class="text-none"
+          :color="colors.primary_dark"
+          block
+          :to="{ name: 'ProfileAddresses' }"
+        >
+          Regresar a la lista de direcciones
+        </v-btn>
+      </v-card-item>
+
+      <v-card-item v-else>
+        <v-progress-linear
+          v-if="loading"
+          indeterminate
+          class="mb-4"
+          :color="colors.primary_dark"
+        />
+
+        <v-form v-else>
           <v-row>
             <v-col cols="12" md="4">
               <div class="text-subtitle-1 font-weight-medium">
@@ -183,12 +213,17 @@ import {
 } from "@vuelidate/validators";
 import { useStateAndTownStore } from "@/store/StateAndTownStore";
 import { useProfileStore } from "@/store/ProfileStore";
-import { encryptAES } from "@/utils/Crypto";
+import { encryptAES, decryptValue } from "@/utils/Crypto";
 import { Toast } from "@/utils/Alerts";
+import { useRoute } from "vue-router";
 import router from "@/router";
 
+const route = useRoute();
+
+const address_id = route.params.id;
+
 const { fetchStates } = useStateAndTownStore();
-const { registerAddress } = useProfileStore();
+const { updateAddress, getAddressById } = useProfileStore();
 
 const { withMessage, regex } = helpers;
 
@@ -212,9 +247,11 @@ const address = {
 const state = reactive({ ...address });
 const statesData = reactive([]);
 const townsData = reactive([]);
-const loading = ref(false);
+const loading = ref(true);
+const error = ref({ error: "", message: "" });
 
 const fetchStatesData = async () => {
+  loading.value = true;
   try {
     const response = await fetchStates();
     response.forEach((stateData) => {
@@ -223,8 +260,36 @@ const fetchStatesData = async () => {
     response.forEach((stateData) => {
       townsData.push(stateData.towns.map((town) => town.name));
     });
+
+    const address_data = await getAddressById(address_id);
+
+    if (address_data.status === 200) {
+      const address_field = address_data.data;
+
+      state.cp = decryptValue(address_field.cp);
+      state.state = address_field.state.name;
+      state.town = address_field.town.name;
+      state.name = decryptValue(address_field.name);
+      state.suburb = decryptValue(address_field.suburb);
+      state.street = decryptValue(address_field.street);
+      state.extnumber =
+        decryptValue(address_field.extnumber) === "S/N"
+          ? ""
+          : decryptValue(address_field.extnumber);
+      state.intnumber =
+        decryptValue(address_field.intnumber) === "S/N"
+          ? ""
+          : decryptValue(address_field.intnumber);
+    } else {
+      error.value = {
+        error: "error",
+        message: "No se encontró ninguna dirección",
+      };
+    }
   } catch (error) {
     console.error(error);
+  } finally {
+    loading.value = false;
   }
 };
 
@@ -245,8 +310,8 @@ const getFilteredTowns = () => {
 
 watch(
   () => state.state,
-  () => {
-    state.town = null;
+  (aux, initial_state) => {
+    initial_state === null ? "" : (state.town = null);
   }
 );
 
@@ -275,8 +340,11 @@ const rules = {
   },
   cp: {
     required: withMessage("El codigo postal es requerido", required),
-    integer: withMessage("El codigo postal debe ser valido", integer),
-    regex: withMessage("El codigo postal debe ser valido", regex(/^\d+$/)),
+    integer: withMessage("El codigo postal debe ser un número", integer),
+    regex: withMessage(
+      "El codigo postal solo debe contener números",
+      regex(/^\d+$/)
+    ),
     minLength: withMessage(
       "El codigo postal debe tener 5 digitos",
       minLength(5)
@@ -329,29 +397,29 @@ const submitForm = async () => {
 
   loading.value = true;
 
-  let new_intnumber = "";
-  let new_extnumber = "";
-
   if (state.intnumber == "") {
-    new_intnumber = "S/N";
+    state.intnumber = "S/N";
   }
   if (state.extnumber == "") {
-    new_extnumber = "S/N";
+    state.extnumber = "S/N";
   }
 
   const params = {
+    id: address_id,
     name: encryptAES(state.name),
     state: state.state,
     town: state.town,
     cp: encryptAES(state.cp),
     suburb: encryptAES(state.suburb),
     street: encryptAES(state.street),
-    intnumber: encryptAES(new_intnumber),
-    extnumber: encryptAES(new_extnumber),
+    intnumber: encryptAES(state.intnumber),
+    extnumber: encryptAES(state.extnumber),
   };
 
+  loading.value = true;
+
   try {
-    const response = await registerAddress(params);
+    const response = await updateAddress(params);
     if (response.status === 200) {
       Toast.fire({
         icon: "success",

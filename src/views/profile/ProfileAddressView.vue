@@ -3,28 +3,39 @@
 
   <v-container>
     <p class="text-h4 font-weight-medium mb-2">Mis direcciones</p>
-    <v-row v-if="addressData.length > 0" v-for="address in addressData" :key="address.id">
-      <address-component
-        :id="address.id"
-        :user="address.name"
-        :state="address.state.name"
-        :town="address.town.name"
-        :suburb="address.suburb"
-        :street="address.street"
-        :extrnumber="address.extnumber"
-        :intnumber="address.intnumber"
-        :cp="address.cp"
-        :onDeleteHandle="addressDelete"
-      />
-    </v-row>
-    <v-row v-else>
-      <v-col cols="12">
-        <v-card variant="flat" class="text-center">
-          <v-card-title class="text-h6">No tienes direcciones registradas</v-card-title>
-        </v-card>
-      </v-col>
-    </v-row>
+
+    <v-expand-transition>
+      <v-row v-if="!loading">
+        <address-component
+          v-for="address in addressData"
+          :key="address.id"
+          :id="address.id"
+          :user="address.name"
+          :state="address.state.name"
+          :town="address.town.name"
+          :suburb="address.suburb"
+          :street="address.street"
+          :extrnumber="address.extnumber"
+          :intnumber="address.intnumber"
+          :cp="address.cp"
+          :onDeleteHandle="addressDelete"
+        />
+      </v-row>
+    </v-expand-transition>
+
+    <v-expand-transition>
+      <v-row v-if="!loading && addressData.length === 0">
+        <orders-not-found-component
+          icon="mdi-map-marker-off-outline"
+          advise="No tienes direcciones registradas"
+          recomendation="Agrega una nueva dirección para poder realizar tus compras"
+          disableActions
+        />
+      </v-row>
+    </v-expand-transition>
+
     <v-btn
+      v-if="!loading"
       variant="flat"
       class="my-10 text-none"
       :color="colors.primary_dark"
@@ -44,6 +55,7 @@ import { decryptValue } from "@/utils/Crypto";
 import { encryptAES } from "@/utils/Crypto";
 import { Toast } from "@/utils/Alerts";
 import Colors from "@/utils/Colors.js";
+import Swal from "sweetalert2";
 
 const { fetchAddressess, deleteAddress } = useProfileStore();
 
@@ -53,8 +65,8 @@ const colors = {
   white: Colors.cs_white,
 };
 
-const addressData = reactive([])
-const loading = ref(false);
+const addressData = reactive([]);
+const loading = ref(true);
 
 const items = [
   {
@@ -63,7 +75,7 @@ const items = [
   },
   {
     title: "Perfil",
-    to: { name: "ProfileAddresses" },
+    to: { name: "ProfileSummary" },
   },
   {
     title: "Mis direcciones",
@@ -73,7 +85,8 @@ const items = [
 const getAddresses = async () => {
   try {
     const response = await fetchAddressess();
-    response.forEach(address => {
+    addressData.splice(0);
+    response.forEach((address) => {
       addressData.push({
         id: address.id,
         cp: decryptValue(address.cp),
@@ -89,37 +102,51 @@ const getAddresses = async () => {
         },
         name: decryptValue(address.name),
       });
-    })
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const addressDelete = async (id) => {
-  loading.value = true;
-  try {
-    const response = await deleteAddress(encryptAES(String(id)));
-    loading.value = false;
-    window.location.reload();
-    if (response.status === 200) {
-      Toast.fire({
-        icon: "success",
-        title: "Dirección eliminada correctamente",
-      });
-      getAddresses();
-    }
+    });
   } catch (error) {
     Toast.fire({
       icon: "error",
-      title: "Error al eliminar la dirección",
+      title: "Ocurrió un error al cargar tus direcciones",
     });
-    loading.value = false;
   } finally {
     loading.value = false;
   }
 };
 
+const addressDelete = async (id) => {
+  try {
+    const result = await Swal.fire({
+      title: "¿Estas seguro?",
+      text: "Está dirección será eliminada permanentemente",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: colors.primary,
+      cancelButtonColor: colors.primary_dark,
+      confirmButtonText: "Si",
+      cancelButtonText: "No",
+    });
+
+    if (result.isConfirmed) {
+      const response = await deleteAddress(encryptAES(String(id)));
+      if (response.status === 200) {
+        Toast.fire({
+          icon: "success",
+          title: "Dirección eliminada correctamente",
+        });
+      }
+    }
+  } catch (error) {
+    Toast.fire({
+      icon: "error",
+      title: "Ocurrió un error al eliminar la dirección",
+    });
+  } finally {
+    getAddresses();
+  }
+};
+
 onMounted(() => {
+  loading.value = true;
   getAddresses();
 });
 </script>

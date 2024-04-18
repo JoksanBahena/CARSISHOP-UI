@@ -9,12 +9,12 @@ export const useClotheStore = defineStore("clothe", {
     clothes: [],
     pendingClothes: [],
     clothe: [],
-    clothesByCategory: []
+    clothesByCategory: [],
   }),
   getters: {
     getClothes: (state) => state.clothes,
     getPendingClothes: (state) => state.pendingClothes,
-    getClothe: (state) => state.clothe
+    getClothe: (state) => state.clothe,
   },
   actions: {
     async findAllClothes(page, itemsPerPage, sortBy) {
@@ -30,14 +30,12 @@ export const useClotheStore = defineStore("clothe", {
       };
       const url = baseURL + "clothes/find-all";
       try {
-        const response = await axios.post(url, params,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.post(url, params, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         this.clothes = response.data.data;
       } catch (error) {
         throw error;
@@ -57,21 +55,17 @@ export const useClotheStore = defineStore("clothe", {
       const url = baseURL + "clothes/find-all";
 
       try {
-        const response = await axios.post(url, params,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.post(url, params, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         this.clothes = response.data.data;
-
       } catch (error) {
         throw error;
       }
-
     },
     async findClotheById(id) {
       const url = baseURL + `clothes/getOne/${id}`;
@@ -97,13 +91,16 @@ export const useClotheStore = defineStore("clothe", {
             Authorization: `Bearer ${token}`,
           },
         });
-        this.clothesByCategory = response.data.data;
+
+        this.clothesByCategory = response.data.data.filter(clothe => clothe.request_status === "APPROVED");
         return response.data.data;
+
+
       } catch (error) {
         throw error;
       }
-
     },
+
     async findAllRequestClothe(page, itemsPerPage, sortBy) {
       const params = {
         value: "PENDING",
@@ -117,14 +114,12 @@ export const useClotheStore = defineStore("clothe", {
       };
       const url = baseURL + "clothes/find-all";
       try {
-        const response = await axios.post(url, params,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.post(url, params, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         this.pendingClothes = response.data.data;
       } catch (error) {
         throw error;
@@ -185,6 +180,23 @@ export const useClotheStore = defineStore("clothe", {
       };
       const url = baseURL + "clothes/isAccepted";
 
+      try {
+        const response = await axios.post(url, params, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    },
+    async fetchClothesBySellerId(sellerId) {
+      const params = {
+        sellerId: sellerId,
+      };
+      const url = baseURL + "clothes/findAllBySeller";
       try {
         const response = await axios.post(url, params, {
           headers: {

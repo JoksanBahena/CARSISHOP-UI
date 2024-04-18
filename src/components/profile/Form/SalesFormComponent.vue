@@ -136,7 +136,7 @@ import router from "@/router";
 import { Toast } from "@/utils/Alerts.js";
 
 const { requestSeller } = useSellerStore();
-const { profile, getId } = useProfileStore();
+const { profile, fetchProfile, getId } = useProfileStore();
 
 const colors = {
   primary: Colors.cs_primary,
@@ -216,13 +216,15 @@ const submitForm = async () => {
       image: state.image[0],
       user: getId,
     };
-
     const response = await requestSeller(seller);
     if (response.status === 201) {
       Toast.fire({
         icon: "success",
         title: "Solicitud enviada correctamente",
       });
+
+      await fetchProfile();
+      router.push({ name: "SellerSales" });
     }
   } catch (err) {
     error.value = { error: true, message: err };
@@ -252,7 +254,10 @@ const onFileChange = (e) => {
 };
 
 onMounted(() => {
-  if (profile.seller?.request_status === "PENDING" || profile.seller?.request_status === "REJECTED") {
+  if (
+    profile.seller?.request_status === "PENDING" ||
+    profile.seller?.request_status === "REJECTED"
+  ) {
     state.curp = profile.seller.curp;
     state.rfc = profile.seller.rfc;
     img_view.value = profile.seller.image;

@@ -6,72 +6,113 @@
 
     <resumen-card-component
       title="Mi cuenta"
-      action="Editar"
+      action="Ver cuenta"
       :to="{ name: 'ProfileAccount' }"
     >
-      <user-profile-card-component />
+      <v-expand-transition>
+        <div v-if="!loading">
+          <user-profile-card-component />
+        </div>
+      </v-expand-transition>
     </resumen-card-component>
 
     <resumen-card-component
       icon="mdi-shopping-outline"
       title="Ultima compra"
+      :action="summary_data.clothes[0].name !== '' ? 'Ver pedidos' : 'Ver más'"
       :to="{ name: 'ProfileOrders' }"
     >
-      <product-list-card-component
-        v-if="orderData.clothes[0].name !== ''"
-        :product="orderData.clothes[0].name"
-        :status="orderData.clothes[0].status"
-        :description="orderData.clothes[0].description"
-        :date="orderData.clothes[0].date"
-        :image="orderData.clothes[0].image"
-      />
-      <v-card v-else>
-        <v-card-subtitle class="text-h6 mt-2">
-          No has realizado ninguna compra aun, ¡realiza tu primer pedido!
-        </v-card-subtitle>
-      </v-card>
+      <v-expand-transition>
+        <div v-if="summary_data.clothes[0].name !== ''">
+          <product-list-card-component
+            :product="summary_data.clothes[0].name"
+            :status="summary_data.clothes[0].status"
+            :description="summary_data.clothes[0].description"
+            :date="summary_data.clothes[0].date"
+            :image="summary_data.clothes[0].image"
+          />
+        </div>
+      </v-expand-transition>
+
+      <v-expand-transition>
+        <v-card v-if="!loading">
+          <div class="text-subtitle-1 mt-2 mb-4">
+            No tienes pedidos registrados
+          </div>
+        </v-card>
+      </v-expand-transition>
     </resumen-card-component>
 
     <resumen-card-component
       icon="mdi-map-marker-outline"
-      title="Mi dirección"
-      :to="{ name: 'ProfileAddresses' }"
+      title="Mis direcciones"
+      :action="
+        summary_data.address.name !== ''
+          ? 'Ver direcciones'
+          : 'Agregar dirección'
+      "
+      :to="
+        summary_data.address.name !== ''
+          ? { name: 'ProfileAddresses' }
+          : { name: 'ProfileAddAddress' }
+      "
     >
-      <address-component
-        v-if="orderData.address.name !== ''"
-        :user="orderData.address.name"
-        :state="orderData.address.state.name"
-        :town="orderData.address.town.name"
-        :suburb="orderData.address.suburb"
-        :street="orderData.address.street"
-        :extnumber="orderData.address.extnumber"
-        :intnumber="orderData.address.intnumber"
-        :cp="orderData.address.cp"
-        resume
-      />
-      <v-card v-else>
-        <v-card-subtitle class="text-h6 mt-2">
-          Realiza tu primer pedido para mostrar la información de tu dirección
-        </v-card-subtitle>
-      </v-card>
+      <v-expand-transition>
+        <div v-if="summary_data.address.id !== null">
+          <address-component
+            :id="summary_data.address.id"
+            :user="summary_data.address.name"
+            :state="summary_data.address.state.name"
+            :town="summary_data.address.town.name"
+            :suburb="summary_data.address.suburb"
+            :street="summary_data.address.street"
+            :extrnumber="summary_data.address.extnumber"
+            :intnumber="summary_data.address.intnumber"
+            :cp="summary_data.address.cp"
+            resume
+          />
+        </div>
+      </v-expand-transition>
+
+      <v-expand-transition>
+        <v-card v-if="!loading && summary_data.address.id === null">
+          <div class="text-subtitle-1 mt-2 mb-4">
+            No tienes direcciones registradas
+          </div>
+        </v-card>
+      </v-expand-transition>
     </resumen-card-component>
 
     <resumen-card-component
       icon="mdi-credit-card-outline"
       title="Métodos de pago"
-      :to="{ name: 'ProfilePayments' }"
+      :action="
+        summary_data.card.owner !== ''
+          ? 'Ver métodos de pago'
+          : 'Agregar métodos de pago'
+      "
+      :to="
+        summary_data.card.owner !== ''
+          ? { name: 'ProfilePayments' }
+          : { name: 'ProfileAddPayment' }
+      "
     >
-      <payment-method-component
-        v-if="orderData.card.owner !== ''"
-        :user="orderData.card.owner"
-        :last_four="orderData.card.last_four"
-        resume
-      />
-      <v-card v-else>
-        <v-card-subtitle class="text-h6 mt-2">
-          Realiza tu primer pedido para mostrar la información de tu tarjeta
-        </v-card-subtitle>
-      </v-card>
+      <v-expand-transition>
+        <div v-if="summary_data.card.owner !== ''">
+          <payment-method-component
+            :user="summary_data.card.owner"
+            :last_four="summary_data.card.last_four"
+            resume
+          />
+        </div>
+      </v-expand-transition>
+      <v-expand-transition>
+        <v-card v-if="!loading && summary_data.card.owner === ''">
+          <div class="text-subtitle-1 mt-2 mb-4">
+            No tienes métodos de pago registrados
+          </div>
+        </v-card>
+      </v-expand-transition>
     </resumen-card-component>
   </v-container>
 </template>
@@ -79,11 +120,10 @@
 <script setup>
 import ResumenCardComponent from "@/components/profile/ResumenCardComponent.vue";
 import { useProfileStore } from "@/store/ProfileStore";
-import { reactive, onMounted } from "vue";
-import { Toast } from "@/utils/Alerts";
+import { reactive, onMounted, ref } from "vue";
 import { decryptValue } from "@/utils/Crypto";
 
-const { fetchOrders } = useProfileStore();
+const { fetchOrders, fetchAddressess, fetchCards } = useProfileStore();
 
 const formatDate = (timestamp) => {
   const date = new Date(timestamp);
@@ -93,13 +133,16 @@ const formatDate = (timestamp) => {
   return `${day}/${month}/${year}`;
 };
 
-const order = {
+const loading = ref(true);
+
+const summary = {
   at: "",
   card: {
     owner: "",
     last_four: "",
   },
   address: {
+    id: null,
     name: "",
     state: {
       name: "",
@@ -124,34 +167,50 @@ const order = {
   ],
 };
 
-const orderData = reactive({ ...order });
+const summary_data = reactive({ ...summary });
 
-const getOrder = async () => {
+const initialInformation = async () => {
   try {
-    const response = await fetchOrders();
-    orderData.card.owner = decryptValue(response.card.owner);
-    orderData.card.last_four = response.card.lastFour;
-    orderData.address.name = response.address.name;
-    orderData.address.state.name = response.address.state.name;
-    orderData.address.town.name = response.address.town.name;
-    orderData.address.suburb = response.address.suburb;
-    orderData.address.street = response.address.street;
-    orderData.address.extnumber = response.address.extnumber;
-    orderData.address.intnumber = response.address.intnumber;
-    orderData.address.cp = response.address.cp;
-    orderData.clothes[0].name = response.clothOrders[0].clothes.name;
-    orderData.clothes[0].description =
-      response.clothOrders[0].clothes.description;
-    orderData.clothes[0].status = response.status;
-    orderData.clothes[0].date = formatDate(response.at);
-    orderData.clothes[0].image = response.clothOrders[0].clothes.images[0].url;
+    const resp_order = await fetchOrders();
+    const resp_address = await fetchAddressess();
+    const resp_card = await fetchCards();
+
+    if (resp_order !== null) {
+      summary_data.clothes[0].name = resp_order.clothOrders[0].clothes.name;
+      summary_data.clothes[0].description =
+        resp_order.clothOrders[0].clothes.description;
+      summary_data.clothes[0].status = resp_order.status;
+      summary_data.clothes[0].date = formatDate(resp_order.at);
+      summary_data.clothes[0].image =
+        resp_order.clothOrders[0].clothes.images[0].url;
+    }
+
+    if (resp_address.length > 0) {
+      summary_data.address.id = resp_address[0].id;
+      summary_data.address.name = decryptValue(resp_address[0].name);
+      summary_data.address.state.name = resp_address[0].state.name;
+      summary_data.address.town.name = resp_address[0].town.name;
+      summary_data.address.suburb = decryptValue(resp_address[0].suburb);
+      summary_data.address.street = decryptValue(resp_address[0].street);
+      summary_data.address.extnumber = decryptValue(resp_address[0].extnumber);
+      summary_data.address.intnumber = decryptValue(resp_address[0].intnumber);
+      summary_data.address.cp = decryptValue(resp_address[0].cp);
+    }
+
+    if (resp_card.length > 0) {
+      summary_data.card.owner = decryptValue(resp_card[0].owner);
+      summary_data.card.last_four = resp_card[0].lastFour;
+    }
   } catch (error) {
-    console.error(error);
+    console.log("Error al obtener la información principal", error.message);
+  } finally {
+    loading.value = false;
   }
 };
 
 onMounted(() => {
-  getOrder();
+  loading.value = true;
+  initialInformation();
 });
 
 const items = [

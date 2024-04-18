@@ -24,21 +24,11 @@
         append-icon="mdi-check-circle-outline"
         @click="submitForm()"
         block
+        :disabled="v$.subcategory.$error || state.subcategory.trim() === ''"
       >
         Guardar
       </v-btn>
     </v-form>
-    <v-dialog v-model="dialog2">
-      <v-card>
-        <v-alert
-          v-if="state.alertMessage"
-          :value="true"
-          :type="state.alertType"
-          variant="tonal"
-          >{{ state.alertMessage }}</v-alert
-        >
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
@@ -48,7 +38,6 @@ import Colors from "@/utils/Colors.js";
 import { ref, shallowRef } from "vue";
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import Swal from "sweetalert2";
 import { useSubcategoryStore } from "@/store/SubcategoryStore";
 import {
   required,
@@ -57,10 +46,10 @@ import {
   maxLength,
   helpers,
 } from "@vuelidate/validators";
+import { Toast } from "@/utils/Alerts";
 const { createSubcategory } = useSubcategoryStore();
 const { withMessage, regex } = helpers;
 
-const dialog2 = shallowRef(false);
 const colors = {
   primary: Colors.cs_primary,
   primary_dark: Colors.cs_primary_dark,
@@ -98,15 +87,17 @@ const submitForm = async () => {
   if (v$.value.$error) return;
   try {
     const response = await createSubcategory(state.subcategory);
-    if (response.error === false) {
-      showAlertInDialog(response.message, "success");
-    } else {
-      showAlertInDialog(response.message, "error");
-    }
+    Toast.fire({
+      icon: "success",
+      title: response.message,
+    });
     location.reload();
   } catch (error) {
     console.error("Error al crear la subcategoría", error);
-    showAlertInDialog("Error al crear la subcategoría", "error");
+    Toast.fire({
+      icon: "error",
+      title: "Error al crear la categoría",
+    });
     location.reload();
   } finally {
     clear();

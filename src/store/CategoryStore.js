@@ -7,12 +7,12 @@ const token = localStorage.getItem("token") || "";
 export const useCategoryStore = defineStore("category", {
   state: () => ({
     categories: [],
+    categoriesWithoutPagination: [],
   }),
 
   getters: {
     getCategories: (state) => state.categories,
   },
-
   actions: {
     async findAllCategories(page, itemsPerPage, sortBy) {
       const params = {
@@ -25,7 +25,6 @@ export const useCategoryStore = defineStore("category", {
           limit: itemsPerPage,
         },
       };
-
       try {
         const response = await axios.post(
           baseURL + "categories/find-all",
@@ -38,6 +37,20 @@ export const useCategoryStore = defineStore("category", {
           }
         );
         this.categories = response.data.data;
+      } catch (error) {
+        throw error;
+      }
+    },
+    async findAllCategoriesWithoutPagination() {
+      try {
+        const response = await axios.get(baseURL + "categories/all", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        this.categoriesWithoutPagination = response.data.data;
+
+        return this.categoriesWithoutPagination;
       } catch (error) {
         throw error;
       }
@@ -55,7 +68,7 @@ export const useCategoryStore = defineStore("category", {
         });
         return response.data;
       } catch (error) {
-        throw error;
+        throw new Error(error);
       }
     },
     async updateCategory(id, name) {

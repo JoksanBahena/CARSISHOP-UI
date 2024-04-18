@@ -12,15 +12,11 @@
       <v-form @keyup.enter="submitForm" class="mx-10">
         <v-slide-y-transition tag="v-alert">
           <v-alert
-            v-if="alert.message"
+            v-if="alert.error"
             class="mb-8"
             variant="tonal"
-            :type="getAlertType(alert.status)"
-            :icon="
-              alert.status === 200
-                ? 'mdi-check-circle-outline'
-                : 'mdi-alert-circle-outline'
-            "
+            type="error"
+            icon="mdi-alert-circle-outline"
             :text="alert.message"
           />
         </v-slide-y-transition>
@@ -107,6 +103,9 @@ import { useVuelidate } from "@vuelidate/core";
 import { useAuthStore } from "@/store/AuthStore";
 import { useRoute } from "vue-router";
 import { getErrorMessage } from "@/utils/Errors";
+import { encryptAES } from "@/utils/Crypto";
+import { Toast } from "@/utils/Alerts.js";
+import router from "@/router";
 
 const { withMessage } = helpers;
 const { resetPassword } = useAuthStore();
@@ -123,7 +122,7 @@ const colors = {
 const alert = ref({ error: "", message: "" });
 const form = {
   password: null,
-  confirm_password: "",
+  confirm_password: null,
 };
 
 const pass_visible = ref(false);
@@ -143,10 +142,7 @@ const rules = {
     ),
   },
   confirm_password: {
-    required: withMessage(
-      "La confirmación de contraseña es requerida",
-      required
-    ),
+    required: withMessage("La contraseña es requerida", required),
     sameAs: withMessage(
       "Las contraseñas no coinciden",
       (value) => value === state.password
@@ -156,11 +152,6 @@ const rules = {
 
 const state = reactive({ ...form });
 const v$ = useVuelidate(rules, state);
-
-const getAlertType = (status) => {
-  if (status === 200) return "success";
-  return "error";
-};
 
 const submitForm = async () => {
   v$.value.$touch();
@@ -172,11 +163,19 @@ const submitForm = async () => {
   try {
     alert.value = await resetPassword(
       route.params.token,
-      state.password,
-      state.confirm_password
+      encryptAES(state.password),
+      encryptAES(state.confirm_password)
     );
+
+    if (alert.value.status === 200) {
+      Toast.fire({
+        icon: "success",
+        title: "Contraseña restablecida",
+      });
+      router.push({ name: "Login" });
+    }
   } catch (error) {
-    alert.value = getErrorMessage(error);
+    console.log(error);
   } finally {
     loading.value = false;
   }

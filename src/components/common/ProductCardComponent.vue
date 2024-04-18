@@ -4,10 +4,8 @@
     variant="flat"
     min-width="280"
     max-width="280"
-    min-height="450"
-    max-height="450"
     :color="colors.secondary"
-    :href="`/product/${item.id}`"
+    :to="{ name: 'Product', params: { id: encryptedId } }"
   >
     <v-img
       class="mb-4"
@@ -15,15 +13,15 @@
       :src="item.images[0]?.url || defaultImage"
     />
 
-    <v-card-title class="text-h5 pl-4">
+    <v-card-title class="text-h6 pl-4">
       {{ item.name }}
     </v-card-title>
 
-    <p class="mx-4">
-      {{ item.description }}
-    </p>
+    <v-card-item>
+      {{ truncateDescription(item.description) }}
+    </v-card-item>
 
-    <v-card-actions class="align-end">
+    <v-card-actions>
       <p class="font-weight-bold text-h5 mr-2" :style="{ color: colors.red }">
         {{ "$" + item.stock[0].price + "MX" }}
       </p>
@@ -42,6 +40,7 @@
 <script setup>
 import { defineProps } from "vue";
 import Colors from "@/utils/Colors.js";
+import { encryptAES } from "@/utils/Crypto";
 
 const colors = {
   primary: Colors.cs_primary,
@@ -49,7 +48,6 @@ const colors = {
   white: Colors.cs_white,
   secondary: Colors.cs_secondary,
   red: Colors.cs_red,
-  gray: Colors.cs_opacity_gray,
 };
 const defaultImage = "https://via.placeholder.com/500";
 
@@ -59,4 +57,13 @@ const props = defineProps({
     required: true,
   },
 });
+const encryptedId = encryptAES(props.item.id.toString());
+
+function truncateDescription(description) {
+  const maxLength = 50; 
+  if (description.length > maxLength) {
+    return description.substring(0, maxLength) + '...'; 
+  }
+  return description;
+}
 </script>

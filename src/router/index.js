@@ -52,7 +52,7 @@ const routes = [
     meta: { requiresAuth: true, roles: ["CUSTOMER", "SELLER"] },
   },
   {
-    path: "/category/:category/",
+    path: "/category/:category",
     name: "CategorizedProducts",
     component: () => import("@/views/product/CategorizedProductsView.vue"),
   },
@@ -158,6 +158,11 @@ const routes = [
         path: "addresses/add",
         name: "ProfileAddAddress",
         component: () => import("@/views/profile/ProfileAddAddressView.vue"),
+      },
+      {
+        path: "addresses/edit/:id",
+        name: "ProfileEditAddress",
+        component: () => import("@/views/profile/ProfileEditAddressView.vue"),
       },
       {
         path: "payments",
