@@ -174,7 +174,7 @@
                 :color="colors.primary"
                 block
                 prepend-icon="mdi-close-circle-outline"
-                @click="clear()"
+                @click="unsubmitForm()"
               >
                 Cancelar
               </v-btn>
@@ -438,6 +438,11 @@ const submitForm = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+const unsubmitForm = () => {
+  clear();
+  window.history.back();
 };
 
 const clear = () => {
