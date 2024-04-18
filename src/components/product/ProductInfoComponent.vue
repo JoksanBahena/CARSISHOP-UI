@@ -99,6 +99,8 @@
         prepend-icon="mdi-cart-outline"
         :color="colors.primary_dark"
         variant="flat"
+        @click="addToCart"
+        :disabled="!selection"
       >
         Agregar al carrito
       </v-btn>
@@ -110,9 +112,11 @@
 import { ref, onMounted, watch } from "vue";
 import Colors from "@/utils/Colors.js";
 import { useClotheStore } from "@/store/ClotheStore";
+import {useCartStore} from "@/store/CartStore";
+import Swal from "sweetalert2";
 
 const store = useClotheStore();
-
+const cartStore = useCartStore();
 const hoverImage = ref(null);
 const rating = ref(4);
 const selection = ref(null);
@@ -147,6 +151,26 @@ const getOneClothe = async () => {
   }
 
   mainImage.value = imagesArray.value[0].url;
+};
+const amount = 10;
+const addToCart = async () => {
+  if (!selection.value) {
+    return;
+  }
+  try {
+    const sizeId = getSizeIdFromName(clothe.value, selection.value);
+    const response = await cartStore.addToCart(clothe.value.id, amount, sizeId);
+    if (response.status === 200) {
+      Swal.fire({
+        icon: "success",
+        title: "¡Producto agregado al carrito!",
+        showConfirmButton: false,
+        timer: 1500,
+      })
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const clotheName = ref(null);
@@ -186,4 +210,15 @@ const updateMainImage = (index) => {
 const selectSize = (selectedSize) => {
   selection.value = selectedSize;
 };
+
+const getSizeIdFromName = (clothe, sizeName)=> {
+  const stock = clothe.stock;
+  for (const size of stock) {
+    if (size.size.name === sizeName) {
+      return size.size.id;
+    }
+  }
+  // Si no se encuentra el tamaño, se puede devolver null o un valor predeterminado según lo que prefieras
+  return null;
+}
 </script>

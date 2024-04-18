@@ -29,12 +29,20 @@ export const useCartStore = defineStore("cart", {
         console.log(error);
       }
     },
-    async addToCart(clotheId) {
+    async addToCart(clotheId, amount, sizeId) {
+      const cloth = {
+        id: clotheId,
+      }
+      const size = {
+        id: sizeId,
+      }
       try {
         const response = await axios.post(
-          baseURL + "cart",
+          baseURL + "clothesCart/add",
           {
-            clotheId: clotheId,
+            cloth,
+            amount: amount,
+            size,
           },
           {
             headers: {
@@ -42,8 +50,7 @@ export const useCartStore = defineStore("cart", {
             },
           }
         );
-        this.cart = response.data.data;
-        return this.cart;
+        return response.data;
       } catch (error) {
         console.log(error);
       }

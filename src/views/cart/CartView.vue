@@ -81,9 +81,6 @@ const getCart = async () => {
   }
 };
 
-
-
-
 onMounted(() => {
   getCart();
 });
