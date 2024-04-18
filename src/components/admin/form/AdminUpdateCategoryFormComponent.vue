@@ -49,30 +49,15 @@
       </v-card>
     </template>
   </v-dialog>
-
-  <v-dialog v-model="dialog2">
-    <v-card>
-      <v-alert
-        v-if="state.alertMessage"
-        :value="true"
-        :type="state.alertType"
-        variant="tonal"
-        >{{ state.alertMessage }}</v-alert
-      >
-    </v-card>
-  </v-dialog>
 </template>
 
 <script setup>
 import Colors from "@/utils/Colors.js";
 import { reactive, watch, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import Swal from "sweetalert2";
 import { required, minLength, maxLength, helpers } from "@vuelidate/validators";
 import { useCategoryStore } from "@/store/CategoryStore";
-import { shallowRef } from "vue";
-
-const dialog2 = shallowRef(false);
+import { Toast } from "@/utils/Alerts";
 
 const { updateCategory } = useCategoryStore();
 const { withMessage } = helpers;
@@ -125,28 +110,16 @@ const submitForm = async () => {
       props.selectedCategory.id,
       state.category
     );
-    if (response.error === false) {
-      Swal.fire({
-        icon: "success",
-        title: response.message,
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: response.message,
-        showConfirmButton: true,
-      });
-    }
+    Toast.fire({
+      icon: "success",
+      title: response.message,
+    });
     location.reload();
   } catch (error) {
     console.error("Error al actualizar la categoría", error);
-    Swal.fire({
+    Toast.fire({
       icon: "error",
       title: "Error al actualizar la categoría",
-      text: "Hubo un problema al procesar tu solicitud. Por favor, inténtalo de nuevo más tarde.",
-      timer: 1500,
     });
     location.reload();
   } finally {

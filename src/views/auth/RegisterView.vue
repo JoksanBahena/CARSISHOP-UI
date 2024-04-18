@@ -12,10 +12,6 @@ div
 
       <v-card class="mx-10" variant="flat">
         <v-card-title class="text-subtitle-1 font-weight-regular pa-0 mb-2">
-          <!-- <v-progress-circular :color="colors.primary_dark" :model-value="progress">
-            <v-avatar size="24" v-text="step" />
-          </v-progress-circular> -->
-
           <v-avatar :color="colors.primary_dark" size="24" v-text="step" />
           <span class="mx-2">{{ current_title }}</span>
         </v-card-title>
@@ -109,26 +105,6 @@ div
                 <div class="text-subtitle-1 font-weight-medium">
                   Fecha de nacimiento
                 </div>
-                <!-- <v-menu :close-on-content-click="false">
-                  <template v-slot:activator="{ props }">
-                    <v-text-field
-                      v-bind="props"
-                      v-model="state.birthdate"
-                      density="compact"
-                      placeholder="2001-01-01"
-                      prepend-inner-icon="mdi-calendar-range-outline"
-                      variant="outlined"
-                      readonly
-
-                      @blur="v$.birthdate.$touch"
-                      @input="v$.birthdate.$touch"
-                      :error-messages="
-                        v$.birthdate.$errors.map((e) => e.$message)
-                      "
-                    />
-                  </template>
-                  <v-date-picker :color="colors.primary_dark" hide-header hide-weekdays />
-                </v-menu> -->
                 <v-text-field
                   v-model="state.birthdate"
                   density="compact"
@@ -470,6 +446,16 @@ const rules = {
         currentDate.getDate()
       );
       return birthDate <= eighteenYearsAgo;
+    }),
+    maxDate: withMessage("Debes ser menor de 120 años", (value) => {
+      const birthDate = new Date(value);
+      const currentDate = new Date();
+      const oneHundredTwentyYearsAgo = new Date(
+        currentDate.getFullYear() - 120,
+        currentDate.getMonth(),
+        currentDate.getDate()
+      );
+      return birthDate >= oneHundredTwentyYearsAgo;
     }),
   },
   username: {

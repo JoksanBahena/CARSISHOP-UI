@@ -25,21 +25,11 @@
         append-icon="mdi-check-circle-outline"
         @click="submitForm()"
         block
+        :disabled="v$.category.$error || state.category.trim() === ''"
       >
         Guardar
       </v-btn>
     </v-form>
-    <v-dialog v-model="dialog2">
-      <v-card>
-        <v-alert
-          v-if="state.alertMessage"
-          :value="true"
-          :type="state.alertType"
-          variant="tonal"
-          >{{ state.alertMessage }}</v-alert
-        >
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
@@ -51,11 +41,11 @@ import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, minLength, maxLength, helpers } from "@vuelidate/validators";
 import { useCategoryStore } from "@/store/CategoryStore";
+import { Toast } from "@/utils/Alerts";
+
 const { createCategory } = useCategoryStore();
 const { withMessage, regex } = helpers;
-import { shallowRef } from "vue";
 
-const dialog2 = shallowRef(false);
 const colors = {
   primary: Colors.cs_primary,
   primary_dark: Colors.cs_primary_dark,
@@ -84,7 +74,6 @@ const rules = {
 };
 
 const v$ = useVuelidate(rules, state);
-
 const submitForm = async () => {
   loading.value = true;
 
@@ -93,15 +82,17 @@ const submitForm = async () => {
 
   try {
     const response = await createCategory(state.category);
-    if (response.error === false) {
-      showAlertInDialog(response.message, "success");
-    } else {
-      showAlertInDialog(response.message, "error");
-    }
+    Toast.fire({
+      icon: "success",
+      title: response.message,
+    });
     location.reload();
   } catch (error) {
-    console.error("Error al crear la categoría", error);
-    showAlertInDialog("Error al crear la categoría", "error");
+    console.error("Error al crear la categoría:", error.message);
+    Toast.fire({
+      icon: "error",
+      title: "Error al crear la categoría",
+    });
     location.reload();
   } finally {
     clear();
@@ -117,20 +108,5 @@ const clear = () => {
   for (const [key, value] of Object.entries(category)) {
     state[key] = value;
   }
-};
-
-const showAlertInDialog = (message, type) => {
-  state.alertMessage = message;
-  state.alertType = type;
-  dialog2.value = true;
-
-  setTimeout(() => {
-    hideAlert();
-  }, 4500);
-};
-
-const hideAlert = () => {
-  state.alertMessage = "";
-  state.alertType = "";
 };
 </script>

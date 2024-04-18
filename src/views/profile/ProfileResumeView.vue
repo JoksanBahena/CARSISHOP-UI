@@ -6,7 +6,7 @@
 
     <resumen-card-component
       title="Mi cuenta"
-      action="Editar"
+      action="Ver cuenta"
       :to="{ name: 'ProfileAccount' }"
     >
       <user-profile-card-component />
@@ -15,41 +15,151 @@
     <resumen-card-component
       icon="mdi-shopping-outline"
       title="Ultima compra"
+      action="Ver compras"
       :to="{ name: 'ProfileOrders' }"
     >
-      <product-list-card-component />
+      <product-list-card-component
+        v-if="orderData.clothes[0].name !== ''"
+        :product="orderData.clothes[0].name"
+        :status="orderData.clothes[0].status"
+        :description="orderData.clothes[0].description"
+        :date="orderData.clothes[0].date"
+        :image="orderData.clothes[0].image"
+      />
+      <v-card v-else>
+        <div class="text-subtitle-1 mt-2 mb-4">
+          No tienes compras registradas
+        </div>
+      </v-card>
     </resumen-card-component>
 
     <resumen-card-component
       icon="mdi-map-marker-outline"
       title="Mi dirección"
+      :action="
+        orderData.address.name !== '' ? 'Ver direcciones' : 'Agregar dirección'
+      "
       :to="{ name: 'ProfileAddresses' }"
     >
       <address-component
-        user="Cristopher Soto Ventura"
-        state="Morelos"
-        town="Emiliano Zapata"
-        suburb="Tetacalita"
-        street="Calle del Déposito"
-        extrnumber="S/N"
-        intnumber="132"
-        cp="62768"
+        v-if="orderData.address.name !== ''"
+        :user="orderData.address.name"
+        :state="orderData.address.state.name"
+        :town="orderData.address.town.name"
+        :suburb="orderData.address.suburb"
+        :street="orderData.address.street"
+        :extnumber="orderData.address.extnumber"
+        :intnumber="orderData.address.intnumber"
+        :cp="orderData.address.cp"
         resume
       />
+      <v-card v-else>
+        <div class="text-subtitle-1 mt-2 mb-4">
+          No tienes dirección registrada
+        </div>
+      </v-card>
     </resumen-card-component>
 
     <resumen-card-component
       icon="mdi-credit-card-outline"
       title="Métodos de pago"
+      :action="orderData.card.owner !== '' ? 'Ver tarjetas' : 'Agregar tarjeta'"
       :to="{ name: 'ProfilePayments' }"
     >
-      <payment-method-component resume />
+      <payment-method-component
+        v-if="orderData.card.owner !== ''"
+        :user="orderData.card.owner"
+        :last_four="orderData.card.last_four"
+        resume
+      />
+      <v-card v-else>
+        <div class="text-subtitle-1 mt-2 mb-4">
+          No tienes tarjeta registrada
+        </div>
+      </v-card>
     </resumen-card-component>
   </v-container>
 </template>
 
 <script setup>
 import ResumenCardComponent from "@/components/profile/ResumenCardComponent.vue";
+import { useProfileStore } from "@/store/ProfileStore";
+import { reactive, onMounted } from "vue";
+import { decryptValue } from "@/utils/Crypto";
+
+const { fetchOrders } = useProfileStore();
+
+const formatDate = (timestamp) => {
+  const date = new Date(timestamp);
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
+const order = {
+  at: "",
+  card: {
+    owner: "",
+    last_four: "",
+  },
+  address: {
+    name: "",
+    state: {
+      name: "",
+    },
+    town: {
+      name: "",
+    },
+    suburb: "",
+    street: "",
+    extnumber: "",
+    intnumber: "",
+    cp: "",
+  },
+  clothes: [
+    {
+      name: "",
+      description: "",
+      status: "",
+      date: "",
+      image: "",
+    },
+  ],
+};
+
+const orderData = reactive({ ...order });
+
+const getOrder = async () => {
+  try {
+    const response = await fetchOrders();
+
+    console.log(response);
+
+    orderData.card.owner = decryptValue(response.card.owner);
+    orderData.card.last_four = response.card.lastFour;
+    orderData.address.name = response.address.name;
+    orderData.address.state.name = response.address.state.name;
+    orderData.address.town.name = response.address.town.name;
+    orderData.address.suburb = response.address.suburb;
+    orderData.address.street = response.address.street;
+    orderData.address.extnumber = response.address.extnumber;
+    orderData.address.intnumber = response.address.intnumber;
+    orderData.address.cp = response.address.cp;
+    orderData.clothes[0].name = response.clothOrders[0].clothes.name;
+    orderData.clothes[0].description =
+      response.clothOrders[0].clothes.description;
+    orderData.clothes[0].status = response.status;
+    orderData.clothes[0].date = formatDate(response.at);
+    orderData.clothes[0].image = response.clothOrders[0].clothes.images[0].url;
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+
+onMounted(() => {
+  getOrder();
+});
 
 const items = [
   {

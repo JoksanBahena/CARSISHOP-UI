@@ -108,9 +108,8 @@ import { reactive, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { helpers, required } from "@vuelidate/validators";
 import { useAuthStore } from "@/store/AuthStore.js";
-import router from "@/router";
 import Swal from "sweetalert2";
-import {encryptAES} from "@/utils/Crypto";
+import { encryptAES } from "@/utils/Crypto";
 
 const { withMessage, regex } = helpers;
 const { login, resend } = useAuthStore();
@@ -152,7 +151,6 @@ const rules = {
 const v$ = useVuelidate(rules, state);
 
 const submit = async () => {
-
   v$.value.$touch();
   if (v$.value.$error) return;
 
@@ -160,15 +158,18 @@ const submit = async () => {
   loading.value = true;
 
   try {
-    const response = await login(encryptAES(state.email), encryptAES(state.password));
+    const response = await login(
+      encryptAES(state.email),
+      encryptAES(state.password)
+    );
     if (response.status === 200) {
       window.location.reload();
     }
   } catch (err) {
     if (err.data.status === 400) {
       showSendAlert(err.data.message);
-    }else{
-      error.value = { error: "error", message: err.data.message};
+    } else {
+      error.value = { error: "error", message: err.data.message };
     }
   } finally {
     loading.value = false;
@@ -182,42 +183,42 @@ const resubmit = async (email) => {
     if (response.status === 200) {
       await Swal.fire({
         title: "Correo de confirmación enviado",
-        text: 'Por favor revisa tu bandeja de entrada',
-        icon: 'success'
+        text: "Por favor revisa tu bandeja de entrada",
+        icon: "success",
       });
     }
   } catch (err) {
-    console.log(err)
-    if (err.data.status === 403 ){
+    console.log(err);
+    if (err.data.status === 403) {
       showSendAlert(err.data.message);
     } else if (err.data.status === 404) {
       showErrorAlert(err.data.message);
     } else {
       showErrorAlert(err.data.message);
     }
-  }finally {
+  } finally {
     loading.value = false;
   }
-}
+};
 
 const showErrorAlert = (error) => {
   Swal.fire({
     title: "Error",
     text: error,
-    icon: 'error',
-    confirmButtonText: 'Continuar',
+    icon: "error",
+    confirmButtonText: "Continuar",
     timer: 4000,
     timerProgressBar: true,
-  })
+  });
 };
 
 const showSendAlert = (error) => {
   Swal.fire({
     title: error,
-    text: 'Tu cuenta no ha sido confirmada, por favor solicita un nuevo correo de confirmación',
-    icon: 'warning',
-    confirmButtonText: 'Solicitar confirmación',
-    input: 'email',
+    text: "Tu cuenta no ha sido confirmada, por favor solicita un nuevo correo de confirmación",
+    icon: "warning",
+    confirmButtonText: "Solicitar confirmación",
+    input: "email",
   }).then((result) => {
     if (result.isConfirmed) {
       resubmit(result.value);
@@ -228,10 +229,10 @@ const showSendAlert = (error) => {
 const showLoadingAlert = () => {
   Swal.fire({
     title: "Enviando correo de confirmación",
-    text: 'Por favor espera un momento',
-    icon: 'info',
+    text: "Por favor espera un momento",
+    icon: "info",
     showConfirmButton: false,
-    allowOutsideClick: false
+    allowOutsideClick: false,
   });
 };
 </script>

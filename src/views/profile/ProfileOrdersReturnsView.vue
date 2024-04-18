@@ -11,13 +11,13 @@
     <v-window v-model="tab">
       <v-window-item value="1">
         <v-container fluid>
-          <seller-card-component>
+          <!-- <seller-card-component>
             <product-list-card-component />
             <product-list-card-component />
           </seller-card-component>
           <seller-card-component>
             <product-list-card-component />
-          </seller-card-component>
+          </seller-card-component> -->
         </v-container>
       </v-window-item>
       <v-window-item value="2">

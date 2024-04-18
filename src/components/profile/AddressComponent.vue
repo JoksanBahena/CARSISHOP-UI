@@ -1,8 +1,11 @@
 <template>
   <v-card variant="flat" class="mb-4">
-    <v-card-item :key="id">
+    <v-card-item>
       <div>
-        <div v-if="!resume & !details" class="d-flex align-center text-body-2 text-none font-weight-bold mb-1">
+        <div
+          v-if="!resume & !details"
+          class="d-flex align-center text-body-2 text-none font-weight-bold mb-1"
+        >
           <v-icon size="20" class="mr-1"> mdi-map-marker-outline</v-icon>
           Dirección de envio:
         </div>
@@ -17,21 +20,36 @@
       </div>
     </v-card-item>
 
-    <v-card-actions v-if="!resume & !details" class="flex-column align-start flex-lg-row flex-md-row">
-      <v-btn variant="outlined" class="mb-4 mr-4 text-none" :color="colors.primary_dark"
-        prepend-icon="mdi-delete-outline" @click="onDeleteHandle(id)" :loading="loading">
+    <v-card-actions
+      v-if="!resume & !details"
+      class="flex-column align-start flex-lg-row flex-md-row"
+    >
+      <v-btn
+        variant="outlined"
+        class="mb-4 mr-4 text-none"
+        :color="colors.primary_dark"
+        prepend-icon="mdi-delete-outline"
+        @click="onDeleteHandle(id)"
+      >
         Eliminar dirección
       </v-btn>
-      <v-btn variant="outlined" class="ma-0 text-none" :color="colors.primary_dark" prepend-icon="mdi-pencil">
+      <v-btn
+        variant="outlined"
+        class="ma-0 text-none"
+        :color="colors.primary_dark"
+        prepend-icon="mdi-pencil"
+        :to="{ name: 'ProfileEditAddress', params: { id: encrypt_id } }"
+      >
         Editar dirección
       </v-btn>
     </v-card-actions>
-    <v-divider v-if="!resume" />
   </v-card>
+  <v-divider v-if="!resume" />
 </template>
 
 <script setup>
 import Colors from "@/utils/Colors.js";
+import { encryptAES, decryptValue } from "@/utils/Crypto";
 
 const colors = {
   primary_dark: Colors.cs_primary_dark,
@@ -43,35 +61,27 @@ const props = defineProps({
   },
   user: {
     type: String,
-    default: "Tu nombre",
   },
   state: {
     type: String,
-    default: "Estado",
   },
   town: {
     type: String,
-    default: "Municipio",
   },
   suburb: {
     type: String,
-    default: "Colonia",
   },
   street: {
     type: String,
-    default: "Calle",
   },
   extrnumber: {
     type: String,
-    default: "Núm exterior",
   },
   intnumber: {
     type: String,
-    default: "Núm interior",
   },
   cp: {
     type: String,
-    default: "C.P.",
   },
   resume: {
     type: Boolean,
@@ -83,4 +93,7 @@ const props = defineProps({
   },
   onDeleteHandle: Function,
 });
+
+const encrypt_id = encryptAES(props.id.toString());
+
 </script>
