@@ -151,7 +151,7 @@ export const useProfileStore = defineStore("profile", {
             Authorization: `Bearer ${this.token}`,
           },
         });
-        this.addressess = response.data.data;
+        this.addressess = response.data.data.reverse();
         return this.addressess;
       } catch (error) {
         throw error;
@@ -236,7 +236,7 @@ export const useProfileStore = defineStore("profile", {
             Authorization: `Bearer ${this.token}`,
           },
         });
-        return response.data.data;
+        return response.data.data.reverse();
       } catch (error) {
         throw new Error("Error fetching cards");
       }

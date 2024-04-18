@@ -1,22 +1,20 @@
 <template>
-  <v-card variant="flat" class="mb-4">
+  <v-card variant="flat" :class="!resume & !details ? 'mt-4' : 'mb-4'">
     <v-card-item>
-      <div>
-        <div
-          v-if="!resume & !details"
-          class="d-flex align-center text-body-2 text-none font-weight-bold mb-1"
-        >
-          <v-icon size="20" class="mr-1"> mdi-map-marker-outline</v-icon>
-          Dirección de envio:
-        </div>
-        <v-card-title v-else class="mb-2"> Dirección de envio </v-card-title>
-        <div class="text-h6 mb-1">
-          <p>{{ user }}</p>
-        </div>
-        <div :class="details ? 'mb-4' : ''">
-          {{ state }}, {{ town }}, {{ suburb }}, {{ street }} {{ extrnumber }}
-          {{ intnumber }}, {{ cp }}
-        </div>
+      <div
+        v-if="!resume & !details"
+        class="d-flex align-center text-body-2 text-none font-weight-bold mb-1"
+      >
+        <v-icon size="20" class="mr-1"> mdi-map-marker-outline</v-icon>
+        Dirección de envio:
+      </div>
+      <div class="text-h6 mb-1">
+        <p>{{ user.toLocaleUpperCase() }}</p>
+      </div>
+      <div :class="details ? 'mb-4' : ''">
+        {{ cp }}, {{ state }}, {{ town }}, {{ suburb }}, {{ street }}
+        {{ extrnumber }},
+        {{ intnumber }}
       </div>
     </v-card-item>
 
@@ -49,7 +47,7 @@
 
 <script setup>
 import Colors from "@/utils/Colors.js";
-import { encryptAES, decryptValue } from "@/utils/Crypto";
+import { encryptAES } from "@/utils/Crypto";
 
 const colors = {
   primary_dark: Colors.cs_primary_dark,
@@ -57,7 +55,7 @@ const colors = {
 
 const props = defineProps({
   id: {
-    type: String,
+    type: Number,
   },
   user: {
     type: String,
@@ -95,5 +93,4 @@ const props = defineProps({
 });
 
 const encrypt_id = encryptAES(props.id.toString());
-
 </script>

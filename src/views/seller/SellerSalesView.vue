@@ -1,7 +1,7 @@
 <template>
   <breadcrumbs-component :items="items" />
 
-  <v-container>
+  <v-container v-if="!loading">
     <p class="text-h4 font-weight-medium mb-2">Ventas</p>
 
     <orders-not-found-component
@@ -22,6 +22,8 @@ import { useProfileStore } from "@/store/ProfileStore";
 import router from "@/router";
 
 const { profile } = useProfileStore();
+
+const loading = ref(true);
 
 const items = [
   {
@@ -47,6 +49,7 @@ const info = ref({
 });
 
 onMounted(() => {
+  loading.value = true;
   if (profile.seller?.request_status === "APPROVED") {
     info.value.icon = "mdi-cart-check";
     info.value.advise = "¡Ya eres un vendedor!";
@@ -67,6 +70,7 @@ onMounted(() => {
       "Un administrador ha revisado tu solicitud y ha decidido rechazarla";
     info.value.action = "Ver mi solicitud";
     info.value.to = { name: "SellerRequest" };
-  }
+  } else {
+    loading.value = false;}
 });
 </script>

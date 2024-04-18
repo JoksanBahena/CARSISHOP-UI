@@ -1,19 +1,21 @@
 <template>
-  <v-container class="d-flex align-center justify-start flex-column h-screen">
-    <v-icon size="64" > {{ icon }} </v-icon>
+  <v-container class="d-flex align-center justify-start flex-column">
+    <v-icon size="64"> {{ icon }} </v-icon>
     <h2 class="text-center mt-4">{{ advise }}</h2>
     <p class="text-center mt-4">{{ recomendation }}</p>
 
-    <router-link :to="to" class="mt-5">
-      <v-btn
-        append-icon="mdi-chevron-right"
-        :style="{ 'border-color': colors.primary, color: colors.primary_dark }"
-        variant="outlined"
-        class="text-none"
-      >
-        {{ action }}
-      </v-btn>
-    </router-link>
+    <div v-if="!disableActions" class="mt-5">
+      <router-link :to="to">
+        <v-btn
+          append-icon="mdi-chevron-right"
+          :color="colors.primary_dark"
+          variant="outlined"
+          class="text-none"
+        >
+          {{ action }}
+        </v-btn>
+      </router-link>
+    </div>
   </v-container>
 </template>
 
@@ -45,6 +47,10 @@ const props = defineProps({
   to: {
     type: Object,
     default: { name: "Home" },
+  },
+  disableActions: {
+    type: Boolean,
+    default: false,
   },
 });
 </script>
