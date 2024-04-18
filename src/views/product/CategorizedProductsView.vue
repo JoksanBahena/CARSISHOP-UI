@@ -45,10 +45,10 @@ const { findAllClothesByCategory } = useClotheStore();
 const clothesByCategory = ref([]);
 const model = ref(0);
 const category = params.category;
-console.log(category);
+// console.log(category);
 onMounted(async () => {
   try {
-    console.log(category);
+    // console.log(category);
     await findAllClothesByCategory(category);
 
     clothesByCategory.value = useClotheStore().clothesByCategory;
