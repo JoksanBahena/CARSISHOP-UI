@@ -1,5 +1,7 @@
 <template>
   <default-layout>
+    <!-- <subcategories-navbar-component /> -->
+
     <breadcrumbs-component :items="items" />
     <v-container>
       <span>
@@ -39,6 +41,8 @@ import { onMounted, ref, watch } from "vue";
 
 import DefaultLayout from "@/layouts/user/DefaultLayout.vue";
 import ProductCardComponent from "@/components/common/ProductCardComponent.vue";
+import SubcategoriesNavbarComponent from "@/components/product/SubcategoriesNavbarComponent.vue";
+
 import { useClotheStore } from "@/store/ClotheStore";
 const { findAllClothesHome } = useClotheStore();
 const clothes = ref([]);
