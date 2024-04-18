@@ -21,16 +21,17 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, watch, ref } from "vue";
 import Colors from "@/utils/Colors.js";
 import { useCategoryStore } from "@/store/CategoryStore.js";
 
 const { findAllCategories } = useCategoryStore();
-const categories = useCategoryStore().categories;
-
+const categories = ref([]);
 const findCategories = async () => {
   try {
-    await findAllCategories(0, 100, "name");
+    const response = await findAllCategories(0, 100, "name");
+    console.log(response.data);
+    categories.value = response.data;
   } catch (error) {
     console.log(error);
   }
