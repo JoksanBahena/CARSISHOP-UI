@@ -174,7 +174,7 @@
                 :color="colors.primary"
                 block
                 prepend-icon="mdi-close-circle-outline"
-                @click="unsubmitForm()"
+                @click="clear()"
               >
                 Cancelar
               </v-btn>
@@ -216,6 +216,7 @@ import { useProfileStore } from "@/store/ProfileStore";
 import { encryptAES, decryptValue } from "@/utils/Crypto";
 import { Toast } from "@/utils/Alerts";
 import { useRoute } from "vue-router";
+import router from "@/router";
 
 const route = useRoute();
 
@@ -440,11 +441,6 @@ const submitForm = async () => {
   }
 };
 
-const unsubmitForm = () => {
-  clear();
-  window.history.back();
-};
-
 const clear = () => {
   v$.value.$reset();
 
@@ -460,5 +456,7 @@ const clear = () => {
   state.cp = "";
   state.state = null;
   state.town = null;
+
+  router.push({ name: "ProfileAddresses" });
 };
 </script>

@@ -54,7 +54,6 @@ import { encryptAES } from "@/utils/Crypto";
 import { Toast } from "@/utils/Alerts";
 import Colors from "@/utils/Colors.js";
 import Swal from "sweetalert2";
-import router from "@/router";
 
 const { fetchAddressess, deleteAddress } = useProfileStore();
 
@@ -103,7 +102,10 @@ const getAddresses = async () => {
       });
     });
   } catch (error) {
-    console.log(error.message);
+    Toast.fire({
+      icon: "error",
+      title: "Ocurrió un error al cargar tus direcciones",
+    });
   } finally {
     loading.value = false;
   }
@@ -132,9 +134,11 @@ const addressDelete = async (id) => {
       }
     }
   } catch (error) {
-    console.log(error.message);
+    Toast.fire({
+      icon: "error",
+      title: "Ocurrió un error al eliminar la dirección",
+    });
   } finally {
-    router.go();
     getAddresses();
   }
 };

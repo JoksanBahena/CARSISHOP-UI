@@ -7,72 +7,130 @@
       <v-card-item>
         <v-form>
           <v-row>
-            <v-col cols="12" lg="9">
+            <v-col cols="12" lg="6" md="6">
               <div>
                 <div class="text-subtitle-1 font-weight-medium">
                   Nombre en la tarjeta
                 </div>
-                <v-text-field v-model="state.owner" density="compact" placeholder="Nombre en la tarjeta"
-                  prepend-inner-icon="mdi-account-outline" variant="outlined" @blur="v$.owner.$touch"
-                  @input="v$.owner.$touch" :error-messages="v$.owner.$errors.map((e) => e.$message)" />
+                <v-text-field
+                  v-model="state.owner"
+                  density="compact"
+                  placeholder="Nombre en la tarjeta"
+                  prepend-inner-icon="mdi-account-outline"
+                  variant="outlined"
+                  @blur="v$.owner.$touch"
+                  @input="v$.owner.$touch"
+                  :error-messages="v$.owner.$errors.map((e) => e.$message)"
+                />
               </div>
             </v-col>
-            <v-col cols="12" lg="9">
+            <v-col cols="12" lg="6" md="6">
               <div>
                 <div class="text-subtitle-1 font-weight-medium">
                   Numero de tarjeta
                 </div>
-                <v-text-field v-model="state.number" density="compact" placeholder="Numero de tarjeta"
-                  prepend-inner-icon="mdi-credit-card-outline" variant="outlined" :counter="16" type="number"
-                  hide-spin-buttons @blur="v$.number.$touch" @input="v$.number.$touch"
-                  :error-messages="v$.number.$errors.map((e) => e.$message)" />
+                <v-text-field
+                  v-model="state.number"
+                  density="compact"
+                  placeholder="Numero de tarjeta"
+                  prepend-inner-icon="mdi-credit-card-outline"
+                  variant="outlined"
+                  :counter="16"
+                  type="number"
+                  hide-spin-buttons
+                  @blur="v$.number.$touch"
+                  @input="v$.number.$touch"
+                  :error-messages="v$.number.$errors.map((e) => e.$message)"
+                />
               </div>
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="6" lg="3">
+            <v-col cols="12" lg="3" md="4">
               <div>
                 <div class="text-subtitle-1 font-weight-medium">
                   Mes de vencimiento
                 </div>
-                <v-select v-model="state.expiration_month" density="compact" placeholder="Mes de vencimiento"
-                  prepend-inner-icon="mdi-calendar-month-outline" variant="outlined" :items="months"
-                  @blur="v$.expiration_month.$touch" @input="v$.expiration_month.$touch" :error-messages="v$.expiration_month.$errors.map((e) => e.$message)
-                  " />
+                <v-select
+                  v-model="state.expiration_month"
+                  density="compact"
+                  placeholder="Mes de vencimiento"
+                  prepend-inner-icon="mdi-calendar-month-outline"
+                  variant="outlined"
+                  :items="months"
+                  @blur="v$.expiration_month.$touch"
+                  @input="v$.expiration_month.$touch"
+                  :error-messages="
+                    v$.expiration_month.$errors.map((e) => e.$message)
+                  "
+                />
               </div>
             </v-col>
-            <v-col cols="6" lg="3">
+            <v-col cols="12" lg="3" md="4">
               <div>
                 <div class="text-subtitle-1 font-weight-medium">
                   Año de vencimiento
                 </div>
-                <v-select v-model="state.expiration_year" density="compact" placeholder="Año de vencimiento"
-                  prepend-inner-icon="mdi-calendar-range-outline" variant="outlined" :items="years"
-                  @blur="v$.expiration_year.$touch" @input="v$.expiration_year.$touch" :error-messages="v$.expiration_year.$errors.map((e) => e.$message)
-                  " />
+                <v-select
+                  v-model="state.expiration_year"
+                  density="compact"
+                  placeholder="Año de vencimiento"
+                  prepend-inner-icon="mdi-calendar-range-outline"
+                  variant="outlined"
+                  :items="years"
+                  @blur="v$.expiration_year.$touch"
+                  @input="v$.expiration_year.$touch"
+                  :error-messages="
+                    v$.expiration_year.$errors.map((e) => e.$message)
+                  "
+                />
               </div>
             </v-col>
-            <v-col cols="12" lg="3">
+            <v-col cols="12" lg="3" md="4">
               <div>
                 <div class="text-subtitle-1 font-weight-medium">CCV</div>
-                <v-text-field v-model="state.cvv" density="compact" placeholder="CCV"
-                  prepend-inner-icon="mdi-lock-outline" variant="outlined" :counter="3"
-                  :type="visible ? 'text' : 'password'" hide-spin-buttons :append-inner-icon="visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
-                  " @click:append-inner="visible = !visible" @blur="v$.cvv.$touch" @input="v$.cvv.$touch"
-                  :error-messages="v$.cvv.$errors.map((e) => e.$message)" />
+                <v-text-field
+                  v-model="state.cvv"
+                  density="compact"
+                  placeholder="CCV"
+                  prepend-inner-icon="mdi-lock-outline"
+                  variant="outlined"
+                  :counter="3"
+                  :type="visible ? 'text' : 'password'"
+                  hide-spin-buttons
+                  :append-inner-icon="
+                    visible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
+                  "
+                  @click:append-inner="visible = !visible"
+                  @blur="v$.cvv.$touch"
+                  @input="v$.cvv.$touch"
+                  :error-messages="v$.cvv.$errors.map((e) => e.$message)"
+                />
               </div>
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="6" lg="9">
-              <v-btn variant="flat" class="text-none" :color="colors.primary" block
-                append-icon="mdi-close-circle-outline" @click="clear()">
+            <v-col cols="6" lg="6" md="6">
+              <v-btn
+                variant="flat"
+                class="text-none"
+                :color="colors.primary"
+                block
+                append-icon="mdi-close-circle-outline"
+                @click="clear()"
+              >
                 Cancelar
               </v-btn>
             </v-col>
-            <v-col cols="6" lg="9">
-              <v-btn variant="flat" class="text-none" :color="colors.primary_dark" block
-                append-icon="mdi-check-circle-outline" @click="submitForm()">
+            <v-col cols="6" lg="6" md="6">
+              <v-btn
+                variant="flat"
+                class="text-none"
+                :color="colors.primary_dark"
+                block
+                append-icon="mdi-check-circle-outline"
+                @click="submitForm()"
+              >
                 Guardar
               </v-btn>
             </v-col>
@@ -85,7 +143,6 @@
 
 <script setup>
 import Colors from "@/utils/Colors.js";
-
 import { ref } from "vue";
 import { reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
@@ -99,6 +156,7 @@ import {
 import { useProfileStore } from "@/store/ProfileStore";
 import { Toast } from "@/utils/Alerts";
 import { encryptAES } from "@/utils/Crypto";
+import router from "@/router";
 
 const { withMessage, regex } = helpers;
 
@@ -120,8 +178,8 @@ const years = Array.from({ length: 21 }, (_, i) => current_year + i);
 const card = {
   owner: "",
   number: "",
-  expiration_month: months[0],
-  expiration_year: years[0],
+  expiration_month: null,
+  expiration_year: null,
   expiration_date: "",
   cvv: "",
 };
@@ -132,10 +190,8 @@ const rules = {
   owner: {
     required: withMessage("El nombre en la tarjeta es obligatorio", required),
     regex: withMessage(
-      "El nombre en la tarjeta no puede contener carácteres especiales",
-      regex(
-        /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]*$/
-      )
+      "El nombre de la tarjeta solo debe contener letras y números",
+      regex(/^[a-zA-Z0-9\s]+$/)
     ),
     maxLength: withMessage(
       "El nombre en la tarjeta no puede tener más de 50 carácteres",
@@ -144,7 +200,7 @@ const rules = {
   },
   number: {
     required: withMessage("El número de tarjeta es obligatorio", required),
-    integer: withMessage("El número de tarjeta debe ser un número", integer),
+    integer: withMessage("El número de tarjeta debe ser valido", integer),
     regex: withMessage(
       "El número de tarjeta solo debe contener números",
       regex(/^\d+$/)
@@ -159,14 +215,14 @@ const rules = {
     ),
   },
   expiration_month: {
-    required: withMessage("Mes de vencimiento obligatorio", required),
+    required: withMessage("El mes de vencimiento es obligatorio", required),
   },
   expiration_year: {
-    required: withMessage("Año de vencimiento obligatorio", required),
+    required: withMessage("El año de vencimiento es obligatorio", required),
   },
   cvv: {
     required: withMessage("El CCV obligatorio", required),
-    integer: withMessage("El CCV debe ser un número", integer),
+    integer: withMessage("El CCV debe ser valido", integer),
     minLength: withMessage("El CCV debe tener 3 dígitos", minLength(3)),
     maxLength: withMessage("El CCV debe tener 3 dígitos", maxLength(3)),
     regex: withMessage("El CCV solo debe contener números", regex(/^\d+$/)),
@@ -186,7 +242,7 @@ const submitForm = async () => {
     expirationDate: state.expiration_date,
     cvv: encryptAES(state.cvv),
     owner: encryptAES(state.owner),
-  }
+  };
 
   try {
     loading.value = true;
@@ -212,19 +268,6 @@ const submitForm = async () => {
   }
 };
 
-const image_url = ref("");
-
-const onFileChange = (e) => {
-  const file = e.target.files[0];
-  const reader = new FileReader();
-
-  reader.onload = (e) => {
-    image_url.value = e.target.result;
-  };
-
-  reader.readAsDataURL(file);
-};
-
 const clear = () => {
   state.owner = "";
   state.number = "";
@@ -237,5 +280,7 @@ const clear = () => {
   for (const [key, value] of Object.entries(card)) {
     state[key] = value;
   }
+
+  router.push({ name: "ProfilePayments" });
 };
 </script>

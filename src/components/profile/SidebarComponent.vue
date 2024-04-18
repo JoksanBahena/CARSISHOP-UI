@@ -93,7 +93,7 @@ const nav_items = [
   },
   {
     icon: "mdi-credit-card-outline",
-    title: "Metodos de pago",
+    title: "Métodos de pago",
     to: { name: "ProfilePayments" },
   },
   {
