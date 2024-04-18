@@ -14,7 +14,7 @@
           <v-container fluid>
             <orders-not-found-component
               icon="mdi-shopping-outline"
-              advise="No tienes ninguna compra"
+              advise="No tienes pedidos registrados"
               recomendation="Puedes ver productos en la tienda y realizar una compra"
               action="Ver productos"
               :to="{ name: 'Home' }"
@@ -33,7 +33,7 @@
           <v-container fluid>
             <orders-not-found-component
               icon="mdi-truck-fast-outline"
-              advise="No tienes ninguna devolución"
+              advise="No tienes devolución registradas"
               recomendation="Puedes iniciar una devolución desde el seguimiento de tu pedido"
               action="Ver pedidos"
               :to="{ name: 'ProfileOrders' }"

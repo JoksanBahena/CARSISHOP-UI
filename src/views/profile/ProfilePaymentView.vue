@@ -21,7 +21,7 @@
       <v-row v-if="!loading && cards.length === 0">
         <orders-not-found-component
           icon="mdi-credit-card-off-outline"
-          advise="No tienes métodos de pago registradas"
+          advise="No tienes métodos de pago registrados"
           recomendation="Agrega un método de pago para poder realizar tus compras"
           disableActions
         />

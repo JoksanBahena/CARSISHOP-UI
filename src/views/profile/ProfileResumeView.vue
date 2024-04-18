@@ -19,7 +19,7 @@
     <resumen-card-component
       icon="mdi-shopping-outline"
       title="Ultima compra"
-      action="Ver compras"
+      :action="summary_data.clothes[0].name !== '' ? 'Ver pedidos' : 'Ver más'"
       :to="{ name: 'ProfileOrders' }"
     >
       <v-expand-transition>
@@ -37,7 +37,7 @@
       <v-expand-transition>
         <v-card v-if="!loading">
           <div class="text-subtitle-1 mt-2 mb-4">
-            No tienes compras registradas
+            No tienes pedidos registrados
           </div>
         </v-card>
       </v-expand-transition>
@@ -51,7 +51,11 @@
           ? 'Ver direcciones'
           : 'Agregar dirección'
       "
-      :to="{ name: 'ProfileAddresses' }"
+      :to="
+        summary_data.address.name !== ''
+          ? { name: 'ProfileAddresses' }
+          : { name: 'ProfileAddAddress' }
+      "
     >
       <v-expand-transition>
         <div v-if="summary_data.address.id !== null">
@@ -73,7 +77,7 @@
       <v-expand-transition>
         <v-card v-if="!loading && summary_data.address.id === null">
           <div class="text-subtitle-1 mt-2 mb-4">
-            No tienes dirección registrada
+            No tienes direcciones registradas
           </div>
         </v-card>
       </v-expand-transition>
@@ -83,9 +87,15 @@
       icon="mdi-credit-card-outline"
       title="Métodos de pago"
       :action="
-        summary_data.card.owner !== '' ? 'Ver tarjetas' : 'Agregar tarjeta'
+        summary_data.card.owner !== ''
+          ? 'Ver métodos de pago'
+          : 'Agregar métodos de pago'
       "
-      :to="{ name: 'ProfilePayments' }"
+      :to="
+        summary_data.card.owner !== ''
+          ? { name: 'ProfilePayments' }
+          : { name: 'ProfileAddPayment' }
+      "
     >
       <v-expand-transition>
         <div v-if="summary_data.card.owner !== ''">
@@ -99,7 +109,7 @@
       <v-expand-transition>
         <v-card v-if="!loading && summary_data.card.owner === ''">
           <div class="text-subtitle-1 mt-2 mb-4">
-            No tienes tarjeta registrada
+            No tienes métodos de pago registrados
           </div>
         </v-card>
       </v-expand-transition>
