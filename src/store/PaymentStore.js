@@ -24,5 +24,20 @@ export const usePaymentStore = defineStore('payment', {
 			this.payment = response.data.data;
 			return response.data.data;
 		},
+    async confirmOrder(id, address, card){
+      console.log(id, address, card)
+      try{
+          const response = await axios.post(`${baseURL}payment/confirm-order/`, {id, address, card}, {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${this.token}`,
+            },
+          });
+        console.log(response.data.data)
+          return response.data.data;
+      }catch (error){
+        console.log(error)
+      }
+    }
 	},
 });

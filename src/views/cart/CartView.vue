@@ -85,6 +85,7 @@
                 :color="colors.primary_dark"
                 variant="flat"
                 block
+                :to="{ name: 'Payment' }"
               >
                 Continuar compra
               </v-btn>
