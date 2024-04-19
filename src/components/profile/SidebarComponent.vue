@@ -78,7 +78,7 @@ const nav_items = [
   },
   {
     icon: "mdi-shopping-outline",
-    title: "Pedidos y devoluciones",
+    title: "Pedidos",
     to: { name: "ProfileOrders" },
   },
   {

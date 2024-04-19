@@ -4,22 +4,81 @@
     <v-container>
       <p class="text-h4 font-weight-medium mb-2">Carrito</p>
       <v-row>
-        <v-col cols="12" lg="9" md="9">
-          <seller-card-component cart>
-            <product-list-cart-component />
-            <product-list-cart-component />
-          </seller-card-component>
-
-          <seller-card-component cart>
-            <product-list-cart-component />
-            <product-list-cart-component />
-          </seller-card-component>
+        <v-col cols="12" lg="7" md="7">
+          <v-row v-for="item in cartData.clothes.clothesCarts" :key="item.id">
+            <v-col cols="12">
+              <seller-card-component cart>
+                <div class="d-flex justify-end mt-2">
+                  <v-btn
+                    variant="flat"
+                    icon="mdi-close"
+                    @click="deleteItem(item.id)"
+                  />
+                </div>
+                <v-row class="align-center">
+                  <v-col cols="12" lg="6" md="6">
+                    <v-row class="align-center">
+                      <v-col cols="12" lg="6" md="6">
+                        <v-img
+                          :src="item.clothes.images[0].url"
+                          width="120"
+                          class="mx-auto"
+                        />
+                      </v-col>
+                      <v-col>
+                        <p class="text-h6">{{ item.clothes.name }}</p>
+                        <p class="text-subtitle-1 my-1">
+                          {{ item.clothes.description }}
+                        </p>
+                        <p class="text-subtitle-1 my-1">
+                          Talla: {{ item.size.name }}
+                        </p>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                  <v-col cols="7" lg="3" md="3">
+                    <div class="text-subtitle-1 font-weight-medium">
+                      Cantidad:
+                    </div>
+                    <v-text-field
+                      type="number"
+                      v-model="item.amount"
+                      @change="updateItem(item.id, item.amount)"
+                      variant="outlined"
+                      density="compact"
+                      hide-details
+                    />
+                    <div class="d-flex">
+                      <p class="text-subtitle-1 mt-2 mb-8 ml-2">
+                        ${{ item.clothes.stock[0].price }}MX c/u
+                      </p>
+                    </div>
+                  </v-col>
+                  <v-col cols="5" lg="3" md="3" align="center">
+                    <p class="text-subtitle-1 font-weight-medium">Subtotal:</p>
+                    <p class="text-h5 font-weight-medium mt-2 mb-8">
+                      ${{
+                        (item.clothes.stock[0].price * item.amount).toFixed(2)
+                      }}MX
+                    </p>
+                  </v-col>
+                  <v-divider class="mt-4" />
+                </v-row>
+              </seller-card-component>
+            </v-col>
+          </v-row>
         </v-col>
-        <v-col cols="12" lg="3" md="3">
+        <v-spacer />
+        <v-col cols="12" lg="4" md="4">
           <v-card variant="flat">
             <v-card-title>Resumen de compra</v-card-title>
             <v-card-item>
-              <p>Total ({{ totalItems }} productos): ${{ totalPrice }} MXN</p>
+              <div class="d-flex">
+                <p>Total ({{ products }} productos):</p>
+                <p class="ml-auto font-weight-medium">
+                  ${{ price.toFixed(2) }} MXN
+                </p>
+              </div>
               <v-divider class="my-3" />
               <v-btn
                 class="text-none"
@@ -38,10 +97,109 @@
     </v-container>
   </default-layout>
 </template>
+
 <script setup>
 import DefaultLayout from "@/layouts/user/DefaultLayout.vue";
 import Colors from "@/utils/Colors.js";
+import { useCartStore } from "@/store/CartStore";
+import { reactive, onMounted, ref, watch } from "vue";
+import SellerCardComponent from "@/components/profile/SellerCardComponent.vue";
+import BreadcrumbsComponent from "@/components/common/BreadcrumbsComponent.vue";
+import ProductListComponent from "@/components/common/ProductListComponent.vue";
+import { Toast } from "@/utils/Alerts";
+import Swal from "sweetalert2";
+const { fetchCart, deleteFromCart, updateFromCart } = useCartStore();
 
+const cart = {
+  clothes: [],
+};
+
+const products = ref(0);
+const price = ref(0);
+
+const cartData = reactive({ ...cart });
+const loading = ref(true);
+
+const getTotal = async () => {
+  cartData.clothes = await fetchCart();
+  products.value = cartData.clothes.clothesCarts.reduce((acc, item) => {
+    return acc + item.amount;
+  }, 0);
+
+  price.value = cartData.clothes.clothesCarts.reduce((acc, item) => {
+    return acc + item.clothes.stock[0].price * item.amount;
+  }, 0);
+};
+
+onMounted(async () => {
+  getTotal();
+  loading.value = true;
+  try {
+  } catch (error) {
+    throw new Error("Error al obtener el carrito");
+  } finally {
+    loading.value = false;
+  }
+});
+
+const deleteItem = async (id) => {
+  try {
+    const response = await deleteFromCart(id);
+    if (response.status === 200) {
+      Toast.fire({
+        icon: "success",
+        title: "Producto eliminado del carrito",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } else {
+      Toast.fire({
+        icon: "error",
+        title: "Error al eliminar el producto",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+  } finally {
+    await getTotal();
+  }
+};
+const updateItem = async (id, amount) => {
+  if (amount <= 0) {
+    const result = await Swal.fire({
+      title: "¿Estas seguro?",
+      text: "Si la cantidad no es valida el producto será eliminado del carrito",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: colors.primary,
+      cancelButtonColor: colors.primary_dark,
+      confirmButtonText: "Si",
+      cancelButtonText: "No",
+    });
+
+    if (result.isConfirmed) {
+      await deleteItem(id);
+    } else if (result.isDismissed) {
+      //poner la cantidad en 1
+      amount = 1;
+    }
+  }
+
+  try {
+    await updateFromCart(id, amount).then(() => {
+      getTotal();
+    });
+  } catch (error) {
+    await Toast.fire({
+      icon: "error",
+      title: "Error al actualizar el producto",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+};
 const colors = {
   primary: Colors.cs_primary,
   primary_dark: Colors.cs_primary_dark,
@@ -59,156 +217,3 @@ const items = [
   },
 ];
 </script>
-
-<!-- <template>
-  <default-layout>
-    <v-breadcrumbs :items="['Inicio', 'Carrito']" />
-    <v-container>
-      <v-row>
-        <v-col cols="9">
-          <h2>Carrito</h2>
-          <ItemProduct v-bind:data="items" typemodule="cart"/>
-        </v-col>
-        <v-col class="text-center mt-2" cols="3">
-          <h2>Resumen de compras</h2>
-          <p>Total ({{ totalItems }} productos): ${{ totalPrice }} MXN</p>
-          <v-divider class="mt-5 mb-5" :thickness="3" />
-          <v-btn :color="colors.primary_dark" to="/cart/payment">
-            Continuar compra
-          </v-btn>
-        </v-col>
-      </v-row>
-      <FeaturedProductsComponent v-bind:data="itemsFeatured" title="También te puede interesar" />
-    </v-container>
-  </default-layout>
-</template>
-<script setup>
-import DefaultLayout from "@/layouts/user/DefaultLayout.vue";
-import ItemProduct from "@/components/common/ItemProduct.vue";
-import FeaturedProductsComponent from "@/components/common/FeaturedProductsComponent.vue";
-import Colors from "@/utils/Colors.js";
-
-const items = [
-  {
-    id: 1,
-    vendedor: "PUC",
-    products: [
-      {
-        id: 1,
-        title: "Item 1",
-        description: "Lorem ipsum dolor sit amet consectetur.",
-        price: "615",
-        size: "M",
-        image: "@/assets/imgs/item.webp",
-        cantidad: 2
-      },
-      {
-        id: 2,
-        title: "Item 2",
-        description: "Lorem ipsum dolor sit amet consectetur.",
-        price: "115",
-        size: "M",
-        image: "@/assets/imgs/item.webp",
-        cantidad: 4
-      }
-    ]
-  },
-  {
-    id: 2,
-    vendedor: "Betyader",
-    products: [
-      {
-        id: 1,
-        title: "Item 1",
-        description: "Lorem ipsum dolor sit amet consectetur.",
-        price: "615",
-        size: "M",
-        image: "@/assets/imgs/item.webp",
-        cantidad: 1
-      },
-    ]
-  },
-  {
-    id: 3,
-    vendedor: "Amazon",
-    products: [
-      {
-        id: 1,
-        title: "Item 1",
-        description: "Lorem ipsum dolor sit amet consectetur.",
-        price: "215",
-        size: "M",
-        image: "@/assets/imgs/item.webp",
-        cantidad: 6
-      },
-      {
-        id: 2,
-        title: "Item 2",
-        description: "Lorem ipsum dolor sit amet consectetur.",
-        price: "425",
-        size: "M",
-        image: "@/assets/imgs/item.webp",
-        cantidad: 2
-      },
-    ]
-  },
-];
-
-const itemsFeatured = [
-  {
-    id: 1,
-    name: "Item 1",
-    description: "Lorem ipsum dolor sit amet consectetur.",
-    price: "615",
-  },
-  {
-    id: 2,
-    name: "Item 2",
-    description: "Lorem ipsum dolor sit amet consectetur.",
-    price: "115",
-  },
-  {
-    id: 3,
-    name: "Item 3",
-    description: "Lorem ipsum dolor sit amet consectetur.",
-    price: "215",
-  },
-  {
-    id: 4,
-    name: "Item 4",
-    description: "Lorem ipsum dolor sit amet consectetur.",
-    price: "415",
-  },
-  {
-    id: 5,
-    name: "Item 4",
-    description: "Lorem ipsum dolor sit amet consectetur.",
-    price: "415",
-  },
-  {
-    id: 6,
-    name: "Item 4",
-    description: "Lorem ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur.",
-    price: "415",
-  },
-]
-
-const totalItems = items.reduce((total, item) => {
-  return total + item.products.reduce((subtotal, product) => subtotal + product.cantidad, 0);
-}, 0);
-
-const totalPrice = items.reduce((total, item) => {
-  return total + item.products.reduce((subtotal, product) => {
-    const priceNumber = parseFloat(product.price);
-    return subtotal + (priceNumber * product.cantidad);
-  }, 0);
-}, 0);
-
-const colors = {
-  primary: Colors.cs_primary,
-  primary_dark: Colors.cs_primary_dark,
-  white: Colors.cs_white,
-  secondary: Colors.cs_secondary,
-};
-</script>
-<style lang=""></style> -->

@@ -231,7 +231,20 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   if (to.matched.some((route) => route.meta.requiresAuth)) {
     if (useAuthStore().isAuthenticated) {
-      useAuthStore().verifyTokenExp();
+      const isExp = useAuthStore().verifyTokenExp();
+      if (!isExp) {
+        Swal.fire({
+          title: "Session expired",
+          text: "Please login again",
+          icon: "error",
+          confirmButtonText: "Ok",
+          timer: 4000,
+        }).then(() => {
+          useAuthStore().logout();
+          next({ name: "Login" });
+        });
+        return;
+      }
       if (to.meta.roles) {
         if (to.meta.roles.includes(useAuthStore().user)) {
           next();

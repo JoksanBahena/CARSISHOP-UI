@@ -91,12 +91,33 @@
           </v-chip>
         </v-chip-group>
       </div>
+      <div class="my-4">
+        <p class="text-subtitle-1 font-weight-bold">Cantidad</p>
+        <v-text-field
+          v-model="amount"
+          class="mt-2"
+          dense
+          outlined
+          type="number"
+          :disabled="!selection"
+        ></v-text-field>
+        <template v-if="selection && clotheSizes.length > 0">
+    <span v-if="amount > getMaxStock(selection)" class="error-message">
+      La cantidad ingresada es mayor que el stock disponible.
+    </span>
+          <span v-if="amount <= getMaxStock(selection)" class="info-message">
+      Stock disponible: {{ getMaxStock(selection) }}
+    </span>
+        </template>
+      </div>
 
       <v-btn
         class="text-none flex-grow-1"
         prepend-icon="mdi-cart-outline"
         :color="colors.primary_dark"
         variant="flat"
+        @click="addToCart"
+        :disabled="!selection || (amount > getMaxStock(selection))"
       >
         Agregar al carrito
       </v-btn>
@@ -105,15 +126,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import {ref, onMounted, watch, reactive} from "vue";
 import Colors from "@/utils/Colors.js";
 import { useClotheStore } from "@/store/ClotheStore";
+import { useCartStore } from "@/store/CartStore";
 import { decryptValue } from "@/utils/Crypto";
 import { useRouter } from "vue-router";
+import { Toast } from "@/utils/Alerts";
 
 const router = useRouter();
 const store = useClotheStore();
-
+const cartStore = useCartStore();
 const hoverImage = ref(null);
 const rating = ref(4);
 const selection = ref(null);
@@ -128,14 +151,16 @@ const colors = {
 const mainImage = ref(null);
 const imagesArray = ref([]);
 const defaultImage = "https://via.placeholder.com/500";
-
+const amount = ref(1);
 onMounted(async () => {
   await getOneClothe();
   watch(
     () => router.currentRoute.value,
     async (to, from) => {
-      if (to.params.id !== from.params.id) {
-        await getOneClothe();
+      if (to.name === "Product"){
+        if (to.params.id !== from.params.id) {
+          await getOneClothe();
+        }
       }
     }
   );
@@ -156,6 +181,26 @@ const getOneClothe = async () => {
   }
 
   mainImage.value = imagesArray.value[0].url;
+};
+const addToCart = async () => {
+  if (!selection.value) {
+    return;
+  }
+  try {
+    const sizeId = getSizeIdFromName(clothe.value, selection.value);
+    const response = await cartStore.addToCart(clothe.value.id, amount.value, sizeId);
+    console.log(response)
+    if (response.status === 200) {
+      Toast.fire({
+        icon: "success",
+        title: "¡Producto agregado al carrito!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const clotheName = ref(null);
@@ -180,7 +225,6 @@ watch(selection, (newSize) => {
 
 const getIdFromParams = () => {
   const id = router.currentRoute.value.params.id;
-
   return decryptValue(id);
 };
 
@@ -194,5 +238,19 @@ const updateMainImage = (index) => {
 
 const selectSize = (selectedSize) => {
   selection.value = selectedSize;
+};
+
+const getSizeIdFromName = (clothe, sizeName) => {
+  const stock = clothe.stock;
+  for (const size of stock) {
+    if (size.size.name === sizeName) {
+      return size.size.id;
+    }
+  }
+  return null;
+};
+const getMaxStock = (sizeName) => {
+  const selectedSize = clotheSizes.value.find((size) => size.size.name === sizeName);
+  return selectedSize ? selectedSize.quantity : 0;
 };
 </script>
