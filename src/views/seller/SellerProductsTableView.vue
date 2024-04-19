@@ -98,7 +98,8 @@
               :color="colors.primary_dark"
               variant="outlined"
               :to="{
-                name: 'SellerAddProduct',
+                name: 'SellerUpdateProduct',
+                params: { id: encryptAES(item.id.toString()) },
               }"
             >
               <v-tooltip activator="parent" location="top"> Editar </v-tooltip>

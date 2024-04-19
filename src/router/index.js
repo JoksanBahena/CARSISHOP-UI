@@ -210,6 +210,11 @@ const routes = [
             name: "SellerAddProduct",
             component: () => import("@/views/seller/SellerAddProductView.vue"),
           },
+          {
+            path: "my-products/edit/:id",
+            name: "SellerUpdateProduct",
+            component: () => import("@/views/seller/SellerUpdateProductView.vue"),
+          }
         ],
       },
     ],

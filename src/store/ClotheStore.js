@@ -227,5 +227,12 @@ export const useClotheStore = defineStore("clothe", {
         throw error;
       }
     },
+    async updateClothe(clothe){
+      try{
+
+      }catch (error){
+        throw error
+      }
+    }
   },
 });
