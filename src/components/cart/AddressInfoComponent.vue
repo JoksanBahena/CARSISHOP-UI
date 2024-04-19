@@ -26,7 +26,7 @@
         Editar dirección
       </v-btn>
 
-      <v-dialog max-width="500">
+      <!-- <v-dialog max-width="500">
         <template v-slot:activator="{ props: activatorProps }">
           <v-btn
             v-bind="activatorProps"
@@ -51,7 +51,7 @@
             </v-card-actions>
           </v-card>
         </template>
-      </v-dialog>
+      </v-dialog> -->
     </v-card-actions>
   </v-card>
   <v-divider />

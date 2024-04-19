@@ -5,7 +5,28 @@
 			<p class="text-h4 font-weight-medium mb-2">Finalizar compra</p>
 			<v-row>
 				<v-col cols="12" lg="9" md="9">
-					<address-info-component />
+					<address-info-component
+					v-if="addressData.length > 0"
+						:user="addressData[0].name"
+						:state="addressData[0].state.name"
+						:town="addressData[0].town.name"
+						:suburb="addressData[0].suburb"
+						:street="addressData[0].street"
+						:extrnumber="addressData[0].extnumber"
+						:intnumber="addressData[0].intnumber"
+						:cp="addressData[0].cp"
+					 />
+					<v-btn
+						v-if="addressData.length === 0"
+						variant="flat"
+						class="my-10 text-none"
+						:color="colors.primary_dark"
+						block
+						prepend-icon="mdi-plus"
+						:to="{ name: 'ProfileAddresses' }"
+					>
+						Agregar nueva dirección
+					</v-btn>
 				</v-col>
 				<v-col cols="12" lg="3" md="3">
 					<v-card variant="flat">
@@ -35,12 +56,13 @@
 <script setup>
 import DefaultLayout from '@/layouts/user/DefaultLayout.vue';
 import Colors from '@/utils/Colors.js';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, reactive } from 'vue';
 import { loadStripe } from '@stripe/stripe-js';
 import { useProfileStore } from '@/store/ProfileStore';
 import { usePaymentStore } from '@/store/PaymentStore';
+import { decryptValue } from '@/utils/Crypto';
 
-const { profile } = useProfileStore();
+const { profile, fetchAddressess } = useProfileStore();
 const { createPayment } = usePaymentStore();
 
 const isDisabled = ref(false);
@@ -89,8 +111,40 @@ const checkout = async () => {
 	}
 };
 
+const addressData = reactive([]);
+
+const getAddresses = async () => {
+  try {
+    const response = await fetchAddressess();
+    addressData.splice(0);
+    response.forEach((address) => {
+      addressData.push({
+        id: address.id,
+        cp: decryptValue(address.cp),
+        extnumber: decryptValue(address.extnumber),
+        intnumber: decryptValue(address.intnumber),
+        state: {
+          name: address.state.name,
+        },
+        street: decryptValue(address.street),
+        suburb: decryptValue(address.suburb),
+        town: {
+          name: address.town.name,
+        },
+        name: decryptValue(address.name),
+      });
+    });
+  } catch (error) {
+    Toast.fire({
+      icon: "error",
+      title: "Ocurrió un error al cargar tus direcciones",
+    });
+  }
+};
+
 onMounted(async () => {
 	stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+	getAddresses();
 });
 
 const colors = {
