@@ -91,6 +91,25 @@
           </v-chip>
         </v-chip-group>
       </div>
+      <div class="my-4">
+        <p class="text-subtitle-1 font-weight-bold">Cantidad</p>
+        <v-text-field
+          v-model="amount"
+          class="mt-2"
+          dense
+          outlined
+          type="number"
+          :disabled="!selection"
+        ></v-text-field>
+        <template v-if="selection && clotheSizes.length > 0">
+    <span v-if="amount > getMaxStock(selection)" class="error-message">
+      La cantidad ingresada es mayor que el stock disponible.
+    </span>
+          <span v-if="amount <= getMaxStock(selection)" class="info-message">
+      Stock disponible: {{ getMaxStock(selection) }}
+    </span>
+        </template>
+      </div>
 
       <v-btn
         class="text-none flex-grow-1"
@@ -98,7 +117,7 @@
         :color="colors.primary_dark"
         variant="flat"
         @click="addToCart"
-        :disabled="!selection"
+        :disabled="!selection || (amount > getMaxStock(selection))"
       >
         Agregar al carrito
       </v-btn>
@@ -107,7 +126,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import {ref, onMounted, watch, reactive} from "vue";
 import Colors from "@/utils/Colors.js";
 import { useClotheStore } from "@/store/ClotheStore";
 import { useCartStore } from "@/store/CartStore";
@@ -132,7 +151,7 @@ const colors = {
 const mainImage = ref(null);
 const imagesArray = ref([]);
 const defaultImage = "https://via.placeholder.com/500";
-
+const amount = ref(1);
 onMounted(async () => {
   await getOneClothe();
   watch(
@@ -161,14 +180,14 @@ const getOneClothe = async () => {
 
   mainImage.value = imagesArray.value[0].url;
 };
-const amount = 10;
 const addToCart = async () => {
   if (!selection.value) {
     return;
   }
   try {
     const sizeId = getSizeIdFromName(clothe.value, selection.value);
-    const response = await cartStore.addToCart(clothe.value.id, amount, sizeId);
+    const response = await cartStore.addToCart(clothe.value.id, amount.value, sizeId);
+    console.log(response)
     if (response.status === 200) {
       Swal.fire({
         icon: "success",
@@ -227,7 +246,10 @@ const getSizeIdFromName = (clothe, sizeName) => {
       return size.size.id;
     }
   }
-  // Si no se encuentra el tamaño, se puede devolver null o un valor predeterminado según lo que prefieras
   return null;
+};
+const getMaxStock = (sizeName) => {
+  const selectedSize = clotheSizes.value.find((size) => size.size.name === sizeName);
+  return selectedSize ? selectedSize.quantity : 0;
 };
 </script>
