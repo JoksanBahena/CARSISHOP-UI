@@ -2,7 +2,6 @@
   <v-card variant="flat" class="mb-4">
     <v-card-item>
       <div class="d-flex align-center mb-2">
-        <v-card-title>{{ title }}</v-card-title>
         <v-spacer />
         <p
           v-if="!details && !cart"
@@ -28,10 +27,6 @@ const colors = {
 };
 
 const props = defineProps({
-  title: {
-    type: String,
-    default: "Vendedor",
-  },
   date: {
     type: String,
     default: "01/01/2001",

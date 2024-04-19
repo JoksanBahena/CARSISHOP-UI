@@ -7,8 +7,7 @@ export const useCartStore = defineStore("cart", {
   state: () => ({
     token: localStorage.getItem("token") || "",
     cart: {
-      clothesCarts: [
-      ],
+      clothesCarts: [],
     },
   }),
   getters: {
@@ -22,7 +21,7 @@ export const useCartStore = defineStore("cart", {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        this.cart = this.groupClothesBySeller(response.data.data.clothesCarts);
+        this.cart = response.data.data;
         return this.cart;
       } catch (error) {
         console.log(error);
@@ -31,10 +30,10 @@ export const useCartStore = defineStore("cart", {
     async addToCart(clotheId, amount, sizeId) {
       const cloth = {
         id: clotheId,
-      }
+      };
       const size = {
         id: sizeId,
-      }
+      };
       try {
         const response = await axios.post(
           baseURL + "clothesCart/add",
@@ -56,50 +55,41 @@ export const useCartStore = defineStore("cart", {
     },
     async deleteFromCart(clotheId) {
       try {
-        const response = await axios.post(baseURL + "clothesCart/delete",
+        const response = await axios.post(
+          baseURL + "clothesCart/delete",
           {
-          id:clotheId,
+            id: clotheId,
           },
           {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        return response;
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        return response.data;
       } catch (error) {
         console.log(error);
       }
     },
-    async updateFromCart(id, amount){
-        try{
-          const response = await axios.post(baseURL + "clothesCart/update",
+    async updateFromCart(id, amount) {
+      try {
+        return await axios
+          .post(
+            baseURL + "clothesCart/update",
             {
-            id:id,
-            amount:amount,
+              id: id,
+              amount: amount,
             },
             {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          });
-          return response;
-        } catch (error) {
-          console.log(error);
-        }
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          )
+          .then(this.fetchCart());
+      } catch (error) {
+        console.log(error);
+      }
     },
-    groupClothesBySeller(clothes){
-      const groupedClothes = clothes.reduce((acc, curr) => {
-        const sellerId = curr.clothes.seller.id;
-        if (!acc[sellerId]) {
-          acc[sellerId] = {
-            seller: curr.clothes.seller,
-            clothesCart: [],
-          };
-        }
-        acc[sellerId].clothesCart.push(curr);
-        return acc;
-      }, {});
-      return Object.values(groupedClothes);
-    }
   },
 });
