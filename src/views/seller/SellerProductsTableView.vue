@@ -74,7 +74,11 @@
         </template>
 
         <template v-slot:item.actions="{ item }">
-          <v-row class="my-4" justify="center">
+          <v-row
+            v-if="item.request_status === 'APPROVED'"
+            class="my-4"
+            justify="center"
+          >
             <v-btn
               class="ma-1 text-none"
               color="green"
@@ -89,24 +93,44 @@
               </v-tooltip>
               <v-icon>mdi-eye-outline</v-icon>
             </v-btn>
-            <!-- <v-btn
+            <v-btn
               class="ma-1 text-none"
               :color="colors.primary_dark"
               variant="outlined"
+              :to="{
+                name: 'SellerAddProduct',
+              }"
             >
               <v-tooltip activator="parent" location="top"> Editar </v-tooltip>
               <v-icon>mdi-pencil-outline</v-icon>
-            </v-btn> -->
+            </v-btn>
             <v-btn
+              v-if="item.status === true"
               class="ma-1 text-none"
               :color="colors.red"
               variant="outlined"
+              @click="onHandleDelete(item.id)"
             >
               <v-tooltip activator="parent" location="top">
-                Eliminar
+                Deshabilitar
               </v-tooltip>
-              <v-icon>mdi-delete-outline</v-icon>
+              <v-icon>mdi-close</v-icon>
             </v-btn>
+            <v-btn
+              v-else
+              class="ma-1 text-none"
+              :color="colors.primary_dark"
+              variant="outlined"
+              @click="onHandleDelete(item.id)"
+            >
+              <v-tooltip activator="parent" location="top">
+                Habilitar
+              </v-tooltip>
+              <v-icon>mdi-check</v-icon>
+            </v-btn>
+          </v-row>
+          <v-row v-else class="my-4" justify="center">
+            Aun no puedes realizar acciones
           </v-row>
         </template>
       </v-data-table>
@@ -120,8 +144,9 @@ import Colors from "@/utils/Colors.js";
 import { useClotheStore } from "@/store/ClotheStore";
 import { useProfileStore } from "@/store/ProfileStore";
 import { encryptAES } from "@/utils/Crypto";
+import { Toast } from "@/utils/Alerts";
 
-const { fetchClothesBySellerId } = useClotheStore();
+const { fetchClothesBySellerId, deleteClothe } = useClotheStore();
 const { profile } = useProfileStore();
 
 const clothes = ref([]);
@@ -166,6 +191,27 @@ const items = [
 const search = ref("");
 const products_per_page = ref(10);
 const total_products = ref(0);
+const loading = ref(false);
+
+const onHandleDelete = async (id) => {
+  loading.value = true;
+  try {
+    const response = await deleteClothe(id);
+    if (response.status === 200) {
+      window.location.reload();
+      loading.value = false;
+    }
+  } catch (error) {
+    console.log(error);
+    Toast.fire({
+      icon: "error",
+      title: "Error al deshabilitar/habilitar producto",
+    });
+    loading.value = false;
+  } finally {
+    loading.value = false;
+  }
+};
 
 const getStatusColor = (status) => {
   switch (status) {

@@ -92,10 +92,10 @@ export const useClotheStore = defineStore("clothe", {
           },
         });
 
-        this.clothesByCategory = response.data.data.filter(clothe => clothe.request_status === "APPROVED");
+        this.clothesByCategory = response.data.data.filter(
+          (clothe) => clothe.request_status === "APPROVED"
+        );
         return response.data.data;
-
-
       } catch (error) {
         throw error;
       }
@@ -204,6 +204,24 @@ export const useClotheStore = defineStore("clothe", {
             Authorization: `Bearer ${token}`,
           },
         });
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    },
+    async deleteClothe(id) {
+      const url = baseURL + `clothes/disable/${id}`;
+      try {
+        const response = await axios.put(
+          url,
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         return response.data;
       } catch (error) {
         throw error;
