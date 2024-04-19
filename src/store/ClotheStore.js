@@ -229,7 +229,14 @@ export const useClotheStore = defineStore("clothe", {
     },
     async updateClothe(clothe){
       try{
-
+          const response = await axios.put(baseURL + "clothes/update", clothe, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        console.log(response)
+          return response.data;
       }catch (error){
         throw error
       }

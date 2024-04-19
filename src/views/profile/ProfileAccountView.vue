@@ -158,7 +158,7 @@
               </v-col>
             </v-row>
           </v-expand-transition>
-          
+
           <v-expand-transition>
           <div v-if="!loading && is_seller">
             <div class="d-flex align-center mb-2 mt-12">
@@ -278,7 +278,7 @@ import { getErrorMessage } from "@/utils/Errors";
 import { encryptAES } from "@/utils/Crypto";
 
 const { withMessage, regex } = helpers;
-const { profile, updateProfile, updateProfileImage, updateSellerProfile } =
+const { profile, updateProfile, updateProfileImage} =
   useProfileStore();
 const error = ref({ error: "", message: "" });
 

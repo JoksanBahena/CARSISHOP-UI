@@ -307,11 +307,20 @@
 <script setup>
 import Colors from "@/utils/Colors";
 import {useClotheStore} from "@/store/ClotheStore";
-import {onMounted, reactive, ref} from "vue";
-import {decryptValue} from "@/utils/Crypto";
+import {onMounted, reactive, ref, watch} from "vue";
+import {decryptValue, encryptAES} from "@/utils/Crypto";
 import {useRoute} from "vue-router";
 import {useVuelidate} from "@vuelidate/core";
 import {decimal, helpers, maxLength, minLength, minValue, required} from "@vuelidate/validators";
+import {useProfileStore} from "@/store/ProfileStore";
+import {useCategoryStore} from "@/store/CategoryStore";
+import {useSubcategoryStore} from "@/store/SubcategoryStore";
+import {Toast} from "@/utils/Alerts";
+import router from "@/router";
+const { profile } = useProfileStore();
+const { updateClothe, imagesClothe } = useClotheStore();
+const { findAllCategoriesWithoutPagination } = useCategoryStore();
+const { findAllsubcategoriesWithoutPagination } = useSubcategoryStore()
 const { withMessage, forEach, regex } = helpers;
 const {findClotheById} = useClotheStore()
 const route = useRoute()
@@ -330,10 +339,7 @@ const state = reactive({...product})
 const max_size = 2;
 const max_images = 5;
 const loading = ref(false);
-onMounted(async () => {
-  state.value = await findClotheById(decryptValue(route.params.id))
-  console.log(state.value)
-});
+
 
 const onFileChange = (e) => {
   const files = e.target.files;
@@ -475,4 +481,95 @@ const colors = {
   gray: Colors.cs_opacity_gray,
   red: Colors.cs_red,
 };
+
+
+watch(selected_sizes, (value, old_value) => {
+  const deselected_sizes = old_value.filter((size) => !value.includes(size));
+  state.stock = state.stock.filter(
+    (item) => !deselected_sizes.includes(item.size)
+  );
+
+  const existingSizes = state.stock.map((item) => item.size);
+  const newSizes = value.filter((size) => !existingSizes.includes(size));
+
+  const new_stock = newSizes.map((size) => ({
+    size,
+    quantity: 1,
+    price: "1.00",
+  }));
+
+  state.stock = [...state.stock, ...new_stock];
+});
+onMounted(async () => {
+  const resp_categories = await findAllCategoriesWithoutPagination();
+  const resp_subcategories = await findAllsubcategoriesWithoutPagination();
+
+  categories.value = resp_categories;
+  subcategories.value = resp_subcategories;
+
+  state.sellerEmail = profile.username;
+  const response = await findClotheById(decryptValue(route.params.id))
+  console.log(response)
+  state.name = response.name
+  state.description = response.description
+  state.category = response.category
+  state.subcategory = response.subcategory
+  // state.stock = response.stock
+  response.images.forEach((image) => {
+    state.image_urls.push(image.url);
+  });
+  console.log(state.stock)
+
+});
+const submitForm = async() =>{
+  v$.value.$touch();
+  if (v$.value.$error) return;
+  const new_stock = state.stock.map((item) => {
+    const size_object = sizes.find((size) => size.size === item.size);
+    return {
+      size: { id: size_object.id, size: item.size },
+      quantity: item.quantity,
+      price: item.price,
+    };
+  });
+  state.stock = new_stock;
+
+  state.category = { id: state.category };
+  state.subcategory = { id: state.subcategory };
+  state.sellerEmail = encryptAES(state.sellerEmail);
+  try{
+    const response = await updateClothe(state);
+    console.log(response)
+
+    if (response.status === 200) {
+      const payload = {
+        clothesId: response.data.id,
+      };
+
+
+      for (let i = 0; i < state.image_urls.length; i++) {
+        (payload[`images[${i}].image`] = state.image_urls.value[i]),
+          (payload[`images[${i}].index`] = i);
+      }
+
+      const images_response = await imagesClothe(payload);
+
+      clear();
+
+      if (images_response.status === 200) {
+        Toast.fire({
+          icon: "success",
+          title: "Producto creado exitosamente",
+        });
+        router.push({ name: "SellerProducts" });
+      } else {
+        Toast("error", "Error al añadir las imágenes del producto");
+      }
+    }
+  }catch (error){
+    console.log(error)
+  }finally {
+    loading.value = false;
+  }
+}
 </script>
