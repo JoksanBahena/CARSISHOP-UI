@@ -17,7 +17,7 @@
           </v-btn>
           <v-text-field
             v-model="search"
-            label="Buscar venta"
+            label="Buscar producto"
             prepend-inner-icon="mdi-magnify"
             variant="outlined"
             hide-details
@@ -92,18 +92,6 @@
                 Ver en tienda
               </v-tooltip>
               <v-icon>mdi-eye-outline</v-icon>
-            </v-btn>
-            <v-btn
-              class="ma-1 text-none"
-              :color="colors.primary_dark"
-              variant="outlined"
-              :to="{
-                name: 'SellerUpdateProduct',
-                params: { id: encryptAES(item.id.toString()) },
-              }"
-            >
-              <v-tooltip activator="parent" location="top"> Editar </v-tooltip>
-              <v-icon>mdi-pencil-outline</v-icon>
             </v-btn>
             <v-btn
               v-if="item.status === true"

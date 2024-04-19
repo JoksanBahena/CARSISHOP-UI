@@ -228,6 +228,7 @@ export const useClotheStore = defineStore("clothe", {
       }
     },
     async updateClothe(clothe){
+      console.log(clothe)
       try{
           const response = await axios.put(baseURL + "clothes/update", clothe, {
             headers: {
