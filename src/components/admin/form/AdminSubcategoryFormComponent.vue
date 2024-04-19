@@ -87,18 +87,32 @@ const submitForm = async () => {
   if (v$.value.$error) return;
   try {
     const response = await createSubcategory(state.subcategory);
-    Toast.fire({
-      icon: "success",
-      title: response.message,
-    });
-    location.reload();
+    if (response.status === 201 || response.status === 200) {
+      Toast.fire({
+        icon: "success",
+        title: "Subcategoría creada correctamente",
+      });
+      clear();
+      location.reload();
+    } else {
+      Toast.fire({
+        icon: "error",
+        title: response.response.data.message,
+      });
+    }
   } catch (error) {
-    console.error("Error al crear la subcategoría", error);
-    Toast.fire({
-      icon: "error",
-      title: "Error al crear la categoría",
-    });
-    location.reload();
+    if (error.response && error.response.data && error.response.data.message) {
+      const errorMessage = error.response.data.message;
+      Toast.fire({
+        icon: "error",
+        title: errorMessage,
+      });
+    } else {
+      Toast.fire({
+        icon: "error",
+        title: "Error al crear la subcategoría",
+      });
+    }
   } finally {
     clear();
     loading.value = false;

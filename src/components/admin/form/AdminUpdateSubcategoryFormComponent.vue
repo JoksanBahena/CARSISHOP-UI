@@ -55,7 +55,6 @@
 import Colors from "@/utils/Colors.js";
 import { reactive, watch, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import Swal from "sweetalert2";
 import { required, minLength, maxLength, helpers } from "@vuelidate/validators";
 import { useSubcategoryStore } from "@/store/SubcategoryStore";
 import { Toast } from "@/utils/Alerts";
@@ -110,19 +109,32 @@ const submitForm = async () => {
       props.selectedSubcategory.id,
       state.subcategory
     );
-    Toast.fire({
-      icon: "success",
-      title: response.message,
-    });
-    location.reload();
-    location.reload();
+    if (response.status === 201 || response.status === 200) {
+      Toast.fire({
+        icon: "success",
+        title: "Subcategoría actualizada correctamente",
+      });
+      clear();
+      location.reload();
+    } else {
+      Toast.fire({
+        icon: "error",
+        title: response.response.data.message,
+      });
+    }
   } catch (error) {
-    console.error("Error al actualizar la subcategiría", error);
-    Toast.fire({
-      icon: "error",
-      title: "Error al actualizar la subcategoría",
-    });
-    location.reload();
+    if (error.response && error.response.data && error.response.data.message) {
+      const errorMessage = error.response.data.message;
+      Toast.fire({
+        icon: "error",
+        title: errorMessage,
+      });
+    } else {
+      Toast.fire({
+        icon: "error",
+        title: "Error al actualizar la categoría",
+      });
+    }
   } finally {
     clear();
     loading.value = false;
