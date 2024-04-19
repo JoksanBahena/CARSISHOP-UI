@@ -12,7 +12,7 @@
         <p>{{ user.toLocaleUpperCase() }}</p>
       </div>
       <div :class="details ? 'mb-4' : ''">
-        {{ cp }}, {{ state }}, {{ town }}, {{ suburb }}, {{ street }}
+        {{ cp }}, {{ state }}, {{ town }}, {{ suburb }} {{ street }}
         {{ extrnumber }},
         {{ intnumber }}
       </div>
@@ -56,30 +56,39 @@ const colors = {
 const props = defineProps({
   id: {
     type: Number,
+    default: 0,
   },
   user: {
     type: String,
+    default: "Tu nombre",
   },
   state: {
     type: String,
+    default: "Tu estado",
   },
   town: {
     type: String,
+    default: "municipio",
   },
   suburb: {
     type: String,
+    default: "colonia",
   },
   street: {
     type: String,
+    default: "y calle",
   },
   extrnumber: {
     type: String,
+    default: "S/N",
   },
   intnumber: {
     type: String,
+    default: "S/N",
   },
   cp: {
     type: String,
+    default: "00000",
   },
   resume: {
     type: Boolean,
@@ -89,7 +98,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  onDeleteHandle: Function,
+  onDeleteHandle: {
+    type: Function,
+    default: () => {},
+  },
 });
 
 const encrypt_id = encryptAES(props.id.toString());
