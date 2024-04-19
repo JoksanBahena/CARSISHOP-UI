@@ -3,23 +3,27 @@
     <breadcrumbs-component :items="items" />
     <v-container>
       <p class="text-h4 font-weight-medium mb-2">Carrito</p>
+<!--      <orders-not-found-component
+        v-if="cartData.clothes.length === 0"
+        :icon="info.icon"
+        :advise="info.advise"
+        :recomendation="info.recomendation"
+      />-->
       <v-row>
         <v-col cols="12" lg="9" md="9">
-          <v-row v-for="item in cartData.clothes" :key="item.id">
+
+          <v-row v-for="item in cartData.clothes.clothesCarts" :key="item.id">
             <v-col cols="12">
-              <seller-card-component cart
-              :title="item.seller.user.name">
+              <seller-card-component cart>
                 <product-list-cart-component
+                  :id="item.id"
                   :deleteItem="deleteItem"
-                  :id="product.id"
-                  v-for="product in item.clothesCart"
-                  :key="product.id"
-                  :image="product.clothes.images[0].url"
-                  :product="product.clothes.name"
-                  :description="product.clothes.description"
-                  :size="product.clothes.stock[0].size.name"
-                  :price="product.clothes.stock[0].price"
-                  :amount="product.amount"
+                  :image="item.clothes.images[0].url"
+                  :product="item.clothes.name"
+                  :description="item.clothes.description"
+                  :size="item.size.name"
+                  :price="item.clothes.stock[0].price"
+                  :amount="item.amount"
                 />
               </seller-card-component>
             </v-col>
@@ -59,25 +63,28 @@ import SellerCardComponent from "@/components/profile/SellerCardComponent.vue";
 import BreadcrumbsComponent from "@/components/common/BreadcrumbsComponent.vue";
 import ProductListComponent from "@/components/common/ProductListComponent.vue";
 import Swal from "sweetalert2";
-
 const { fetchCart, deleteFromCart } = useCartStore();
 
 const cart = {
   clothes: []
 }
+const info = ref({
+  icon: "mdi-cart-outline",
+  advise: "Actualmente no hay nada en tu carrito",
+  recomendation:
+    "Comienza a ver los productos en la sección de abajo",
+});
 
 const cartData = reactive({ ...cart });
 const loading = ref(false);
-let totalItems = ref(0);
-const totalPrice = ref(0);
+/*let totalItems = ref(0);
+const totalPrice = ref(0);*/
 
 const getCart = async () => {
   loading.value = true;
   try {
-    const response = await fetchCart();
-    cartData.clothes = response;
+    cartData.clothes = await fetchCart();
     loading.value = false;
-    console.log(response);
   } catch (error) {
     loading.value = false;
     throw new Error("Error al obtener el carrito");
@@ -87,9 +94,7 @@ const getCart = async () => {
 };
 
 onMounted(() => {
-  getCart().then(() => {
-    calculateTotals();
-  });
+  getCart()
 });
 
 const deleteItem = async (id) => {
@@ -119,18 +124,6 @@ const deleteItem = async (id) => {
       timer: 1500,
     });
   }
-};
-
-const calculateTotals = async () => {
-  let itemsCount = 0;
-  let totalPriceValue = 0;
-  cartData.clothes.forEach(item => {
-    console.log(item);
-    itemsCount += item.clothesCart.reduce((acc, product) => acc + product.amount, 0);
-    totalPriceValue += item.clothesCart.reduce((acc, product) => acc + (product.amount * product.clothes.stock[0].price), 0);
-  });
-  totalItems.value = itemsCount;
-  totalPrice.value = totalPriceValue;
 };
 
 const colors = {

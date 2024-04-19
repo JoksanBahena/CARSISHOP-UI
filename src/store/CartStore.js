@@ -22,7 +22,7 @@ export const useCartStore = defineStore("cart", {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        this.cart = this.groupClothesBySeller(response.data.data.clothesCarts);
+        this.cart = response.data.data;
         return this.cart;
       } catch (error) {
         console.log(error);
@@ -65,6 +65,7 @@ export const useCartStore = defineStore("cart", {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
+        console.log(response)
         return response;
       } catch (error) {
         console.log(error);
@@ -87,19 +88,5 @@ export const useCartStore = defineStore("cart", {
           console.log(error);
         }
     },
-    groupClothesBySeller(clothes){
-      const groupedClothes = clothes.reduce((acc, curr) => {
-        const sellerId = curr.clothes.seller.id;
-        if (!acc[sellerId]) {
-          acc[sellerId] = {
-            seller: curr.clothes.seller,
-            clothesCart: [],
-          };
-        }
-        acc[sellerId].clothesCart.push(curr);
-        return acc;
-      }, {});
-      return Object.values(groupedClothes);
-    }
   },
 });
