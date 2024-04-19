@@ -33,7 +33,6 @@ export const useCartStore = defineStore("cart", {
       }
     },
     async addToCart(clotheId, amount, sizeId) {
-      console.log(clotheId, amount, sizeId)
       const cloth = {
         id: clotheId,
       }

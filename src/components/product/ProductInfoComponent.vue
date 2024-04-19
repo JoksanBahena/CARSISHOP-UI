@@ -157,8 +157,10 @@ onMounted(async () => {
   watch(
     () => router.currentRoute.value,
     async (to, from) => {
-      if (to.params.id !== from.params.id) {
-        await getOneClothe();
+      if (to.name === "Product"){
+        if (to.params.id !== from.params.id) {
+          await getOneClothe();
+        }
       }
     }
   );
@@ -223,7 +225,6 @@ watch(selection, (newSize) => {
 
 const getIdFromParams = () => {
   const id = router.currentRoute.value.params.id;
-
   return decryptValue(id);
 };
 
