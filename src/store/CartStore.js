@@ -1,4 +1,4 @@
-import {defineStore} from "pinia";
+import { defineStore } from "pinia";
 import axios from "axios";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
@@ -7,16 +7,11 @@ export const useCartStore = defineStore("cart", {
   state: () => ({
     token: localStorage.getItem("token") || "",
     cart: {
-      clothesCarts: [
-      ],
-      totalItems: 0,
-      totalPrice: 0,
+      clothesCarts: [],
     },
   }),
   getters: {
     getCart: (state) => state.cart,
-    getTotalItems: (state) => state.cart.totalItems,
-    getTotalPrice: (state) => state.cart.totalPrice,
   },
   actions: {
     async fetchCart() {
@@ -35,10 +30,10 @@ export const useCartStore = defineStore("cart", {
     async addToCart(clotheId, amount, sizeId) {
       const cloth = {
         id: clotheId,
-      }
+      };
       const size = {
         id: sizeId,
-      }
+      };
       try {
         const response = await axios.post(
           baseURL + "clothesCart/add",
@@ -60,24 +55,27 @@ export const useCartStore = defineStore("cart", {
     },
     async deleteFromCart(clotheId) {
       try {
-        const response = await axios.post(baseURL + "clothesCart/delete",
+        const response = await axios.post(
+          baseURL + "clothesCart/delete",
           {
-          id:clotheId,
+            id: clotheId,
           },
           {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        console.log(response)
-        return response;
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        return response.data;
       } catch (error) {
         console.log(error);
       }
     },
-    async updateFromCart(id, amount){
-        try{
-          return await axios.post(baseURL + "clothesCart/update",
+    async updateFromCart(id, amount) {
+      try {
+        return await axios
+          .post(
+            baseURL + "clothesCart/update",
             {
               id: id,
               amount: amount,
@@ -86,16 +84,12 @@ export const useCartStore = defineStore("cart", {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
               },
-            });
-        } catch (error) {
-          console.log(error);
-        }
-    },
-    setTotalItems(totalItems) {
-      this.cart.totalItems = totalItems;
-    },
-    setTotalPrice(totalPrice) {
-      this.cart.totalPrice = totalPrice;
+            }
+          )
+          .then(this.fetchCart());
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 });

@@ -111,9 +111,9 @@ import { ref, onMounted, watch } from "vue";
 import Colors from "@/utils/Colors.js";
 import { useClotheStore } from "@/store/ClotheStore";
 import { useCartStore } from "@/store/CartStore";
-import Swal from "sweetalert2";
 import { decryptValue } from "@/utils/Crypto";
 import { useRouter } from "vue-router";
+import { Toast } from "@/utils/Alerts";
 
 const router = useRouter();
 const store = useClotheStore();
@@ -170,7 +170,7 @@ const addToCart = async () => {
     const sizeId = getSizeIdFromName(clothe.value, selection.value);
     const response = await cartStore.addToCart(clothe.value.id, amount, sizeId);
     if (response.status === 200) {
-      Swal.fire({
+      Toast.fire({
         icon: "success",
         title: "¡Producto agregado al carrito!",
         showConfirmButton: false,

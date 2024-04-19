@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-end mt-4">
-    <v-btn variant="flat" icon="mdi-close" @click="deleteItem(id)"/>
+    <v-btn variant="flat" icon="mdi-close" @click="deleteItem(id)" />
   </div>
   <v-row class="mt-2 mb-4 align-center">
     <v-col cols="12" lg="6" md="6">
@@ -19,33 +19,40 @@
       <div class="text-subtitle-1 font-weight-medium">Cantidad:</div>
       <v-text-field
         type="number"
-        v-model="state.amount" @change="updateItem(id, state.amount)" class="mt-2" dense outlined></v-text-field>
+        v-model="state.amount"
+        @change="updateCart()"
+        variant="outlined"
+        density="compact"
+        class="mt-2"
+      />
       <div class="d-flex">
-        <p class="text-subtitle-1 mt-2 mb-8 ml-2">${{ price }}MX</p>
+        <p class="text-subtitle-1 mt-2 mb-8 ml-2">${{ price }}MX c/u</p>
       </div>
     </v-col>
     <v-col cols="5" lg="3" md="3" align="center">
       <p class="text-subtitle-1 font-weight-medium">Subtotal:</p>
-      <p class="text-h5 font-weight-medium mt-2 mb-8">${{ price * state.amount }}MX</p>
+      <p class="text-h5 font-weight-medium mt-2 mb-8">
+        ${{ price * state.amount }}MX
+      </p>
     </v-col>
     <v-divider class="mt-12 mb-2" />
   </v-row>
 </template>
 
 <script setup>
-import Colors from "@/utils/Colors.js";
-import {reactive} from "vue";
+import { reactive } from "vue";
 
-const colors = {
-  primary_dark: Colors.cs_primary_dark,
+const updateCart = () => {
+  state.updateItem(state.id, state.amount);
+  aw
 };
 
 const props = defineProps({
   deleteItem: {
-    type: Function
+    type: Function,
   },
   updateItem: {
-    type: Function
+    type: Function,
   },
   id: {
     type: Number,
@@ -77,6 +84,5 @@ const props = defineProps({
   },
 });
 
-const state = reactive({...props})
-
+const state = reactive({ ...props });
 </script>
