@@ -100,7 +100,7 @@ export const useSubcategoryStore = defineStore("subcategory", {
         );
         return response.data;
       } catch (error) {
-        throw error;
+        return error;
       }
 
     },
@@ -141,7 +141,7 @@ export const useSubcategoryStore = defineStore("subcategory", {
         );
         return response.data;
       } catch (error) {
-        throw error;
+        return error;
       }
     }
 

@@ -38,7 +38,7 @@ export const useCategoryStore = defineStore("category", {
         );
         this.categories = response.data.data;
       } catch (error) {
-        throw error;
+        return error;
       }
     },
     async findAllCategoriesWithoutPagination() {
@@ -68,7 +68,7 @@ export const useCategoryStore = defineStore("category", {
         });
         return response.data;
       } catch (error) {
-        throw new Error(error);
+        return error;
       }
     },
     async updateCategory(id, name) {
@@ -85,7 +85,7 @@ export const useCategoryStore = defineStore("category", {
         });
         return response.data;
       } catch (error) {
-        throw error;
+        return error;
       }
     },
     async disableCategory(id) {
