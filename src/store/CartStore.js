@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import {defineStore} from "pinia";
 import axios from "axios";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
@@ -9,10 +9,14 @@ export const useCartStore = defineStore("cart", {
     cart: {
       clothesCarts: [
       ],
+      totalItems: 0,
+      totalPrice: 0,
     },
   }),
   getters: {
     getCart: (state) => state.cart,
+    getTotalItems: (state) => state.cart.totalItems,
+    getTotalPrice: (state) => state.cart.totalPrice,
   },
   actions: {
     async fetchCart() {
@@ -73,20 +77,25 @@ export const useCartStore = defineStore("cart", {
     },
     async updateFromCart(id, amount){
         try{
-          const response = await axios.post(baseURL + "clothesCart/update",
+          return await axios.post(baseURL + "clothesCart/update",
             {
-            id:id,
-            amount:amount,
+              id: id,
+              amount: amount,
             },
             {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          });
-          return response;
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            });
         } catch (error) {
           console.log(error);
         }
+    },
+    setTotalItems(totalItems) {
+      this.cart.totalItems = totalItems;
+    },
+    setTotalPrice(totalPrice) {
+      this.cart.totalPrice = totalPrice;
     },
   },
 });

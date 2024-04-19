@@ -3,21 +3,15 @@
     <breadcrumbs-component :items="items" />
     <v-container>
       <p class="text-h4 font-weight-medium mb-2">Carrito</p>
-<!--      <orders-not-found-component
-        v-if="cartData.clothes.length === 0"
-        :icon="info.icon"
-        :advise="info.advise"
-        :recomendation="info.recomendation"
-      />-->
       <v-row>
         <v-col cols="12" lg="9" md="9">
-
           <v-row v-for="item in cartData.clothes.clothesCarts" :key="item.id">
             <v-col cols="12">
               <seller-card-component cart>
                 <product-list-cart-component
                   :id="item.id"
                   :deleteItem="deleteItem"
+                  :updateItem="updateItem"
                   :image="item.clothes.images[0].url"
                   :product="item.clothes.name"
                   :description="item.clothes.description"
@@ -40,7 +34,6 @@
                 :color="colors.primary_dark"
                 variant="flat"
                 block
-
               >
                 Continuar compra
               </v-btn>
@@ -63,7 +56,7 @@ import SellerCardComponent from "@/components/profile/SellerCardComponent.vue";
 import BreadcrumbsComponent from "@/components/common/BreadcrumbsComponent.vue";
 import ProductListComponent from "@/components/common/ProductListComponent.vue";
 import Swal from "sweetalert2";
-const { fetchCart, deleteFromCart } = useCartStore();
+const { fetchCart, deleteFromCart, updateFromCart, setTotalPrice, setTotalItems } = useCartStore();
 
 const cart = {
   clothes: []
@@ -77,8 +70,7 @@ const info = ref({
 
 const cartData = reactive({ ...cart });
 const loading = ref(false);
-/*let totalItems = ref(0);
-const totalPrice = ref(0);*/
+
 
 const getCart = async () => {
   loading.value = true;
@@ -94,7 +86,9 @@ const getCart = async () => {
 };
 
 onMounted(() => {
-  getCart()
+  getCart().then({
+    calculateTotals
+  })
 });
 
 const deleteItem = async (id) => {
@@ -125,7 +119,30 @@ const deleteItem = async (id) => {
     });
   }
 };
-
+const updateItem = async (id, amount) =>
+  {
+    try {
+      await updateFromCart(id, amount);
+    } catch (error) {
+      await Swal.fire({
+        icon: "error",
+        title: "Error al actualizar el producto",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  }
+;
+const calculateTotals = () => {
+  let itemsCount = 0;
+  let total = 0;
+  for (const item of cartData.clothes.clothesCarts) {
+    itemsCount += item.amount;
+    total += item.amount * item.clothes.stock[0].price;
+  }
+  setTotalItems(itemsCount);
+  setTotalPrice(total);
+};
 const colors = {
   primary: Colors.cs_primary,
   primary_dark: Colors.cs_primary_dark,

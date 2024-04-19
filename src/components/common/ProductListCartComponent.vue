@@ -19,7 +19,7 @@
       <div class="text-subtitle-1 font-weight-medium">Cantidad:</div>
       <v-text-field
         type="number"
-        v-model="state.amount"  class="mt-2" dense outlined></v-text-field>
+        v-model="state.amount" @change="updateItem(id, state.amount)" class="mt-2" dense outlined></v-text-field>
       <div class="d-flex">
         <p class="text-subtitle-1 mt-2 mb-8 ml-2">${{ price }}MX</p>
       </div>
@@ -42,6 +42,9 @@ const colors = {
 
 const props = defineProps({
   deleteItem: {
+    type: Function
+  },
+  updateItem: {
     type: Function
   },
   id: {
