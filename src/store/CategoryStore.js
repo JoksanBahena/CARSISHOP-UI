@@ -37,6 +37,7 @@ export const useCategoryStore = defineStore("category", {
           }
         );
         this.categories = response.data.data;
+        return response.data;
       } catch (error) {
         return error;
       }

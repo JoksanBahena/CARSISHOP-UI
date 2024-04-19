@@ -12,7 +12,7 @@
         </template>
 
         <v-list>
-          <v-list-item v-for="category in categories" :key="category.index">
+          <v-list-item v-for="category in categoriesMain" :key="category.index">
             <v-list-item-title>
               <router-link
                 class="text-decoration-none"
@@ -28,7 +28,7 @@
 
       <v-toolbar-items class="d-none d-sm-flex">
         <v-btn
-          v-for="category in categories"
+          v-for="category in categoriesMain"
           :key="category.index"
           :color="toolbar.primary_dark"
           class="text-none"
@@ -85,7 +85,7 @@ const toolbar = {
   primary_dark: Colors.cs_primary_dark,
 };
 
-const categories = ref([
+const categoriesMain = ref([
   {
     name: "Mujeres",
     to: {

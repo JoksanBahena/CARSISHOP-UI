@@ -8,7 +8,7 @@
         :style="{ color: colors.primary_dark }"
         to="/search/searched-products"
       >
-        Ver más <v-icon>mdi-chevron-right</v-icon>
+        Ver todos los productos <v-icon>mdi-chevron-right</v-icon>
       </router-link>
     </div>
 
@@ -16,41 +16,25 @@
       <v-progress-linear indeterminate color="primary" class="my-4" />
     </template>
 
-    <div v-else-if="clothes.length === 0 && !details" class="my-4">
-      No hay productos disponibles en este momento.
-    </div>
-
-    <template v-else>
+    <template v-else-if="products.length > 0">
       <v-slide-group v-model="model" class="my-4" show-arrows>
-        <v-slide-group-item v-for="(clothe, index) in clothes" :key="index">
-          <product-card-component :item="clothe" />
+        <v-slide-group-item v-for="(product, index) in products" :key="index">
+          <product-card-component :item="product" />
         </v-slide-group-item>
       </v-slide-group>
     </template>
+
+    <div v-else class="text-center mt-4">
+      <p>No se encontraron productos.</p>
+    </div>
   </v-container>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, watch } from "vue";
+import { defineProps } from "vue";
 import ProductCardComponent from "@/components/common/ProductCardComponent.vue";
 import Colors from "@/utils/Colors.js";
-import { useClotheStore } from "@/store/ClotheStore";
-
-const { findAllClothesHome } = useClotheStore();
-
-const clothes = ref([]);
-const isLoading = ref(true);
-
-onMounted(async () => {
-  try {
-    await findAllClothesHome();
-    clothes.value = useClotheStore().clothes;
-    isLoading.value = false;
-  } catch (error) {
-    console.error(error);
-    isLoading.value = false;
-  }
-});
 
 const colors = {
   primary: Colors.cs_primary,
@@ -59,9 +43,10 @@ const colors = {
 };
 
 const model = ref(null);
+const isLoading = ref(false);
 
 const props = defineProps({
-  product: {
+  products: {
     type: Object,
     default: () => {},
   },
@@ -76,10 +61,14 @@ const props = defineProps({
   },
 });
 
+const products = ref(props.products);
+
 watch(
-  () => props.product,
+  () => props.products,
   () => {
-    clothes.value = props.product;
+    isLoading.value = true;
+    products.value = props.products;
+    isLoading.value = false;
   }
 );
 </script>
