@@ -209,5 +209,33 @@ export const useClotheStore = defineStore("clothe", {
         throw error;
       }
     },
+    async findByClotheName(name) {
+      const params = {
+        value: name,
+        paginationType: {
+          filter: "name",
+          sortBy: "name",
+          order: "asc",
+          page: 0,
+          limit: 100,
+        },
+      };
+      console.log(params);
+
+      const url = baseURL + `clothes/find-all`;
+      try {
+        const response = await axios.post(url, params, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response.data.data);
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    }
+
   },
 });

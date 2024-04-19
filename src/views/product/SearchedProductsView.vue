@@ -1,6 +1,6 @@
 <template>
   <default-layout>
-    <!-- <subcategories-navbar-component /> -->
+    <subcategories-navbar-component />
 
     <breadcrumbs-component :items="items" />
     <v-container>
@@ -9,12 +9,14 @@
       </span>
       <p class="text-h3 font-weight-medium my-2">Todos los productos</p>
 
-      <!-- <filter-products-component /> -->
+      <template v-if="isLoading">
+        <v-progress-linear indeterminate color="primary" class="my-4" />
+      </template>
 
       <div
         class="d-flex flex-wrap justify-center justify-lg-start justify-md-start mb-16"
       >
-        <v-row>
+        <v-row v-if="!isLoading">
           <template v-if="clothes?.length > 0">
             <v-col
               cols="12"
@@ -45,15 +47,21 @@ import SubcategoriesNavbarComponent from "@/components/product/SubcategoriesNavb
 
 import { useClotheStore } from "@/store/ClotheStore";
 const { findAllClothesHome } = useClotheStore();
+
 const clothes = ref([]);
+const isLoading = ref(true);
+
 onMounted(async () => {
   try {
     await findAllClothesHome();
     clothes.value = useClotheStore().clothes;
+    isLoading.value = false;
   } catch (error) {
     console.log(error);
+    isLoading.value = false;
   }
 });
+
 const props = defineProps({
   category: {
     type: String,
@@ -64,7 +72,6 @@ const props = defineProps({
     default: "Subcategoría",
   },
 });
-const model = ref(null);
 
 const items = [
   {

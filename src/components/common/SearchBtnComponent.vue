@@ -39,10 +39,17 @@
             />
           </v-card-item>
 
-          <product-list-component
-            v-if="search"
+          <v-progress-linear v-if="isLoading" color="primary" indeterminate />
+
+          <product-seach-list-component
+            v-else-if="productSeached.length > 0"
+            :products="productSeached"
             title="Resultados de tu búsqueda"
           />
+
+          <div v-else class="text-center mt-4">
+            <p>No se encontraron productos.</p>
+          </div>
         </v-container>
       </v-card>
     </template>
@@ -51,8 +58,11 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import ProductListComponent from "@/components/common/ProductListComponent.vue";
+import ProductSeachListComponent from "@/components/common/ProductSeachListComponent.vue";
 import Colors from "@/utils/Colors.js";
+import { useClotheStore } from "@/store/ClotheStore";
+
+const { findByClotheName } = useClotheStore();
 
 const colors = {
   bg_color: Colors.cs_primary,
@@ -61,12 +71,19 @@ const colors = {
 
 const search = ref("");
 const size = ref("20rem");
+const productSeached = ref([]);
+const isLoading = ref(false);
 
-watch(search, (value) => {
-  if (value) {
+watch(search, async (name, value) => {
+  if (name) {
+    isLoading.value = true;
+    const response = await findByClotheName(name);
+    productSeached.value = response.data;
     size.value = "100%";
+    isLoading.value = false;
   } else {
     size.value = "20rem";
+    productSeached.value = [];
   }
 });
 </script>
