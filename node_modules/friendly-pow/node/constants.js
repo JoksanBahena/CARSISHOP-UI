@@ -1,0 +1,8 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CHALLENGE_SIZE_BYTES = exports.SOLVER_TYPE_WASM = exports.SOLVER_TYPE_JS = void 0;
+// This is not an enum to save some bytes in the output bundle.
+exports.SOLVER_TYPE_JS = 1;
+exports.SOLVER_TYPE_WASM = 2;
+exports.CHALLENGE_SIZE_BYTES = 128;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29uc3RhbnRzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL2NvbnN0YW50cy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFBQSwrREFBK0Q7QUFDbEQsUUFBQSxjQUFjLEdBQUcsQ0FBQyxDQUFDO0FBQ25CLFFBQUEsZ0JBQWdCLEdBQUcsQ0FBQyxDQUFDO0FBRXJCLFFBQUEsb0JBQW9CLEdBQUcsR0FBRyxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiLy8gVGhpcyBpcyBub3QgYW4gZW51bSB0byBzYXZlIHNvbWUgYnl0ZXMgaW4gdGhlIG91dHB1dCBidW5kbGUuXG5leHBvcnQgY29uc3QgU09MVkVSX1RZUEVfSlMgPSAxO1xuZXhwb3J0IGNvbnN0IFNPTFZFUl9UWVBFX1dBU00gPSAyO1xuXG5leHBvcnQgY29uc3QgQ0hBTExFTkdFX1NJWkVfQllURVMgPSAxMjg7XG4iXX0=

@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getJSSolver = void 0;
+const solver_1 = require("../solver");
+async function getJSSolver() {
+    return (puzzleBuffer, threshold, n = 4294967295) => {
+        const hash = solver_1.solveBlake2bEfficient(puzzleBuffer, threshold, n);
+        return [puzzleBuffer, hash];
+    };
+}
+exports.getJSSolver = getJSSolver;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoianMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi9zcmMvYXBpL2pzLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7OztBQUFBLHNDQUFrRDtBQUUzQyxLQUFLLFVBQVUsV0FBVztJQUMvQixPQUFPLENBQUMsWUFBd0IsRUFBRSxTQUFpQixFQUFFLENBQUMsR0FBRyxVQUFVLEVBQUUsRUFBRTtRQUNyRSxNQUFNLElBQUksR0FBRyw4QkFBcUIsQ0FBQyxZQUFZLEVBQUUsU0FBUyxFQUFFLENBQUMsQ0FBQyxDQUFDO1FBQy9ELE9BQU8sQ0FBQyxZQUFZLEVBQUUsSUFBSSxDQUFDLENBQUM7SUFDOUIsQ0FBQyxDQUFDO0FBQ0osQ0FBQztBQUxELGtDQUtDIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgc29sdmVCbGFrZTJiRWZmaWNpZW50IH0gZnJvbSBcIi4uL3NvbHZlclwiO1xuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gZ2V0SlNTb2x2ZXIoKSB7XG4gIHJldHVybiAocHV6emxlQnVmZmVyOiBVaW50OEFycmF5LCB0aHJlc2hvbGQ6IG51bWJlciwgbiA9IDQyOTQ5NjcyOTUpID0+IHtcbiAgICBjb25zdCBoYXNoID0gc29sdmVCbGFrZTJiRWZmaWNpZW50KHB1enpsZUJ1ZmZlciwgdGhyZXNob2xkLCBuKTtcbiAgICByZXR1cm4gW3B1enpsZUJ1ZmZlciwgaGFzaF07XG4gIH07XG59XG4iXX0=
